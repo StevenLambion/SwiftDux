@@ -93,14 +93,14 @@ struct RootView : View {
 
   var body: some View {
     NavigationView {
-      Connect(with: mapStateToTodoLists, updateOn: AppAction.self) {
-        TodoLists(lists: $0, dispatcher: $1)
+      Connect(with: mapStateToTodos, updateOn: AppAction.self) {
+        TodoList(todos: $0, dispatcher: $1)
       }
     }
   }
 
-  func mapStateToTodoLists(state: AppState) -> [TodoListState] {
-    return state.orderOfTodoLists.map { state.todoListById[$0]! }
+  func mapStateToTodos(state: AppState) -> [TodoListState] {
+    return state.orderOfTodos.map { state.todoById[$0]! }
   }
 
 }
@@ -111,19 +111,11 @@ struct RootView : View {
 A protocol that simply dispatches any kind of action. The store implements this protocol to send actions to the root reducer of the application. The Connect view also provides a Dispatcher references as a convienence, so views don't need to reference the store.
 
 ```swift
-import SwiftUI
-import SwiftDux
-
-fileprivate let editModeKey: WritableKeyPath<EnvironmentValues, Binding<EditMode>?> = \.editMode
-
-struct TodoListDetails : View {
-  var todoList: TodoListState
-  var dispatcher: ActionDispatcher
+struct TodoList : View {
   @State var editMode: EditMode = .active
 
-  var todos: [TodoItemState] {
-    return todoList.orderOfTodos.map { todoList.todoById[$0]! }
-  }
+  var todos: [TodoItemState]
+  var dispatcher: ActionDispatcher
 
   var body: some View {
     List {
@@ -133,7 +125,7 @@ struct TodoListDetails : View {
       .onDelete(perform: removeTodo)
       .onMove(perform: moveTodo)
     }
-    .navigationBarTitle(Text(todoList.name))
+    .navigationBarTitle(Text("Todos"))
     .navigationBarItems(trailing:
       Button(action: addTodo) { Image(systemName: "plus").imageScale(.medium).padding() }
     )
@@ -141,16 +133,15 @@ struct TodoListDetails : View {
   }
 
   func addTodo() {
-    dispatcher.send(TodoListAction.addTodo(toList: todoList.id, withText: "New Todo Item"))
+    dispatcher.send(TodoListAction.addTodo(withText: "New Todo Item"))
   }
 
   func removeTodo(at indexSet: IndexSet) {
-    dispatcher.send(TodoListAction.removeTodos(fromList: todoList.id, at: indexSet))
+    dispatcher.send(TodoListAction.removeTodos(at: indexSet))
   }
 
   func moveTodo(from indexSet: IndexSet, to index: Int) {
-    dispatcher.send(TodoListAction.moveTodos(inList: todoList.id, from: indexSet, to: index))
+    dispatcher.send(TodoListAction.moveTodos( from: indexSet, to: index))
   }
 }
-
 ```
