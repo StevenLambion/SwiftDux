@@ -1,9 +1,16 @@
 import Foundation
 import Combine
 
+/// An object that can be used as storage for some kind of state.
 public protocol StoreType: class, ActionPlanDispatcher {
+  
+  /// The current state of the store
   var state: State { get }
+  
+  /// Publishes actions that have modified the state.
   var didChangeWithAction: AnyPublisher<Action, Never> { get }
+  
+  /// Notifies subscribers when the state has changed.
   var didChange: AnyPublisher<Void, Never> { get }
 }
 

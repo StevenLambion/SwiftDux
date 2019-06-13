@@ -11,7 +11,6 @@ enum TodoListAction: Action {
 class TodoListReducer: Reducer {
   
   func reduce(state: TodoListState, action: TodoListAction) -> TodoListState {
-    var state = state
     switch action {
     case .addTodo(_, let text):
       state.todos.prepend(TodoItemState(id: UUID().uuidString, text: text))
