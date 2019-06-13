@@ -1,6 +1,6 @@
 import Foundation
 
-fileprivate class OrderedStateStorage<Key, Value>: Codable, Equatable where Value: IdentifiableStateType, Key == Value.Id  {
+fileprivate class OrderedStateStorage<Key, Value>: Codable, Equatable where Value: IdentifiableState, Key == Value.Id  {
   enum CodingKeys: String, CodingKey {
     case orderOfKeys
     case values
@@ -37,7 +37,7 @@ fileprivate class OrderedStateStorage<Key, Value>: Codable, Equatable where Valu
 
 }
 
-public struct OrderedState<Key, Value>: StateType, MutableCollection where Value: IdentifiableStateType, Key == Value.Id {
+public struct OrderedState<Key, Value>: StateType, MutableCollection where Value: IdentifiableState, Key == Value.Id {
   
   public typealias Index = Key
   public typealias Element = Value
