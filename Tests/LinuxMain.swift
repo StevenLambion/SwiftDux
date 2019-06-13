@@ -3,5 +3,5 @@ import XCTest
 import SwiftDuxTests
 
 var tests = [XCTestCaseEntry]()
-tests += SwiftDuxTests.allTests()
+tests += StoreTests.allTests()
 XCTMain(tests)
