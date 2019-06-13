@@ -177,8 +177,11 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     self.storage = copy
   }
   
+  /// TODO - Simple implementation, I may look at improving it later.
   /// Moves a set of substates at the specified indexes to a new index position.
   public mutating func move(from indexSet: IndexSet, to index: Int) {
+    /// don't allow moving if the moved index is inside the index set.
+    guard !indexSet.contains(where: { $0 == index }) else { return }
     let copy = copyStorageIfNeeded()
     let currentIdAtIndex = copy.orderOfIds[index]
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
