@@ -5,9 +5,9 @@ import SwiftDux
 class TodoListState: IdentifiableState, Hashable, Identifiable {
   var id: String
   var name: String
-  var todos: OrderedState<String, TodoItemState>
+  var todos: OrderedState<TodoItemState>
   
-  init(id: String, name: String, todos: OrderedState<String, TodoItemState>) {
+  init(id: String, name: String, todos: OrderedState<TodoItemState>) {
     self.id = id
     self.name = name
     self.todos = todos

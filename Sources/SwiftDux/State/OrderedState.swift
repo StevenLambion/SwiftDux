@@ -1,11 +1,13 @@
 import Foundation
 
 /// Storage for the ordered state to decrease the copying of the internal data structures.
-fileprivate class OrderedStateStorage<Id, Substate>: Codable, Equatable where Substate: IdentifiableState, Id == Substate.Id  {
+fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState  {
   enum CodingKeys: String, CodingKey {
     case orderOfIds
     case values
   }
+  
+  typealias Id = Substate.Id
   
   /// Holds the oredering knowledge of the values by their key.
   var orderOfIds: [Id]
@@ -25,7 +27,7 @@ fileprivate class OrderedStateStorage<Id, Substate>: Codable, Equatable where Su
     self.cachedIdsByOrder = nil
   }
   
-  static func == (lhs: OrderedStateStorage<Id, Substate>, rhs: OrderedStateStorage<Id, Substate>) -> Bool {
+  static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
     return lhs.orderOfIds == rhs.orderOfIds && lhs.values == lhs.values
   }
   
@@ -69,9 +71,11 @@ fileprivate class OrderedStateStorage<Id, Substate>: Codable, Equatable where Su
 /// // When a user deletes from a `List` view, simply pass in the provided `IndexSet`:
 /// todos.delete(at: indexSet)
 ///
-public struct OrderedState<Id, Substate>: StateType where Substate: IdentifiableState, Id == Substate.Id {
+public struct OrderedState<Substate>: StateType where Substate: IdentifiableState {
   
-  fileprivate var storage: OrderedStateStorage<Id, Substate>
+  public typealias Id = Substate.Id
+  
+  fileprivate var storage: OrderedStateStorage<Substate>
   
   /// An ordered array of the substates.
   public var values: [Substate] {
@@ -108,7 +112,7 @@ public struct OrderedState<Id, Substate>: StateType where Substate: Identifiable
   
   /// Used internally to copy the storage for mutating operations. It's designed not to
   /// copy if it's singularily owned by a single copy of the `OrderedState` struct.
-  private mutating func copyStorageIfNeeded() -> OrderedStateStorage<Id, Substate> {
+  private mutating func copyStorageIfNeeded() -> OrderedStateStorage<Substate> {
     guard isKnownUniquelyReferenced(&storage) else {
       return OrderedStateStorage(orderOfIds: storage.orderOfIds, values: storage.values)
     }
@@ -263,7 +267,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 
 extension OrderedState: Equatable {
   
-  public static func == (lhs: OrderedState<Id, Substate>, rhs: OrderedState<Id, Substate>) -> Bool {
+  public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
     return lhs.storage == rhs.storage
   }
   
