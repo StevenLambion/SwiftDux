@@ -179,7 +179,7 @@ public struct OrderedState<Id, Substate>: StateType where Substate: Identifiable
     let currentIdAtIndex = copy.orderOfIds[index]
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
     copy.orderOfIds.remove(at: indexSet)
-    copy.orderOfIds.insert(contentsOf: ids, at: copy.index(ofId: currentIdAtIndex))
+    copy.orderOfIds.insert(contentsOf: ids, at: copy.index(ofId: currentIdAtIndex) + 1)
     self.storage = copy
   }
   
