@@ -12,7 +12,7 @@ public protocol Reducer {
 
 extension Reducer {
   
-  public func reduce(state: State, action: NoActions) -> State {
+  public func reduce(state: State, action: EmptyAction) -> State {
     return state
   }
   
