@@ -106,7 +106,7 @@ window.rootViewController = UIHostingController(
 )
 ```
 
-### 4. Create your view separate of the state to make it more reusable and testable
+### 4. Create your view separate from the state to make it more reusable and testable
 
 ```swift
 import SwiftUI
