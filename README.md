@@ -13,7 +13,7 @@ This is yet another redux inspired state management solution for swift. It's bui
 
 As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. As I began working on a pet project for a future SwiftUI application, I saw people asking about how best to structure their application using these new tools. This libary started out as internal code to my own app, but I've moved it to this repo in the hopes that it might help others get started.
 
-There's many other great redux-like libaries such as ReSwift that have a bigger footing and probably more worthy features than this one. I plan to keep this library fairly small, and plan to separate the SwiftUI portion into its own module if Combine becomes open sourced.
+There's many other great redux-like libaries such as ReSwift that have a bigger footing and probably more worthy features than this one.
 
 ## Features
 
