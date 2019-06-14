@@ -42,6 +42,10 @@ let package = Package(
 )
 ```
 
+## Documentation
+
+[Click here for the documentation](https://stevenlambion.github.io/SwiftDux/)
+
 ## Usage
 
 ### 1. Create your state
