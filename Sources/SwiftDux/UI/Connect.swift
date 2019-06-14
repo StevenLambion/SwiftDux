@@ -16,7 +16,7 @@ public typealias ConnectContentWrapper<Dispatcher, S, Content> = (S, Dispatcher)
 /// extension TodoListContainer {
 ///
 ///   static func connected() -> some View {
-///     Store<AppState>.connect(updateFor: TodoAction.self) { todos, dispatcher in
+///     Store<AppState>.connect(updateOn: TodoAction.self) { todos, dispatcher in
 ///       TodoListContainer(
 ///         todos: todos,
 ///         onAdd: { dispatcher.send(TodoAction.addTodo($0) },
@@ -32,7 +32,7 @@ public struct Connect<S, A, Content>: View where Content: View, S: StateType, A:
   private var actionType: A.Type
   private var wrapper: ConnectContentWrapper<Store<S>, S, Content>
   
-  public init(updateFor actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<S>, S, Content>) {
+  public init(updateOn actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<S>, S, Content>) {
     self.actionType = actionType
     self.wrapper = wrapper
   }
@@ -46,10 +46,10 @@ public struct Connect<S, A, Content>: View where Content: View, S: StateType, A:
 extension Store {
  
   public static func connect<A, Content>(
-    updateFor actionType: A.Type,
+    updateOn actionType: A.Type,
     wrapper: @escaping ConnectContentWrapper<Store<State>, State, Content>
   ) -> some View where A: Action, Content: View {
-    return Connect<State, A, Content>(updateFor: actionType, wrapper: wrapper)
+    return Connect<State, A, Content>(updateOn: actionType, wrapper: wrapper)
   }
   
 }
