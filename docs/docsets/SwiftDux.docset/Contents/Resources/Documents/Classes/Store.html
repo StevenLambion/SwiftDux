@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Store Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Class/Store" class="dashAnchor"></a>
+    <a title="Store Class Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html">SwiftDux Docs</a> (84% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html">SwiftDux Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        Store Class Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Store.html">Store</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ActionPlanDispatcher.html">ActionPlanDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IdentifiableState.html">IdentifiableState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/StoreType.html">StoreType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Structs/Connect.html">Connect</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OrderedState.html">OrderedState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux10ActionPlana">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Store</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+
+                </div>
+              </div>
+            <p>The primary container of an application&rsquo;s state.</p>
+
+<p>The store both contains and mutates the state through a provided reducer as it&rsquo;s sent actions.
+Use the didChangeWithAction or didChange publishers to be notified of state changes.</p>
+
+<p>The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the <code><a href="../Structs/Connect.html">Connect</a></code> view.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC5statexvp"></a>
+                    <a name="//apple_ref/swift/Property/state" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC5statexvp">state</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The current state of the store. Use actions to mutate it.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">private(set)</span> <span class="k">var</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC19didChangeWithAction7Combine12AnyPublisherVyAA0G0_ps5NeverOGvp"></a>
+                    <a name="//apple_ref/swift/Property/didChangeWithAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC19didChangeWithAction7Combine12AnyPublisherVyAA0G0_ps5NeverOGvp">didChangeWithAction</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Subscribe to this publisher to be notified of state changes caused by a particular action.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChangeWithAction</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp"></a>
+                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp">didChange</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>If you don&rsquo;t care what action caused a state change, use this publisher.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC5state7reducerACyxGx_qd__tc5StateQyd__RszAA7ReducerRd__lufc"></a>
+                    <a name="//apple_ref/swift/Method/init(state:reducer:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC5state7reducerACyxGx_qd__tc5StateQyd__RszAA7ReducerRd__lufc">init(state:reducer:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">reducer</span><span class="p">:</span> <span class="kt">R</span><span class="p">)</span> <span class="k">where</span> <span class="kt">State</span> <span class="o">==</span> <span class="kt">R</span><span class="o">.</span><span class="kt">State</span><span class="p">,</span> <span class="kt">R</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html">Reducer</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC4sendyyAA6Action_pF"></a>
+                    <a name="//apple_ref/swift/Method/send(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC4sendyyAA6Action_pF">send(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>TODO - Look at batched <q>didChange</q> events when schedulers are better supported.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="n">_</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC7connect8updateOn7wrapperQrqd__m_qd_0_x_ACyxGtctAA6ActionRd__0A2UI4ViewRd_0_r0_lFZ"></a>
+                    <a name="//apple_ref/swift/Method/connect(updateOn:wrapper:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC7connect8updateOn7wrapperQrqd__m_qd_0_x_ACyxGtctAA6ActionRd__0A2UI4ViewRd_0_r0_lFZ">connect(updateOn:wrapper:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">connect</span><span class="o">&lt;</span><span class="kt">A</span><span class="p">,</span> <span class="kt">Content</span><span class="o">&gt;</span><span class="p">(</span>
+  <span class="n">updateOn</span> <span class="nv">actionType</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+  <span class="nv">wrapper</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a></span><span class="o">&lt;</span><span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">State</span><span class="p">,</span> <span class="kt">Content</span><span class="o">&gt;</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">A</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Content</span><span class="p">:</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

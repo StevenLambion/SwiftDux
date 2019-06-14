@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html"> Docs</a> (84% documented)</p>
+        <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html"> Reference</a>
+        <img id="carat" src="img/carat.png" />
+          Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Store.html">Store</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:8SwiftDux6ActionP">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionPlanDispatcher.html">ActionPlanDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/IdentifiableState.html">IdentifiableState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StoreType.html">StoreType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/Connect.html">Connect</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OrderedState.html">OrderedState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux10ActionPlana">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='swiftdux' class='heading'>SwiftDux</h1>
+
+<blockquote>
+<p>Predictable state management for SwiftUI applications.</p>
+</blockquote>
+
+<p><a href="https://swift.org/"><img src="https://img.shields.io/badge/swift-5-orange.svg" alt="Swift Version"></a>
+<a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a></p>
+
+<!-- [![Build Status][travis-image]][travis-url] -->
+
+<p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with an API to bind it to views within SwiftUI (think react-redux).</p>
+<h2 id='why' class='heading'>Why</h2>
+
+<p>As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. As I began working on a pet project for a future SwiftUI application, I saw people asking about how best to structure their application using these new tools. This libary started out as internal code to my own app, but I&rsquo;ve moved it to this repo in the hopes that it might help others get started.</p>
+
+<p>There&rsquo;s many other great redux-like libaries such as ReSwift that have a bigger footing and probably more worthy features than this one.</p>
+<h2 id='features' class='heading'>Features</h2>
+
+<ul>
+<li>Redux inspired state management.</li>
+<li>Use publishers to dispatch actions.</li>
+<li>Use ActionPlans to wrapup complex workflows. (If redux-thunk used Combine)</li>
+<li>Inject state into SwiftUI views.</li>
+<li>Use OrderedState to automatically manage entities displayed in lists.
+
+<ul>
+<li>Provides methods that work directly with list events such as onMove and onDelete.</li>
+<li>Lookup entities by id or index position.</li>
+<li>Implements the MutableCollection protocol.</li>
+</ul></li>
+<li>State adheres to the Codable protocol.
+
+<ul>
+<li>Allows quick persistence and restoring of application state</li>
+</ul></li>
+</ul>
+<h2 id='installation' class='heading'>Installation</h2>
+
+<p>You can add this directly to Xcode 11 or add it to your project&rsquo;s <code>Package.swift</code> file</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">PackageDescription</span>
+
+<span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
+  <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
+    <span class="o">.</span><span class="kt">Package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/StevenLambion/SwiftDux.git"</span><span class="p">,</span> <span class="nv">majorVersion</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">minor</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="p">]</span>
+<span class="p">)</span>
+</code></pre>
+<h2 id='usage' class='heading'>Usage</h2>
+<h3 id='1-create-your-state' class='heading'>1. Create your state</h3>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
+
+<span class="kd">struct</span> <span class="kt">AppState</span><span class="p">:</span> <span class="kt">StateType</span> <span class="p">{</span>
+  <span class="c1">/// OrderedState is a built-in type that acts as an ordered dictionary of substates.</span>
+  <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoState</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">TodoState</span><span class="p">:</span> <span class="kt">IdentifiableState</span> <span class="p">{</span>
+  <span class="n">vae</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="k">var</span> <span class="nv">text</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+</code></pre>
+<h3 id='2-create-your-reducer' class='heading'>2. Create your reducer</h3>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
+
+<span class="kd">enum</span> <span class="kt">TodoAction</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nf">addTodo</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span>
+  <span class="k">case</span> <span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">)</span>
+  <span class="k">case</span> <span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">AppReducer</span><span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+
+  <span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">switch</span> <span class="n">action</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="k">let</span> <span class="nv">text</span><span class="p">):</span>
+      <span class="k">let</span> <span class="nv">id</span> <span class="o">=</span> <span class="kt">UUID</span><span class="p">()</span><span class="o">.</span><span class="n">uuidString</span>
+      <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="kt">TodoItemState</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">id</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="n">text</span><span class="p">))</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="k">let</span> <span class="nv">indexSet</span><span class="p">):</span>
+      <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="n">indexSet</span><span class="p">)</span>
+    <span class="k">case</span> <span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="k">let</span> <span class="nv">indexSet</span><span class="p">,</span> <span class="k">let</span> <span class="nv">index</span><span class="p">):</span>
+      <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="nf">move</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">indexSet</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="n">index</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">state</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<h3 id='3-create-your-store-and-inject-it-into-the-environment' class='heading'>3. Create your store, and inject it into the environment</h3>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
+
+<span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="kt">AppState</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="p">()),</span> <span class="kt">AppReducer</span><span class="p">())</span>
+
+<span class="n">window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span>
+  <span class="nv">rootView</span><span class="p">:</span> <span class="kt">RootView</span><span class="p">()</span><span class="o">.</span><span class="nf">environmentObject</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+<span class="p">)</span>
+</code></pre>
+<h3 id='4-create-your-view-separate-from-the-state-to-make-it-more-reusable-and-testable' class='heading'>4. Create your view separate from the state to make it more reusable and testable</h3>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">SwiftDux</span>
+
+<span class="kd">struct</span> <span class="kt">Todos</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="kd">@State</span> <span class="k">var</span> <span class="nv">editMode</span><span class="p">:</span> <span class="kt">EditMode</span> <span class="o">=</span> <span class="o">.</span><span class="n">active</span>
+
+  <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItemState</span><span class="p">]</span>
+  <span class="k">var</span> <span class="nv">onAddTodo</span><span class="p">:</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="p">()</span>
+  <span class="k">var</span> <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
+  <span class="k">var</span> <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">List</span> <span class="p">{</span>
+      <span class="kt">ForEach</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+        <span class="kt">TodoItemRow</span><span class="p">(</span><span class="nv">item</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
+      <span class="p">}</span>
+      <span class="o">.</span><span class="nf">onDelete</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="n">onRemoveTodos</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">onMove</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="n">onMoveTodos</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="p">)</span><span class="o">.</span><span class="nf">environment</span><span class="p">(\</span><span class="o">.</span><span class="n">editMode</span><span class="p">,</span> <span class="err">$</span><span class="n">editMode</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+</code></pre>
+<h3 id='5-connect-your-state-to-the-view' class='heading'>5. Connect your state to the view</h3>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Todos</span> <span class="p">{</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;.</span><span class="nf">connect</span><span class="p">(</span><span class="nv">updateOn</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+      <span class="kt">Todos</span><span class="p">(</span>
+        <span class="nv">todos</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
+        <span class="nv">onAddTodo</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="s">"New Todo"</span><span class="p">))</span> <span class="p">},</span>
+        <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">},</span>
+        <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+<h3 id='6-add-the-view-to-your-rootview' class='heading'>6. Add the view to your RootView</h3>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftUI</span>
+<span class="kd">import</span> <span class="kt">SwiftDux</span>
+
+<span class="kd">struct</span> <span class="kt">RootView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">NavigationView</span> <span class="p">{</span>
+      <span class="kt">Todos</span><span class="o">.</span><span class="nf">connected</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

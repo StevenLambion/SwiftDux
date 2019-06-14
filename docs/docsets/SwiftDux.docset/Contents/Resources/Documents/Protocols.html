@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Protocols  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Section/Protocols" class="dashAnchor"></a>
+    <a title="Protocols  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SwiftDux Docs</a> (84% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SwiftDux Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Protocols  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Store.html">Store</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:8SwiftDux6ActionP">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionPlanDispatcher.html">ActionPlanDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/IdentifiableState.html">IdentifiableState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StoreType.html">StoreType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Structs/Connect.html">Connect</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OrderedState.html">OrderedState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux10ActionPlana">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>Protocols</h1>
+            <p>The following protocols are available globally.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux6ActionP"></a>
+                    <a name="//apple_ref/swift/Protocol/Action" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux6ActionP">Action</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Specifies a type as a dispatchable action.</p>
+
+<p>Typically this is done with enum types, however,  it could be added to protocols or structs if
+a more complex solution is needed.</p>
+
+<p>Enum Example:
+  enum TodoList: Action {
+    case setItems(items: [TodoItem])
+    case addItem(withText: String)
+    case removeItems(at: IndexSet)
+    case moveItems(at: IndexSet, to: Int)
+  }</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Action</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux16ActionDispatcherP"></a>
+                    <a name="//apple_ref/swift/Protocol/ActionDispatcher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux16ActionDispatcherP">ActionDispatcher</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An object that dispatches actions to a store.</p>
+
+<p>Once an action is sent, the sender shouldn&rsquo;t expect anything to occur. Instead, it should rely
+solely on changes to the state of the application to respond.</p>
+
+                        <a href="Protocols/ActionDispatcher.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ActionDispatcher</span> <span class="p">:</span> <span class="kt">Subscriber</span> <span class="k">where</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span><span class="p">,</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Input</span> <span class="o">==</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux20ActionPlanDispatcherP"></a>
+                    <a name="//apple_ref/swift/Protocol/ActionPlanDispatcher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux20ActionPlanDispatcherP">ActionPlanDispatcher</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Dispatches action plans with the same interface signature as regular actions. This allows
+the ability to incapsulate complex workflows that may require many actions and external events
+to be  self-contained in a single package.</p>
+
+                        <a href="Protocols/ActionPlanDispatcher.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ActionPlanDispatcher</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ActionDispatcher.html">ActionDispatcher</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux17IdentifiableStateP"></a>
+                    <a name="//apple_ref/swift/Protocol/IdentifiableState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux17IdentifiableStateP">IdentifiableState</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>A type of state that can be identified for tracking purposes.</p>
+
+<p>This is typically used for entities stored in your state that might be accessed by id
+or displayed in a <code>List</code> view.</p>
+
+                        <a href="Protocols/IdentifiableState.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">IdentifiableState</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux9StateTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/StateType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux9StateTypeP">StateType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Marks an object as representing some kind of state for use by the Store class.</p>
+
+<p>States are expected to be codable so that they can be easily be transportable through extermal
+APIs and across different platforms and environments. Example usage of a codable state include:</p>
+
+<ul>
+<li>Automatic application state persistence simply by encoding / decoding the state.</li>
+<li>Debugging tools that graph out the entire state object.</li>
+<li>Sending whole or partial states to other insrtances of the application, and across platforms.</li>
+</ul>
+
+<p>State should be viewed as immutable. The only mechanism that should mutate a state is a reducer.
+Because of this, a state object should be a struct by default. The rule of thumbs:</p>
+
+<ul>
+<li>Struct: The dafault choice to maintain immutable value semantics.</li>
+<li>Class: It will manage a large dataset (1000+ items)</li>
+</ul>
+
+<p>You can pick between struct and class for each node in your application&rsquo;s state. It doesn&rsquo;t need to be
+one or the other as long as the rule of immutability is followed.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StateType</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux7ReducerP"></a>
+                    <a name="//apple_ref/swift/Protocol/Reducer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux7ReducerP">Reducer</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Performs an action on a given state and returns a whole new version.</p>
+
+<p>A store is given a single root <code>Reducer</code>. As it&rsquo;s sent actions, it runs the reducer to
+update the application&rsquo;s state. The reducer can have subreducers to separate code
+out into modular parts.</p>
+
+<p>For a reducer&rsquo;s own state and actions, implement the <code>reduce(state:action:)</code>.
+For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p>
+
+                        <a href="Protocols/Reducer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Reducer</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux9StoreTypeP"></a>
+                    <a name="//apple_ref/swift/Protocol/StoreType" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux9StoreTypeP">StoreType</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>An object that can be used as storage for some kind of state.</p>
+
+                        <a href="Protocols/StoreType.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StoreType</span> <span class="p">:</span> <span class="kt">AnyObject</span><span class="p">,</span> <span class="kt"><a href="Protocols/ActionPlanDispatcher.html">ActionPlanDispatcher</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

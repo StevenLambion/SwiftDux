@@ -1,0 +1,96 @@
+{
+  "warnings": [
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
+      "line": 43,
+      "symbol": "ActionDispatcher.send(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/IdentifiableState.swift",
+      "line": 8,
+      "symbol": "IdentifiableState.Id",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
+      "line": 76,
+      "symbol": "OrderedState.Id",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Reducer.swift",
+      "line": 12,
+      "symbol": "Reducer.State",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Reducer.swift",
+      "line": 13,
+      "symbol": "Reducer.ReducerAction",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
+      "line": 25,
+      "symbol": "Store.init(state:reducer:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
+      "line": 19,
+      "symbol": "StoreType.send(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
+      "line": 26,
+      "symbol": "StoreType.send(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
+      "line": 37,
+      "symbol": "StoreType.on(action:mapState:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
+      "line": 44,
+      "symbol": "StoreType.mapState(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connect.swift",
+      "line": 4,
+      "symbol": "ConnectContentWrapper",
+      "symbol_kind": "source.lang.swift.decl.typealias",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connect.swift",
+      "line": 35,
+      "symbol": "Connect.init(updateOn:wrapper:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connect.swift",
+      "line": 48,
+      "symbol": "Store.connect(updateOn:wrapper:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/steve/Developer/SwiftDux"
+}

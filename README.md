@@ -135,7 +135,7 @@ struct Todos : View {
 ```swift
 extension Todos {
 
-  static func connected(forId id: String) -> some View {
+  static func connected() -> some View {
     Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
       Todos(
         todos: state.todos.value,
