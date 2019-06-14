@@ -64,29 +64,21 @@ private struct InnerConnect<StoreState, A, Content>: View where Content: View, S
   
   init(store: Store<StoreState>, actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<StoreState>, StoreState, Content>) {
     self.store = store
-    self.updater = StoreActionUpdater<StoreState, A>()
+    self.updater = StoreActionUpdater<StoreState, A>(store: store, action: actionType)
     self.wrapper = wrapper
   }
   
   public var body: some View {
     wrapper(store.state, store)
-      .onAppear { self.updater.beginSubscription(store: self.store, action: A.self) }
-      .onDisappear { self.updater.cancelSubscription() }
   }
 
 }
 
 private class StoreActionUpdater<S, A>: BindableObject where S: StateType, A: Action {
   var didChange = PassthroughSubject<Void, Never>()
-  var canceller: AnyCancellable?
+  var cancel: AnyCancellable
   
-  func beginSubscription(store: Store<S>, action: A.Type) {
-    guard canceller == nil else { return }
-    self.canceller = store.didChangeWithAction.filter { $0 is A }.map { _ in () }.subscribe(didChange)
-  }
-  
-  func cancelSubscription() {
-    self.canceller?.cancel()
-    self.canceller = nil
+  init(store: Store<S>, action: A.Type) {
+    self.cancel = store.didChangeWithAction.filter { $0 is A }.map { _ in () }.subscribe(didChange)
   }
 }
