@@ -42,15 +42,6 @@ final class StoreTests: XCTestCase {
     XCTAssertEqual(store.state.value, 3)
   }
   
-  func testSubscribingToChangees() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
-    var newValue: String? = nil
-    let sink = store.didChange.sink { newValue = store.state.text }
-    defer { sink.cancel() }
-    store.send(TestSendingAction.setText("New text"))
-    XCTAssertEqual(newValue, "New text")
-  }
-  
   func testMappingStateForActionChanges() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     var newValue: String? = nil
