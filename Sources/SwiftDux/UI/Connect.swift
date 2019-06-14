@@ -45,7 +45,7 @@ public struct Connect<S, A, Content>: View where Content: View, S: StateType, A:
 
 extension Store {
  
-  static func connect<A, Content>(
+  public static func connect<A, Content>(
     updateFor actionType: A.Type,
     wrapper: @escaping ConnectContentWrapper<Store<State>, State, Content>
   ) -> some View where A: Action, Content: View {

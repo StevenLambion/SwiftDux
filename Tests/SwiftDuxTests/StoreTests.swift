@@ -57,7 +57,6 @@ final class StoreTests: XCTestCase {
     ("testInitialStateValue", testInitialStateValue),
     ("testSendingAction", testSendingAction),
     ("testSubscribingToActionPlans", testSubscribingToActionPlans),
-    ("testSubscribingToChangees", testSubscribingToChangees),
     ("testMappingStateForActionChanges", testMappingStateForActionChanges),
   ]
 }
