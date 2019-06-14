@@ -21,11 +21,11 @@ There's many other great redux-like libaries such as ReSwift that have a bigger 
 - Use publishers to dispatch actions.
 - Use ActionPlans to wrapup complex workflows. (If redux-thunk used Combine)
 - Inject state into SwiftUI views.
-- Use OrderedState to automatically manage entities displayed in lists
+- Use OrderedState to automatically manage entities displayed in lists.
   - Provides methods that work directly with list events such as onMove and onDelete.
   - Lookup entities by id or index position.
   - Implements the MutableCollection protocol.
-- State adheres to the Codable protocol
+- State adheres to the Codable protocol.
   - Allows quick persistence and restoring of application state
 
 ## Installation
@@ -94,7 +94,7 @@ struct AppReducer: Reducer {
 }
 ```
 
-### 3. Create your store and inject it into the environment
+### 3. Create your store, and inject it into the environment
 
 ```swift
 import SwiftDux
