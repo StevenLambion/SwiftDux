@@ -42,10 +42,6 @@ let package = Package(
 )
 ```
 
-## Example
-
-There's a Todo app example using SwiftDux [here](https://github.com/StevenLambion/SwiftDux-Todo-Example).
-
 ## Usage
 
 ### 1. Create your state
