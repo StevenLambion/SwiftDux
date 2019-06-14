@@ -1,68 +1,92 @@
 # SwiftDux
 
-This is an experimental library to test out how a single store architecture could be implemented for SwiftUI.
+> Predictable state management for SwiftUI applications.
 
-## Purpose
+[![Swift Version][swift-image]][swift-url]
+[![License][license-image]][license-url]
 
-The purpose of this library is to simplify the model layer into a single, manageable store. This would simplify data synchronization issues across different aspects of the application, such as with UIScenes.
+<!-- [![Build Status][travis-image]][travis-url] -->
 
-## Implementation
+This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with an API to bind it to views within SwiftUI (think react-redux).
 
-This library is meant to be as small as possible by utilizing tools presented in SwiftUI and Combine. The store acts as a regular BIndableObject, but presents an API to map the application state to a new shape for each container view. It has optimizations such as the Connect view to help SwiftUI know when to update.
+## Why
 
-## Components
+As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. As I began working on a pet project for a future SwiftUI application, I saw people asking about how best to structure their application using these new tools. This libary started out as internal code to my own app, but I've moved it to this repo in the hopes that it might help others get started.
 
-### StateType
+There's many other great redux-like libaries such as ReSwift that have a bigger footing and probably more worthy features than this one. I plan to keep this library fairly small, and plan to separate the SwiftUI portion into its own module if Combine becomes open sourced.
 
-### `StateType`
+## Features
 
-Represents your state as a struct or class object. The state is forced to be codable to provide easy persistence, and for external tooling. It's also a good idea to not place complex functionality into the state. It should be self-contained and transportable.
+- Redux inspired state management.
+- Use publishers to dispatch actions.
+- Use ActionPlans to wrapup complex workflows. (If redux-thunk used Combine)
+- Inject state into SwiftUI views.
+- Use OrderedState to automatically manage entities displayed in lists
+  - Provides methods that work directly with list events such as onMove and onDelete.
+  - Lookup entities by id or index position.
+  - Implements the MutableCollection protocol.
+- State adheres to the Codable protocol
+  - Allows quick persistence and restoring of application state
+
+## Installation
+
+You can add this directly to Xcode 11 or add it to your project's `Package.swift` file
 
 ```swift
-struct TodoListState: StateType, Hashable, Identifiable {
-  var orderOfTodos: [String]
-  var todoById: [String: TodoItemState]
+import PackageDescription
+
+let package = Package(
+  dependencies: [
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 1)
+  ]
+)
+```
+
+## Example
+
+There's a Todo app example using SwiftDux [here](https://github.com/StevenLambion/SwiftDux-Todo-Example).
+
+## Usage
+
+### 1. Create your state
+
+```swift
+import SwiftDux
+
+struct AppState: StateType {
+  /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
+  var todos: OrderedState<TodoState>
 }
 
-struct TodoItemState: StateType, Hashable, Identifiable {
-  var id: String
+struct TodoState: IdentifiableState {
+  vae id: String,
   var text: String
 }
 ```
 
-### `Action`
-
-An action that updates your state. This should typically be an enum.
+### 2. Create your reducer
 
 ```swift
-enum TodoListAction: Action {
+import SwiftDux
+
+enum TodoAction: Action {
   case addTodo(text: String)
   case removeTodos(at: IndexSet)
   case moveTodos(from: IndexSet, to: Int)
 }
-```
 
-### `Reducer`
+struct AppReducer: Reducer {
 
-Updates a given state object when a relevant action is dispatched to it.
-
-```swift
-class TodoListReducer: Reducer {
-
-  func reduce(state: TodoListState, action: TodoListAction) -> TodoListState {
+  func reduce(state: AppState, action: TodoAction) -> AppState {
     var state = state
     switch action {
     case .addTodo(let text):
       let id = UUID().uuidString
-      state.todoById[id] = TodoItemState(id: id, text: text)
-      state.orderOfTodos.insert(id, at: 0)
+      state.todos.append(TodoItemState(id: id, text: text))
     case .removeTodos(let indexSet):
-      indexSet.forEach { state.todoById.removeValue(forKey: state.orderOfTodos[$0]) }
-      state.orderOfTodos.remove(at: indexSet)
+      state.todos.remove(at: indexSet)
     case .moveTodos(let indexSet, let index):
-      let ids = Array(indexSet.map { state.orderOfTodos[$0] })
-      state.orderOfTodos.remove(at: indexSet)
-      state.orderOfTodos.insert(contentsOf: ids, at: index)
+      state.todos.move(from: indexSet, to: index)
     }
     return state
   }
@@ -70,78 +94,87 @@ class TodoListReducer: Reducer {
 }
 ```
 
-### `Store<State>`
-
-Acts as the storage of your application's state and the dispatcher of actions. Your view subscribes to it for updates. Its mapping function or the Connect view should be used, so that SwiftUI only updates what's required.
+### 3. Create your store and inject it into the environment
 
 ```swift
-// Somewhere in a UISceneDelegate class:
+import SwiftDux
 
-let store = Store(state: AppState.defaultState,reducer: AppReducer())
+let store = Store(AppState(todos: OrderedState()), AppReducer())
 
 window.rootViewController = UIHostingController(
   rootView: RootView().environmentObject(store)
 )
 ```
 
-### `Connect<State, Action, Substate, Content>`
-
-A view that subscribes to your state through the environment. It sends updates to a mapped version of the state to its contents when the state has been updated by a given action type.
+### 4. Create your view separate of the state to make it more reusable and testable
 
 ```swift
-struct RootView : View {
+import SwiftUI
+import SwiftDux
 
-  var body: some View {
-    NavigationView {
-      Connect(with: mapStateToTodos, updateOn: AppAction.self) {
-        TodoList(todos: $0, dispatcher: $1)
-      }
-    }
-  }
-
-  func mapStateToTodos(state: AppState) -> [TodoListState] {
-    return state.orderOfTodos.map { state.todoById[$0]! }
-  }
-
-}
-```
-
-### `ActionDispatcher`
-
-A protocol that simply dispatches any kind of action. The store implements this protocol to send actions to the root reducer of the application. The Connect view also provides a Dispatcher references as a convienence, so views don't need to reference the store.
-
-```swift
-struct TodoList : View {
+struct Todos : View {
   @State var editMode: EditMode = .active
 
   var todos: [TodoItemState]
-  var dispatcher: ActionDispatcher
+  var onAddTodo: () -> ()
+  var onMoveTodos: (IndexSet, Int) -> ()
+  var onRemoveTodos: (IndexSet) -> ()
 
   var body: some View {
     List {
       ForEach(todos) { item in
         TodoItemRow(item: item)
       }
-      .onDelete(perform: removeTodo)
-      .onMove(perform: moveTodo)
+      .onDelete(perform: onRemoveTodos)
+      .onMove(perform: onMoveTodos)
     }
-    .navigationBarTitle(Text("Todos"))
-    .navigationBarItems(trailing:
-      Button(action: addTodo) { Image(systemName: "plus").imageScale(.medium).padding() }
-    )
-    .environment(\.editMode, $editMode)
-  }
-
-  func addTodo() {
-    dispatcher.send(TodoListAction.addTodo(withText: "New Todo Item"))
-  }
-
-  func removeTodo(at indexSet: IndexSet) {
-    dispatcher.send(TodoListAction.removeTodos(at: indexSet))
-  }
-
-  func moveTodo(from indexSet: IndexSet, to index: Int) {
-    dispatcher.send(TodoListAction.moveTodos( from: indexSet, to: index))
+    ).environment(\.editMode, $editMode)
   }
 }
+
 ```
+
+### 5. Connect your state to the view
+
+```swift
+extension Todos {
+
+  static func connected(forId id: String) -> some View {
+    Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
+      Todos(
+        todos: state.todos.value,
+        onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
+        onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
+        onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+      )
+    }
+  }
+
+}
+```
+
+### 6. Add the view to your RootView
+
+```swift
+import SwiftUI
+import SwiftDux
+
+struct RootView : View {
+
+  var body: some View {
+    NavigationView {
+      Todos.connected()
+    }
+  }
+
+}
+```
+
+[swift-image]: https://img.shields.io/badge/swift-5-orange.svg
+[swift-url]: https://swift.org/
+[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
+[license-url]: LICENSE
+[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg
+[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
+[codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
+[codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com
