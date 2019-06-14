@@ -1,8 +1,8 @@
 import SwiftUI
 import Combine
 
-public typealias ConnectContent<Dispatcher, State, T, Content> = (T, Dispatcher) -> Content
-  where Dispatcher: ActionPlanDispatcher, Content: View, State == Dispatcher.State
+public typealias ConnectContentWrapper<Dispatcher, S, Content> = (S, Dispatcher) -> Content
+  where Dispatcher: ActionPlanDispatcher, Content: View, S == Dispatcher.State
 
 /// Connects the application state to a view.
 ///
@@ -16,7 +16,7 @@ public typealias ConnectContent<Dispatcher, State, T, Content> = (T, Dispatcher)
 /// extension TodoListContainer {
 ///
 ///   static func connected() -> some View {
-///     Connect({ $0.todos }, updateFor: TodoAction.self) { todos, dispatcher in
+///     Store<AppState>.connect(updateFor: TodoAction.self) { todos, dispatcher in
 ///       TodoListContainer(
 ///         todos: todos,
 ///         onAdd: { dispatcher.send(TodoAction.addTodo($0) },
@@ -27,31 +27,58 @@ public typealias ConnectContent<Dispatcher, State, T, Content> = (T, Dispatcher)
 ///   }
 ///
 /// }
-public struct Connect<StoreState, T, A, Content>: View where Content: View, StoreState: StateType, A: Action {
-  @EnvironmentObject private var store: Store<StoreState>
-  @State private var state: T? = nil
+public struct Connect<S, A, Content>: View where Content: View, S: StateType, A: Action {
+  @EnvironmentObject private var store: Store<S>
+  private var actionType: A.Type
+  private var wrapper: ConnectContentWrapper<Store<S>, S, Content>
   
-  private var mapState: (StoreState) -> T?
-  private var content: ConnectContent<Store<StoreState>, StoreState, T, Content>
+  public init(updateFor actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<S>, S, Content>) {
+    self.actionType = actionType
+    self.wrapper = wrapper
+  }
+  
   public var body: some View {
-    AnyView(renderContent())
-      .onReceive(store.on(action: A.self, mapState: mapState)) { self.state = $0 }
+    InnerConnect(store: store, actionType: self.actionType, wrapper: self.wrapper)
   }
   
-  public init(
-    _ mapState: @escaping (StoreState) -> T?,
+}
+
+extension Store {
+ 
+  static func connect<A, Content>(
     updateFor actionType: A.Type,
-    content: @escaping ConnectContent<Store<StoreState>, StoreState, T, Content>
-  ) {
-    self.mapState = mapState
-    self.content = content
+    wrapper: @escaping ConnectContentWrapper<Store<State>, State, Content>
+  ) -> some View where A: Action, Content: View {
+    return Connect<State, A, Content>(updateFor: actionType, wrapper: wrapper)
   }
   
-  private func renderContent() -> AnyView {
-    if let state =  state ?? mapState(store.state) {
-      return AnyView(content(state, store))
-    }
-    return AnyView(EmptyView())
+}
+
+/// The Connect view is used to simply get the store object and pass it to the the InnerConnect view. This view
+/// keeps track of dispatched actions to automatically update its contents when necessary.
+private struct InnerConnect<StoreState, A, Content>: View where Content: View, StoreState: StateType, A: Action {
+  @ObjectBinding private var updater: StoreActionUpdater<StoreState, A>
+  
+  private var store: Store<StoreState>
+  private var wrapper: ConnectContentWrapper<Store<StoreState>, StoreState, Content>
+  
+  init(store: Store<StoreState>, actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<StoreState>, StoreState, Content>) {
+    self.store = store
+    self.updater = StoreActionUpdater<StoreState, A>(store: store, action: actionType)
+    self.wrapper = wrapper
+  }
+  
+  public var body: some View {
+    wrapper(store.state, store)
   }
 
+}
+
+private class StoreActionUpdater<S, A>: BindableObject where S: StateType, A: Action {
+  var didChange = PassthroughSubject<Void, Never>()
+  var cancel: AnyCancellable
+  
+  init(store: Store<S>, action: A.Type) {
+    self.cancel = store.didChangeWithAction.filter { $0 is A }.map { _ in () }.subscribe(didChange)
+  }
 }

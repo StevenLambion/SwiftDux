@@ -26,7 +26,7 @@ public final class Store<State>: BindableObject where State: StateType {
     self.state = state
     self.runReducer = reducer.reduceAny
     self.didChangeWithAction = didChangeWithActionSubject.eraseToAnyPublisher()
-    self.didChange = didChangeWithActionSubject.map { _ in () }.share().eraseToAnyPublisher()
+    self.didChange = PassthroughSubject<Void, Never>().eraseToAnyPublisher()
   }
 }
   
