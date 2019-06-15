@@ -10,8 +10,10 @@ extension Store {
   /// Connects the application state to a view.
   ///
   /// The connection maps the application's state to values that can be passed into a view. It then updates the view when
-  /// a relevant action type is performed.
+  /// a relevant action type is performed. The store must be injected into the environment before this function can be used.
+  /// To do this, use the `provideStore(_:)` modifier off of a View instance.
   ///```
+  ///
   /// struct TodoListContainer: View {
   ///   ....
   /// }
@@ -89,6 +91,6 @@ private class ConnectedStateUpdater<State, TypeOfAction> : BindableObject where 
   
   init(store: Store<State>, typeOfAction: TypeOfAction.Type) {
     self.store = store
-    self.cancel = store.didChangeWithAction.filter { $0 is TypeOfAction }.map { _ in () }.subscribe(didChange)
+    self.cancel = store.on(typeOfAction: typeOfAction).subscribe(didChange)
   }
 }
