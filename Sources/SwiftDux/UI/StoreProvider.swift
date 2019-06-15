@@ -23,7 +23,7 @@ public class StoreContext<State> : BindableObject where State : StateType {
 }
 
 
-private struct StoreProvider<State> : ViewModifier where State : StateType {
+public struct StoreProvider<State> : ViewModifier where State : StateType {
   
   private var storeContext: StoreContext<State>
   
@@ -74,7 +74,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   public func provideStore<State>(_ store: Store<State>) -> some View where State : StateType {
-    return self.modifier(StoreProvider(store: store))
+    return self.modifier(StoreProvider<State>(store: store))
   }
   
   public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreActionDispatcher<S>.ActionModifier) -> some View where S: StateType {
