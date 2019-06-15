@@ -1,20 +1,22 @@
 import SwiftUI
 import Combine
 
-public class StoreContext<S> : BindableObject where S : StateType {
+public class StoreContext<State> : BindableObject where State : StateType {
   public var didChange = PassthroughSubject<Void, Never>()
-  public var store: Store<S>
+  public var store: Store<State> {
+    didSet { didChange.send(()) }
+  }
   
-  internal init(store: Store<S>) {
+  internal init(store: Store<State>) {
     self.store = store
   }
 }
 
-private struct StoreProvider<S> : ViewModifier where S : StateType {
+public struct StoreProvider<State> : ViewModifier where State : StateType {
   
-  private var storeContext: StoreContext<S>
+  private var storeContext: StoreContext<State>
   
-  public init(store: Store<S>) {
+  public init(store: Store<State>) {
     self.storeContext = StoreContext(store: store)
   }
   
@@ -30,7 +32,7 @@ extension View {
   /// method to connect the state to a view.
   ///
   /// - Parameter store: The store object to inject.
-  public func provideStore<S>(_ store: Store<S>) -> some View where S : StateType {
+  public func provideStore<State>(_ store: Store<State>) -> some View where State : StateType {
     return self.modifier(StoreProvider(store: store))
   }
   
