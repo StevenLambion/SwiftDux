@@ -73,7 +73,7 @@ extension View {
   /// }
   /// ```
   /// - Parameter store: The store object to inject.
-  public func provideStore<State>(_ store: Store<State>) -> some View where State : StateType {
+  public func provideStore<State>(_ store: Store<State>) -> Self.Modified<StoreProvider<State>> where State : StateType {
     return self.modifier(StoreProvider<State>(store: store))
   }
   
