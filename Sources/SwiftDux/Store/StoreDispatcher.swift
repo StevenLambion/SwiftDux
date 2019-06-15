@@ -26,13 +26,13 @@ public final class StoreDispatcher<State> : ActionPlanDispatcher where State : S
   
   public func send(_ actionPlan: ActionPlan<State>) {
     let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned self] in self.state }
+    let getState: GetState = { [unowned upstream] in upstream.state }
     actionPlan(dispatch, getState)
   }
   
   public func send(_ actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
     let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned self] in self.state }
+    let getState: GetState = { [unowned upstream] in upstream.state }
     let publisher  = actionPlan(dispatch, getState)
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()

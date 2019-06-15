@@ -18,6 +18,11 @@ public final class Store<State> where State : StateType {
   /// Subscribe to this publisher to be notified of state changes caused by a particular action.
   public let didChangeWithAction: AnyPublisher<Action, Never>
   
+  /// Creates a new store for the given state and reducer
+  ///
+  /// - Parameters
+  ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
+  ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
   public init<R>(state: State, reducer: R) where R : Reducer, R.State == State {
     self.state = state
     self.runReducer = reducer.reduceAny
@@ -27,7 +32,8 @@ public final class Store<State> where State : StateType {
   
 extension Store : StoreType {
   
-  /// TODO - Look at batched "didChange" events when schedulers are better supported.
+  /// Sends an action to the store to mutate its state.
+  /// - Parameter action: The  action to mutate the state.
   public func send(_ action: Action) {
     self.state = runReducer(self.state, action)
     self.didChangeWithActionSubject.send(action)

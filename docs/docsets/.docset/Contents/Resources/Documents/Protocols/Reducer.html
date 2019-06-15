@@ -14,7 +14,7 @@
     <a title="Reducer Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (84% documented)</p>
+        <p><a href="../index.html"> Docs</a> (98% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -34,6 +34,9 @@
               <li class="nav-group-task">
                 <a href="../Classes/Store.html">Store</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StoreContext.html">StoreContext</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -41,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/View.html">View</a>
               </li>
             </ul>
           </li>
@@ -63,9 +69,6 @@
                 <a href="../Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/StoreType.html">StoreType</a>
               </li>
             </ul>
@@ -73,9 +76,6 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Structs/Connect.html">Connect</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
@@ -94,13 +94,16 @@
                 <a href="../Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+                <a href="../Typealiases.html#/s:8SwiftDux16ConnectedContenta">ConnectedContent</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux9StateTypea">StateType</a>
               </li>
             </ul>
           </li>
@@ -142,14 +145,14 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The type of state that the <code>Reducer</code> is able to mutate.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span></code></pre>
 
                         </div>
                       </div>
@@ -169,7 +172,7 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The supported actions of a reducer.</p>
 
                       </div>
                       <div class="declaration">
@@ -204,7 +207,7 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                       </div>
                       <h4>Default Implementation</h4>
                       <div class="default_impl abstract">
-                        <p>Default implementation for reducers that don&rsquo;t have their own actions.</p>
+                        <p>Returns the state without modifying it.</p>
 
                       </div>
                       <div class="declaration">
@@ -243,7 +246,7 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                       </div>
                       <h4>Default Implementation</h4>
                       <div class="default_impl abstract">
-                        <p>Default implementation for reducers that don&rsquo;t delegate to subreducers.</p>
+                        <p>Returns the state without modifying it.</p>
 
                       </div>
                       <div class="declaration">
@@ -281,9 +284,8 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Used externally by stores to send any kind of action to a reducer. It figures out
-if the reducer supports the provided action or not. If not, it delegates it to any
-subreducers.</p>
+                        <p>Send any kind of action to a reducer. The recuder will determine what it can do with
+the action.</p>
 
                       </div>
                       <div class="declaration">
@@ -306,7 +308,7 @@ subreducers.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-15)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

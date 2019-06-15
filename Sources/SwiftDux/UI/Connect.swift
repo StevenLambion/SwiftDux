@@ -1,15 +1,18 @@
 import SwiftUI
 import Combine
 
-public typealias ConnectContentWrapper<Dispatcher, S, Content> = (S, Dispatcher) -> Content
-  where Dispatcher : ActionPlanDispatcher, Content : View, S == Dispatcher.State
+/// A closure containing the content that will be connected to the application's state and an action dispatcher.
+public typealias ConnectedContent<Dispatcher, Content> = (Dispatcher.State, Dispatcher) -> Content
+  where Dispatcher : ActionPlanDispatcher, Content : View
 
 extension Store {
   
   /// Connects the application state to a view.
   ///
   /// The connection maps the application's state to values that can be passed into a view. It then updates the view when
-  /// a relevant action type is performed.
+  /// a relevant action type is performed. The store must be injected into the environment before this function can be used.
+  /// To do this, use the `provideStore(_:)` modifier off of a View instance.
+  ///```
   ///
   /// struct TodoListContainer: View {
   ///   ....
@@ -29,57 +32,65 @@ extension Store {
   ///   }
   ///
   /// }
-  public static func connect<A, Content>(
-    updateOn actionType: A.Type,
-    wrapper: @escaping ConnectContentWrapper<StoreDispatcher<State>, State, Content>
-  ) -> some View where A : Action, Content : View {
-    return Connect<State, A, Content>(updateOn: actionType, wrapper: wrapper)
+  /// ```
+  public static func connect<TypeOfAction, Content>(
+    updateOn typeOfAction: TypeOfAction.Type,
+    wrapper: @escaping ConnectedContent<Store<State>, Content>
+  ) -> some View where TypeOfAction : Action, Content : View {
+    return Connect<State, TypeOfAction, Content>(updateOn: typeOfAction, wrapper: wrapper)
   }
   
 }
 
-private struct Connect<S, A, Content> : View where Content : View, S : StateType, A : Action {
-  @EnvironmentObject private var storeContext: StoreContext<S>
+/// Retrieves the current store and dispatcher from the environment and creates a `ConnectedStateUpdater` instance
+/// to update the wrapped content when the specified action type is dispatched.
+private struct Connect<State, TypeOfAction, Content> : View where Content : View, State : StateType, TypeOfAction : Action {
+  @EnvironmentObject private var storeContext: StoreContext<State>
   
-  private var actionType: A.Type
-  private var wrapper: ConnectContentWrapper<StoreDispatcher<S>, S, Content>
+  private var typeOfAction: TypeOfAction.Type
+  private var wrapper: ConnectedContent<Store<State>, Content>
   
-  public init(updateOn actionType: A.Type, wrapper: @escaping ConnectContentWrapper<StoreDispatcher<S>, S, Content>) {
-    self.actionType = actionType
+  public init(updateOn typeOfAction: TypeOfAction.Type, wrapper: @escaping ConnectedContent<Store<State>, Content>) {
+    self.typeOfAction = typeOfAction
     self.wrapper = wrapper
   }
   
   public var body: some View {
-    InnerConnect(storeContext: storeContext, actionType: self.actionType, wrapper: self.wrapper)
+    InnerConnect(
+      updater: ConnectedStateUpdater<State, TypeOfAction>(store: storeContext.store, typeOfAction: typeOfAction),
+      wrapper: self.wrapper
+    )
   }
   
 }
 
-/// The Connect view is used to simply get the store object and pass it to the the InnerConnect view. This view
-/// keeps track of dispatched actions to automatically update its contents when necessary.
-private struct InnerConnect<StoreState, A, Content>: View where Content : View, StoreState : StateType, A : Action {
-  @ObjectBinding private var updater: StoreActionUpdater<StoreState, A>
+/// Binds to the `ConnectedStateUpdater` instance created in the `Connect` view to watch for updates.
+private struct InnerConnect<State, TypeOfAction, Content>: View where Content : View, State : StateType, TypeOfAction : Action {
+  @ObjectBinding private var updater: ConnectedStateUpdater<State, TypeOfAction>
   
-  private var storeContext: StoreContext<StoreState>
-  private var wrapper: ConnectContentWrapper<StoreDispatcher<StoreState>, StoreState, Content>
+  private var wrapper: ConnectedContent<Store<State>, Content>
   
-  init(storeContext: StoreContext<StoreState>, actionType: A.Type, wrapper: @escaping ConnectContentWrapper<StoreDispatcher<StoreState>, StoreState, Content>) {
-    self.storeContext = storeContext
-    self.updater = StoreActionUpdater<StoreState, A>(store: storeContext.store, action: actionType)
+  init(updater: ConnectedStateUpdater<State, TypeOfAction>, wrapper: @escaping ConnectedContent<Store<State>, Content>) {
+    self.updater = updater
     self.wrapper = wrapper
   }
   
   public var body: some View {
-    wrapper(storeContext.store.state, storeContext.dispatcher)
+    wrapper(updater.store.state, updater.store)
   }
 
 }
 
-private class StoreActionUpdater<S, A> : BindableObject where S : StateType, A : Action {
+/// The model object of the `Connect` view that updates the wrapped content when a specified action type is dispatched.
+private class ConnectedStateUpdater<State, TypeOfAction> : BindableObject where State : StateType, TypeOfAction : Action {
   var didChange = PassthroughSubject<Void, Never>()
-  var cancel: AnyCancellable
   
-  init(store: Store<S>, action: A.Type) {
-    self.cancel = store.didChangeWithAction.filter { $0 is A }.map { _ in () }.subscribe(didChange)
+  let store: Store<State>
+  
+  private var cancel: AnyCancellable
+  
+  init(store: Store<State>, typeOfAction: TypeOfAction.Type) {
+    self.store = store
+    self.cancel = store.on(typeOfAction: typeOfAction).subscribe(didChange)
   }
 }

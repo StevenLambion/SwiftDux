@@ -45,7 +45,7 @@ final class StoreTests: XCTestCase {
   func testMappingStateForActionChanges() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     var newValue: String? = nil
-    let sink = store.on(action: TestSendingAction.self) { $0.text }.sink { newValue = $0 }
+    let sink = store.on(typeOfAction: TestSendingAction.self).map { store.state.text }.sink { newValue = $0 }
     defer { sink.cancel() }
     store.send(TestSendingAction.setText("New text"))
     store.send(TestSendingIntruderAction.setText("Wrong text"))

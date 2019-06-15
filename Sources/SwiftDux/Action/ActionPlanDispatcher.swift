@@ -5,6 +5,7 @@ import Combine
 public typealias GetState<State> = () -> State where State : StateType
 
 /// A closure that dispatches an action
+/// - Parameter action: Dispatches the given state synchronously.
 public typealias ActionPlanDispatch = (Action) -> ()
 
 
@@ -35,15 +36,17 @@ public typealias ActionPlanDispatch = (Action) -> ()
 ///   }
 ///```
 /// - Parameters:
-///   - store: The store containing the application's state.
+///   - dispatch: Dispatches an action synchronously.
+///   - getState: Gets the latest snapshot of the application's state.
 public typealias ActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> () where State : StateType
 
 /// An action plan that may optionally publish actions to the store. The send method of the action
 /// dispatcher  returns back a publisher to allow events to be triggered when an action is sent or
 /// the publisher has completed.
 /// - Parameters:
-///   - store: The store containing the application's state.
-/// - Returns: A publisher that can send actions to the store
+///   - dispatch: Dispatches an action synchronously.
+///   - getState: Gets the latest snapshot of the application's state.
+/// - Returns: A publisher that can send actions to the store.
 public typealias PublishableActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> AnyPublisher<Action?, Never> where State : StateType
 
 /// Dispatches action plans with the same interface signature as regular actions. This allows
@@ -66,9 +69,9 @@ public protocol ActionPlanDispatcher: ActionDispatcher {
   /// - Parameter actionPlan: The action to dispatch
   func send(_ actionPlan: ActionPlan<State>)
   
-  /// Sends a self contained action plan that the dispatcher can subscribe to. The plan may still send
-  /// actions directly to the store object, or it may opt to publish them. In most cases, there should be
-  /// at least one published action.
+  /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
+  /// actions directly to the store object, or it can opt to publish them. In most cases, there should be
+  /// at least one primary action that is published.
   ///
   /// The caller to the method will recieve an optional publisher to notify it that an action was sent. It can
   /// also be used to signify the completion of the action plan to allow the trigger of external events or side
