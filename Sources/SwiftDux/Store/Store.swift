@@ -34,3 +34,15 @@ extension Store : StoreType {
   }
   
 }
+
+extension Store {
+  
+  func dispatcher(modifyAction: StoreDispatcher<State>.ActionModifier? = nil) -> StoreDispatcher<State> {
+    return StoreDispatcher(
+      upstream: self,
+      upstreamActionSubject: self.didChangeWithActionSubject,
+      modifyAction: modifyAction
+    )
+  }
+  
+}

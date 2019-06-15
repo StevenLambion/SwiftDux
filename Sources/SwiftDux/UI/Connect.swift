@@ -31,7 +31,7 @@ extension Store {
   /// }
   public static func connect<A, Content>(
     updateOn actionType: A.Type,
-    wrapper: @escaping ConnectContentWrapper<Store<State>, State, Content>
+    wrapper: @escaping ConnectContentWrapper<StoreDispatcher<State>, State, Content>
   ) -> some View where A : Action, Content : View {
     return Connect<State, A, Content>(updateOn: actionType, wrapper: wrapper)
   }
@@ -40,16 +40,17 @@ extension Store {
 
 private struct Connect<S, A, Content> : View where Content : View, S : StateType, A : Action {
   @EnvironmentObject private var storeContext: StoreContext<S>
-  private var actionType: A.Type
-  private var wrapper: ConnectContentWrapper<Store<S>, S, Content>
   
-  public init(updateOn actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<S>, S, Content>) {
+  private var actionType: A.Type
+  private var wrapper: ConnectContentWrapper<StoreDispatcher<S>, S, Content>
+  
+  public init(updateOn actionType: A.Type, wrapper: @escaping ConnectContentWrapper<StoreDispatcher<S>, S, Content>) {
     self.actionType = actionType
     self.wrapper = wrapper
   }
   
   public var body: some View {
-    InnerConnect(store: storeContext.store, actionType: self.actionType, wrapper: self.wrapper)
+    InnerConnect(storeContext: storeContext, actionType: self.actionType, wrapper: self.wrapper)
   }
   
 }
@@ -59,17 +60,17 @@ private struct Connect<S, A, Content> : View where Content : View, S : StateType
 private struct InnerConnect<StoreState, A, Content>: View where Content : View, StoreState : StateType, A : Action {
   @ObjectBinding private var updater: StoreActionUpdater<StoreState, A>
   
-  private var store: Store<StoreState>
-  private var wrapper: ConnectContentWrapper<Store<StoreState>, StoreState, Content>
+  private var storeContext: StoreContext<StoreState>
+  private var wrapper: ConnectContentWrapper<StoreDispatcher<StoreState>, StoreState, Content>
   
-  init(store: Store<StoreState>, actionType: A.Type, wrapper: @escaping ConnectContentWrapper<Store<StoreState>, StoreState, Content>) {
-    self.store = store
-    self.updater = StoreActionUpdater<StoreState, A>(store: store, action: actionType)
+  init(storeContext: StoreContext<StoreState>, actionType: A.Type, wrapper: @escaping ConnectContentWrapper<StoreDispatcher<StoreState>, StoreState, Content>) {
+    self.storeContext = storeContext
+    self.updater = StoreActionUpdater<StoreState, A>(store: storeContext.store, action: actionType)
     self.wrapper = wrapper
   }
   
   public var body: some View {
-    wrapper(store.state, store)
+    wrapper(storeContext.store.state, storeContext.dispatcher)
   }
 
 }
