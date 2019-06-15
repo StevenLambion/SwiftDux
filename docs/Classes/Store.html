@@ -34,6 +34,9 @@
               <li class="nav-group-task">
                 <a href="../Classes/Store.html">Store</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StoreContext.html">StoreContext</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -41,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/View.html">View</a>
               </li>
             </ul>
           </li>
@@ -73,9 +79,6 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Structs/Connect.html">Connect</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
@@ -112,7 +115,7 @@
             <h1>Store</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
 
                 </div>
               </div>
@@ -121,7 +124,7 @@
 <p>The store both contains and mutates the state through a provided reducer as it&rsquo;s sent actions.
 Use the didChangeWithAction or didChange publishers to be notified of state changes.</p>
 
-<p>The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the <code><a href="../Structs/Connect.html">Connect</a></code> view.</p>
+<p>The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the <code>Connect</code> view.</p>
 
           </section>
           <section class="section task-group-section">
@@ -175,33 +178,6 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChangeWithAction</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp"></a>
-                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp">didChange</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>If you don&rsquo;t care what action caused a state change, use this publisher.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -283,7 +259,29 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Connects the application state to a view.</p>
+
+<p>The connection maps the application&rsquo;s state to values that can be passed into a view. It then updates the view when
+ a relevant action type is performed.</p>
+<pre class="highlight swift"><code> <span class="kd">struct</span> <span class="kt">TodoListContainer</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+   <span class="o">....</span>
+ <span class="p">}</span>
+
+ <span class="kd">extension</span> <span class="kt">TodoListContainer</span> <span class="p">{</span>
+
+   <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+     <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;.</span><span class="nf">connect</span><span class="p">(</span><span class="nv">updateOn</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="n">todos</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+       <span class="kt">TodoListContainer</span><span class="p">(</span>
+         <span class="nv">todos</span><span class="p">:</span> <span class="n">todos</span><span class="p">,</span>
+         <span class="nv">onAdd</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+         <span class="nv">onRemove</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">},</span>
+         <span class="nv">onMove</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
+       <span class="p">)</span>
+     <span class="p">}</span>
+   <span class="p">}</span>
+
+ <span class="p">}</span>
+</code></pre>
 
                       </div>
                       <div class="declaration">
@@ -293,7 +291,7 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="n">connect</span><span class="o">&lt;</span><span class="kt">A</span><span class="p">,</span> <span class="kt">Content</span><span class="o">&gt;</span><span class="p">(</span>
   <span class="n">updateOn</span> <span class="nv">actionType</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
   <span class="nv">wrapper</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a></span><span class="o">&lt;</span><span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="kt">State</span><span class="p">,</span> <span class="kt">Content</span><span class="o">&gt;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">A</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Content</span><span class="p">:</span> <span class="kt">View</span></code></pre>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">A</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Content</span> <span class="p">:</span> <span class="kt">View</span></code></pre>
 
                         </div>
                       </div>
@@ -305,7 +303,7 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-15)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

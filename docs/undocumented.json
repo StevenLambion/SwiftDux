@@ -37,35 +37,35 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
-      "line": 25,
+      "line": 21,
       "symbol": "Store.init(state:reducer:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
-      "line": 19,
+      "line": 17,
       "symbol": "StoreType.send(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
-      "line": 26,
+      "line": 24,
       "symbol": "StoreType.send(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
-      "line": 37,
+      "line": 32,
       "symbol": "StoreType.on(action:mapState:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreType.swift",
-      "line": 44,
+      "line": 39,
       "symbol": "StoreType.mapState(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -78,17 +78,17 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connect.swift",
-      "line": 35,
-      "symbol": "Connect.init(updateOn:wrapper:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
+      "line": 4,
+      "symbol": "StoreContext",
+      "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connect.swift",
-      "line": 48,
-      "symbol": "Store.connect(updateOn:wrapper:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.static",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
+      "line": 6,
+      "symbol": "StoreContext.store",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     }
   ],

@@ -10,7 +10,7 @@ extension Store {
   ///
   /// The connection maps the application's state to values that can be passed into a view. It then updates the view when
   /// a relevant action type is performed.
-  ///
+  ///```
   /// struct TodoListContainer: View {
   ///   ....
   /// }
@@ -29,6 +29,7 @@ extension Store {
   ///   }
   ///
   /// }
+  /// ```
   public static func connect<A, Content>(
     updateOn actionType: A.Type,
     wrapper: @escaping ConnectContentWrapper<Store<State>, State, Content>

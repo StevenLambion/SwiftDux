@@ -34,6 +34,9 @@
               <li class="nav-group-task">
                 <a href="../Classes/Store.html">Store</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StoreContext.html">StoreContext</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -41,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/View.html">View</a>
               </li>
             </ul>
           </li>
@@ -73,9 +79,6 @@
           <li class="nav-group-name">
             <a href="../Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Structs/Connect.html">Connect</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
@@ -176,33 +179,6 @@
                     </section>
                   </div>
                 </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux9StoreTypeP9didChange7Combine12AnyPublisherVyyts5NeverOGvp"></a>
-                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux9StoreTypeP9didChange7Combine12AnyPublisherVyyts5NeverOGvp">didChange</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Notifies subscribers when the state has changed.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
               </ul>
             </div>
             <div class="task-group">
@@ -240,9 +216,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux9StoreTypePAAE4sendy7Combine12AnyPublisherVyyts5NeverOGqd__yAA6Action_pXE_5StateQzyXEtXEAE0H0Rd__AI7FailureRtd__AaK_pSg6OutputRtd__lF"></a>
+                    <a name="/s:8SwiftDux9StoreTypePAAE4sendy7Combine12AnyPublisherVyyts5NeverOGAGyAA6Action_pSgAIGyAaK_pXE_5StateQzyXEtXEF"></a>
                     <a name="//apple_ref/swift/Method/send(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux9StoreTypePAAE4sendy7Combine12AnyPublisherVyyts5NeverOGqd__yAA6Action_pXE_5StateQzyXEtXEAE0H0Rd__AI7FailureRtd__AaK_pSg6OutputRtd__lF">send(_:)</a>
+                    <a class="token" href="#/s:8SwiftDux9StoreTypePAAE4sendy7Combine12AnyPublisherVyyts5NeverOGAGyAA6Action_pSgAIGyAaK_pXE_5StateQzyXEtXEF">send(_:)</a>
                     </code>
                       <span class="declaration-note">
                         Extension method
@@ -261,9 +237,7 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">send</span><span class="o">&lt;</span><span class="kt">P</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">_</span> <span class="nv">actionPlan</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="p">,</span><span class="kt">P</span><span class="o">&gt;</span>
-  <span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">P</span> <span class="p">:</span> <span class="kt">Publisher</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="n">_</span> <span class="nv">actionPlan</span><span class="p">:</span> <span class="kt"><a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -293,7 +267,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">on</span><span class="o">&lt;</span><span class="kt">A</span><span class="p">,</span> <span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">A</span><span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">on</span><span class="o">&lt;</span><span class="kt">A</span><span class="p">,</span> <span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">A</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                         </div>
                       </div>
@@ -323,7 +297,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">mapState</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">mapState</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -335,7 +309,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-15)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -34,6 +34,9 @@
               <li class="nav-group-task">
                 <a href="Classes/Store.html">Store</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Classes/StoreContext.html">StoreContext</a>
+              </li>
             </ul>
           </li>
           <li class="nav-group-name">
@@ -41,6 +44,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/View.html">View</a>
               </li>
             </ul>
           </li>
@@ -73,9 +79,6 @@
           <li class="nav-group-name">
             <a href="Structs.html">Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Structs/Connect.html">Connect</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
@@ -134,7 +137,7 @@
 <p>The store both contains and mutates the state through a provided reducer as it&rsquo;s sent actions.
 Use the didChangeWithAction or didChange publishers to be notified of state changes.</p>
 
-<p>The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the <code><a href="Structs/Connect.html">Connect</a></code> view.</p>
+<p>The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the <code>Connect</code> view.</p>
 
                         <a href="Classes/Store.html" class="slightly-smaller">See more</a>
                       </div>
@@ -142,7 +145,39 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12StoreContextC"></a>
+                    <a name="//apple_ref/swift/Class/StoreContext" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC">StoreContext</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                        <a href="Classes/StoreContext.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">StoreContext</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
 
                         </div>
                       </div>
@@ -154,7 +189,7 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-14)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-15)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
