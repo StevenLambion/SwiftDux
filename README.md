@@ -27,6 +27,7 @@ There's many other great redux-like libaries such as ReSwift that have a bigger 
   - Implements the MutableCollection protocol.
 - State adheres to the Codable protocol.
   - Allows quick persistence and restoring of application state
+- Create proxies to modify or monitor dispatched actions as they're sent upstream.  
 
 ## Installation
 
@@ -53,12 +54,12 @@ let package = Package(
 ```swift
 import SwiftDux
 
-struct AppState: StateType {
+struct AppState : StateType {
   /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
   var todos: OrderedState<TodoState>
 }
 
-struct TodoState: IdentifiableState {
+struct TodoState : IdentifiableState {
   vae id: String,
   var text: String
 }
@@ -69,13 +70,13 @@ struct TodoState: IdentifiableState {
 ```swift
 import SwiftDux
 
-enum TodoAction: Action {
+enum TodoAction : Action {
   case addTodo(text: String)
   case removeTodos(at: IndexSet)
   case moveTodos(from: IndexSet, to: Int)
 }
 
-struct AppReducer: Reducer {
+struct AppReducer : Reducer {
 
   func reduce(state: AppState, action: TodoAction) -> AppState {
     var state = state
@@ -106,13 +107,13 @@ window.rootViewController = UIHostingController(
 )
 ```
 
-### 4. Create your view separate from the state to make it more reusable and testable
+### 4. Create your view decoupled from the state to make it both reusable and more testable. This is also known as a presentation or "dumb" component.
 
 ```swift
 import SwiftUI
 import SwiftDux
 
-struct Todos : View {
+struct TodosView : View {
   @State var editMode: EditMode = .active
 
   var todos: [TodoItemState]
@@ -134,26 +135,22 @@ struct Todos : View {
 
 ```
 
-### 5. Connect your state to the view
+### 5. Connect your state to the view using what's known as a Container or "Smart" component. 
 
 ```swift
-extension Todos {
-
-  static func connected() -> some View {
-    Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
-      Todos(
-        todos: state.todos.value,
-        onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
-        onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-        onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
-      )
-    }
+func TodosContainer() -> some View {
+  Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
+    TodosView(
+      todos: state.todos.value,
+      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+    )
   }
-
 }
 ```
 
-### 6. Add the view to your RootView
+### 6. Add the container view to your RootView
 
 ```swift
 import SwiftUI
@@ -163,7 +160,7 @@ struct RootView : View {
 
   var body: some View {
     NavigationView {
-      Todos.connected()
+      TodosContainer()
     }
   }
 
