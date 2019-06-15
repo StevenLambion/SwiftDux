@@ -31,7 +31,7 @@ private struct StoreProvider<State> : ViewModifier where State : StateType {
     self.storeContext = StoreContext(store: store, dispatcher: store.dispatcher())
   }
   
-  public func body(content: Content) -> some View {
+  public func body(content: Content) -> Content.Modified<_EnvironmentKeyWritingModifier<StoreContext<State>?>> {
     content.environmentObject(storeContext)
   }
   
