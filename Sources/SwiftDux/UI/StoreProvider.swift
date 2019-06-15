@@ -77,6 +77,10 @@ extension View {
     return self.modifier(StoreProvider<State>(store: store))
   }
   
+  /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one in the environment. Actions will be modified
+  /// by both the new proxy and the original dispatcher it was created from.
+  /// - Parameter stateType: Used to find the current dispatcher in the environment.
+  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
   public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreActionDispatcher<S>.ActionModifier) -> some View where S: StateType {
     return self.modifier(DispatchProxy<S>(modifyAction: modifyAction))
   }
