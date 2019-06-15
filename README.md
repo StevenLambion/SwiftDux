@@ -27,7 +27,7 @@ There's many other great redux-like libaries such as ReSwift that have a bigger 
   - Implements the MutableCollection protocol.
 - State adheres to the Codable protocol.
   - Allows quick persistence and restoring of application state
-- Create proxies to modify or monitor dispatched actions as they're sent upstream.  
+- Create proxies to modify or monitor dispatched actions as they're sent upstream.
 
 ## Installation
 
@@ -129,13 +129,13 @@ struct TodosView : View {
       .onDelete(perform: onRemoveTodos)
       .onMove(perform: onMoveTodos)
     }
-    ).environment(\.editMode, $editMode)
+    .environment(\.editMode, $editMode)
   }
 }
 
 ```
 
-### 5. Connect your state to the view using what's known as a Container or "Smart" component. 
+### 5. Connect your state to the view using what's known as a Container or "Smart" component.
 
 ```swift
 func TodosContainer() -> some View {
