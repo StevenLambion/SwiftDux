@@ -16,4 +16,4 @@ import Foundation
 ///
 /// You can pick between struct and class for each node in your application's state. It doesn't need to be
 /// one or the other as long as the rule of immutability is followed.
-public protocol StateType: Codable {}
+public protocol StateType : Codable {}

@@ -37,7 +37,7 @@ final class StoreTests: XCTestCase {
         }
         .map { (value) -> Action? in
           TestSendingAction.setValue(value + 1)
-        }
+        }.eraseToAnyPublisher()
     }
     XCTAssertEqual(store.state.value, 3)
   }

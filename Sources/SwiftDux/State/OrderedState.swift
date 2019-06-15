@@ -1,7 +1,7 @@
 import Foundation
 
 /// Storage for the ordered state to decrease the copying of the internal data structures.
-fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState  {
+fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Substate : IdentifiableState  {
   enum CodingKeys: String, CodingKey {
     case orderOfIds
     case values
@@ -71,7 +71,7 @@ fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substa
 /// // When a user deletes from a `List` view, simply pass in the provided `IndexSet`:
 /// todos.delete(at: indexSet)
 ///
-public struct OrderedState<Substate>: StateType where Substate: IdentifiableState {
+public struct OrderedState<Substate> : StateType where Substate : IdentifiableState {
   
   public typealias Id = Substate.Id
   
@@ -142,7 +142,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   }
   
   /// Inserts a collection of substates at the given index.
-  public mutating func insert<C>(contentsOf values: C, at index: Int) where C: Collection, C.Element == Substate {
+  public mutating func insert<C>(contentsOf values: C, at index: Int) where C : Collection, C.Element == Substate {
     let copy = copyStorageIfNeeded()
     let ids = values.map { value -> Id in
       copy.values[value.id] = value
@@ -215,7 +215,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   
 }
 
-extension OrderedState: MutableCollection {
+extension OrderedState : MutableCollection {
   
   public var startIndex: Id {
     return storage.orderOfIds.first!

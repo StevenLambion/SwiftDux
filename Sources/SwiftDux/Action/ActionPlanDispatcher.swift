@@ -36,7 +36,7 @@ public typealias ActionPlanDispatch = (Action) -> ()
 ///```
 /// - Parameters:
 ///   - store: The store containing the application's state.
-public typealias ActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> ()where State : StateType
+public typealias ActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> () where State : StateType
 
 /// An action plan that may optionally publish actions to the store. The send method of the action
 /// dispatcher  returns back a publisher to allow events to be triggered when an action is sent or
@@ -44,8 +44,7 @@ public typealias ActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> ()
 /// - Parameters:
 ///   - store: The store containing the application's state.
 /// - Returns: A publisher that can send actions to the store
-public typealias PublishableActionPlan<State, P> = (ActionPlanDispatch, GetState<State>) -> P
-  where State : StateType, P : Publisher, P.Output == Action?, P.Failure == Never
+public typealias PublishableActionPlan<State> = (ActionPlanDispatch, GetState<State>) -> AnyPublisher<Action?, Never> where State : StateType
 
 /// Dispatches action plans with the same interface signature as regular actions. This allows
 /// the ability to incapsulate complex workflows that may require many actions and external events
@@ -77,7 +76,6 @@ public protocol ActionPlanDispatcher: ActionDispatcher {
   /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
   @discardableResult
-  func send<P>(_ actionPlan: PublishableActionPlan<State,P>) -> AnyPublisher<Void, Never>
-    where P : Publisher, P.Output == Action?, P.Failure == Never
+  func send(_ actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never>
   
 }

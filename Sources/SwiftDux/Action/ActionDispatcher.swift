@@ -16,13 +16,13 @@ import Combine
 public protocol Action {}
 
 /// A noop action used by reducers that may not have their own actions.
-public struct EmptyAction: Action {}
+public struct EmptyAction : Action {}
 
 /// An object that dispatches actions to a store.
 ///
 /// Once an action is sent, the sender shouldn't expect anything to occur. Instead, it should rely
 /// solely on changes to the state of the application to respond.
-public protocol ActionDispatcher: Subscriber where Input == Action, Failure == Never {
+public protocol ActionDispatcher : Subscriber where Input == Action, Failure == Never {
   
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
