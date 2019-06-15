@@ -14,7 +14,7 @@
     <a title="Store Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (98% documented)</p>
+        <p><a href="../index.html"> Docs</a> (94% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -33,6 +33,9 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/StoreContext.html">StoreContext</a>
@@ -81,6 +84,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/OrderedState.html">OrderedState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -252,6 +258,57 @@ Use the didChangeWithAction or didChange publishers to be notified of state chan
                               <td>
                                 <div>
                                   <p>The  action to mutate the state.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux5StoreC10dispatcher12modifyActionAA0cF10DispatcherCyxGAA0F0_pSgAaI_pcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/dispatcher(modifyAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC10dispatcher12modifyActionAA0cF10DispatcherCyxGAA0F0_pSgAaI_pcSg_tF">dispatcher(modifyAction:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new <code><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher&lt;_&gt;</a></code> that acts as a proxy between the action sender and the store. It optionally allows actions to be
+modified or monitored.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">dispatcher</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;.</span><span class="kt">ActionModifier</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>modifyAction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure to modify the action before it continues up stream.</p>
                                 </div>
                               </td>
                             </tr>

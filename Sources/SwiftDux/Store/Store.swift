@@ -40,3 +40,18 @@ extension Store : StoreType {
   }
   
 }
+
+extension Store {
+  
+  /// Create a new `StoreActionDispatcher<_>` that acts as a proxy between the action sender and the store. It optionally allows actions to be
+  /// modified or monitored.
+  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
+  public func dispatcher(modifyAction: StoreActionDispatcher<State>.ActionModifier? = nil) -> StoreActionDispatcher<State> {
+    return StoreActionDispatcher(
+      upstream: self,
+      upstreamActionSubject: self.didChangeWithActionSubject,
+      modifyAction: modifyAction
+    )
+  }
+  
+}
