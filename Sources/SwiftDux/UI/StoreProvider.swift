@@ -16,14 +16,14 @@ public class StoreContext<State> : BindableObject where State : StateType {
     didSet { didChange.send(()) }
   }
   
-  internal init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
+  public init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
     self.store = store
     self.dispatcher = dispatcher
   }
 }
 
 
-private struct StoreProvider<Body, State> : ViewModifier where Body : View, State : StateType {
+private struct StoreProvider<State> : ViewModifier where State : StateType {
   
   private var storeContext: StoreContext<State>
   
@@ -74,7 +74,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   public func provideStore<State>(_ store: Store<State>) -> some View where State : StateType {
-    return self.modifier(StoreProvider<Self, State>(store: store))
+    return self.modifier(StoreProvider(store: store))
   }
   
   public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreActionDispatcher<S>.ActionModifier) -> some View where S: StateType {
