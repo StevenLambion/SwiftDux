@@ -42,7 +42,7 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
 
 extension StoreActionDispatcher {
   
-  func proxy(modifyAction: ActionModifier? = nil) -> StoreActionDispatcher<State> {
+  public func proxy(modifyAction: ActionModifier? = nil) -> StoreActionDispatcher<State> {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper = upstreamModifyAction
     if let modifyAction = modifyAction {
