@@ -102,7 +102,7 @@ import SwiftDux
 let store = Store(AppState(todos: OrderedState()), AppReducer())
 
 window.rootViewController = UIHostingController(
-  rootView: RootView().environmentObject(store)
+  rootView: RootView().provideStore(store)
 )
 ```
 
