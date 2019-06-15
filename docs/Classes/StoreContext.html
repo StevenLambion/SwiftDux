@@ -14,7 +14,7 @@
     <a title="StoreContext Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (84% documented)</p>
+        <p><a href="../index.html"> Docs</a> (98% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,9 +69,6 @@
                 <a href="../Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/StoreType.html">StoreType</a>
               </li>
             </ul>
@@ -97,13 +94,16 @@
                 <a href="../Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+                <a href="../Typealiases.html#/s:8SwiftDux16ConnectedContenta">ConnectedContent</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux9StateTypea">StateType</a>
               </li>
             </ul>
           </li>
@@ -115,11 +115,13 @@
             <h1>StoreContext</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">StoreContext</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">StoreContext</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                 </div>
               </div>
-            <p>Undocumented</p>
+            <p>Provides the application&rsquo;s store to views in the environment.</p>
+
+<p>Typically you should use the <code><a href="../Classes/Store.html#/s:8SwiftDux5StoreC7connect8updateOn7wrapperQrqd__m_qd_0_x_ACyxGtctAA6ActionRd__0A2UI4ViewRd_0_r0_lFZ">Store&lt;_&gt;.connect(updateOn:wrapper:)</a></code> method.</p>
 
           </section>
           <section class="section task-group-section">
@@ -164,14 +166,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The current store in the environment.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>

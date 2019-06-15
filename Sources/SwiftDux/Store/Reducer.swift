@@ -9,7 +9,11 @@ import Foundation
 /// For a reducer's own state and actions, implement the `reduce(state:action:)`.
 /// For subreducers, implement the `reduceNext(state:action:)` method.
 public protocol Reducer {
+  
+  /// The type of state that the `Reducer` is able to mutate.
   associatedtype State: StateType
+  
+  /// The supported actions of a reducer.
   associatedtype ReducerAction: Action
   
   /// Operates on the state with the reducer's own actions, returning a fresh new copy of the state.
@@ -32,19 +36,18 @@ public protocol Reducer {
 
 extension Reducer {
   
-  /// Default implementation for reducers that don't have their own actions.
+  /// Returns the state without modifying it.
   public func reduce(state: State, action: EmptyAction) -> State {
     return state
   }
   
-  /// Default implementation for reducers that don't delegate to subreducers.
+  /// Returns the state without modifying it.
   public func reduceNext(state: State, action: Action) -> State {
     return state
   }
   
-  /// Used externally by stores to send any kind of action to a reducer. It figures out
-  /// if the reducer supports the provided action or not. If not, it delegates it to any
-  /// subreducers.
+  /// Send any kind of action to a reducer. The recuder will determine what it can do with
+  /// the action.
   ///
   /// - Parameters
   ///   - state: The state to reduce

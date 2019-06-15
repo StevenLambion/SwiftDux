@@ -14,7 +14,7 @@
     <a title="ActionPlanDispatcher Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (84% documented)</p>
+        <p><a href="../index.html"> Docs</a> (98% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,9 +69,6 @@
                 <a href="../Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Protocols/StoreType.html">StoreType</a>
               </li>
             </ul>
@@ -97,13 +94,16 @@
                 <a href="../Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+                <a href="../Typealiases.html#/s:8SwiftDux16ConnectedContenta">ConnectedContent</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Typealiases.html#/s:8SwiftDux9StateTypea">StateType</a>
               </li>
             </ul>
           </li>
@@ -149,7 +149,7 @@ path to take in their workflow.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt"><a href="../Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span></code></pre>
 
                         </div>
                       </div>
@@ -221,9 +221,9 @@ on the main thread.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sends a self contained action plan that the dispatcher can subscribe to. The plan may still send
-actions directly to the store object, or it may opt to publish them. In most cases, there should be
-at least one published action.</p>
+                        <p>Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
+actions directly to the store object, or it can opt to publish them. In most cases, there should be
+at least one primary action that is published.</p>
 
 <p>The caller to the method will recieve an optional publisher to notify it that an action was sent. It can
 also be used to signify the completion of the action plan to allow the trigger of external events or side

@@ -14,7 +14,7 @@
     <a title="Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (84% documented)</p>
+        <p><a href="index.html"> Docs</a> (98% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,9 +69,6 @@
                 <a href="Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Protocols/StoreType.html">StoreType</a>
               </li>
             </ul>
@@ -97,13 +94,16 @@
                 <a href="Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="Typealiases.html#/s:8SwiftDux21ConnectContentWrappera">ConnectContentWrapper</a>
+                <a href="Typealiases.html#/s:8SwiftDux16ConnectedContenta">ConnectedContent</a>
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
               <li class="nav-group-task">
                 <a href="Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Typealiases.html#/s:8SwiftDux9StateTypea">StateType</a>
               </li>
             </ul>
           </li>
@@ -136,14 +136,22 @@
 
 <p>Typically this is done with enum types, however,  it could be added to protocols or structs if
 a more complex solution is needed.</p>
+<pre class="highlight swift"><code>  <span class="kd">enum</span> <span class="kt">TodoList</span> <span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nf">setItems</span><span class="p">(</span><span class="nv">items</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItem</span><span class="p">])</span>
+    <span class="k">case</span> <span class="nf">addItem</span><span class="p">(</span><span class="nv">withText</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nf">removeItems</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">)</span>
+    <span class="k">case</span> <span class="nf">moveItems</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span>
+  <span class="p">}</span>
 
-<p>Enum Example:
-  enum TodoList: Action {
-    case setItems(items: [TodoItem])
-    case addItem(withText: String)
-    case removeItems(at: IndexSet)
-    case moveItems(at: IndexSet, to: Int)
-  }</p>
+  <span class="c1">// You can also create new protocols that represent an entire feature's actions.</span>
+  <span class="c1">// This can allows views to update off of a granular action or any actions</span>
+  <span class="c1">// of a given feature.</span>
+  <span class="kd">protocol</span> <span class="kt">FeatureLevelAction</span> <span class="p">:</span> <span class="kt">Action</span> <span class="p">{}</span>
+
+  <span class="kd">enum</span> <span class="kt">SubfeatureAction</span><span class="p">:</span> <span class="kt">FeatureLevelAction</span> <span class="p">{</span>
+    <span class="o">...</span>
+  <span class="p">}</span>
+</code></pre>
 
                       </div>
                       <div class="declaration">
@@ -250,58 +258,7 @@ or displayed in a <code>List</code> view.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">IdentifiableState</span> <span class="p">:</span> <span class="kt">Hashable</span><span class="p">,</span> <span class="kt"><a href="Protocols.html#/s:8SwiftDux9StateTypeP">StateType</a></span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux9StateTypeP"></a>
-                    <a name="//apple_ref/swift/Protocol/StateType" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux9StateTypeP">StateType</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Marks an object as representing some kind of state for use by the Store class.</p>
-
-<p>States are expected to be codable so that they can be easily be transportable through extermal
-APIs and across different platforms and environments. Example usage of a codable state include:</p>
-
-<ul>
-<li>Automatic application state persistence simply by encoding / decoding the state.</li>
-<li>Debugging tools that graph out the entire state object.</li>
-<li>Sending whole or partial states to other insrtances of the application, and across platforms.</li>
-</ul>
-
-<p>State should be viewed as immutable. The only mechanism that should mutate a state is a reducer.
-Because of this, a state object should be a struct by default. The rule of thumbs:</p>
-
-<ul>
-<li>Struct: The dafault choice to maintain immutable value semantics.</li>
-<li>Class: It will manage a large dataset (1000+ items)</li>
-</ul>
-
-<p>You can pick between struct and class for each node in your application&rsquo;s state. It doesn&rsquo;t need to be
-one or the other as long as the rule of immutability is followed.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">StateType</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">IdentifiableState</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -364,7 +321,7 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An object that can be used as storage for some kind of state.</p>
+                        <p>A type of object that can be used as storage of state.</p>
 
                         <a href="Protocols/StoreType.html" class="slightly-smaller">See more</a>
                       </div>
