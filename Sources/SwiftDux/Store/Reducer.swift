@@ -51,10 +51,11 @@ extension Reducer {
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
   public func reduceAny(state: State, action: Action) -> State {
-    guard let reducerAction = action as? ReducerAction else {
-      return self.reduceNext(state: state, action: action)
+    var state = state
+    if let reducerAction = action as? ReducerAction {
+      state = self.reduce(state: state, action: reducerAction)
     }
-    return self.reduce(state: state, action: reducerAction)
+    return self.reduceNext(state: state, action: action)
   }
   
 }
