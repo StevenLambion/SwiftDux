@@ -12,11 +12,11 @@ public class StoreContext<State> : BindableObject where State : StateType {
     didSet { didChange.send(()) }
   }
   
-  public var dispatcher: StoreDispatcher<State> {
+  public var dispatcher: StoreActionDispatcher<State> {
     didSet { didChange.send(()) }
   }
   
-  internal init(store: Store<State>, dispatcher: StoreDispatcher<State>) {
+  internal init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
     self.store = store
     self.dispatcher = dispatcher
   }
@@ -40,9 +40,9 @@ private struct StoreProvider<State> : ViewModifier where State : StateType {
 private struct DispatchProxy<S>: ViewModifier where S : StateType {
   @EnvironmentObject var storeContext: StoreContext<S>
   
-  var modifyAction: StoreDispatcher<S>.ActionModifier? = nil
+  var modifyAction: StoreActionDispatcher<S>.ActionModifier? = nil
   
-  public init(modifyAction: StoreDispatcher<S>.ActionModifier? = nil) {
+  public init(modifyAction: StoreActionDispatcher<S>.ActionModifier? = nil) {
     self.modifyAction = modifyAction
   }
   
@@ -77,7 +77,7 @@ extension View {
     return self.modifier(StoreProvider(store: store))
   }
   
-  public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreDispatcher<S>.ActionModifier) -> some View where S: StateType {
+  public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreActionDispatcher<S>.ActionModifier) -> some View where S: StateType {
     return self.modifier(DispatchProxy<S>(modifyAction: modifyAction))
   }
 }

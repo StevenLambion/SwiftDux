@@ -43,8 +43,8 @@ extension Store : StoreType {
 
 extension Store {
   
-  func dispatcher(modifyAction: StoreDispatcher<State>.ActionModifier? = nil) -> StoreDispatcher<State> {
-    return StoreDispatcher(
+  func dispatcher(modifyAction: StoreActionDispatcher<State>.ActionModifier? = nil) -> StoreActionDispatcher<State> {
+    return StoreActionDispatcher(
       upstream: self,
       upstreamActionSubject: self.didChangeWithActionSubject,
       modifyAction: modifyAction

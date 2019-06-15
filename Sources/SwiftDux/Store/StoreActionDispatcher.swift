@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-public final class StoreDispatcher<State> : ActionPlanDispatcher where State : StateType {
+public final class StoreActionDispatcher<State> : ActionPlanDispatcher where State : StateType {
   
   public typealias ActionModifier = (Action) -> Action?
   
@@ -40,9 +40,9 @@ public final class StoreDispatcher<State> : ActionPlanDispatcher where State : S
   
 }
 
-extension StoreDispatcher {
+extension StoreActionDispatcher {
   
-  func proxy(modifyAction: ActionModifier? = nil) -> StoreDispatcher<State> {
+  func proxy(modifyAction: ActionModifier? = nil) -> StoreActionDispatcher<State> {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper = upstreamModifyAction
     if let modifyAction = modifyAction {
@@ -53,7 +53,7 @@ extension StoreDispatcher {
         return nil
       }
     }
-    return StoreDispatcher<State>(
+    return StoreActionDispatcher<State>(
       upstream: self.upstream,
       upstreamActionSubject: self.upstreamActionSubject,
       modifyAction: modifyActionWrapper
