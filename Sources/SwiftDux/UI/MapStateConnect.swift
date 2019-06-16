@@ -33,9 +33,9 @@ extension Store {
   ///
   /// }
   /// ```
-  public static func connect<T, TypeOfAction, Content>(
+  public static func connectWithMap<T, TypeOfAction, Content>(
+    _ mapState: @escaping (State)->T,
     updateOn typeOfAction: TypeOfAction.Type? = nil,
-    mapState: @escaping (State)->T,
     wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>
     ) -> some View where T : Equatable, TypeOfAction : Action, Content : View {
     return MapStateConnect<State, T, TypeOfAction, Content>(updateOn: typeOfAction, mapState: mapState, wrapper: wrapper)
