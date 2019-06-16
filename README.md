@@ -18,6 +18,7 @@ There's many other great redux-like libaries such as ReSwift that have a bigger 
 ## Features
 
 - Redux inspired state management.
+- Update views when the state changes or when an action has been reduced.
 - Use publishers to dispatch actions.
 - Use ActionPlans to wrapup complex workflows. (If redux-thunk used Combine)
 - Inject state into SwiftUI views.
@@ -138,6 +139,21 @@ struct TodosView : View {
 ### 5. Connect your state to the view using what's known as a Container or "Smart" component.
 
 ```swift
+/// Update when the state has changed:
+
+func TodosContainer() -> some View {
+  Store<AppState>.connect({ state.todos.value }) { todos, dispatcher in
+    TodosView(
+      todos: todos,
+      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+    )
+  }
+}
+
+/// Update when an action has been reduced:
+
 func TodosContainer() -> some View {
   Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
     TodosView(
