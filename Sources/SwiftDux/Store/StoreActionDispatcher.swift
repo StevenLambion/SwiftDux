@@ -78,6 +78,7 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
   /// effects that are unable to be performed from at the state level.
   /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
+  @discardableResult
   public func send(_ actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
     let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
