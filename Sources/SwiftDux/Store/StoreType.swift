@@ -52,12 +52,23 @@ extension StoreType {
     return didChangeWithAction.filter { $0 is A }.map { _ in () }.eraseToAnyPublisher()
   }
   
+  /// Subscribe to the store to map its state when an action is dispatched. The publisher only fires when the output type has changed.
+  /// - Parameters
+  ///   - typeOfAction: The type of action required to emit a notification.
+  ///   - mapState: A closure that maps the state to a new type.
+  public func on<A,T>(typeOfAction: A.Type, mapState: @escaping (State)->T) -> AnyPublisher<T, Never> where A : Action, T : Equatable {
+    self.on(typeOfAction: typeOfAction)
+      .map { [unowned self] _ in mapState(self.state) }
+      .removeDuplicates()
+      .eraseToAnyPublisher()
+  }
+  
   /// Map the state of the store to a new object when it changes. It emits a new object only when there's a change.
   /// Because of this, it requires that the object adhere to the `Equatable` protocol.
   /// - Parameter mapState: A closure that maps the state to an object.
   public func mapState<T>(_ mapState: @escaping (State) -> T) -> AnyPublisher<T, Never> where T : Equatable {
     return didChangeWithAction
-      .map { [unowned self] _ in mapState(self.state ) }
+      .map { [unowned self] _ in mapState(self.state) }
       .removeDuplicates()
       .eraseToAnyPublisher()
   }
