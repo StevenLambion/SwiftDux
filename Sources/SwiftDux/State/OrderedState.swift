@@ -313,7 +313,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 extension OrderedState: Equatable {
   
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
-    return lhs.storage == rhs.storage
+    return lhs.storage === rhs.storage
   }
   
 }

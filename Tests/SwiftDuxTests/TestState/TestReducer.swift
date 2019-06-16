@@ -5,6 +5,7 @@ enum TestAction: Action {
   case addTodoList(name: String)
   case removeTodoLists(at: IndexSet)
   case moveTodoLists(from: IndexSet, to: Int)
+  case routeTodoAction(forList: String, action: Action)
 }
 
 class TestReducer: Reducer {
@@ -22,6 +23,9 @@ class TestReducer: Reducer {
       state.todoLists.remove(at: indexSet)
     case .moveTodoLists(let indexSet, let index):
       state.todoLists.move(from: indexSet, to: index)
+    case .routeTodoAction(let id, let action):
+      return routeToTodoList(state: state, id: id, action: action)
+      
     }
     return state
   }
@@ -31,7 +35,7 @@ class TestReducer: Reducer {
     switch action {
     case TodoListAction.addTodo(let id, _): fallthrough
     case TodoListAction.removeTodos(let id, _): fallthrough
-      case TodoListAction.moveTodos(let id, _, _):
+    case TodoListAction.moveTodos(let id, _, _):
       state = routeToTodoList(state: state, id: id, action: action)
     default: break
     }
