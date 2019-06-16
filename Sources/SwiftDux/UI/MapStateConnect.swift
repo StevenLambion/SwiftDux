@@ -10,8 +10,8 @@ extension Store {
   /// Connects the application state to a view.
   ///
   /// The connection maps the application's state to values that can be passed into a view. It then updates the view when
-  /// a relevant action type is performed and / or the mapped value has changed. The store must be injected into the environment
-  /// before this function can be used. To do this, use the `provideStore(_:)` modifier off of a View instance.
+  /// the mapped value has changed. The store must be injected into the environment before this function can be used.
+  /// To do this, use the `provideStore(_:)` modifier off of a View instance.
   ///```
   ///
   /// struct TodoListContainer: View {
@@ -33,37 +33,33 @@ extension Store {
   ///
   /// }
   /// ```
-  public static func connectWithMap<T, TypeOfAction, Content>(
+  public static func connect<T, Content>(
     _ mapState: @escaping (State)->T,
-    updateOn typeOfAction: TypeOfAction.Type? = nil,
     wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>
-    ) -> some View where T : Equatable, TypeOfAction : Action, Content : View {
-    return MapStateConnect<State, T, TypeOfAction, Content>(updateOn: typeOfAction, mapState: mapState, wrapper: wrapper)
+    ) -> some View where T : Equatable, Content : View {
+    return MapStateConnect<State, T, Content>(mapState: mapState, wrapper: wrapper)
   }
   
 }
 
 /// Retrieves the current store and dispatcher from the environment and creates a `ConnectedStateUpdater` instance
 /// to update the wrapped content when the specified action type is dispatched.
-private struct MapStateConnect<State, T, TypeOfAction, Content> : View where T : Equatable, Content : View, State : StateType, TypeOfAction : Action {
+private struct MapStateConnect<State, T, Content> : View where T : Equatable, Content : View, State : StateType {
   @EnvironmentObject private var storeContext: StoreContext<State>
   
-  private var typeOfAction: TypeOfAction.Type?
   private var mapState: (State)->T
   private var wrapper: MapStateConnectContent<T, StoreActionDispatcher<State>, Content>
   
-  public init(updateOn typeOfAction: TypeOfAction.Type? = nil, mapState: @escaping (State)->T, wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>) {
-    self.typeOfAction = typeOfAction
+  public init(mapState: @escaping (State)->T, wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>) {
     self.mapState = mapState
     self.wrapper = wrapper
   }
   
   public var body: some View {
     MapStateInnerConnect(
-      updater: MapStateConnectedStateUpdater<State, T, TypeOfAction>(
+      updater: MapStateConnectedStateUpdater<State, T>(
         store: storeContext.store,
         dispatcher: storeContext.dispatcher,
-        typeOfAction: typeOfAction,
         mapState: mapState
       ),
       wrapper: self.wrapper
@@ -73,12 +69,12 @@ private struct MapStateConnect<State, T, TypeOfAction, Content> : View where T :
 }
 
 /// Binds to the `ConnectedStateUpdater` instance created in the `Connect` view to watch for updates.
-private struct MapStateInnerConnect<State, T, TypeOfAction, Content>: View where T : Equatable, Content : View, State : StateType, TypeOfAction : Action {
-  @ObjectBinding private var updater: MapStateConnectedStateUpdater<State, T, TypeOfAction>
+private struct MapStateInnerConnect<State, T, Content>: View where T : Equatable, Content : View, State : StateType {
+  @ObjectBinding private var updater: MapStateConnectedStateUpdater<State, T>
   
   private var wrapper: MapStateConnectContent<T, StoreActionDispatcher<State>, Content>
   
-  init(updater: MapStateConnectedStateUpdater<State, T, TypeOfAction>, wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>) {
+  init(updater: MapStateConnectedStateUpdater<State, T>, wrapper: @escaping MapStateConnectContent<T, StoreActionDispatcher<State>, Content>) {
     self.updater = updater
     self.wrapper = wrapper
   }
@@ -90,7 +86,7 @@ private struct MapStateInnerConnect<State, T, TypeOfAction, Content>: View where
 }
 
 /// The model object of the `Connect` view that updates the wrapped content when a specified action type is dispatched.
-private class MapStateConnectedStateUpdater<State, T, TypeOfAction> : BindableObject where T : Equatable, State : StateType, TypeOfAction : Action {
+private class MapStateConnectedStateUpdater<State, T> : BindableObject where T : Equatable, State : StateType {
   var didChange = PassthroughSubject<Void, Never>()
   var state: T {
     didSet { didChange.send(()) }
@@ -100,15 +96,11 @@ private class MapStateConnectedStateUpdater<State, T, TypeOfAction> : BindableOb
   
   private var cancel: AnyCancellable?
   
-  init(store: Store<State>, dispatcher: StoreActionDispatcher<State>, typeOfAction: TypeOfAction.Type? = nil, mapState: @escaping (State)->T) {
+  init(store: Store<State>, dispatcher: StoreActionDispatcher<State>, mapState: @escaping (State)->T) {
     self.store = store
     self.dispatcher = dispatcher
     self.state = mapState(store.state)
-    if let typeOfAction = typeOfAction {
-      self.cancel = store.on(typeOfAction: typeOfAction.self, mapState: mapState).assign(to: \.state, on: self)
-    } else {
-      self.cancel = store.mapState(mapState).assign(to: \.state, on: self)
-    }
+    self.cancel = store.mapState(mapState).assign(to: \.state, on: self)
   }
   
 }
