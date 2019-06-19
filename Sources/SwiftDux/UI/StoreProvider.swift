@@ -22,7 +22,8 @@ internal class StoreContext<State> : BindableObject where State : StateType {
   }
 }
 
-
+/// A view modifier that injects a store into the environment. Use the
+/// `View.provideStore(_:)`` method instead of this type directly.
 public struct StoreProvider<State> : ViewModifier where State : StateType {
 
   private var storeContext: StoreContext<State>

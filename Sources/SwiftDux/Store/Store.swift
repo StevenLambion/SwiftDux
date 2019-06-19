@@ -4,20 +4,18 @@ import Combine
 /// The primary container of an application's state.
 ///
 /// The store both contains and mutates the state through a provided reducer as it's sent actions.
-/// Use the didChangeWithAction or didChange publishers to be notified of state changes.
-///
-/// The didChange publisher is provided primarily for usage by SwiftUI. To connect the state to the UI use the `Connect` view.
+/// Use the didChangeWithAction to be notified of changes.
 public final class Store<State> where State : StateType {
-  
+
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
   private let runReducer: (State, Action) -> State
-  
+
   private let didChangeWithActionSubject = PassthroughSubject<Action, Never>()
-  
+
   /// Subscribe to this publisher to be notified of state changes caused by a particular action.
   public let didChangeWithAction: AnyPublisher<Action, Never>
-  
+
   /// Creates a new store for the given state and reducer
   ///
   /// - Parameters
@@ -29,20 +27,20 @@ public final class Store<State> where State : StateType {
     self.didChangeWithAction = didChangeWithActionSubject.eraseToAnyPublisher()
   }
 }
-  
+
 extension Store : StoreType {
-  
+
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
   public func send(_ action: Action) {
     self.state = runReducer(self.state, action)
     self.didChangeWithActionSubject.send(action)
   }
-  
+
 }
 
 extension Store {
-  
+
   /// Create a new `StoreActionDispatcher<_>` that acts as a proxy between the action sender and the store. It optionally allows actions to be
   /// modified or monitored.
   /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
@@ -53,5 +51,5 @@ extension Store {
       modifyAction: modifyAction
     )
   }
-  
+
 }
