@@ -82,7 +82,7 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
   public func send(_ actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
     let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan(dispatch, getState)
+    let publisher  = actionPlan(dispatch, getState).share()
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()
   }
