@@ -4,5 +4,6 @@ if [ ! -e SwiftDux.xcodeproj ]; then
   swift package generate-xcodeproj
 fi
 
-jazzy
-
+jazzy -x -scheme,SwiftDux-Package -m SwiftDux
+mkdir -p ./docs/Guides/Images
+cp ./Guides/Images/* ./docs/Guides/Images/

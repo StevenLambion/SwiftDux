@@ -7,183 +7,50 @@
 
 <!-- [![Build Status][travis-image]][travis-url] -->
 
-This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with an API to bind it to views within SwiftUI (think react-redux).
+## Introduction
 
-## Why
+This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container.
 
-As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. As I began working on a pet project for a future SwiftUI application, I saw people asking about how best to structure their application using these new tools. This libary started out as internal code to my own app, but I've moved it to this repo in the hopes that it might help others get started.
+- **State** - An immutable, single source of truth within the application.
+- **Action** - Describes a state change.
+- **Reducer** - Returns a new state by consuming the old one with an action.
+- **View** - The visual representation of the current state.
 
-There's many other great redux-like libaries such as ReSwift that have a bigger footing and probably more worthy features than this one.
+<div style="text-align:center">
+  <img src="./Guides/Images/architecture.jpg" width="400"/>
+</div>
 
-## Features
+## Documentation
 
-- Redux inspired state management.
-- Update views when the state changes or when an action has been reduced.
-- Use publishers to dispatch actions.
-- Use ActionPlans to wrapup complex workflows. (If redux-thunk used Combine)
-- Inject state into SwiftUI views.
-- Use OrderedState to automatically manage entities displayed in lists.
-  - Provides methods that work directly with list events such as onMove and onDelete.
-  - Lookup entities by id or index position.
-  - Implements the MutableCollection protocol.
-- State adheres to the Codable protocol.
-  - Allows quick persistence and restoring of application state
-- Create proxies to modify or monitor dispatched actions as they're sent upstream.
+For a more indepth explanation, visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html).
 
 ## Installation
 
-You can add this directly to Xcode 11 or add it to your project's `Package.swift` file
+### Xcode 11
+
+Use the new swift package manager integration to include the libary.
+
+### Package.swift
+
+Include the library as a dependencies as shown below:
 
 ```swift
 import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 1)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 3)
   ]
 )
 ```
 
-## Documentation
+## Motivation
 
-[Click here for the documentation](https://stevenlambion.github.io/SwiftDux/)
+As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I've ripped out the "redux" portion and added it here as its own separate library in the hopes that it helps others.
 
-## Usage
+There's more established libraries like [ReSwift](http://reswift.github.io/ReSwift/master/) which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I've always rolled my own.
 
-### 1. Create your state
-
-```swift
-import SwiftDux
-
-struct AppState : StateType {
-  /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
-  var todos: OrderedState<TodoState>
-}
-
-struct TodoState : IdentifiableState {
-  vae id: String,
-  var text: String
-}
-```
-
-### 2. Create your reducer
-
-```swift
-import SwiftDux
-
-enum TodoAction : Action {
-  case addTodo(text: String)
-  case removeTodos(at: IndexSet)
-  case moveTodos(from: IndexSet, to: Int)
-}
-
-struct AppReducer : Reducer {
-
-  func reduce(state: AppState, action: TodoAction) -> AppState {
-    var state = state
-    switch action {
-    case .addTodo(let text):
-      let id = UUID().uuidString
-      state.todos.append(TodoItemState(id: id, text: text))
-    case .removeTodos(let indexSet):
-      state.todos.remove(at: indexSet)
-    case .moveTodos(let indexSet, let index):
-      state.todos.move(from: indexSet, to: index)
-    }
-    return state
-  }
-
-}
-```
-
-### 3. Create your store, and inject it into the environment
-
-```swift
-import SwiftDux
-
-let store = Store(AppState(todos: OrderedState()), AppReducer())
-
-window.rootViewController = UIHostingController(
-  rootView: RootView().provideStore(store)
-)
-```
-
-### 4. Create your view decoupled from the state to make it both reusable and more testable. This is also known as a presentation or "dumb" component.
-
-```swift
-import SwiftUI
-import SwiftDux
-
-struct TodosView : View {
-  @State var editMode: EditMode = .active
-
-  var todos: [TodoItemState]
-  var onAddTodo: () -> ()
-  var onMoveTodos: (IndexSet, Int) -> ()
-  var onRemoveTodos: (IndexSet) -> ()
-
-  var body: some View {
-    List {
-      ForEach(todos) { item in
-        TodoItemRow(item: item)
-      }
-      .onDelete(perform: onRemoveTodos)
-      .onMove(perform: onMoveTodos)
-    }
-    .environment(\.editMode, $editMode)
-  }
-}
-
-```
-
-### 5. Connect your state to the view using what's known as a Container or "Smart" component.
-
-```swift
-/// Update when the state has changed:
-
-func TodosContainer() -> some View {
-  Store<AppState>.connect({ state.todos.value }) { todos, dispatcher in
-    TodosView(
-      todos: todos,
-      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
-    )
-  }
-}
-
-/// Update when an action has been reduced:
-
-func TodosContainer() -> some View {
-  Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
-    TodosView(
-      todos: state.todos.value,
-      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
-    )
-  }
-}
-```
-
-### 6. Add the container view to your RootView
-
-```swift
-import SwiftUI
-import SwiftDux
-
-struct RootView : View {
-
-  var body: some View {
-    NavigationView {
-      TodosContainer()
-    }
-  }
-
-}
-```
-
-[swift-image]: https://img.shields.io/badge/swift-5-orange.svg
+[swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [swift-url]: https://swift.org/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
@@ -191,3 +58,7 @@ struct RootView : View {
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
 [codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com
+
+## License
+
+This project uses the [MIT](./LICENSE) license.

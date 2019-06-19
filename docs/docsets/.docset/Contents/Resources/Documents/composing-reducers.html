@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Composing Reducers  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="Composing Reducers  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html"> Docs</a> (96% documented)</p>
+        <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html"> Reference</a>
+        <img id="carat" src="img/carat.png" />
+        Composing Reducers  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="composing-reducers.html">Composing Reducers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="swiftui-list-support.html">SwiftUI List Support</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/View.html">View</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Protocols.html">Other Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Protocols.html#/s:8SwiftDux6ActionP">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/ActionPlanDispatcher.html">ActionPlanDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/IdentifiableState.html">IdentifiableState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/StoreType.html">StoreType</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Structs.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OrderedState.html">OrderedState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux20ActionConnectContenta">ActionConnectContent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux10ActionPlana">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux18ActionPlanDispatcha">ActionPlanDispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux8GetStatea">GetState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux22MapStateConnectContenta">MapStateConnectContent</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux21PublishableActionPlana">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other Typealiases.html#/s:8SwiftDux9StateTypea">StateType</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <h1 id='composing-reducers' class='heading'>Composing Reducers</h1>
+
+<p>To comprehend large and complex applications, you need to structure the state into bite-sized components that can be composed together. Below is an example of an application state that contains 3 levels: the app, authors, and books.</p>
+
+<p>Each part should contain their own separate actions and reducers if needed.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">AppState</span> <span class="p">:</span> <span class="kt">StateType</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="nv">authors</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Author</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">Author</span> <span class="p">:</span> <span class="kt">IdentifiableState</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
+  <span class="k">var</span> <span class="nv">title</span><span class="p">:</span> <span class="kt">String</span>
+  <span class="k">var</span> <span class="nv">books</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Book</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">Book</span> <span class="p">:</span> <span class="kt">IdentifiableState</span> <span class="p">{</span>
+  <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
+  <span class="nv">name</span><span class="p">:</span> <span class="kt">String</span>
+<span class="p">}</span>
+</code></pre>
+
+<p>The <code>AppReducer</code> will be this application&rsquo;s root reducer. It must delegate all dispatched actions to all other reducers after it has reduced its own actions. Even when the app reducer accepts an action, that action will still be dispatched to its subreducers. It can&rsquo;t assume or know that the action is not used by other reducers.</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+
+  <span class="k">let</span> <span class="nv">authorReducer</span><span class="p">:</span> <span class="kt">AuthorReducer</span><span class="p">()</span>
+
+  <span class="c1">// Reduce actions that the app reducer supports:</span>
+
+  <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">AppAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">switch</span> <span class="n">action</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="o">.</span><span class="nf">addAuthor</span><span class="p">(</span><span class="k">let</span> <span class="nv">book</span><span class="p">):</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+      <span class="k">case</span> <span class="o">.</span><span class="nf">removeAuthor</span><span class="p">(</span><span class="k">let</span> <span class="nv">id</span><span class="p">):</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="nv">byId</span><span class="p">:</span> <span class="n">id</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c1">// Delegate all actions to the subreducers.</span>
+
+  <span class="nf">reduceNext</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="kt">AppState</span><span class="p">(</span>
+      <span class="nv">scenes</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">mapValues</span> <span class="p">{</span>
+        <span class="k">self</span><span class="o">.</span><span class="n">authorReducer</span><span class="o">.</span><span class="nf">reduceAny</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="n">action</span> <span class="n">action</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+<p>Here, the author reducer accept only its own slice of the overall state.</p>
+<pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">AuthorReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+
+  <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">Author</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">AuthorAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Author</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="n">state</span>
+    <span class="k">switch</span> <span class="n">action</span> <span class="p">{</span>
+      <span class="k">case</span> <span class="o">.</span><span class="nf">addBook</span><span class="p">(</span><span class="k">let</span> <span class="nv">book</span><span class="p">):</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">books</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="n">book</span><span class="p">)</span>
+      <span class="k">case</span> <span class="o">.</span><span class="nf">removeBook</span><span class="p">(</span><span class="k">let</span> <span class="nv">id</span><span class="p">):</span>
+        <span class="n">state</span><span class="o">.</span><span class="n">books</span><span class="o">.</span><span class="nf">remove</span><span class="p">(</span><span class="nv">byId</span><span class="p">:</span> <span class="n">id</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-18)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

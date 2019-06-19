@@ -1,1 +1,29 @@
 github_url: https://github.com/StevenLambion/SwiftDux
+documentation:
+  - Guides/*.md
+custom_categories:
+  - name: "Documentation"
+    children:
+      - "Installation"
+      - "Getting Started"
+      - "Composing Reducers"
+      - "SwiftUI List Support"
+  - name: State
+    children:
+      - StateType
+      - IdentifiableState
+      - OrderedState
+  - name: Actions
+    children:
+      - Action
+      - EmptyAction
+      - ActionPlan
+      - PublishableActionPlan
+      - ActionDispatcher
+      - ActionPlanDispatcher
+  - name: Store
+    children:
+      - Store
+      - Reducer
+      - StoreActionDispatcher
+      - View

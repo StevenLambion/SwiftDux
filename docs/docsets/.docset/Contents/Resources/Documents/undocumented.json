@@ -9,20 +9,6 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 15,
-      "symbol": "StoreContext.dispatcher",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 19,
-      "symbol": "StoreContext.init(store:dispatcher:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
       "line": 26,
       "symbol": "StoreProvider",
       "symbol_kind": "source.lang.swift.decl.struct",
