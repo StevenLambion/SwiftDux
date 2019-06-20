@@ -1,20 +1,30 @@
 import SwiftUI
 import Combine
 
+extension Store: BindableObject {}
+
+internal class StoreDispatcherContext<State> : BindableObject where State : StateType {
+  public var didChange = PassthroughSubject<Void, Never>()
+  public var dispatcher: StoreActionDispatcher<State> {
+    didSet { didChange.send() }
+  }
+  
+  public init(dispatcher: StoreActionDispatcher<State>) {
+    self.dispatcher = dispatcher
+  }
+}
+
 /// Provides the application's store to views in the environment.
 ///
 /// Typically you should use the `Store<_>.connect(updateOn:wrapper:)` method.
-public class StoreContext<State> : BindableObject where State : StateType {
-  public var didChange: AnyPublisher<Void, Never>
+internal class DispatcherContext : BindableObject {
+  public var didChange = PassthroughSubject<Void, Never>()
+  public var dispatcher: ActionDispatcher {
+    didSet { didChange.send() }
+  }
 
-  /// The current store in the environment.
-  public let store: Store<State>
-  public let dispatcher: StoreActionDispatcher<State>
-
-  public init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
-    self.store = store
+  public init(dispatcher: ActionDispatcher) {
     self.dispatcher = dispatcher
-    self.didChange = self.store.didChange
   }
 }
 
@@ -22,43 +32,56 @@ public class StoreContext<State> : BindableObject where State : StateType {
 /// `View.provideStore(_:)`` method instead of this type directly.
 public struct StoreProvider<State> : ViewModifier where State : StateType {
 
-  private var storeContext: StoreContext<State>
+  private var store: Store<State>
+  private var stateContext: StateContext<State>
+  private var storeDispatcherContext: StoreDispatcherContext<State>
+  private var dispatcherContext: DispatcherContext
 
   public init(store: Store<State>) {
-    self.storeContext = StoreContext(
-      store: store,
-      dispatcher: store.dispatcher()
+    self.store = store
+    self.stateContext = StateContext(
+      didChangeWithActionPublisher: store.didChangeWithAction,
+      didChangePublisher: Publishers.Empty().eraseToAnyPublisher(),
+      state: store.state
     )
+    let dispatcher = store.dispatcher()
+    self.storeDispatcherContext = StoreDispatcherContext(dispatcher: dispatcher)
+    self.dispatcherContext = DispatcherContext(dispatcher: dispatcher)
   }
 
   public func body(content: Content) -> some View {
-    content.environmentObject(storeContext)
+    content
+      .environmentObject(store)
+      .environmentObject(stateContext)
+      .environmentObject(storeDispatcherContext)
+      .environmentObject(dispatcherContext)
   }
 
 }
 
-public struct DispatchProxy<S>: ViewModifier where S : StateType {
-  @EnvironmentObject var storeContext: StoreContext<S>
+public struct DispatchProxy<State>: ViewModifier where State : StateType {
+  @EnvironmentObject var storeDispatcherContext: StoreDispatcherContext<State>
 
-  var modifyAction: StoreActionDispatcher<S>.ActionModifier? = nil
+  var modifyAction: StoreActionDispatcher<State>.ActionModifier? = nil
 
-  public init(modifyAction: StoreActionDispatcher<S>.ActionModifier? = nil) {
+  public init(modifyAction: StoreActionDispatcher<State>.ActionModifier? = nil) {
     self.modifyAction = modifyAction
   }
 
   public func body(content: Content) -> some View {
-    content.environmentObject(StoreContext(
-      store: storeContext.store,
-      dispatcher: storeContext.dispatcher.proxy(modifyAction: modifyAction)
-    ))
+    let dispatcher = storeDispatcherContext.dispatcher.proxy(modifyAction: modifyAction)
+    return content
+      .environmentObject(StoreDispatcherContext(dispatcher: dispatcher))
+      .environmentObject(DispatcherContext(dispatcher: dispatcher))
   }
 
 }
 
 extension View {
 
-  /// Injects a store into the environment. The store is then used by the `@MapState`
-  /// property wrapper to connect the state to a view.
+  /// Injects a store into the environment. The store can then be used by the `@EnvironmentObject`
+  /// property wrapper. This method also enables the use of `View.mapState(from:for:_:)` to
+  /// map substates to a view.
   /// ```
   /// struct RootView: View {
   ///   // Passed in from the AppDelegate or SceneDelegate class.
@@ -84,4 +107,5 @@ extension View {
   public func proxyDispatch<S>(for stateType: S.Type, modifyAction: @escaping StoreActionDispatcher<S>.ActionModifier) -> some View where S: StateType {
     return self.modifier(DispatchProxy<S>(modifyAction: modifyAction))
   }
+
 }

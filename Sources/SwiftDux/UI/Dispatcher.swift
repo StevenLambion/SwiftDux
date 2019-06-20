@@ -5,7 +5,7 @@ import SwiftUI
 /// ```
 /// struct MyView : View {
 ///
-///   @Dispatch<AppState> var dispatch: Dispatch
+///   @Dispatcher var dispatch: Dispatch
 ///
 ///   func login() {
 ///     dispatch(UserActions.login(...))
@@ -14,18 +14,18 @@ import SwiftUI
 /// }
 /// ```
 @propertyDelegate
-public struct MapDispatch<State> : DynamicViewProperty where State : StateType {
-  @EnvironmentObject private var storeContext: StoreContext<State>
-  
+public struct Dispatcher : DynamicViewProperty {
+  @EnvironmentObject private var dispatcherContext: DispatcherContext
+
   private var _value: Dispatch!
   public var value: Dispatch {
     _value
   }
-  
+
   public init() {}
-  
+
   public mutating func update() {
-    self._value = { [storeContext] in storeContext.dispatcher.send($0) }
+    self._value = { [dispatcherContext] in dispatcherContext.dispatcher.send($0) }
   }
-  
+
 }

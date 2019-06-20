@@ -1,22 +1,24 @@
 import Foundation
 import SwiftUI
 
-/// Retrieves the current application state from thje environment and maps it to a property in a SwiftUI view.
+/// Retrieves a mapping of the application state from thje environment and provides it to a property in a SwiftUI view.
+/// Use the `mapState(from:for:_:)` method.
 /// ```
 /// struct MyView : View {
 ///
-///   @MapState var state: AppState
+///   @MappedState var todoList: TodoList
 ///
 /// }
 /// ```
 @propertyDelegate
-public struct MapState<State: StateType> : DynamicViewProperty {
+public struct MappedState<State: StateType> : DynamicViewProperty {
 
-  @EnvironmentObject private var storeContext: StoreContext<State>
+  @EnvironmentObject private var context: StateContext<State>
+  @EnvironmentObject private var dispatcherContext: DispatcherContext
 
   public var value: State {
     nonmutating get {
-      storeContext.store.state
+      context.state
     }
   }
 
@@ -30,7 +32,7 @@ public struct MapState<State: StateType> : DynamicViewProperty {
   public func bind<T>(_ mapState: @escaping (State) -> T, update: @escaping (T) -> Action) -> Binding<T> {
     return Binding<T>(
       getValue: { mapState(self.value) } ,
-      setValue: { self.storeContext.dispatcher.send(update($0)) }
+      setValue: { self.dispatcherContext.dispatcher.send(update($0)) }
     )
   }
 
