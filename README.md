@@ -46,7 +46,7 @@ let package = Package(
 
 ## Examples in SwiftUI
 
-### Add the store to the environent
+### Add the store to the environment
 
 ```swift
 struct RootView {
