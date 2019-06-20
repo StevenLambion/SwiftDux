@@ -11,7 +11,7 @@ import Combine
 ///
 ///   var body: some View {
 ///     ChildView()
-///       .proxyDispatch(for: AppState.self, modifyAction: self.routeChildActions)
+///       .modifyActions(self.routeChildActions)
 ///   }
 ///
 ///   func routeChildActions(action: Action) -> Action? {
@@ -68,9 +68,9 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// - Parameter actionPlan: The action to dispatch
   @discardableResult
   private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let dispatch: Dispatch = { [unowned self] in self.send($0) }
+    let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    actionPlan.body(dispatch, getState)
+    actionPlan.body(sendAction, getState)
     return Publishers.Just(()).eraseToAnyPublisher()
   }
 
@@ -85,9 +85,9 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
   @discardableResult
   private func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let dispatch: Dispatch = { [unowned self] in self.send($0) }
+    let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan.body(dispatch, getState).share()
+    let publisher  = actionPlan.body(sendAction, getState).share()
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()
   }

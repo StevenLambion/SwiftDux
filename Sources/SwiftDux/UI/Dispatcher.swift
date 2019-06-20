@@ -5,7 +5,7 @@ import SwiftUI
 /// ```
 /// struct MyView : View {
 ///
-///   @Dispatcher var dispatch: Dispatch
+///   @Dispatcher var send: SendAction
 ///
 ///   func login() {
 ///     dispatch(UserActions.login(...))
@@ -17,8 +17,8 @@ import SwiftUI
 public struct Dispatcher : DynamicViewProperty {
   @EnvironmentObject private var dispatcherContext: DispatcherContext
 
-  private var _value: Dispatch!
-  public var value: Dispatch {
+  private var _value: SendAction!
+  public var value: SendAction {
     _value
   }
 

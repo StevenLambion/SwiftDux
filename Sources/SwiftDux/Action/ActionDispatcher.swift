@@ -3,7 +3,7 @@ import Combine
 
 /// A closure that dispatches an action
 /// - Parameter action: Dispatches the given state synchronously.
-public typealias Dispatch = (Action) -> ()
+public typealias SendAction = (Action) -> ()
 
 /// A closure that can return a new action from a previous one. If no action is returned,
 /// the original action is not sent.
