@@ -20,10 +20,16 @@ custom_categories:
       - ActionPlan
       - PublishableActionPlan
       - ActionDispatcher
-      - ActionPlanDispatcher
+      - Dispatch
+      - GetState
   - name: Store
     children:
       - Store
       - Reducer
       - StoreActionDispatcher
+  - name: SwiftUI
+    children:
       - View
+      - MappedState
+      - Dispatcher
+      - StoreProvider

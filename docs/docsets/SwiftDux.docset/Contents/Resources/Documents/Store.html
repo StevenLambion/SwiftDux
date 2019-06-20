@@ -14,7 +14,7 @@
     <a title="Store  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (89% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,7 +69,19 @@
                 <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
+                <a href="Structs/ActionPlan.html">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PublishableActionPlan.html">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
             </ul>
           </li>
@@ -85,8 +97,22 @@
               <li class="nav-group-task">
                 <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="SwiftUI.html">SwiftUI</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/View.html">View</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MappedState.html">MappedState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Dispatcher.html">Dispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -105,15 +131,7 @@
                 <a href="Structs/DispatchProxy.html">DispatchProxy</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StoreProvider.html">StoreProvider</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
+                <a href="Structs/StateMapper.html">StateMapper</a>
               </li>
             </ul>
           </li>
@@ -242,38 +260,6 @@ methods to create a new <code>StoreActionDispatcher</code>.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">StoreActionDispatcher</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ActionDispatcher.html">ActionDispatcher</a></span><span class="p">,</span> <span class="kt">Subscriber</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7SwiftUI4ViewP"></a>
-                    <a name="//apple_ref/swift/Extension/View" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP">View</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        
-                        <a href="Extensions/View.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
-<span class="kd">protocol</span> <span class="kt">View</span> <span class="p">:</span> <span class="n">_View</span></code></pre>
 
                         </div>
                       </div>

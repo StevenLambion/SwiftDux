@@ -13,7 +13,7 @@
     <a title="Getting Started  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (89% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -68,7 +68,19 @@
                 <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
+                <a href="Structs/ActionPlan.html">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PublishableActionPlan.html">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
             </ul>
           </li>
@@ -84,8 +96,22 @@
               <li class="nav-group-task">
                 <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="SwiftUI.html">SwiftUI</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/View.html">View</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/MappedState.html">MappedState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/Dispatcher.html">Dispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -104,15 +130,7 @@
                 <a href="Structs/DispatchProxy.html">DispatchProxy</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StoreProvider.html">StoreProvider</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
+                <a href="Structs/StateMapper.html">StateMapper</a>
               </li>
             </ul>
           </li>
@@ -263,7 +281,7 @@
 </code></pre>
 <h2 id='connecting-the-state-to-the-view' class='heading'>Connecting the State to the View</h2>
 
-<p>Use the <code>@MappedState</code> and the <code>@MapDispatch</code> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. <code>MappedState</code> looks for a state that you&rsquo;ve mapped in the environment using <code>mapState(from:for:_:)</code>.</p>
+<p>Use the <code>@MappedState</code> and the <code>@MapDispatch</code> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. <code><a href="Structs/MappedState.html">MappedState</a></code> looks for a state that you&rsquo;ve mapped in the environment using <code>mapState(from:for:_:)</code>.</p>
 <pre class="highlight swift"><code><span class="c1">/// Update when the locally mapped state has changed:</span>
 
 <span class="kd">struct</span> <span class="kt">TodosContainer</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>IdentifiableState Protocol Reference</title>
+    <title>Dispatcher Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/IdentifiableState" class="dashAnchor"></a>
-    <a title="IdentifiableState Protocol Reference"></a>
+    <a name="//apple_ref/swift/Struct/Dispatcher" class="dashAnchor"></a>
+    <a title="Dispatcher Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftDux Docs</a> (86% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftDux Reference</a>
         <img id="carat" src="../img/carat.png" />
-        IdentifiableState Protocol Reference
+        Dispatcher Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -140,17 +140,25 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>IdentifiableState</h1>
+            <h1>Dispatcher</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">IdentifiableState</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">@propertyDelegate</span>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Dispatcher</span> <span class="p">:</span> <span class="kt">DynamicViewProperty</span></code></pre>
 
                 </div>
               </div>
-            <p>A type of state that can be identified for tracking purposes.</p>
+            <p>Retrieves the dispatcher for the given state from the environment and maps it to a property in a SwiftUI view.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
 
-<p>This is typically used for entities stored in your state that might be accessed by id
-or displayed in a <code>List</code> view.</p>
+  <span class="kd">@Dispatcher</span> <span class="k">var</span> <span class="nv">dispatch</span><span class="p">:</span> <span class="kt">Dispatch</span>
+
+  <span class="kd">func</span> <span class="nf">login</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">dispatch</span><span class="p">(</span><span class="kt">UserActions</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
 
           </section>
           <section class="section task-group-section">
@@ -159,9 +167,9 @@ or displayed in a <code>List</code> view.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux17IdentifiableStateP2IdQa"></a>
-                    <a name="//apple_ref/swift/Alias/Id" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux17IdentifiableStateP2IdQa">Id</a>
+                    <a name="/s:8SwiftDux10DispatcherV5valueyyAA6Action_pcvp"></a>
+                    <a name="//apple_ref/swift/Property/value" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10DispatcherV5valueyyAA6Action_pcvp">value</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -169,14 +177,14 @@ or displayed in a <code>List</code> view.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The type of identifier the state uses.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Id</span> <span class="p">:</span> <span class="kt">Comparable</span><span class="p">,</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">Hashable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">value</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux8Dispatcha">Dispatch</a></span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
 
                         </div>
                       </div>
@@ -186,9 +194,9 @@ or displayed in a <code>List</code> view.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux17IdentifiableStateP2id2IdQzvp"></a>
-                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux17IdentifiableStateP2id2IdQzvp">id</a>
+                    <a name="/s:8SwiftDux10DispatcherVACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10DispatcherVACycfc">init()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -196,34 +204,27 @@ or displayed in a <code>List</code> view.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A field to identify the entity, such as a uuid or number.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt"><a href="../Protocols/IdentifiableState.html#/s:8SwiftDux17IdentifiableStateP2IdQa">Id</a></span> <span class="p">{</span> <span class="k">get</span> <span class="k">set</span> <span class="p">}</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:SH9hashValueSivp"></a>
-                    <a name="//apple_ref/swift/Property/hashValue" class="dashAnchor"></a>
-                    <a class="token" href="#/s:SH9hashValueSivp">hashValue</a>
+                    <a name="/s:7SwiftUI19DynamicViewPropertyP6updateyyF"></a>
+                    <a name="//apple_ref/swift/Method/update()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI19DynamicViewPropertyP6updateyyF">update()</a>
                     </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -236,37 +237,7 @@ or displayed in a <code>List</code> view.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">hashValue</span><span class="p">:</span> <span class="kt">Int</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux17IdentifiableStatePAAE4hash4intoys6HasherVz_tF"></a>
-                    <a name="//apple_ref/swift/Method/hash(into:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux17IdentifiableStatePAAE4hash4intoys6HasherVz_tF">hash(into:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>The default hashing uses the hash from the <code><a href="../Protocols/IdentifiableState.html#/s:8SwiftDux17IdentifiableStateP2id2IdQzvp">id</a></code> property.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">hash</span><span class="p">(</span><span class="n">into</span> <span class="nv">hasher</span><span class="p">:</span> <span class="k">inout</span> <span class="kt">Hasher</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">mutating</span> <span class="kd">func</span> <span class="nf">update</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>

@@ -36,6 +36,41 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Dispatcher.swift",
+      "line": 21,
+      "symbol": "Dispatcher.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Dispatcher.swift",
+      "line": 25,
+      "symbol": "Dispatcher.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 19,
+      "symbol": "MappedState.value",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 25,
+      "symbol": "MappedState.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StateMapper.swift",
+      "line": 30,
+      "symbol": "StateMapper.init(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
       "line": 40,
       "symbol": "StoreProvider.init(store:)",
