@@ -64,7 +64,7 @@ public struct DispatchProxy: ViewModifier {
 extension View {
 
   /// Injects a store into the environment. The store can then be used by the `@EnvironmentObject`
-  /// property wrapper. This method also enables the use of `View.mapState(from:for:_:)` to
+  /// property wrapper. This method also enables the use of `View.mapState(updateOn:_:)` to
   /// map substates to a view.
   /// ```
   /// struct RootView: View {
@@ -88,8 +88,8 @@ extension View {
   /// by both the new proxy and the original dispatcher it was created from.
   /// - Parameter stateType: Used to find the current dispatcher in the environment.
   /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func proxyDispatch(_ modifyAction: ActionModifier? = nil) -> some View {
-    return self.modifier(DispatchProxy(modifyAction: modifyAction))
+  public func modifyActions(_ modifier: ActionModifier? = nil) -> some View {
+    return self.modifier(DispatchProxy(modifyAction: modifier))
   }
 
 }

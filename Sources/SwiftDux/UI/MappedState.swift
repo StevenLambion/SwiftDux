@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 /// Retrieves a mapping of the application state from the environment and provides it to a property in a SwiftUI view.
-/// Use the `mapState(from:for:_:)` method.
+/// Use the `mapState(updateOn:_:)` method.
 /// ```
 /// struct MyView : View {
 ///
