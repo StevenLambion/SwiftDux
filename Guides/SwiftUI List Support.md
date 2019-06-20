@@ -83,12 +83,12 @@ struct BookListView : View {
 
 ## Connect Everything Together
 
-Use the @MapState property wrapper to bind the state to the view. Use the provided @MapDispatch property wrapper to dispatch actions from the event callbacks of the view.
+Use the @MappedState property wrapper to bind the state to the view. Use the provided @MapDispatch property wrapper to dispatch actions from the event callbacks of the view.
 
 ```swift
 struct BookListContainer : View {
-  @MapState var state: AppState
-  @MapDispatch<AppState> var dispatch: Dispatch
+  @MappedState var state: AppState
+  @Dispatcher var dispatch: Dispatch
 
   var body: some View {
     BookListView(

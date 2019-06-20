@@ -20,12 +20,16 @@ Below is an example of a todo app. It has a root `AppState` as well as an ordere
 ```swift
 import SwiftDux
 
-struct AppState : StateType {
-  /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
-  var todos: OrderedState<TodoState>
+struct AppState : StateTyoe {
+  todoList: TodoListState
 }
 
-struct TodoState : IdentifiableState {
+struct TodoListState : StateType {
+  /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
+  var todos: OrderedState<TodoItemState>
+}
+
+struct TodoItemState : IdentifiableState {
   vae id: String,
   var text: String
 }
@@ -69,9 +73,9 @@ The `Reducer` protocol has two primary methods of interest:
 - \*`reduceNext(state:action:)` - Dispatches an action to any subreducers
 
 ```swift
-final class AppReducer : Reducer {
+final class TodoListReducer : Reducer {
 
-  func reduce(state: AppState, action: TodoAction) -> AppState {
+  func reduce(state: TodoState, action: TodoAction) -> AppState {
     var state = state
     switch action {
     case .addTodo(let text):
@@ -88,17 +92,32 @@ final class AppReducer : Reducer {
 }
 ```
 
+```swift
+final class AppReducer : Reducer {
+  let todoListReducer = TodoListReducer()
+
+  func reduceNext(state: AppState, action: TodoAction) -> AppState {
+    State(
+      todoList: todoListReducer.reduceAny(state.todoList, action)
+    )
+  }
+
+}
+```
+
 ## Providing a Store
 
-The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `provideStore(_:)` to inject it into the environment
+The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `provideStore(_:)` to inject it into the environment. To map a particular state to views, use the `mapState(from:for:_:)` method.
 
 ```swift
 import SwiftDux
 
-let store = Store(AppState(todos: OrderedState()), AppReducer())
+let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppReducer())
 
 window.rootViewController = UIHostingController(
-  rootView: RootView().provideStore(store)
+  rootView: RootView()
+    .mapState(from: AppState.self, for: TodoAction.self) { $0.todoList }
+    .provideStore(store)
 )
 ```
 
@@ -136,21 +155,21 @@ struct TodosView : View {
 
 ## Connecting the State to the View
 
-Using the @MapState and the @MapDispatch<\_> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.
+Use the `@MappedState` and the `@MapDispatch` property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. `MappedState` looks for a state that you've mapped in the environment using `mapState(from:for:_:)`.
 
 ```swift
 /// Update when the locally mapped state has changed:
 
 struct TodosContainer : View {
-  @MapState state: AppState
-  @MapDispatch<AppState> dispatch: Dispatch
+  @MappedState todoList: TodoList
+  @MappedDispatch dispatch: Dispatch
 
   var body: some View {
     TodoView(
-      todos: state.todos.values,
-      onAddTodo: { dispatch(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatch(AppAction.removeTodos(at: $0)) }
+      todos: todoList.todos.values,
+      onAddTodo: { dispatch(TodoAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { dispatch(TodoAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { dispatch(TodoAction.removeTodos(at: $0)) }
     )
   }
 ```

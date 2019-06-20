@@ -13,7 +13,7 @@
     <a title="Getting Started  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (88% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (89% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -90,14 +90,6 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Other Classes.html">Other Classes</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Classes/StoreContext.html">StoreContext</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
@@ -151,12 +143,16 @@
 <p>Below is an example of a todo app. It has a root <code>AppState</code> as well as an ordered list of <code>TodoState</code> objects. When storing entities in state, the <code><a href="Protocols/IdentifiableState.html">IdentifiableState</a></code> protocol can be used to help certain SwiftDux APIs work with them.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
-<span class="kd">struct</span> <span class="kt">AppState</span> <span class="p">:</span> <span class="kt">StateType</span> <span class="p">{</span>
-  <span class="c1">/// OrderedState is a built-in type that acts as an ordered dictionary of substates.</span>
-  <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoState</span><span class="o">&gt;</span>
+<span class="kd">struct</span> <span class="kt">AppState</span> <span class="p">:</span> <span class="kt">StateTyoe</span> <span class="p">{</span>
+  <span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoListState</span>
 <span class="p">}</span>
 
-<span class="kd">struct</span> <span class="kt">TodoState</span> <span class="p">:</span> <span class="kt">IdentifiableState</span> <span class="p">{</span>
+<span class="kd">struct</span> <span class="kt">TodoListState</span> <span class="p">:</span> <span class="kt">StateType</span> <span class="p">{</span>
+  <span class="c1">/// OrderedState is a built-in type that acts as an ordered dictionary of substates.</span>
+  <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoItemState</span><span class="o">&gt;</span>
+<span class="p">}</span>
+
+<span class="kd">struct</span> <span class="kt">TodoItemState</span> <span class="p">:</span> <span class="kt">IdentifiableState</span> <span class="p">{</span>
   <span class="n">vae</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span>
   <span class="k">var</span> <span class="nv">text</span><span class="p">:</span> <span class="kt">String</span>
 <span class="p">}</span>
@@ -194,9 +190,9 @@
 <li><code>reduce(state:action:)</code> - For actions supported by the reducer.</li>
 <li>*<code>reduceNext(state:action:)</code> - Dispatches an action to any subreducers</li>
 </ul>
-<pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+<pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">TodoListReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
 
-  <span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">TodoState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
     <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="n">state</span>
     <span class="k">switch</span> <span class="n">action</span> <span class="p">{</span>
     <span class="k">case</span> <span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="k">let</span> <span class="nv">text</span><span class="p">):</span>
@@ -212,15 +208,28 @@
 
 <span class="p">}</span>
 </code></pre>
+<pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+  <span class="k">let</span> <span class="nv">todoListReducer</span> <span class="o">=</span> <span class="kt">TodoListReducer</span><span class="p">()</span>
+
+  <span class="kd">func</span> <span class="nf">reduceNext</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
+    <span class="kt">State</span><span class="p">(</span>
+      <span class="nv">todoList</span><span class="p">:</span> <span class="n">todoListReducer</span><span class="o">.</span><span class="nf">reduceAny</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">todoList</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
 <h2 id='providing-a-store' class='heading'>Providing a Store</h2>
 
-<p>The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There&rsquo;s a convenient view modifier called <code>provideStore(_:)</code> to inject it into the environment</p>
+<p>The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There&rsquo;s a convenient view modifier called <code>provideStore(_:)</code> to inject it into the environment. To map a particular state to views, use the <code>mapState(from:for:_:)</code> method.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
-<span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="kt">AppState</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="p">()),</span> <span class="kt">AppReducer</span><span class="p">())</span>
+<span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="kt">AppState</span><span class="p">(</span><span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoListState</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="p">())),</span> <span class="kt">AppReducer</span><span class="p">())</span>
 
 <span class="n">window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span>
-  <span class="nv">rootView</span><span class="p">:</span> <span class="kt">RootView</span><span class="p">()</span><span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+  <span class="nv">rootView</span><span class="p">:</span> <span class="kt">RootView</span><span class="p">()</span>
+    <span class="o">.</span><span class="nf">mapState</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">AppState</span><span class="o">.</span><span class="k">self</span><span class="p">,</span> <span class="nv">for</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="nv">$0</span><span class="o">.</span><span class="n">todoList</span> <span class="p">}</span>
+    <span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre>
 <h2 id='creating-the-view' class='heading'>Creating the View</h2>
@@ -254,19 +263,19 @@
 </code></pre>
 <h2 id='connecting-the-state-to-the-view' class='heading'>Connecting the State to the View</h2>
 
-<p>Using the @MapState and the @MapDispatch&lt;_&gt; property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.</p>
+<p>Use the <code>@MappedState</code> and the <code>@MapDispatch</code> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. <code>MappedState</code> looks for a state that you&rsquo;ve mapped in the environment using <code>mapState(from:for:_:)</code>.</p>
 <pre class="highlight swift"><code><span class="c1">/// Update when the locally mapped state has changed:</span>
 
 <span class="kd">struct</span> <span class="kt">TodosContainer</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@MapState</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span>
-  <span class="kd">@MapDispatch</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="nv">dispatch</span><span class="p">:</span> <span class="kt">Dispatch</span>
+  <span class="kd">@MappedState</span> <span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoList</span>
+  <span class="kd">@MappedDispatch</span> <span class="nv">dispatch</span><span class="p">:</span> <span class="kt">Dispatch</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
     <span class="kt">TodoView</span><span class="p">(</span>
-      <span class="nv">todos</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-      <span class="nv">onAddTodo</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="s">"New Todo"</span><span class="p">))</span> <span class="p">},</span>
-      <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">},</span>
-      <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
+      <span class="nv">todos</span><span class="p">:</span> <span class="n">todoList</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+      <span class="nv">onAddTodo</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="s">"New Todo"</span><span class="p">))</span> <span class="p">},</span>
+      <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">},</span>
+      <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
     <span class="p">)</span>
   <span class="p">}</span>
 </code></pre>
@@ -284,7 +293,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-19)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-20)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
