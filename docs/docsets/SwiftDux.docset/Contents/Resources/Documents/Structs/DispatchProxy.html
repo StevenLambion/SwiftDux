@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StoreProvider Structure Reference</title>
+    <title>DispatchProxy Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/StoreProvider" class="dashAnchor"></a>
-    <a title="StoreProvider Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/DispatchProxy" class="dashAnchor"></a>
+    <a title="DispatchProxy Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftDux Docs</a> (87% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftDux Reference</a>
         <img id="carat" src="../img/carat.png" />
-        StoreProvider Structure Reference
+        DispatchProxy Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -130,15 +130,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>StoreProvider</h1>
+            <h1>DispatchProxy</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StoreProvider</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ViewModifier</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DispatchProxy</span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ViewModifier</span> <span class="k">where</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">S</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                 </div>
               </div>
-            <p>A view modifier that injects a store into the environment. Use the
-<code><a href="../Extensions/View.html#/s:7SwiftUI4ViewP0A3DuxE12provideStoreyAA16_ModifiedContentVyxAD0F8ProviderVyqd__GGAD0F0Cyqd__GSeRd__SERd__lF">View.provideStore(_:)</a></code>` method instead of this type directly.</p>
+            <p>Undocumented</p>
 
           </section>
           <section class="section task-group-section">
@@ -147,9 +146,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux13StoreProviderV5storeACyxGAA0C0CyxG_tcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(store:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux13StoreProviderV5storeACyxGAA0C0CyxG_tcfc">init(store:)</a>
+                    <a name="/s:8SwiftDux13DispatchProxyV12modifyActionACyxGAA0F0_pSgAaF_pcSg_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(modifyAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux13DispatchProxyV12modifyActionACyxGAA0F0_pSgAaF_pcSg_tcfc">init(modifyAction:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -164,7 +163,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a></span><span class="o">&lt;</span><span class="kt">S</span><span class="o">&gt;.</span><span class="kt">ActionModifier</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>

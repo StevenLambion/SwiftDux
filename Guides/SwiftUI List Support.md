@@ -83,15 +83,18 @@ struct BookListView : View {
 
 ## Connect Everything Together
 
-Use the `connect` method to bind the state to the view. Use the provided dispatcher to dispatch actions from the event callbacks of the view.
+Use the @MapState property wrapper to bind the state to the view. Use the provided @MapDispatch property wrapper to dispatch actions from the event callbacks of the view.
 
 ```swift
-func BookListContainer() -> some View {
-  Store<AppState>.connect(updateOn: AppAction.self) { state, dispatcher in
+struct BookListContainer : View {
+  @MapState var state: AppState
+  @MapDispatch<AppState> var dispatch: Dispatch
+
+  var body: some View {
     BookListView(
       books: state.books.value,
-      onMoveBooks: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveBooks: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+      onMoveBooks: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveBooks: { dispatch(AppAction.removeTodos(at: $0)) }
     )
   }
 }

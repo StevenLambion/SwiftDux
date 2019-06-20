@@ -4,21 +4,23 @@ import Combine
 /// Provides the application's store to views in the environment.
 ///
 /// Typically you should use the `Store<_>.connect(updateOn:wrapper:)` method.
-internal class StoreContext<State> : BindableObject where State : StateType {
+public class StoreContext<State> : BindableObject where State : StateType {
   public var didChange = PassthroughSubject<Void, Never>()
+  public var lastAction: Action?
 
   /// The current store in the environment.
-  public var store: Store<State> {
-    didSet { didChange.send(()) }
-  }
-
-  public var dispatcher: StoreActionDispatcher<State> {
-    didSet { didChange.send(()) }
-  }
+  public let store: Store<State>
+  public let dispatcher: StoreActionDispatcher<State>
+  public var cancellable: AnyCancellable? = nil
 
   public init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
     self.store = store
     self.dispatcher = dispatcher
+    self.cancellable = self.store.didChangeWithAction
+      .map { [unowned self] in
+        self.lastAction = $0
+        return ()
+      }.subscribe(didChange)
   }
 }
 
@@ -29,7 +31,10 @@ public struct StoreProvider<State> : ViewModifier where State : StateType {
   private var storeContext: StoreContext<State>
 
   public init(store: Store<State>) {
-    self.storeContext = StoreContext(store: store, dispatcher: store.dispatcher())
+    self.storeContext = StoreContext(
+      store: store,
+      dispatcher: store.dispatcher()
+    )
   }
 
   public func body(content: Content) -> some View {
@@ -38,7 +43,7 @@ public struct StoreProvider<State> : ViewModifier where State : StateType {
 
 }
 
-private struct DispatchProxy<S>: ViewModifier where S : StateType {
+public struct DispatchProxy<S>: ViewModifier where S : StateType {
   @EnvironmentObject var storeContext: StoreContext<S>
 
   var modifyAction: StoreActionDispatcher<S>.ActionModifier? = nil
@@ -58,8 +63,8 @@ private struct DispatchProxy<S>: ViewModifier where S : StateType {
 
 extension View {
 
-  /// Injects a store into the environment. The store is then used by the `Store<State>.connect()`
-  /// method to connect the state to a view.
+  /// Injects a store into the environment. The store is then used by the `@MapState`
+  /// property wrapper to connect the state to a view.
   /// ```
   /// struct RootView: View {
   ///   // Passed in from the AppDelegate or SceneDelegate class.
