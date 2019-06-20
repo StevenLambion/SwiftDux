@@ -44,6 +44,64 @@ let package = Package(
 )
 ```
 
+## Examples in SwiftUI
+
+### Add the store to the environent
+
+```swift
+struct RootView {
+  var store: Store<AppState>
+
+  var body: some View {
+    BookListView()
+      .mapState(updateOn: BookAction.self) { (state: AppState) in state.bookList }
+      .provideStore(store)
+  }
+
+}
+```
+
+### Use property wrappers to inject mapped states and the store dispatcher
+
+```swift
+struct BookListView : View {
+  @MappedState var bookList: BookListState
+  @Dispatcher var send: SendAction
+
+  var body: some View {
+    List {
+      ForEach(bookList.books.values) { item in
+        BookRow(item: item)
+      }
+      .onMove { send(BookAction.moveBooks(from: $0, to: $1)) }
+      .onDelete  { send(BookAction.removeBooks(at: $0)) }
+    }
+  }
+}
+```
+
+### Modify actions sent from child views
+
+```swift
+struct AuthorView {
+  @MappedState author: AuthorState
+
+  var body: some View {
+    BookListView()
+      .mapState(updateOn: BookAction.self) { (state: AuthorState) in state.bookList }
+      .modifyActions(self.modifyBookActions)
+  }
+
+  func modifyBookActions(action: Action) -> Action? {
+    if let action = action as? BookAction {
+      return AuthorAction.modifyAction(for: author.id, action)
+    }
+    return action
+  }
+
+}
+```
+
 ## Motivation
 
 As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I've ripped out the "redux" portion and added it here as its own separate library in the hopes that it helps others.

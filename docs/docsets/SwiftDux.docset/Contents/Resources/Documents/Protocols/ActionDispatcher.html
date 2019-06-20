@@ -78,9 +78,6 @@
                 <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
               </li>
             </ul>
@@ -132,6 +129,17 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/StateMapper.html">StateMapper</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other Typealiases.html#/s:8SwiftDux10SendActiona">SendAction</a>
               </li>
             </ul>
           </li>
@@ -203,6 +211,53 @@ solely on changes to the state of the application to respond.</p>
                       <div>
                         <h4>Return Value</h4>
                         <p>An optional publisher that can be used to indicate when the action is complete.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux16ActionDispatcherP5proxy06modifyC0AaB_pAA0C0_pSgAaF_pcSg_tF"></a>
+                    <a name="//apple_ref/swift/Method/proxy(modifyAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux16ActionDispatcherP5proxy06modifyC0AaB_pAA0C0_pSgAaF_pcSg_tF">proxy(modifyAction:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new <code><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher&lt;_&gt;</a></code> that proxies off of the current one. Actions will be modified
+by both the new proxy and the original dispatcher it was created from.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">proxy</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Other Typealiases.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ActionDispatcher</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>modifyAction</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A closure to modify the action before it continues up stream.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>

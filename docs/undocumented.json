@@ -2,21 +2,21 @@
   "warnings": [
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 25,
+      "line": 34,
       "symbol": "ActionDispatcher.receive(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 32,
+      "line": 41,
       "symbol": "ActionDispatcher.receive(completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 41,
+      "line": 50,
       "symbol": "ActionDispatcher.receive(subscription:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -72,21 +72,21 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 40,
+      "line": 28,
       "symbol": "StoreProvider.init(store:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 62,
+      "line": 47,
       "symbol": "DispatchProxy",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 67,
+      "line": 52,
       "symbol": "DispatchProxy.init(modifyAction:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

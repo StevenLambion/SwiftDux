@@ -116,7 +116,7 @@ let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppR
 
 window.rootViewController = UIHostingController(
   rootView: RootView()
-    .mapState(from: AppState.self, for: TodoAction.self) { $0.todoList }
+    .mapState(updateOn: TodoAction.self) { (state: AppState) in state.todoList }
     .provideStore(store)
 )
 ```
@@ -162,14 +162,14 @@ Use the `@MappedState` and the `@MapDispatch` property wrappers to bind the appl
 
 struct TodosContainer : View {
   @MappedState todoList: TodoList
-  @MappedDispatch dispatch: Dispatch
+  @Dispatcher send: SendAction
 
   var body: some View {
     TodoView(
       todos: todoList.todos.values,
-      onAddTodo: { dispatch(TodoAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatch(TodoAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatch(TodoAction.removeTodos(at: $0)) }
+      onAddTodo: { send(TodoAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { send(TodoAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { send(TodoAction.removeTodos(at: $0)) }
     )
   }
 ```

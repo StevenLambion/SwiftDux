@@ -71,7 +71,7 @@ struct BookListView : View {
 
   var body: some View {
     List {
-      ForEach(todos) { item in
+      ForEach(books) { item in
         BookRow(item: item)
       }
       .onMove(perform: onMoveBooks)
@@ -87,15 +87,27 @@ Use the @MappedState property wrapper to bind the state to the view. Use the pro
 
 ```swift
 struct BookListContainer : View {
-  @MappedState var state: AppState
-  @Dispatcher var dispatch: Dispatch
+  @MappedState var books: OrderedState<Book>
+  @Dispatcher var send: SendAction
 
   var body: some View {
     BookListView(
-      books: state.books.value,
-      onMoveBooks: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveBooks: { dispatch(AppAction.removeTodos(at: $0)) }
+      books: books.value,
+      onMoveBooks: { send(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveBooks: { send(AppAction.removeTodos(at: $0)) }
     )
   }
+}
+```
+
+```swift
+struct RootView : View {
+
+  var body: some View {
+    BookListContainer()
+      .mapState(updateOn: AppAction.self) { (state: AppState) in state.books }
+      .provideStore(store)
+  }
+
 }
 ```
