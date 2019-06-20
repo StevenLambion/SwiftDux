@@ -5,34 +5,22 @@ import Combine
 ///
 /// Once an action is sent, the sender shouldn't expect anything to occur. Instead, it should rely
 /// solely on changes to the state of the application to respond.
-public protocol ActionDispatcher : Subscriber where Input == Action, Failure == Never {
+public protocol ActionDispatcher {
 
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
-  func send(_ action: Action)
-
-  /// Subscribes the dispatcher to an action publisher
-  /// - Parameter actionPublisher: A publisher that emits actions to be dispatched.
-  /// - Returns: A publisher that events when an action is sent. It can also be used to notify when the publisher is completed.
   @discardableResult
-  func send<P>(_ actionPublisher: P) -> AnyPublisher<Void, Never> where P : Publisher, P.Output == Action, P.Failure == Never
+  func send(_ action: Action) -> AnyPublisher<Void, Never>
 
 }
 
 // Default `Subscriber` implementation
-extension ActionDispatcher {
+extension ActionDispatcher where Self : Subscriber, Self.Input == Action?, Self.Failure == Never {
 
-  /// Subscribes the dispatcher to an action publisher
-  /// - Parameter actionPublisher: A publisher that emits actions to be dispatched.
-  /// - Returns: A publisher that events when an action is sent. It can also be used to notify when the publisher is completed.
-  @discardableResult
-  public func send<P>(_ actionPublisher: P) -> AnyPublisher<Void, Never> where P : Publisher, P.Output == Action, P.Failure == Never {
-    actionPublisher.subscribe(self)
-    return actionPublisher.map { _ in () }.eraseToAnyPublisher()
-  }
-
-  public func receive(_ input: Action) -> Subscribers.Demand {
-    self.send(input)
+  public func receive(_ input: Action?) -> Subscribers.Demand {
+    if  let input = input {
+      self.send(input)
+    }
     return .unlimited
   }
 

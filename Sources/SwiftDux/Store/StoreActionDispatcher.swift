@@ -23,7 +23,7 @@ import Combine
 ///   }
 /// }
 /// ```
-public final class StoreActionDispatcher<State> : ActionPlanDispatcher where State : StateType {
+public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
   
   /// A closure that can return a new action from a previous one. If no action is returned,
   /// the original action is not sent.
@@ -46,12 +46,20 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
   
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
-  public func send(_ action: Action) {
-    if let modifyAction = modifyAction, let newAction = modifyAction(action) {
-      upstream.send(newAction)
-      upstreamActionSubject.send(action)
+  @discardableResult
+  public func send(_ action: Action) -> AnyPublisher<Void, Never> {
+    if let action = action as? ActionPlan<State> {
+      return self.send(actionPlan: action)
+    } else if let action = action as? PublishableActionPlan<State> {
+      return self.send(actionPlan: action)
     } else {
-      upstream.send(action)
+      if let modifyAction = modifyAction, let newAction = modifyAction(action) {
+        let publisher = upstream.send(newAction)
+        self.upstreamActionSubject.send(action)
+        return publisher
+      } else {
+        return upstream.send(action)
+      }
     }
   }
   
@@ -63,10 +71,11 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
   /// to offload to other threads to perform complex workflows before pushing the changes into the state
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
-  public func send(_ actionPlan: ActionPlan<State>) {
-    let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
+  private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
+    let dispatch: Dispatch = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    actionPlan(dispatch, getState)
+    actionPlan.body(dispatch, getState)
+    return Publishers.Just(()).eraseToAnyPublisher()
   }
   
   /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
@@ -79,10 +88,10 @@ public final class StoreActionDispatcher<State> : ActionPlanDispatcher where Sta
   /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
   @discardableResult
-  public func send(_ actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let dispatch: ActionPlanDispatch = { [unowned self] in self.send($0) }
+  public func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
+    let dispatch: Dispatch = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan(dispatch, getState).share()
+    let publisher  = actionPlan.body(dispatch, getState).share()
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()
   }
