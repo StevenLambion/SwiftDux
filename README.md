@@ -94,7 +94,7 @@ struct AuthorView {
 
   func modifyBookActions(action: Action) -> Action? {
     if let action = action as? BookAction {
-      return AuthorAction.modifyAction(for: author.id, action)
+      return AuthorAction.routeBookAction(for: author.id, action)
     }
     return action
   }
