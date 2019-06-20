@@ -136,37 +136,41 @@ struct TodosView : View {
 
 ## Connecting the State to the View
 
-Using the static connect methods off of the `Store<_>` class, you can bind a view to the state and also dispatch actions. The connect method will automatically retrieve the store from the environment, and watch for changes to the state. When it detects a relevant change, it will update the view for you.
+Using the @MapState, @MapStateForAction, and the @MapDispatch<\_> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.
 
 ```swift
 /// Update when the locally mapped state has changed:
 
-func TodosContainer() -> some View {
-  Store<AppState>.connect({ state.todos.value }) { todos, dispatcher in
-    TodosView(
-      todos: todos,
-      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+struct TodosContainer : View {
+  @MapState state: AppState
+  @MapDispatch<AppState> dispatch: Dispatch
+
+  var body: some View {
+    TodoView(
+      todos: state.todos.values,
+      onAddTodo: { dispatch(AppAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { dispatch(AppAction.removeTodos(at: $0)) }
     )
   }
-}
 
 /// Update when an action has been dispatched:
 
-func TodosContainer() -> some View {
-  Store<AppState>.connect(updateOn: TodoAction.self) { state, dispatcher in
-    TodosView(
-      todos: state.todos.value,
-      onAddTodo: { dispatcher.send(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatcher.send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatcher.send(AppAction.removeTodos(at: $0)) }
+struct TodosContainer : View {
+  @MapStateForAction<AppState, TodoAction> state: AppState
+  @MapDispatch<AppState> dispatch: Dispatch
+
+  var body: some View {
+    TodoView(
+      todos: state.todos.values,
+      onAddTodo: { dispatch(AppAction.addTodo(text: "New Todo")) },
+      onMoveTodos: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
+      onRemoveTodos: { dispatch(AppAction.removeTodos(at: $0)) }
     )
   }
-}
 ```
 
-The container view can be added like any other view:
+Add the container to the root view:
 
 ```swift
 struct RootView : View {

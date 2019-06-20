@@ -1,6 +1,10 @@
 import Foundation
 import Combine
 
+/// A closure that dispatches an action
+/// - Parameter action: Dispatches the given state synchronously.
+public typealias Dispatch = (Action) -> ()
+
 /// An object that dispatches actions to a store.
 ///
 /// Once an action is sent, the sender shouldn't expect anything to occur. Instead, it should rely
@@ -9,6 +13,7 @@ public protocol ActionDispatcher {
 
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
+  /// - Returns: An optional publisher that can be used to indicate when the action is complete.
   @discardableResult
   func send(_ action: Action) -> AnyPublisher<Void, Never>
 

@@ -72,13 +72,16 @@ extension Store : ActionDispatcher, Subscriber {
     return Publishers.Just(()).eraseToAnyPublisher()
   }
   
+  /// Handles the sending of normal action plans.
+  @discardableResult
   private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
     let dispatch: Dispatch = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned self] in self.state }
     actionPlan.body(dispatch, getState)
     return Publishers.Just(()).eraseToAnyPublisher()
   }
-    
+  
+  /// Handles the sending of publishable action plans.
   @discardableResult
   public func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
     let dispatch: Dispatch = { [unowned self] in self.send($0) }

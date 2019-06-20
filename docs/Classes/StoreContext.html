@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Reducer Protocol Reference</title>
+    <title>StoreContext Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/Reducer" class="dashAnchor"></a>
-    <a title="Reducer Protocol Reference"></a>
+    <a name="//apple_ref/swift/Class/StoreContext" class="dashAnchor"></a>
+    <a title="StoreContext Class Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftDux Docs</a> (87% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftDux Reference</a>
         <img id="carat" src="../img/carat.png" />
-        Reducer Protocol Reference
+        StoreContext Class Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -130,21 +130,16 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Reducer</h1>
+            <h1>StoreContext</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Reducer</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">StoreContext</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">BindableObject</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                 </div>
               </div>
-            <p>Performs an action on a given state and returns a whole new version.</p>
+            <p>Provides the application&rsquo;s store to views in the environment.</p>
 
-<p>A store is given a single root <code>Reducer</code>. As it&rsquo;s sent actions, it runs the reducer to
-update the application&rsquo;s state. The reducer can have subreducers to separate code
-out into modular parts.</p>
-
-<p>For a reducer&rsquo;s own state and actions, implement the <code>reduce(state:action:)</code>.
-For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p>
+<p>Typically you should use the <code>Store&lt;_&gt;.connect(updateOn:wrapper:)</code> method.</p>
 
           </section>
           <section class="section task-group-section">
@@ -153,9 +148,9 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerP5StateQa"></a>
-                    <a name="//apple_ref/swift/Alias/State" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerP5StateQa">State</a>
+                    <a name="/s:7SwiftUI14BindableObjectP9didChange13PublisherTypeQzvp"></a>
+                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI14BindableObjectP9didChange13PublisherTypeQzvp">didChange</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -163,14 +158,13 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The type of state that the <code>Reducer</code> is able to mutate.</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">Encodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">PassthroughSubject</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -180,9 +174,9 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerP0C6ActionQa"></a>
-                    <a name="//apple_ref/swift/Alias/ReducerAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerP0C6ActionQa">ReducerAction</a>
+                    <a name="/s:8SwiftDux12StoreContextC10lastActionAA0F0_pSgvp"></a>
+                    <a name="//apple_ref/swift/Property/lastAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC10lastActionAA0F0_pSgvp">lastAction</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,14 +184,14 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The supported actions of a reducer.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">ReducerAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">lastAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -207,38 +201,26 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerP6reduce5state6action5StateQzAH_0C6ActionQztF"></a>
-                    <a name="//apple_ref/swift/Method/reduce(state:action:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerP6reduce5state6action5StateQzAH_0C6ActionQztF">reduce(state:action:)</a>
+                    <a name="/s:8SwiftDux12StoreContextC5storeAA0C0CyxGvp"></a>
+                    <a name="//apple_ref/swift/Property/store" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC5storeAA0C0CyxGvp">store</a>
                     </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Operates on the state with the reducer&rsquo;s own actions, returning a fresh new copy of the state.</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        <p>Returns the state without modifying it.</p>
+                        <p>The current store in the environment.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP0C6ActionQa">ReducerAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A new immutable state</p>
                       </div>
                     </section>
                   </div>
@@ -246,77 +228,80 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerP10reduceNext5state6action5StateQzAH_AA6Action_ptF"></a>
-                    <a name="//apple_ref/swift/Method/reduceNext(state:action:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerP10reduceNext5state6action5StateQzAH_AA6Action_ptF">reduceNext(state:action:)</a>
+                    <a name="/s:8SwiftDux12StoreContextC10dispatcherAA0C16ActionDispatcherCyxGvp"></a>
+                    <a name="//apple_ref/swift/Property/dispatcher" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC10dispatcherAA0C16ActionDispatcherCyxGvp">dispatcher</a>
                     </code>
-                      <span class="declaration-note">
-                        Default implementation
-                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Delegates an action to a subreducer.</p>
-
-                      </div>
-                      <h4>Default Implementation</h4>
-                      <div class="default_impl abstract">
-                        <p>Returns the state without modifying it.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">reduceNext</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">dispatcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A new immutable state</p>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerPAAE9reduceAny5state6action5StateQzAH_AA6Action_ptF"></a>
-                    <a name="//apple_ref/swift/Method/reduceAny(state:action:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerPAAE9reduceAny5state6action5StateQzAH_AA6Action_ptF">reduceAny(state:action:)</a>
+                    <a name="/s:8SwiftDux12StoreContextC11cancellable7Combine14AnyCancellableCSgvp"></a>
+                    <a name="//apple_ref/swift/Property/cancellable" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC11cancellable7Combine14AnyCancellableCSgvp">cancellable</a>
                     </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Send any kind of action to a reducer. The recuder will determine what it can do with
-the action.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">reduceAny</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Reducer.html#/s:8SwiftDux7ReducerP5StateQa">State</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">cancellable</span><span class="p">:</span> <span class="kt">AnyCancellable</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A new immutable state</p>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12StoreContextC5store10dispatcherACyxGAA0C0CyxG_AA0C16ActionDispatcherCyxGtcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(store:dispatcher:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC5store10dispatcherACyxGAA0C0CyxG_AA0C16ActionDispatcherCyxGtcfc">init(store:dispatcher:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">dispatcher</span><span class="p">:</span> <span class="kt"><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>

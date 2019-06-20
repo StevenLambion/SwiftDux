@@ -1,6 +1,14 @@
 import Foundation
 import SwiftUI
 
+/// Retrieves the current application state from thje environment and maps it to a property in a SwiftUI view when a give action type is dispatched.
+/// ```
+/// struct MyView : View {
+///
+///   @MapStateForAction<AppState, UserAction> var state: AppState
+///
+/// }
+/// ```
 @propertyDelegate
 public struct MapStateForAction<State: StateType, KindOfAction> : DynamicViewProperty where KindOfAction : Action {
   

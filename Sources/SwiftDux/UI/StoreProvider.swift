@@ -63,8 +63,8 @@ public struct DispatchProxy<S>: ViewModifier where S : StateType {
 
 extension View {
 
-  /// Injects a store into the environment. The store is then used by the `Store<State>.connect()`
-  /// method to connect the state to a view.
+  /// Injects a store into the environment. The store is then used by the `@MapState`
+  /// property wrapper to connect the state to a view.
   /// ```
   /// struct RootView: View {
   ///   // Passed in from the AppDelegate or SceneDelegate class.

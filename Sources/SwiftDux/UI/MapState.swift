@@ -1,6 +1,14 @@
 import Foundation
 import SwiftUI
 
+/// Retrieves the current application state from thje environment and maps it to a property in a SwiftUI view.
+/// ```
+/// struct MyView : View {
+///
+///   @MapState var state: AppState
+///
+/// }
+/// ```
 @propertyDelegate
 public struct MapState<State: StateType> : DynamicViewProperty {
   
