@@ -24,10 +24,6 @@ import Combine
 /// ```
 public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
 
-  /// A closure that can return a new action from a previous one. If no action is returned,
-  /// the original action is not sent.
-  public typealias ActionModifier = (Action) -> Action?
-
   private let upstream: Store<State>
   private let upstreamActionSubject: PassthroughSubject<Action, Never>
   private let modifyAction: ActionModifier?
@@ -103,7 +99,7 @@ extension StoreActionDispatcher {
   /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one. Actions will be modified
   /// by both the new proxy and the original dispatcher it was created from.
   /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func proxy(modifyAction: ActionModifier? = nil) -> StoreActionDispatcher<State> {
+  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper = upstreamModifyAction
     if let modifyAction = modifyAction {

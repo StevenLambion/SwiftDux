@@ -5,6 +5,10 @@ import Combine
 /// - Parameter action: Dispatches the given state synchronously.
 public typealias Dispatch = (Action) -> ()
 
+/// A closure that can return a new action from a previous one. If no action is returned,
+/// the original action is not sent.
+public typealias ActionModifier = (Action) -> Action?
+
 /// An object that dispatches actions to a store.
 ///
 /// Once an action is sent, the sender shouldn't expect anything to occur. Instead, it should rely
@@ -16,6 +20,11 @@ public protocol ActionDispatcher {
   /// - Returns: An optional publisher that can be used to indicate when the action is complete.
   @discardableResult
   func send(_ action: Action) -> AnyPublisher<Void, Never>
+  
+  /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one. Actions will be modified
+  /// by both the new proxy and the original dispatcher it was created from.
+  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
+  func proxy(modifyAction: ActionModifier?) -> ActionDispatcher
 
 }
 
