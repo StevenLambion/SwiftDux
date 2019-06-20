@@ -14,16 +14,19 @@ public struct MapState<State: StateType> : DynamicViewProperty {
   
   @EnvironmentObject private var storeContext: StoreContext<State>
   
-  private var _value: State!
-  
   public var value: State {
-    return _value
+    nonmutating get {
+      storeContext.store.state
+    }
   }
   
   public init() {}
   
-  public mutating func update() {
-    self._value = storeContext.store.state
+  public func bind<T>(_ mapState: @escaping (State) -> T, update: @escaping (T) -> Action) -> Binding<T> {
+    return Binding<T>(
+      getValue: { mapState(self.value) } ,
+      setValue: { self.storeContext.dispatcher.send(update($0)) }
+    )
   }
   
 }

@@ -7,13 +7,10 @@ final class PerformanceTests: XCTestCase {
   func testOrderedStatePerformance() {
     measure {
       let store = Store(state: TestState.defaultState, reducer: TestReducer())
-      var counter = store.state.todoLists["123"].todos.count
-      let sink = store.mapState { $0.todoLists["123"].todos.count }.sink { _ in counter += 1 }
-      defer { sink.cancel() }
       for i in 0...10000 {
         store.send(TodoListAction.addTodo(toList: "123", withText: "Todo item \(i)"))
       }
-      XCTAssertEqual(counter, store.state.todoLists["123"].todos.count)
+      XCTAssertEqual(10004, store.state.todoLists["123"].todos.count)
       
       let firstMoveItem = store.state.todoLists["123"].todos.values[300]
       store.send(TodoListAction.moveTodos(inList: "123", from: IndexSet(300...5000), to: 8000))

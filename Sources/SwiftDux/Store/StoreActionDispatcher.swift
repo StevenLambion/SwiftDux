@@ -29,17 +29,14 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   public typealias ActionModifier = (Action) -> Action?
 
   private let upstream: Store<State>
-  private let upstreamActionSubject: PassthroughSubject<Action, Never>
   private let modifyAction: ActionModifier?
 
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
   ///   - upstream: The store object.
-  ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  public init(upstream: Store<State>, upstreamActionSubject: PassthroughSubject<Action, Never>, modifyAction: ActionModifier? = nil) {
+  public init(upstream: Store<State>, modifyAction: ActionModifier? = nil) {
     self.upstream = upstream
-    self.upstreamActionSubject = upstreamActionSubject
     self.modifyAction = modifyAction
   }
 
@@ -54,7 +51,6 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
     } else {
       if let modifyAction = modifyAction, let newAction = modifyAction(action) {
         let publisher = upstream.send(newAction)
-        self.upstreamActionSubject.send(action)
         return publisher
       } else {
         return upstream.send(action)
@@ -116,7 +112,6 @@ extension StoreActionDispatcher {
     }
     return StoreActionDispatcher<State>(
       upstream: self.upstream,
-      upstreamActionSubject: self.upstreamActionSubject,
       modifyAction: modifyActionWrapper
     )
   }

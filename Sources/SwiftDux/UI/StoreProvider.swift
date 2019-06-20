@@ -5,22 +5,16 @@ import Combine
 ///
 /// Typically you should use the `Store<_>.connect(updateOn:wrapper:)` method.
 public class StoreContext<State> : BindableObject where State : StateType {
-  public var didChange = PassthroughSubject<Void, Never>()
-  public var lastAction: Action?
+  public var didChange: AnyPublisher<Void, Never>
 
   /// The current store in the environment.
   public let store: Store<State>
   public let dispatcher: StoreActionDispatcher<State>
-  public var cancellable: AnyCancellable? = nil
 
   public init(store: Store<State>, dispatcher: StoreActionDispatcher<State>) {
     self.store = store
     self.dispatcher = dispatcher
-    self.cancellable = self.store.didChangeWithAction
-      .map { [unowned self] in
-        self.lastAction = $0
-        return ()
-      }.subscribe(didChange)
+    self.didChange = self.store.didChange
   }
 }
 

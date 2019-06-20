@@ -14,7 +14,7 @@
     <a title="Store Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SwiftDux Docs</a> (87% documented)</p>
+        <p><a href="../index.html">SwiftDux Docs</a> (88% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -140,7 +140,7 @@
             <p>The primary container of an application&rsquo;s state.</p>
 
 <p>The store both contains and mutates the state through a provided reducer as it&rsquo;s sent actions.
-Use the didChangeWithAction to be notified of changes.</p>
+Use the didChange publisher to be notified of changes.</p>
 
           </section>
           <section class="section task-group-section">
@@ -176,9 +176,9 @@ Use the didChangeWithAction to be notified of changes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux5StoreC19didChangeWithAction7Combine12AnyPublisherVyAA0G0_ps5NeverOGvp"></a>
-                    <a name="//apple_ref/swift/Property/didChangeWithAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC19didChangeWithAction7Combine12AnyPublisherVyAA0G0_ps5NeverOGvp">didChangeWithAction</a>
+                    <a name="/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp"></a>
+                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC9didChange7Combine12AnyPublisherVyyts5NeverOGvp">didChange</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -193,7 +193,7 @@ Use the didChangeWithAction to be notified of changes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChangeWithAction</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -223,126 +223,6 @@ Use the didChangeWithAction to be notified of changes.</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">reducer</span><span class="p">:</span> <span class="kt">R</span><span class="p">)</span> <span class="k">where</span> <span class="kt">State</span> <span class="o">==</span> <span class="kt">R</span><span class="o">.</span><span class="kt">State</span><span class="p">,</span> <span class="kt">R</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html">Reducer</a></span></code></pre>
 
                         </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux5StoreC2on12typeOfAction7Combine12AnyPublisherVyyts5NeverOGqd__m_tAA0G0Rd__lF"></a>
-                    <a name="//apple_ref/swift/Method/on(typeOfAction:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC2on12typeOfAction7Combine12AnyPublisherVyyts5NeverOGqd__m_tAA0G0Rd__lF">on(typeOfAction:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Subscribe to the store to be notified when a type of action is dispatched.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">on</span><span class="o">&lt;</span><span class="kt">A</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">typeOfAction</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">A</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>typeOfAction</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The type of action required to emit a notification.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux5StoreC2on12typeOfAction8mapState7Combine12AnyPublisherVyqd_0_s5NeverOGqd__m_qd_0_xctAA0G0Rd__SQRd_0_r0_lF"></a>
-                    <a name="//apple_ref/swift/Method/on(typeOfAction:mapState:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC2on12typeOfAction8mapState7Combine12AnyPublisherVyqd_0_s5NeverOGqd__m_qd_0_xctAA0G0Rd__SQRd_0_r0_lF">on(typeOfAction:mapState:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Subscribe to the store to map its state when an action is dispatched. The publisher only fires when the output type has changed.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">on</span><span class="o">&lt;</span><span class="kt">A</span><span class="p">,</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">typeOfAction</span><span class="p">:</span> <span class="kt">A</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">A</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux5StoreC8mapStatey7Combine12AnyPublisherVyqd__s5NeverOGqd__xcSQRd__lF"></a>
-                    <a name="//apple_ref/swift/Method/mapState(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC8mapStatey7Combine12AnyPublisherVyqd__s5NeverOGqd__xcSQRd__lF">mapState(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Map the state of the store to a new object when it changes. It emits a new object only when there&rsquo;s a change.
-Because of this, it requires that the object adhere to the <code>Equatable</code> protocol.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">mapState</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">State</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">T</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>mapState</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A closure that maps the state to an object.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>

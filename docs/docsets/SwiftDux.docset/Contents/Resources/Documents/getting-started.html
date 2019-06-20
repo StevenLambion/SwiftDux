@@ -13,7 +13,7 @@
     <a title="Getting Started  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (87% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (88% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -254,26 +254,11 @@
 </code></pre>
 <h2 id='connecting-the-state-to-the-view' class='heading'>Connecting the State to the View</h2>
 
-<p>Using the @MapState, @MapStateForAction, and the @MapDispatch&lt;_&gt; property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.</p>
+<p>Using the @MapState and the @MapDispatch&lt;_&gt; property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.</p>
 <pre class="highlight swift"><code><span class="c1">/// Update when the locally mapped state has changed:</span>
 
 <span class="kd">struct</span> <span class="kt">TodosContainer</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
   <span class="kd">@MapState</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span>
-  <span class="kd">@MapDispatch</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="nv">dispatch</span><span class="p">:</span> <span class="kt">Dispatch</span>
-
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">TodoView</span><span class="p">(</span>
-      <span class="nv">todos</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-      <span class="nv">onAddTodo</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">addTodo</span><span class="p">(</span><span class="nv">text</span><span class="p">:</span> <span class="s">"New Todo"</span><span class="p">))</span> <span class="p">},</span>
-      <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">},</span>
-      <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="nf">dispatch</span><span class="p">(</span><span class="kt">AppAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
-    <span class="p">)</span>
-  <span class="p">}</span>
-
-<span class="c1">/// Update when an action has been dispatched:</span>
-
-<span class="kd">struct</span> <span class="kt">TodosContainer</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@MapStateForAction</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="p">,</span> <span class="kt">TodoAction</span><span class="o">&gt;</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span>
   <span class="kd">@MapDispatch</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="nv">dispatch</span><span class="p">:</span> <span class="kt">Dispatch</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>

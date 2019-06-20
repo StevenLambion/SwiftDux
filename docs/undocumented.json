@@ -30,14 +30,7 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 9,
-      "symbol": "StoreContext.lastAction",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 13,
+      "line": 12,
       "symbol": "StoreContext.dispatcher",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
@@ -45,34 +38,27 @@
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
       "line": 14,
-      "symbol": "StoreContext.cancellable",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 16,
       "symbol": "StoreContext.init(store:dispatcher:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 33,
+      "line": 27,
       "symbol": "StoreProvider.init(store:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 46,
+      "line": 40,
       "symbol": "DispatchProxy",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 51,
+      "line": 45,
       "symbol": "DispatchProxy.init(modifyAction:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

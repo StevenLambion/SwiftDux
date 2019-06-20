@@ -136,28 +136,13 @@ struct TodosView : View {
 
 ## Connecting the State to the View
 
-Using the @MapState, @MapStateForAction, and the @MapDispatch<\_> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.
+Using the @MapState and the @MapDispatch<\_> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state.
 
 ```swift
 /// Update when the locally mapped state has changed:
 
 struct TodosContainer : View {
   @MapState state: AppState
-  @MapDispatch<AppState> dispatch: Dispatch
-
-  var body: some View {
-    TodoView(
-      todos: state.todos.values,
-      onAddTodo: { dispatch(AppAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { dispatch(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { dispatch(AppAction.removeTodos(at: $0)) }
-    )
-  }
-
-/// Update when an action has been dispatched:
-
-struct TodosContainer : View {
-  @MapStateForAction<AppState, TodoAction> state: AppState
   @MapDispatch<AppState> dispatch: Dispatch
 
   var body: some View {

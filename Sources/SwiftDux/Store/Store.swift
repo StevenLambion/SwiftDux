@@ -4,17 +4,17 @@ import Combine
 /// The primary container of an application's state.
 ///
 /// The store both contains and mutates the state through a provided reducer as it's sent actions.
-/// Use the didChangeWithAction to be notified of changes.
+/// Use the didChange publisher to be notified of changes.
 public final class Store<State> where State : StateType {
 
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
   private let runReducer: (State, Action) -> State
 
-  private let didChangeWithActionSubject = PassthroughSubject<Action, Never>()
+  private let didChangeSubject = PassthroughSubject<Void, Never>()
 
   /// Subscribe to this publisher to be notified of state changes caused by a particular action.
-  public let didChangeWithAction: AnyPublisher<Action, Never>
+  public let didChange: AnyPublisher<Void, Never>
 
   /// Creates a new store for the given state and reducer
   ///
@@ -24,36 +24,9 @@ public final class Store<State> where State : StateType {
   public init<R>(state: State, reducer: R) where R : Reducer, R.State == State {
     self.state = state
     self.runReducer = reducer.reduceAny
-    self.didChangeWithAction = didChangeWithActionSubject.eraseToAnyPublisher()
+    self.didChange = didChangeSubject.debounce(for: .milliseconds(16), scheduler: RunLoop.main).eraseToAnyPublisher()
   }
-  
-  /// Subscribe to the store to be notified when a type of action is dispatched.
-  /// - Parameter typeOfAction: The type of action required to emit a notification.
-  public func on<A>(typeOfAction: A.Type) -> AnyPublisher<Void, Never> where A : Action {
-    return didChangeWithAction.filter { $0 is A }.map { _ in () }.eraseToAnyPublisher()
-  }
-  
-  /// Subscribe to the store to map its state when an action is dispatched. The publisher only fires when the output type has changed.
-  /// - Parameters
-  ///   - typeOfAction: The type of action required to emit a notification.
-  ///   - mapState: A closure that maps the state to a new type.
-  public func on<A,T>(typeOfAction: A.Type, mapState: @escaping (State)->T) -> AnyPublisher<T, Never> where A : Action, T : Equatable {
-    self.on(typeOfAction: typeOfAction)
-      .map { [unowned self] _ in mapState(self.state) }
-      .removeDuplicates()
-      .eraseToAnyPublisher()
-  }
-  
-  /// Map the state of the store to a new object when it changes. It emits a new object only when there's a change.
-  /// Because of this, it requires that the object adhere to the `Equatable` protocol.
-  /// - Parameter mapState: A closure that maps the state to an object.
-  public func mapState<T>(_ mapState: @escaping (State) -> T) -> AnyPublisher<T, Never> where T : Equatable {
-    return didChangeWithAction
-      .map { [unowned self] _ in mapState(self.state) }
-      .removeDuplicates()
-      .eraseToAnyPublisher()
-  }
-  
+
 }
 
 extension Store : ActionDispatcher, Subscriber {
@@ -68,10 +41,10 @@ extension Store : ActionDispatcher, Subscriber {
       return self.send(actionPlan: action)
     }
     self.state = runReducer(self.state, action)
-    self.didChangeWithActionSubject.send(action)
+    self.didChangeSubject.send()
     return Publishers.Just(()).eraseToAnyPublisher()
   }
-  
+
   /// Handles the sending of normal action plans.
   @discardableResult
   private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
@@ -80,7 +53,7 @@ extension Store : ActionDispatcher, Subscriber {
     actionPlan.body(dispatch, getState)
     return Publishers.Just(()).eraseToAnyPublisher()
   }
-  
+
   /// Handles the sending of publishable action plans.
   @discardableResult
   public func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
@@ -97,7 +70,6 @@ extension Store : ActionDispatcher, Subscriber {
   public func dispatcher(modifyAction: StoreActionDispatcher<State>.ActionModifier? = nil) -> StoreActionDispatcher<State> {
     return StoreActionDispatcher(
       upstream: self,
-      upstreamActionSubject: self.didChangeWithActionSubject,
       modifyAction: modifyAction
     )
   }
