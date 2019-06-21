@@ -3,8 +3,8 @@ import Combine
 import SwiftUI
 
 internal class StateContext<State> : BindableObject where State : StateType {
-  public var didChangeWithAction: AnyPublisher<Action, Never>
   public var didChange: AnyPublisher<Void, Never>
+  public var didChangeWithAction: AnyPublisher<Action, Never>
 
   public var getState: () -> State
 
@@ -14,8 +14,8 @@ internal class StateContext<State> : BindableObject where State : StateType {
 
   public init(didChangeWithActionPublisher: AnyPublisher<Action, Never>, didChangePublisher: AnyPublisher<Void, Never>,  state getState: @autoclosure @escaping () -> State) {
     self.didChangeWithAction = didChangeWithActionPublisher
-    self.didChange = didChangePublisher
     self.getState = getState
+    self.didChange = didChangePublisher
   }
 }
 
@@ -27,7 +27,7 @@ public struct StateMapper<KindOfAction, Superstate, Substate>: ViewModifier wher
 
   var mapper: (Superstate) -> Substate
 
-  public init(_ mapper: @escaping (Superstate) -> Substate) {
+  public init(kindOfAction: KindOfAction.Type, _ mapper: @escaping (Superstate) -> Substate) {
     self.mapper = mapper
   }
 
@@ -35,7 +35,10 @@ public struct StateMapper<KindOfAction, Superstate, Substate>: ViewModifier wher
     return content
       .environmentObject(StateContext<Substate>(
         didChangeWithActionPublisher: stateContext.didChangeWithAction,
-        didChangePublisher: stateContext.didChangeWithAction.filter { $0 is KindOfAction }.map { _ in () }.eraseToAnyPublisher(),
+        didChangePublisher: stateContext.didChangeWithAction
+          .filter { $0 is KindOfAction }
+          .map { _ in () }
+          .eraseToAnyPublisher(),
         state: self.mapper(self.stateContext.state))
     )
   }
@@ -54,6 +57,6 @@ extension View {
     updateOn kindOfAction: KindOfAction.Type,
     _ mapper: @escaping (Superstate) -> (Substate)
     ) -> Self.Modified<StateMapper<KindOfAction, Superstate, Substate>> where KindOfAction : Action, Superstate : StateType, Substate : StateType {
-    return self.modifier(StateMapper(mapper))
+    return self.modifier(StateMapper(kindOfAction: kindOfAction, mapper))
   }
 }

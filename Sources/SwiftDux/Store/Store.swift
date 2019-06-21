@@ -25,8 +25,12 @@ public final class Store<State> where State : StateType {
   public init<R>(state: State, reducer: R) where R : Reducer, R.State == State {
     self.state = state
     self.runReducer = reducer.reduceAny
-    self.didChangeWithAction = didChangeWithActionSubject.receive(on: RunLoop.main).eraseToAnyPublisher()
-    self.didChange = didChangeWithAction.map { _ in () }.eraseToAnyPublisher()
+    self.didChangeWithAction = didChangeWithActionSubject
+      .receive(on: RunLoop.main)
+      .eraseToAnyPublisher()
+    self.didChange = didChangeWithActionSubject
+      .map { _ in () }
+      .eraseToAnyPublisher()
   }
 
 }
