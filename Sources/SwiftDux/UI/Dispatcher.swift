@@ -25,7 +25,9 @@ public struct Dispatcher : DynamicViewProperty {
   public init() {}
 
   public mutating func update() {
-    self._value = { [dispatcherContext] in dispatcherContext.dispatcher.send($0) }
+    if _value == nil {
+      self._value = { [dispatcherContext] in dispatcherContext.dispatcher.send($0) }
+    }
   }
 
 }

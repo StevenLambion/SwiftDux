@@ -16,13 +16,17 @@ public struct MappedState<State: StateType> : DynamicViewProperty {
   @EnvironmentObject private var context: StateContext<State>
   @EnvironmentObject private var dispatcherContext: DispatcherContext
 
+  private var _value: State!
+  
   public var value: State {
-    nonmutating get {
-      context.state
-    }
+    self._value
   }
 
   public init() {}
+  
+  public mutating func update() {
+    self._value = context.state
+  }
 
   /// Create a binding for a mapped state value and an action.
   /// - Parameters:
