@@ -3,26 +3,28 @@
 > Predictable state management for SwiftUI applications.
 
 [![Swift Version][swift-image]][swift-url]
+![Platform Versions][ios-image]
 [![License][license-image]][license-url]
 
-<!-- [![Build Status][travis-image]][travis-url] -->
+This is still a work in progress.
 
 ## Introduction
 
-This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container.
+This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
 
-- **State** - An immutable, single source of truth within the application.
-- **Action** - Describes a state change.
-- **Reducer** - Returns a new state by consuming the old one with an action.
-- **View** - The visual representation of the current state.
+### Why another library?
 
-<div style="text-align:center">
-  <img src="./Guides/Images/architecture.jpg" width="400"/>
-</div>
+As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I've ripped out the "redux" portion and added it here as its own library in the hopes that it might help others.
+
+There's more established libraries like [ReSwift](https://github.com/ReSwift/ReSwift/blob/master/README.md#example-projects) which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I've always rolled my own.
+
+### Why dux?
+
+[Ducks](https://github.com/erikras/ducks-modular-redux) is an established and common way to organize your code into modules, so I thought it goes hand-in-hand with a library built around architecting an application. If you're new to tools like Redux and wonder how best to organize your files, ducks is a great option to begin with.
 
 ## Documentation
 
-For a more indepth explanation, visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html).
+Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html) website.
 
 ## Installation
 
@@ -30,7 +32,7 @@ For a more indepth explanation, visit the [documentation](https://stevenlambion.
 
 Use the new swift package manager integration to include the libary.
 
-### Package.swift
+### Swift Package Manager
 
 Include the library as a dependencies as shown below:
 
@@ -44,9 +46,9 @@ let package = Package(
 )
 ```
 
-## Examples in SwiftUI
+## SwiftUI Examples
 
-### Add the store to the environment
+### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
 struct RootView {
@@ -102,13 +104,8 @@ struct AuthorView {
 }
 ```
 
-## Motivation
-
-As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I've ripped out the "redux" portion and added it here as its own separate library in the hopes that it helps others.
-
-There's more established libraries like [ReSwift](http://reswift.github.io/ReSwift/master/) which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I've always rolled my own.
-
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
+[ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg
 [swift-url]: https://swift.org/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
@@ -116,7 +113,3 @@ There's more established libraries like [ReSwift](http://reswift.github.io/ReSwi
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
 [codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com
-
-## License
-
-This project uses the [MIT](./LICENSE) license.

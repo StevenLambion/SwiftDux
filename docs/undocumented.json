@@ -51,7 +51,7 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 19,
+      "line": 21,
       "symbol": "MappedState.value",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"

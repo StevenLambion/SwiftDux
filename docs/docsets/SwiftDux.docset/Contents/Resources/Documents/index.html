@@ -155,31 +155,29 @@
 </blockquote>
 
 <p><a href="https://swift.org/"><img src="https://img.shields.io/badge/swift-5.1-orange.svg" alt="Swift Version"></a>
+<img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg" alt="Platform Versions">
 <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License"></a></p>
 
-<!-- [![Build Status][travis-image]][travis-url] -->
+<p>This is still a work in progress.</p>
 <h2 id='introduction' class='heading'>Introduction</h2>
 
-<p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an <a href="https://guide.elm-lang.org/architecture/">elm-like archectiture</a> using a single, centralized state container.</p>
+<p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an <a href="https://guide.elm-lang.org/architecture/">elm-like archectiture</a> using a single, centralized state container. For more information about the architecture and this library, take a look at the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">getting started guide</a>.</p>
+<h3 id='why-another-library' class='heading'>Why another library?</h3>
 
-<ul>
-<li><strong>State</strong> - An immutable, single source of truth within the application.</li>
-<li><strong>Action</strong> - Describes a state change.</li>
-<li><strong>Reducer</strong> - Returns a new state by consuming the old one with an action.</li>
-<li><strong>View</strong> - The visual representation of the current state.</li>
-</ul>
+<p>As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I&rsquo;ve ripped out the <q>redux</q> portion and added it here as its own library in the hopes that it might help others.</p>
 
-<div style="text-align:center">
-  <img src="./Guides/Images/architecture.jpg" width="400"/>
-</div>
+<p>There&rsquo;s more established libraries like <a href="https://github.com/ReSwift/ReSwift/blob/master/README.md#example-projects">ReSwift</a> which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I&rsquo;ve always rolled my own.</p>
+<h3 id='why-dux' class='heading'>Why dux?</h3>
+
+<p><a href="https://github.com/erikras/ducks-modular-redux">Ducks</a> is an established and common way to organize your code into modules, so I thought it goes hand-in-hand with a library built around architecting an application. If you&rsquo;re new to tools like Redux and wonder how best to organize your files, ducks is a great option to begin with.</p>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
-<p>For a more indepth explanation, visit the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">documentation</a>.</p>
+<p>Visit the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">documentation</a> website.</p>
 <h2 id='installation' class='heading'>Installation</h2>
 <h3 id='xcode-11' class='heading'>Xcode 11</h3>
 
 <p>Use the new swift package manager integration to include the libary.</p>
-<h3 id='package-swift' class='heading'>Package.swift</h3>
+<h3 id='swift-package-manager' class='heading'>Swift Package Manager</h3>
 
 <p>Include the library as a dependencies as shown below:</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">PackageDescription</span>
@@ -190,8 +188,8 @@
   <span class="p">]</span>
 <span class="p">)</span>
 </code></pre>
-<h2 id='examples-in-swiftui' class='heading'>Examples in SwiftUI</h2>
-<h3 id='add-the-store-to-the-environent' class='heading'>Add the store to the environent</h3>
+<h2 id='swiftui-examples' class='heading'>SwiftUI Examples</h2>
+<h3 id='adding-the-swiftdux-store-to-the-swiftui-environment' class='heading'>Adding the SwiftDux store to the SwiftUI environment:</h3>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">RootView</span> <span class="p">{</span>
   <span class="k">var</span> <span class="nv">store</span><span class="p">:</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span>
 
@@ -231,21 +229,13 @@
 
   <span class="kd">func</span> <span class="nf">modifyBookActions</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Action</span><span class="p">?</span> <span class="p">{</span>
     <span class="k">if</span> <span class="k">let</span> <span class="nv">action</span> <span class="o">=</span> <span class="n">action</span> <span class="k">as?</span> <span class="kt">BookAction</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kt">AuthorAction</span><span class="o">.</span><span class="nf">modifyAction</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+      <span class="k">return</span> <span class="kt">AuthorAction</span><span class="o">.</span><span class="nf">routeBookAction</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">action</span>
   <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
-<h2 id='motivation' class='heading'>Motivation</h2>
-
-<p>As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I&rsquo;ve ripped out the <q>redux</q> portion and added it here as its own separate library in the hopes that it helps others.</p>
-
-<p>There&rsquo;s more established libraries like <a href="http://reswift.github.io/ReSwift/master/">ReSwift</a> which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I&rsquo;ve always rolled my own.</p>
-<h2 id='license' class='heading'>License</h2>
-
-<p>This project uses the <a href="./LICENSE">MIT</a> license.</p>
 
           </section>
         </section>

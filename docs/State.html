@@ -167,27 +167,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Marks an object as representing some kind of state for use by the Store class.</p>
-
-<p>States are expected to be codable so that they can be easily transportable through extermal
-APIs and across different platforms. Example usage of a codable state include:</p>
-
-<ul>
-<li>Persisting the application&rsquo;s state to automatically restore it later.</li>
-<li>Debugging tools that graph out the entire state object.</li>
-<li>Sending whole or partial states to other insrtances of the application, and across platforms.</li>
-</ul>
-
-<p>State should be viewed as immutable. The only mechanism that should mutate a state is a reducer.
-Because of this, a state object should be a struct by default. The rule of thumb:</p>
-
-<ul>
-<li>Struct: The dafault choice to maintain immutable value semantics.</li>
-<li>Class: When it needs to manage a large collection type (greater than a 1000 items)</li>
-</ul>
-
-<p>You can pick between struct and class for each node in your application&rsquo;s state. It doesn&rsquo;t need to be
-one or the other as long as the rule of immutability is followed.</p>
+                        <p>Represents some kind of state in the application.</p>
 
                       </div>
                       <div class="declaration">
