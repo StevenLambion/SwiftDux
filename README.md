@@ -41,7 +41,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 5)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 6)
   ]
 )
 ```
@@ -56,7 +56,7 @@ struct RootView {
 
   var body: some View {
     BookListView()
-      .mapState(updateOn: BookAction.self) { (state: AppState) in state.bookList }
+      .mapState(updateOn: BookAction.self) { (state: AppState) in state.books }
       .provideStore(store)
   }
 
@@ -67,12 +67,12 @@ struct RootView {
 
 ```swift
 struct BookListView : View {
-  @MappedState var bookList: BookListState
+  @MappedState var books: OrderedState<Book>
   @Dispatcher var send: SendAction
 
   var body: some View {
     List {
-      ForEach(bookList.books.values) { item in
+      ForEach(books) { item in
         BookRow(item: item)
       }
       .onMove { send(BookAction.moveBooks(from: $0, to: $1)) }
@@ -90,7 +90,7 @@ struct AuthorView {
 
   var body: some View {
     BookListView()
-      .mapState(updateOn: BookAction.self) { (state: AuthorState) in state.bookList }
+      .mapState(updateOn: BookAction.self) { (state: AuthorState) in state.books }
       .modifyActions(self.modifyBookActions)
   }
 
@@ -103,6 +103,16 @@ struct AuthorView {
 
 }
 ```
+
+## Known Issues
+
+#### onAppear() doesn't update the view when dispatching actions
+
+The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.
+
+#### @MappedState fails to find its state
+
+Make sure the mapState() method is called in the correct environment scope. For example, a NavigationButton's destination is not in the same scope as the current content of the NavigationView even though the Button is declared inside it. To fix this, call the mapState() method directly on the NavigationView.
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg

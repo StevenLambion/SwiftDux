@@ -21,15 +21,10 @@ Below is an example of a todo app. It has a root `AppState` as well as an ordere
 import SwiftDux
 
 struct AppState : StateTyoe {
-  todoList: TodoListState
+  todos: OrderedState<TodoItem>
 }
 
-struct TodoListState : StateType {
-  /// OrderedState is a built-in type that acts as an ordered dictionary of substates.
-  var todos: OrderedState<TodoItemState>
-}
-
-struct TodoItemState : IdentifiableState {
+struct TodoItem : IdentifiableState {
   vae id: String,
   var text: String
 }
@@ -73,18 +68,18 @@ The `Reducer` protocol has two primary methods of interest:
 - \*`reduceNext(state:action:)` - Dispatches an action to any subreducers
 
 ```swift
-final class TodoListReducer : Reducer {
+final class AppReducer : Reducer {
 
-  func reduce(state: TodoState, action: TodoAction) -> AppState {
+  func reduce(state: OrderedState<TodoItem>, action: TodoAction) -> OrderedState<TodoItem> {
     var state = state
     switch action {
     case .addTodo(let text):
       let id = UUID().uuidString
-      state.todos.append(TodoItemState(id: id, text: text))
+      state.append(TodoItemState(id: id, text: text))
     case .removeTodos(let indexSet):
-      state.todos.remove(at: indexSet)
+      state.remove(at: indexSet)
     case .moveTodos(let indexSet, let index):
-      state.todos.move(from: indexSet, to: index)
+      state.move(from: indexSet, to: index)
     }
     return state
   }
@@ -98,7 +93,7 @@ final class AppReducer : Reducer {
 
   func reduceNext(state: AppState, action: TodoAction) -> AppState {
     State(
-      todoList: todoListReducer.reduceAny(state.todoList, action)
+      todos: todoListReducer.reduceAny(state.todos, action)
     )
   }
 
@@ -116,62 +111,48 @@ let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppR
 
 window.rootViewController = UIHostingController(
   rootView: RootView()
-    .mapState(updateOn: TodoAction.self) { (state: AppState) in state.todoList }
+    .mapState(updateOn: TodoAction.self) { (state: AppState) in state.todos }
     .provideStore(store)
 )
 ```
 
 ## Creating the View
 
-The view layer of the application is the visual representation of the state. You should start out by creating what's known as a presentation view. This kind of view is decoupled from the state itself. Define local variables that will be populated at initialization as an injection point for the state. Use callback closures to later inject actions.
+Use the `@MappedState` and the `@MapDispatch` property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. `MappedState` looks for a state that you've mapped in the environment using `mapState(from:for:_:)`.
 
 ```swift
 import SwiftUI
 
 struct TodosView : View {
   @State var editMode: EditMode = .active
+  @MappedState todos: OrderedState<TodoItem>
+  @Dispatcher send: SendAction
 
   // Will be populated by the state
   var todos: [TodoItemState]
 
   // These closures will be populated with action dispatchers.
-  var onAddTodo: () -> ()
-  var onMoveTodos: (IndexSet, Int) -> ()
-  var onRemoveTodos: (IndexSet) -> ()
 
   var body: some View {
     List {
       ForEach(todos) { item in
         TodoItemRow(item: item)
       }
-      .onDelete(perform: onRemoveTodos)
-      .onMove(perform: onMoveTodos)
+      .onDelete(perform: removeTodos)
+      .onMove(perform: moveTodos)
     }
     .environment(\.editMode, $editMode)
   }
+
+  func moveTodos(from indexSet: IndexSet, to: Int) {
+    send(TodoAction.moveTodos(from: $0, to: $1))
+  }
+
+  func removeTodos(at indexSet: IndexSet) {
+    send(TodoAction.removeTodos(at: $0))
+  }
 }
 
-```
-
-## Connecting the State to the View
-
-Use the `@MappedState` and the `@MapDispatch` property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. `MappedState` looks for a state that you've mapped in the environment using `mapState(from:for:_:)`.
-
-```swift
-/// Update when the locally mapped state has changed:
-
-struct TodosContainer : View {
-  @MappedState todoList: TodoList
-  @Dispatcher send: SendAction
-
-  var body: some View {
-    TodoView(
-      todos: todoList.todos.values,
-      onAddTodo: { send(TodoAction.addTodo(text: "New Todo")) },
-      onMoveTodos: { send(TodoAction.moveTodos(from: $0, to: $1)) },
-      onRemoveTodos: { send(TodoAction.removeTodos(at: $0)) }
-    )
-  }
 ```
 
 Add the container to the root view:
@@ -180,7 +161,7 @@ Add the container to the root view:
 struct RootView : View {
 
   var body: some View {
-    TodosContainer()
+    TodosView()
   }
 
 }

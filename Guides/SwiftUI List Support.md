@@ -61,11 +61,11 @@ class AppReducer : Reducer {
 
 ## Setting Up the List View
 
-Create a typical view that takes a list of items. Define callback closures for each kind of list event supported.
+Create a typical view that takes a list of items. Define callback closures for each kind of list event supported. `OrderedState<_>` can be used directly by List elements.
 
 ```swift
 struct BookListView : View {
-  var books: [Book]
+  var books: OrderedState<Book>
   var onMoveBooks: (IndexSet, Int) -> ()
   var onRemoveBooks: (IndexSet) -> ()
 
@@ -92,7 +92,7 @@ struct BookListContainer : View {
 
   var body: some View {
     BookListView(
-      books: books.value,
+      books: books,
       onMoveBooks: { send(AppAction.moveTodos(from: $0, to: $1)) },
       onRemoveBooks: { send(AppAction.removeTodos(at: $0)) }
     )

@@ -6,19 +6,19 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
     case orderOfIds
     case values
   }
-  
+
   /// The id type used by the substates.
   typealias Id = Substate.Id
-  
+
   /// Holds the oredering knowledge of the values by their key.
   var orderOfIds: [Id]
-  
+
   /// Holds the actual value referenced by its key.
   var values: Dictionary<Id, Substate>
-  
+
   /// For the usage of ordered enumerations, this property caches a reverse lookup table from key to ordered position.
   var cachedIdsByOrder: [Id: Int]?
-  
+
   /// Sets the initial values and their ordered positions.
   ///
   /// This class assumes that the data in both `orderOfIds` and `values` are perfectly synced.
@@ -30,11 +30,11 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
     self.values = values
     self.cachedIdsByOrder = nil
   }
-  
+
   static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
     return lhs.orderOfIds == rhs.orderOfIds && lhs.values == lhs.values
   }
-  
+
   /// Returns the ordered index position of a key.
   ///
   /// This method assumes it will be called multiple times in succession, so it internally caches
@@ -50,7 +50,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
     }
     return self.cachedIdsByOrder![id]!
   }
-  
+
   /// Invalidates the caches. This should be called when it's assumed that the order of keys may change.
   func invalidateCache() {
     self.cachedIdsByOrder = nil
@@ -77,7 +77,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
 /// // Using the OrderedState with a list view.
 /// var body: some View {
 ///   List {
-///     ForEach(todos.values) {
+///     ForEach(todos) {
 ///     }
 ///     .onDelete { todos.delete(at: $0 }
 ///     .onMove { todos.move(from: $0, to: $1 }
@@ -86,22 +86,22 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
 ///
 /// ```
 public struct OrderedState<Substate> : StateType where Substate : IdentifiableState {
-  
+
   public typealias Id = Substate.Id
   public typealias Index = Int
-  
+
   fileprivate var storage: OrderedStateStorage<Substate>
-  
+
   /// The substates as an ordered array
   public var values: [Substate] {
     return storage.orderOfIds.map { storage.values[$0]! }
   }
-  
+
   /// The number of substates
   public var count: Int {
     return storage.orderOfIds.count
   }
-  
+
   /// Used for internal copy operations.
   /// - Parameters
   ///   - orderOfIds: The ids of each substate in a specific order.
@@ -112,7 +112,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
       values: values
     )
   }
-  
+
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
   /// - Parameter values: An array of substates. The position of each substate will be used as the initial order.
   public init(_ values: [Substate]) {
@@ -123,13 +123,13 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     }
     self.init(orderOfIds: orderOfIds, values: valueByIndex)
   }
-  
+
   /// Create a new `OrderedState` with a variadic number of substates.
   /// - Parameter value: A variadic list of substates. The position of each substate will be used as the initial order.
   public init(_ value: Substate...) {
     self.init(value)
   }
-  
+
   /// Used internally to copy the storage for mutating operations. It's designed not to
   /// copy if it's singularily owned by a single copy of the `OrderedState` struct.
   ///
@@ -143,7 +143,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     storage.invalidateCache()
     return storage
   }
-  
+
   /// Append a new substate to the end of the `OrderedState`.
   /// - Parameter value: A new substate to append to the end of the list.
   public mutating func append(_ value: Substate) {
@@ -153,13 +153,13 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.values[value.id] = value
     self.storage = copy
   }
-  
+
   /// Prepend a new substate to the beginning of the `OrderedState`.
   /// - Parameter value: A new substate to append to the beginning of the list.
   public mutating func prepend(_ value: Substate) {
     self.insert(value, at: 0)
   }
-  
+
   /// Inserts a new substate at the given index `OrderedState`.
   /// - Parameters
   ///   - value: A new substate to insert at a specific position in the list
@@ -177,7 +177,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     }
   }
 
-  
+
   /// Inserts a collection of substates at the given index `OrderedState`.
   /// - Parameters
   ///   - values: The new substates to insert. This must be an ordered collection for defined behavior.
@@ -191,7 +191,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.orderOfIds.insert(contentsOf: ids, at: index)
     self.storage = copy
   }
-  
+
   /// Removes a substate for the given id.
   /// - Parameter id: The id of the substate to remove. This will adjust the order of items.
   public mutating func remove(forId id: Id) {
@@ -202,7 +202,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     }
     self.storage = copy
   }
-  
+
   /// Removes a substate at a given index.
   /// - Parameter index: The index of the substate to remove. This will adjust the order of items.
   public mutating func remove(at index: Int) {
@@ -211,7 +211,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.orderOfIds.remove(at: index)
     self.storage = copy
   }
-  
+
   /// Removes substates at the provided indexes.
   /// - Parameter indexSet: Removes all items in the provided indexSet. This will adjust the order of items.
   public mutating func remove(at indexSet: IndexSet) {
@@ -220,7 +220,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.orderOfIds.remove(at:  indexSet)
     self.storage = copy
   }
-  
+
   /// Moves a set of substates at the specified indexes to a new index position.
   /// - Parameters
   ///   - indexSet: A set of indexes to move to a new location. The order of indexes will be used as part of the new order of the moved items.
@@ -235,7 +235,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.orderOfIds.insert(contentsOf: ids, at: copy.index(ofId: currentIdAtIndex) + 1)
     self.storage = copy
   }
-  
+
   /// Resorts the order of substates with the given sort operation.
   /// - Parameter areInIncreasingOrder: Orders the items by indicating whether not the second item is bigger than the first item.
   public mutating func sort(by areInIncreasingOrder: (Substate, Substate) -> Bool) {
@@ -243,7 +243,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     copy.orderOfIds.sort { areInIncreasingOrder(copy.values[$0]!, copy.values[$1]!) }
     self.storage = copy
   }
-  
+
   /// Returns an `OrderedState` with the new sort order.
   /// - Parameter areInIncreasingOrder: Orders the items by indicating whether not the second item is bigger than the first item.
   /// - Returns: A new `OrderedState` with the provided sort operation.
@@ -251,7 +251,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     let orderOfIds = storage.orderOfIds.sorted { operation(storage.values[$0]!, storage.values[$1]!) }
     return OrderedState(orderOfIds: orderOfIds, values: storage.values)
   }
-  
+
   /// Filters the substates using a predicate.
   /// - Returns: an array of substates filtered by the provided operation.
   public func filter(_ isIncluded: (Substate) -> Bool) -> [Substate] {
@@ -260,23 +260,23 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
       return isIncluded(value) ? value : nil
     }
   }
-  
+
 }
 
 extension OrderedState : MutableCollection {
-  
+
   public func index(after i: Int) -> Int {
     return storage.orderOfIds.index(after: i)
   }
-  
+
   public var startIndex: Int {
     return storage.orderOfIds.startIndex
   }
-  
+
   public var endIndex: Int {
     return storage.orderOfIds.endIndex
   }
-  
+
   public subscript(position: Int) -> Substate {
     get {
       return storage.values[storage.orderOfIds[position]]!
@@ -285,7 +285,7 @@ extension OrderedState : MutableCollection {
       self.insert(newValue, at: position)
     }
   }
-  
+
   public subscript(position: Id) -> Substate? {
     get {
       return storage.values[position]
@@ -301,27 +301,27 @@ extension OrderedState : MutableCollection {
       }
     }
   }
-  
+
   public __consuming func makeIterator() -> IndexingIterator<Array<Substate>> {
     return self.values.makeIterator()
   }
-  
+
   public func index(after i: Id) -> Id {
     let index = storage.index(ofId: i)
     return storage.orderOfIds[index + 1]
   }
-  
+
 }
 
 extension OrderedState : RandomAccessCollection {
 }
 
 extension RangeReplaceableCollection where Self: MutableCollection, Index == Int {
-  
+
   /// From user vadian at [stackoverflows](https://stackoverflow.com/a/50835467)
   /// Walks the length of the collection, using `swapAt` to move all deleted items to the end. Then it performs
   /// a single remove operation.
-  
+
   /// Removes substates at the provided indexes.
   /// - Parameter indexSet: Removes all items in the provided indexSet.
   public mutating func remove(at indexes: IndexSet) {
@@ -338,9 +338,9 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 }
 
 extension OrderedState: Equatable {
-  
+
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
     return lhs.storage === rhs.storage
   }
-  
+
 }

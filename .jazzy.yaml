@@ -20,8 +20,9 @@ custom_categories:
       - ActionPlan
       - PublishableActionPlan
       - ActionDispatcher
-      - Dispatch
+      - SendAction
       - GetState
+      - ActionModifier
   - name: Store
     children:
       - Store
