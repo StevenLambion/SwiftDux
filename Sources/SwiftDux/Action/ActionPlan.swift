@@ -56,7 +56,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
   /// - Returns: A publisher that can send actions to the store.
-  public typealias Body = (SendAction, GetState<State>) -> AnyPublisher<Action?, Never>
+  public typealias Body = (SendAction, GetState<State>) -> AnyPublisher<Action, Never>
   
   var body: Body
   

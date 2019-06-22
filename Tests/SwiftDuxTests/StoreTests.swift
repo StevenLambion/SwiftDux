@@ -27,15 +27,15 @@ final class StoreTests: XCTestCase {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(PublishableActionPlan<TestSendingState> { dispatch, getState in
       return Publishers.Just<Int>(getState().value)
-        .map { (value) -> Int in
+        .map { value -> Int in
           dispatch(TestSendingAction.setValue(value + 1))
           return getState().value
         }
-        .map { (value) -> Int in
+        .map { value -> Int in
           dispatch(TestSendingAction.setValue(value + 1))
           return getState().value
         }
-        .map { (value) -> Action? in
+        .map { value -> Action in
           TestSendingAction.setValue(value + 1)
         }.eraseToAnyPublisher()
     })
