@@ -6,13 +6,13 @@ internal class StateContext<State> : BindableObject where State : StateType {
   public var didChange: AnyPublisher<Void, Never>
   public var didChangeWithAction: AnyPublisher<Action, Never>
 
-  public var getState: () -> State
+  public var getState: () -> State?
 
-  public var state: State {
+  public var state: State? {
     getState()
   }
 
-  public init(didChangeWithActionPublisher: AnyPublisher<Action, Never>, didChangePublisher: AnyPublisher<Void, Never>,  state getState: @autoclosure @escaping () -> State) {
+  public init(didChangeWithActionPublisher: AnyPublisher<Action, Never>, didChangePublisher: AnyPublisher<Void, Never>,  state getState: @escaping () -> State?) {
     self.didChangeWithAction = didChangeWithActionPublisher
     self.getState = getState
     self.didChange = didChangePublisher
@@ -25,9 +25,9 @@ internal class StateContext<State> : BindableObject where State : StateType {
 public struct StateMapper<KindOfAction, Superstate, Substate>: ViewModifier where KindOfAction : Action, Superstate : StateType, Substate : StateType {
   @EnvironmentObject var stateContext: StateContext<Superstate>
 
-  var mapper: (Superstate) -> Substate
+  var mapper: (Superstate) -> Substate?
 
-  public init(kindOfAction: KindOfAction.Type, _ mapper: @escaping (Superstate) -> Substate) {
+  public init(kindOfAction: KindOfAction.Type, _ mapper: @escaping (Superstate) -> Substate?) {
     self.mapper = mapper
   }
 
@@ -39,8 +39,15 @@ public struct StateMapper<KindOfAction, Superstate, Substate>: ViewModifier wher
           .filter { $0 is KindOfAction }
           .map { _ in () }
           .eraseToAnyPublisher(),
-        state: self.mapper(self.stateContext.state))
+        state: getSubstate)
     )
+  }
+  
+  func getSubstate() -> Substate? {
+    if let superstate = self.stateContext.state {
+      return self.mapper(superstate)
+    }
+    return nil
   }
 
 }
@@ -55,7 +62,7 @@ extension View {
   /// - Returns: A view modifier.
   public func mapState<KindOfAction, Superstate, Substate>(
     updateOn kindOfAction: KindOfAction.Type,
-    _ mapper: @escaping (Superstate) -> (Substate)
+    _ mapper: @escaping (Superstate) -> Substate?
     ) -> Self.Modified<StateMapper<KindOfAction, Superstate, Substate>> where KindOfAction : Action, Superstate : StateType, Substate : StateType {
     return self.modifier(StateMapper(kindOfAction: kindOfAction, mapper))
   }

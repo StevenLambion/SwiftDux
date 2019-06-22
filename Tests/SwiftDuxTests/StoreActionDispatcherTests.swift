@@ -8,7 +8,7 @@ final class StoreActionDispatcherTests: XCTestCase {
     let store = Store(state: TestState.defaultState, reducer: TestReducer())
     let dispatcher = store.proxy()
     dispatcher.send(TodoListAction.addTodo(toList: "123", withText: "My Todo"))
-    XCTAssertEqual(store.state.todoLists["123"].todos.filter { $0.text == "My Todo"}.count, 1)
+    XCTAssertEqual(store.state.todoLists["123"]?.todos.filter { $0.text == "My Todo"}.count, 1)
   }
   
   func testModifyingActionsValue() {
@@ -20,7 +20,7 @@ final class StoreActionDispatcherTests: XCTestCase {
       return $0
     }
     dispatcher.send(TodoListAction.addTodo2(withText: "My Todo"))
-    XCTAssertEqual(store.state.todoLists["123"].todos.filter { $0.text == "My Todo"}.count, 1)
+    XCTAssertEqual(store.state.todoLists["123"]?.todos.filter { $0.text == "My Todo"}.count, 1)
   }
 
   static var allTests = [

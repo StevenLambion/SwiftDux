@@ -25,7 +25,11 @@ public struct MappedState<State: StateType> : DynamicViewProperty {
   public init() {}
   
   public mutating func update() {
-    self._value = context.state
+    /// It should retrieve at least one value, but there's a chance the view may still exist briefly when the state does not,
+    /// so we only want to update if the state does exists.
+    if let newValue = context.state {
+      self._value = newValue
+    }
   }
 
   /// Create a binding for a mapped state value and an action.

@@ -44,7 +44,7 @@ class TestReducer: Reducer {
   
   func routeToTodoList(state: TestState, id: String, action: Action) -> TestState {
     var state = state
-    let todo = state.todoLists[id]
+    let todo = state.todoLists[id]!
     state.todoLists[id] = todoListReducer.reduceAny(state: todo, action: action)
     return state
   }

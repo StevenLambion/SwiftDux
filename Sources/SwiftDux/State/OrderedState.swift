@@ -88,6 +88,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
 public struct OrderedState<Substate> : StateType where Substate : IdentifiableState {
   
   public typealias Id = Substate.Id
+  public typealias Index = Int
   
   fileprivate var storage: OrderedStateStorage<Substate>
   
@@ -146,7 +147,11 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   /// Append a new substate to the end of the `OrderedState`.
   /// - Parameter value: A new substate to append to the end of the list.
   public mutating func append(_ value: Substate) {
-    self.insert(value, at: storage.orderOfIds.count)
+    self.remove(forId: value.id) // Remove if it already exists.
+    let copy = copyStorageIfNeeded()
+    copy.orderOfIds.append(value.id)
+    copy.values[value.id] = value
+    self.storage = copy
   }
   
   /// Prepend a new substate to the beginning of the `OrderedState`.
@@ -160,14 +165,18 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   ///   - value: A new substate to insert at a specific position in the list
   ///   - index: The index of the inserted substate. This will adjust the overall order of the list.
   public mutating func insert(_ value: Substate, at index: Int) {
-    let copy = copyStorageIfNeeded()
-    if copy.orderOfIds.count != copy.values.count {
-      fatalError("Counts don't match!")
+    if let currentIndex = storage.orderOfIds.firstIndex(of: value.id) {
+      self.move(from: IndexSet(integer: currentIndex), to: index)
+      let copy = copyStorageIfNeeded()
+      copy.values[value.id] = value
+    } else {
+      let copy = copyStorageIfNeeded()
+      copy.orderOfIds.insert(value.id, at: index)
+      copy.values[value.id] = value
+      self.storage = copy
     }
-    copy.orderOfIds.insert(value.id, at: index)
-    copy.values[value.id] = value
-    self.storage = copy
   }
+
   
   /// Inserts a collection of substates at the given index `OrderedState`.
   /// - Parameters
@@ -186,6 +195,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   /// Removes a substate for the given id.
   /// - Parameter id: The id of the substate to remove. This will adjust the order of items.
   public mutating func remove(forId id: Id) {
+    guard storage.values[id] != nil else { return }
     let copy = copyStorageIfNeeded()
     if copy.values.removeValue(forKey: id) != nil {
       copy.orderOfIds.removeAll { $0 == id }
@@ -255,26 +265,40 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
 
 extension OrderedState : MutableCollection {
   
-  public var startIndex: Id {
-    return storage.orderOfIds.first!
+  public func index(after i: Int) -> Int {
+    return storage.orderOfIds.index(after: i)
   }
   
-  public var endIndex: Id {
-    return storage.orderOfIds.last!
+  public var startIndex: Int {
+    return storage.orderOfIds.startIndex
   }
   
-  public subscript(position: Id) -> Substate {
+  public var endIndex: Int {
+    return storage.orderOfIds.endIndex
+  }
+  
+  public subscript(position: Int) -> Substate {
     get {
-      return storage.values[position]!
+      return storage.values[storage.orderOfIds[position]]!
     }
     set(newValue) {
-      let copy = copyStorageIfNeeded()
-      let alreadyExists = copy.values.index(forKey: position) != nil
-      copy.values[position] = newValue
-      if !alreadyExists {
-        copy.orderOfIds.append(position)
+      self.insert(newValue, at: position)
+    }
+  }
+  
+  public subscript(position: Id) -> Substate? {
+    get {
+      return storage.values[position]
+    }
+    set(newValue) {
+      guard let newValue = newValue else { return }
+      if storage.values[position] != nil {
+        let copy = copyStorageIfNeeded()
+        copy.values[position] = newValue
+        self.storage = copy
+      } else {
+        self.append(newValue)
       }
-      self.storage = copy
     }
   }
   
@@ -287,6 +311,9 @@ extension OrderedState : MutableCollection {
     return storage.orderOfIds[index + 1]
   }
   
+}
+
+extension OrderedState : RandomAccessCollection {
 }
 
 extension RangeReplaceableCollection where Self: MutableCollection, Index == Int {

@@ -30,7 +30,7 @@ public struct StoreProvider<State> : ViewModifier where State : StateType {
     self.stateContext = StateContext(
       didChangeWithActionPublisher: store.didChangeWithAction,
       didChangePublisher: Publishers.Empty().eraseToAnyPublisher(),
-      state: store.state
+      state: { store.state }
     )
     self.dispatcherContext = DispatcherContext(dispatcher: store.proxy())
   }
