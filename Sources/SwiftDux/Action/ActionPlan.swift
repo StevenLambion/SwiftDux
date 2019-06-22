@@ -35,7 +35,7 @@ public struct ActionPlan<State> : Action where State : StateType {
   /// - Parameters:
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
-  public typealias Body = (SendAction, GetState<State>) -> ()
+  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> ()
   
   private var body: Body
   
@@ -45,7 +45,7 @@ public struct ActionPlan<State> : Action where State : StateType {
     self.body = body
   }
   
-  public func run(send: SendAction, getState: GetState<State>) {
+  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) {
     self.body(send, getState)
   }
 }
@@ -60,7 +60,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
   /// - Returns: A publisher that can send actions to the store.
-  public typealias Body = (SendAction, GetState<State>) -> AnyPublisher<Action, Never>
+  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> AnyPublisher<Action, Never>
   
   private var body: Body
   
@@ -70,7 +70,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
     self.body = body
   }
   
-  public func run(send: SendAction, getState: GetState<State>) -> AnyPublisher<Action, Never> {
+  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) -> AnyPublisher<Action, Never> {
     self.body(send, getState)
   }
 }
