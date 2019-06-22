@@ -56,9 +56,9 @@ extension Store : ActionDispatcher, Subscriber {
   /// - Returns: An optional publisher that can be used to know when the action has completed.
   @discardableResult
   private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let dispatch: SendAction = { [unowned self] in self.send($0) }
+    let send: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned self] in self.state }
-    actionPlan.body(dispatch, getState)
+    actionPlan.run(send: send, getState: getState)
     return Publishers.Just(()).eraseToAnyPublisher()
   }
 
@@ -66,9 +66,9 @@ extension Store : ActionDispatcher, Subscriber {
   /// - Returns: An optional publisher that can be used to know when the action has completed.
   @discardableResult
   public func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let dispatch: SendAction = { [unowned self] in self.send($0) }
+    let send: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned self] in self.state }
-    let publisher  = actionPlan.body(dispatch, getState).share()
+    let publisher  = actionPlan.run(send: send, getState: getState).share()
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()
   }

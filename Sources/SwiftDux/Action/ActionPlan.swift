@@ -37,12 +37,16 @@ public struct ActionPlan<State> : Action where State : StateType {
   ///   - getState: Gets the latest snapshot of the application's state.
   public typealias Body = (SendAction, GetState<State>) -> ()
   
-  var body: Body
+  private var body: Body
   
   /// Create a new action plan.
   /// - Parameter body: The body of the aciton plan.
   public init(_ body: @escaping Body) {
     self.body = body
+  }
+  
+  public func run(send: SendAction, getState: GetState<State>) {
+    self.body(send, getState)
   }
 }
 
@@ -58,11 +62,15 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
   /// - Returns: A publisher that can send actions to the store.
   public typealias Body = (SendAction, GetState<State>) -> AnyPublisher<Action, Never>
   
-  var body: Body
+  private var body: Body
   
   /// Create a new action plan.
   /// - Parameter body: The body of the aciton plan.
   public init(_ body: @escaping Body) {
     self.body = body
+  }
+  
+  public func run(send: SendAction, getState: GetState<State>) -> AnyPublisher<Action, Never> {
+    self.body(send, getState)
   }
 }

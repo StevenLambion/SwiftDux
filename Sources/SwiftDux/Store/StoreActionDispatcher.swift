@@ -70,7 +70,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
     let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    actionPlan.body(sendAction, getState)
+    actionPlan.run(send: sendAction, getState: getState)
     return Publishers.Just(()).eraseToAnyPublisher()
   }
 
@@ -87,7 +87,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   private func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
     let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan.body(sendAction, getState).share()
+    let publisher  = actionPlan.run(send: sendAction, getState: getState).share()
     publisher.compactMap { $0 }.subscribe(self)
     return publisher.map { _ in () }.eraseToAnyPublisher()
   }
