@@ -206,7 +206,7 @@
 <li><code>reduce(state:action:)</code> - For actions supported by the reducer.</li>
 <li>*<code>reduceNext(state:action:)</code> - Dispatches an action to any subreducers</li>
 </ul>
-<pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
+<pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">TodosReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
 
   <span class="kd">func</span> <span class="nf">reduce</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoItem</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoItem</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="k">var</span> <span class="nv">state</span> <span class="o">=</span> <span class="n">state</span>
@@ -225,11 +225,11 @@
 <span class="p">}</span>
 </code></pre>
 <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
-  <span class="k">let</span> <span class="nv">todoListReducer</span> <span class="o">=</span> <span class="kt">TodoListReducer</span><span class="p">()</span>
+  <span class="k">let</span> <span class="nv">todosReducer</span> <span class="o">=</span> <span class="kt">TodosReducer</span><span class="p">()</span>
 
   <span class="kd">func</span> <span class="nf">reduceNext</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
     <span class="kt">State</span><span class="p">(</span>
-      <span class="nv">todos</span><span class="p">:</span> <span class="n">todoListReducer</span><span class="o">.</span><span class="nf">reduceAny</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+      <span class="nv">todos</span><span class="p">:</span> <span class="n">todosReducer</span><span class="o">.</span><span class="nf">reduceAny</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
     <span class="p">)</span>
   <span class="p">}</span>
 

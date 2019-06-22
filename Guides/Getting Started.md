@@ -68,7 +68,7 @@ The `Reducer` protocol has two primary methods of interest:
 - \*`reduceNext(state:action:)` - Dispatches an action to any subreducers
 
 ```swift
-final class AppReducer : Reducer {
+final class TodosReducer : Reducer {
 
   func reduce(state: OrderedState<TodoItem>, action: TodoAction) -> OrderedState<TodoItem> {
     var state = state
@@ -89,11 +89,11 @@ final class AppReducer : Reducer {
 
 ```swift
 final class AppReducer : Reducer {
-  let todoListReducer = TodoListReducer()
+  let todosReducer = TodosReducer()
 
   func reduceNext(state: AppState, action: TodoAction) -> AppState {
     State(
-      todos: todoListReducer.reduceAny(state.todos, action)
+      todos: todosReducer.reduceAny(state.todos, action)
     )
   }
 
