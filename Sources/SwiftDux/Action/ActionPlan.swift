@@ -45,6 +45,7 @@ public struct ActionPlan<State> : Action where State : StateType {
     self.body = body
   }
   
+  /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
   public func run(send: @escaping SendAction, getState: @escaping GetState<State>) {
     self.body(send, getState)
   }
@@ -70,6 +71,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
     self.body = body
   }
   
+  /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
   public func run(send: @escaping SendAction, getState: @escaping GetState<State>) -> AnyPublisher<Action, Never> {
     self.body(send, getState)
   }
