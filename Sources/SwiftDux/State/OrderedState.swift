@@ -165,7 +165,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   ///   - value: A new substate to insert at a specific position in the list
   ///   - index: The index of the inserted substate. This will adjust the overall order of the list.
   public mutating func insert(_ value: Substate, at index: Int) {
-    if let currentIndex = storage.orderOfIds.firstIndex(of: value.id) {
+    if let _ = storage.values[value.id], let currentIndex = storage.orderOfIds.firstIndex(of: value.id) {
       self.move(from: IndexSet(integer: currentIndex), to: index)
       let copy = copyStorageIfNeeded()
       copy.values[value.id] = value
