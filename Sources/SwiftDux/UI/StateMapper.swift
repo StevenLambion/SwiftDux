@@ -25,18 +25,31 @@ internal class StateContext<State> : BindableObject where State : StateType {
 public struct StateMapper<KindOfAction, Superstate, Substate>: ViewModifier where KindOfAction : Action, Superstate : StateType, Substate : StateType {
   @EnvironmentObject var stateContext: StateContext<Superstate>
 
+  var exceptWhen: ((KindOfAction)->Bool)?
   var mapper: (Superstate) -> Substate?
 
-  public init(kindOfAction: KindOfAction.Type, _ mapper: @escaping (Superstate) -> Substate?) {
+  public init(kindOfAction: KindOfAction.Type, exceptWhen: ((KindOfAction)->Bool)?, _ mapper: @escaping (Superstate) -> Substate?) {
+    self.exceptWhen = exceptWhen
     self.mapper = mapper
   }
 
   public func body(content: Content) -> some View {
+    var filter: (Action)->Bool
+    if let exceptWhen = exceptWhen {
+      filter = {
+        if let action = $0 as? KindOfAction {
+          return !exceptWhen(action)
+        }
+        return false
+      }
+    } else {
+      filter = { $0 is KindOfAction }
+    }
     return content
       .environmentObject(StateContext<Substate>(
         didChangeWithActionPublisher: stateContext.didChangeWithAction,
         didChangePublisher: stateContext.didChangeWithAction
-          .filter { $0 is KindOfAction }
+          .filter(filter)
           .map { _ in () }
           .eraseToAnyPublisher(),
         state: getSubstate)
@@ -56,14 +69,15 @@ extension View {
 
   /// Maps a superstate to a substate, and updates when a particular action is dispatched.
   /// - Parameters
-  ///   - typeOfState: The superstate to map from.
-  ///   - kindofAction: The dispatchewd action that will trigger updates.
+  ///   - updateOn: The dispatched action that will trigger updates.
+  ///   - exceptWhen: An optional closure to filter out specific actions. This can be useful for actions that don't change the state such as ones that route child actions.
   ///   - mapper: Returns the substate from the superstate.
   /// - Returns: A view modifier.
   public func mapState<KindOfAction, Superstate, Substate>(
     updateOn kindOfAction: KindOfAction.Type,
+    exceptWhen: ((KindOfAction)->Bool)? = nil,
     _ mapper: @escaping (Superstate) -> Substate?
     ) -> Self.Modified<StateMapper<KindOfAction, Superstate, Substate>> where KindOfAction : Action, Superstate : StateType, Substate : StateType {
-    return self.modifier(StateMapper(kindOfAction: kindOfAction, mapper))
+    return self.modifier(StateMapper(kindOfAction: kindOfAction, exceptWhen: exceptWhen, mapper))
   }
 }
