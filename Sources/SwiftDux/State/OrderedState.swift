@@ -169,6 +169,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
       self.move(from: IndexSet(integer: currentIndex), to: index)
       let copy = copyStorageIfNeeded()
       copy.values[value.id] = value
+      self.storage = copy
     } else {
       let copy = copyStorageIfNeeded()
       copy.orderOfIds.insert(value.id, at: index)
