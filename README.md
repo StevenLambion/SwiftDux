@@ -51,7 +51,7 @@ let package = Package(
 ### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
-struct RootView {
+struct RootView : View {
   var store: Store<AppState>
 
   var body: some View {
@@ -85,7 +85,7 @@ struct BookListView : View {
 ### Modify actions sent from child views
 
 ```swift
-struct AuthorView {
+struct AuthorView : View {
   @MappedState author: AuthorState
 
   var body: some View {
