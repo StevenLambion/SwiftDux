@@ -152,7 +152,7 @@
               </div>
             <p>Maps a superstate to a substate. It updates views using a passed in change publisher.</p>
 
-<p>This should not be used diectly, but through <code><a href="../Extensions/View.html#/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_qd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF">View.mapState(updateOn:_:)</a></code>.</p>
+<p>This should not be used diectly, but through <code>View.mapState(updateOn:_:)</code>.</p>
 
           </section>
           <section class="section task-group-section">
@@ -161,9 +161,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11StateMapperV12kindOfAction_ACyxq_q0_Gxm_q0_Sgq_ctcfc"></a>
-                    <a name="//apple_ref/swift/Method/init(kindOfAction:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11StateMapperV12kindOfAction_ACyxq_q0_Gxm_q0_Sgq_ctcfc">init(kindOfAction:_:)</a>
+                    <a name="/s:8SwiftDux11StateMapperV12kindOfAction10exceptWhen_ACyxq_q0_Gxm_SbxcSgq0_Sgq_ctcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(kindOfAction:exceptWhen:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux11StateMapperV12kindOfAction10exceptWhen_ACyxq_q0_Gxm_SbxcSgq0_Sgq_ctcfc">init(kindOfAction:exceptWhen:_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -178,7 +178,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">kindOfAction</span><span class="p">:</span> <span class="kt">KindOfAction</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="n">_</span> <span class="nv">mapper</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Superstate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Substate</span><span class="p">?)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">kindOfAction</span><span class="p">:</span> <span class="kt">KindOfAction</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span> <span class="nv">exceptWhen</span><span class="p">:</span> <span class="p">((</span><span class="kt">KindOfAction</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span><span class="p">)?,</span> <span class="n">_</span> <span class="nv">mapper</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Superstate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Substate</span><span class="p">?)</span></code></pre>
 
                         </div>
                       </div>

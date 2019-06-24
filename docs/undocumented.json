@@ -30,14 +30,14 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 289,
+      "line": 290,
       "symbol": "OrderedState.subscript(_:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 309,
+      "line": 310,
       "symbol": "OrderedState.index(after:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -79,8 +79,8 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StateMapper.swift",
-      "line": 30,
-      "symbol": "StateMapper.init(kindOfAction:_:)",
+      "line": 31,
+      "symbol": "StateMapper.init(kindOfAction:exceptWhen:_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },

@@ -159,9 +159,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_qd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF"></a>
-                    <a name="//apple_ref/swift/Method/mapState(updateOn:_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_qd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF">mapState(updateOn:_:)</a>
+                    <a name="/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn10exceptWhen_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_Sbqd__cSgqd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF"></a>
+                    <a name="//apple_ref/swift/Method/mapState(updateOn:exceptWhen:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn10exceptWhen_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_Sbqd__cSgqd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF">mapState(updateOn:exceptWhen:_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -178,6 +178,7 @@
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">mapState</span><span class="o">&lt;</span><span class="kt">KindOfAction</span><span class="p">,</span> <span class="kt">Superstate</span><span class="p">,</span> <span class="kt">Substate</span><span class="o">&gt;</span><span class="p">(</span>
   <span class="n">updateOn</span> <span class="nv">kindOfAction</span><span class="p">:</span> <span class="kt">KindOfAction</span><span class="o">.</span><span class="k">Type</span><span class="p">,</span>
+  <span class="nv">exceptWhen</span><span class="p">:</span> <span class="p">((</span><span class="kt">KindOfAction</span><span class="p">)</span><span class="o">-&gt;</span><span class="kt">Bool</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
   <span class="n">_</span> <span class="nv">mapper</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Superstate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Substate</span><span class="p">?</span>
   <span class="p">)</span> <span class="o">-&gt;</span> <span class="k">Self</span><span class="o">.</span><span class="kt">Modified</span><span class="o">&lt;</span><span class="kt"><a href="../Structs/StateMapper.html">StateMapper</a></span><span class="o">&lt;</span><span class="kt">KindOfAction</span><span class="p">,</span> <span class="kt">Superstate</span><span class="p">,</span> <span class="kt">Substate</span><span class="o">&gt;&gt;</span> <span class="k">where</span> <span class="kt">KindOfAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Superstate</span> <span class="p">:</span> <span class="kt"><a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a></span><span class="p">,</span> <span class="kt">Substate</span> <span class="p">:</span> <span class="kt"><a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a></span></code></pre>
 
@@ -208,7 +209,7 @@
                       <div class="pointer"></div>
                       <div class="abstract">
                         <p>Injects a store into the environment. The store can then be used by the <code>@EnvironmentObject</code>
-property wrapper. This method also enables the use of <code><a href="../Extensions/View.html#/s:7SwiftUI4ViewP0A3DuxE8mapState8updateOn_AA16_ModifiedContentVyxAD0F6MapperVyqd__qd_0_qd_1_GGqd__m_qd_1_Sgqd_0_ctAD6ActionRd__SeRd_0_SERd_0_SeRd_1_SERd_1_r1_lF">View.mapState(updateOn:_:)</a></code> to
+property wrapper. This method also enables the use of <code>View.mapState(updateOn:_:)</code> to
 map substates to a view.</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">RootView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
   <span class="c1">// Passed in from the AppDelegate or SceneDelegate class.</span>

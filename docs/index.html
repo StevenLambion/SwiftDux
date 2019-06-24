@@ -238,6 +238,11 @@
 <h4 id='mappedstate-fails-to-find-its-state' class='heading'>@MappedState fails to find its state</h4>
 
 <p>Make sure the mapState() method is called in the correct environment scope. For example, a NavigationButton&rsquo;s destination is not in the same scope as the current content of the NavigationView even though the Button is declared inside it. To fix this, call the mapState() method directly on the NavigationView.</p>
+<h4 id='when-using-modifyactions-some-views-don-39-t-update-properly' class='heading'>When using modifyActions() some views don&rsquo;t update properly.</h4>
+
+<p>When using modifyActions() both the original action and the new action are broadcasted. The new action updates the UI first. If the update affects any mapState() methods, a new environment object will be created for them. When the second action is fired the environment object of those mapped states haven&rsquo;t subscribed to the didChange publisher yet, so the action is ignored. This shouldn&rsquo;t be a problem, but SwiftUI also doesn&rsquo;t appear to refresh views when setting a new environment object to replace a previous one.</p>
+
+<p>The current workaround is to use the optional <q>exceptWhen</q> parameter of the mapState() method on the parent view to ignore the modified action. This stops the recreation of the child mapState() methods, and reduces unneeded rerendering. </p>
 
           </section>
         </section>
