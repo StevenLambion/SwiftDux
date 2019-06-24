@@ -88,7 +88,7 @@ extension View {
   /// by both the new proxy and the original dispatcher it was created from.
   /// - Parameter stateType: Used to find the current dispatcher in the environment.
   /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func modifyActions(_ modifier: ActionModifier? = nil) -> some View {
+  public func modifyActions(_ modifier: ActionModifier? = nil) -> Self.Modified<DispatchProxy> {
     return self.modifier(DispatchProxy(modifyAction: modifier))
   }
 
