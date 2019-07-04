@@ -49,9 +49,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
       return self.send(actionPlan: action)
     } else {
       if let modifyAction = modifyAction, let newAction = modifyAction(action) {
-        let publisher = upstream.send(newAction)
-        self.upstreamActionSubject.send(action)
-        return publisher
+        return upstream.send(ModifiedAction(action: newAction, previousAction: action))
       } else {
         return upstream.send(action)
       }
@@ -71,7 +69,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
     let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
     actionPlan.run(send: sendAction, getState: getState)
-    return Publishers.Just(()).eraseToAnyPublisher()
+    return Just(()).eraseToAnyPublisher()
   }
 
   /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send

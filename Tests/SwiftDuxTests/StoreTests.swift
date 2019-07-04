@@ -18,7 +18,7 @@ final class StoreTests: XCTestCase {
   func testSubscribingToActionPlans() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(PublishableActionPlan<TestSendingState> { _, _ in
-      Publishers.Just(TestSendingAction.setText("1234")).eraseToAnyPublisher()
+      Just(TestSendingAction.setText("1234")).eraseToAnyPublisher()
     })
     XCTAssertEqual(store.state.text, "1234")
   }
@@ -26,7 +26,7 @@ final class StoreTests: XCTestCase {
   func testSubscribingToComplexActionPlans() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(PublishableActionPlan<TestSendingState> { dispatch, getState in
-      return Publishers.Just<Int>(getState().value)
+      return Just<Int>(getState().value)
         .map { value -> Int in
           dispatch(TestSendingAction.setValue(value + 1))
           return getState().value

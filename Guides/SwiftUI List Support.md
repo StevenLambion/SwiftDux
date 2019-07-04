@@ -64,7 +64,7 @@ class AppReducer : Reducer {
 Create a typical view that takes a list of items. Define callback closures for each kind of list event supported. `OrderedState<_>` can be used directly by List elements.
 
 ```swift
-struct BookListView : View {
+struct BookListContainer : View {
   var books: OrderedState<Book>
   var onMoveBooks: (IndexSet, Int) -> ()
   var onRemoveBooks: (IndexSet) -> ()
@@ -86,16 +86,18 @@ struct BookListView : View {
 Use the @MappedState property wrapper to bind the state to the view. Use the provided @MapDispatch property wrapper to dispatch actions from the event callbacks of the view.
 
 ```swift
-struct BookListContainer : View {
-  @MappedState var books: OrderedState<Book>
-  @Dispatcher var send: SendAction
+extension BookListContainer {
 
-  var body: some View {
-    BookListView(
-      books: books,
-      onMoveBooks: { send(AppAction.moveTodos(from: $0, to: $1)) },
-      onRemoveBooks: { send(AppAction.removeTodos(at: $0)) }
-    )
+  static connector = Connector<AppState> { $0 is AppAction }
+
+  static func connected() -> some View {
+    connector.mapToView { state dispatcher in
+      BookListContainer(
+        books: state.books,
+        onMoveBooks: { dispatcher.send(AppAction.moveBooks(from: $0, to: $1)) },
+        onRemoveBooks: { dispatcher.send(AppAction.removeBooks(at: $0)) }
+      )
+    }
   }
 }
 ```
@@ -104,9 +106,7 @@ struct BookListContainer : View {
 struct RootView : View {
 
   var body: some View {
-    BookListContainer()
-      .mapState(updateOn: AppAction.self) { (state: AppState) in state.books }
-      .provideStore(store)
+    BookListContainer.connected()
   }
 
 }

@@ -47,13 +47,13 @@ enum TodoAction : Action {
 It can also be useful to categorize actions by using a shared protocol:
 
 ```swift
-protocol SettingsAction: Action {}
+protocol SettingsAction : Action {}
 
-enum GeneralSettingsAction: SettingsAction {
+enum GeneralSettingsAction : SettingsAction {
   ...
 }
 
-enum NetworkSettingsAction: SettingsAction {
+enum NetworkSettingsAction : SettingsAction {
   ...
 }
 ```
@@ -102,34 +102,33 @@ final class AppReducer : Reducer {
 
 ## Providing a Store
 
-The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `provideStore(_:)` to inject it into the environment. To map a particular state to views, use the `mapState(from:for:_:)` method.
+The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `ProvideStore` to inject it into the environment.
 
 ```swift
 import SwiftDux
 
 let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppReducer())
 
+let storeProvider = StoreProvider(store: store)
+
 window.rootViewController = UIHostingController(
-  rootView: RootView()
-    .mapState(updateOn: TodoAction.self) { (state: AppState) in state.todos }
-    .provideStore(store)
+  rootView: RootView().modifier(storeProvider)
 )
 ```
 
 ## Creating the View
 
-Use the `@MappedState` and the `@MapDispatch` property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. `MappedState` looks for a state that you've mapped in the environment using `mapState(from:for:_:)`.
+Use the `Connector` class to map the application state and dispatcher to a view. The connector acts as a reusable, stateless API to update a given view when an action is dispatched. Because it's referenced based it should be created statically outside of SwiftUI. A good spot is as a singleton in an extension of the view itself as shown below.
 
 ```swift
 import SwiftUI
 
 struct TodosView : View {
-  @State var editMode: EditMode = .active
-  @MappedState todos: OrderedState<TodoItem>
-  @Dispatcher send: SendAction
 
   // Will be populated by the state
   var todos: [TodoItemState]
+  var onRemoveTodos: (IndexSet) -> ()
+  var onMoveTodos: (IndexSet, Int) -> ()
 
   // These closures will be populated with action dispatchers.
 
@@ -138,19 +137,27 @@ struct TodosView : View {
       ForEach(todos) { item in
         TodoItemRow(item: item)
       }
-      .onDelete(perform: removeTodos)
-      .onMove(perform: moveTodos)
+      .onDelete(perform: self.onRemoveTodos)
+      .onMove(perform: self.onMoveTodos)
     }
     .environment(\.editMode, $editMode)
   }
+}
 
-  func moveTodos(from indexSet: IndexSet, to: Int) {
-    send(TodoAction.moveTodos(from: $0, to: $1))
+extension TodosView {
+
+  static let connector = Connector<AppState> { $0 is TodoAction }
+
+  static func connected() -> some View {
+    connector.mapToView { state, dispatcher in
+      TodosView(
+        todos: state.todos,
+        onRemoveTodos: { dispatcher.send(TodoAction.removeTodos(at: $0)) }
+        onMoveTodos: { dispatcher.send(TodoAction.moveTodos(from: $0, to: $1)) }
+      )
+    }
   }
 
-  func removeTodos(at indexSet: IndexSet) {
-    send(TodoAction.removeTodos(at: $0))
-  }
 }
 
 ```
@@ -161,7 +168,7 @@ Add the container to the root view:
 struct RootView : View {
 
   var body: some View {
-    TodosView()
+    TodosView.connected()
   }
 
 }
