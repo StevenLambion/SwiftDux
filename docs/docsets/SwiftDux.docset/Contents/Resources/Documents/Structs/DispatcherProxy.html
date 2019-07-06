@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>PublishableActionPlan Structure Reference</title>
+    <title>DispatcherProxy Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/PublishableActionPlan" class="dashAnchor"></a>
-    <a title="PublishableActionPlan Structure Reference"></a>
+    <a name="//apple_ref/swift/Struct/DispatcherProxy" class="dashAnchor"></a>
+    <a title="DispatcherProxy Structure Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SwiftDux Docs</a> (82% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SwiftDux Reference</a>
         <img id="carat" src="../img/carat.png" />
-        PublishableActionPlan Structure Reference
+        DispatcherProxy Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -151,16 +151,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>PublishableActionPlan</h1>
+            <h1>DispatcherProxy</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">PublishableActionPlan</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DispatcherProxy</span> <span class="p">:</span> <span class="kt">ViewModifier</span></code></pre>
 
                 </div>
               </div>
-            <p>An action plan that may optionally publish actions to the store. The send method of the action
-dispatcher  returns back a publisher to allow events to be triggered when an action is sent or
-the publisher has completed.</p>
+            <p>Undocumented</p>
 
           </section>
           <section class="section task-group-section">
@@ -169,9 +167,9 @@ the publisher has completed.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux21PublishableActionPlanV4Bodya"></a>
-                    <a name="//apple_ref/swift/Alias/Body" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux21PublishableActionPlanV4Bodya">Body</a>
+                    <a name="/s:8SwiftDux15DispatcherProxyV12modifyActionAcA0F0_pSgAaE_pcSg_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(modifyAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux15DispatcherProxyV12modifyActionAcA0F0_pSgAaE_pcSg_tcfc">init(modifyAction:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -179,51 +177,16 @@ the publisher has completed.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The body of a publishable action plan.</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Body</span> <span class="o">=</span> <span class="p">(</span><span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">,</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux8GetStatea">GetState</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>dispatch</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Dispatches an action synchronously.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>getState</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Gets the latest snapshot of the application&rsquo;s state.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>A publisher that can send actions to the store.</p>
                       </div>
                     </section>
                   </div>
@@ -231,9 +194,9 @@ the publisher has completed.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux21PublishableActionPlanVyACyxG7Combine12AnyPublisherVyAA0D0_ps5NeverOGyAaH_pc_xyctccfc"></a>
-                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux21PublishableActionPlanVyACyxG7Combine12AnyPublisherVyAA0D0_ps5NeverOGyAaH_pc_xyctccfc">init(_:)</a>
+                    <a name="/s:7SwiftUI12ViewModifierP4body7content4BodyQzAA01_cD8_ContentVyxG_tF"></a>
+                    <a name="//apple_ref/swift/Method/body(content:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI12ViewModifierP4body7content4BodyQzAA01_cD8_ContentVyxG_tF">body(content:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -241,60 +204,13 @@ the publisher has completed.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a new action plan.</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Structs/PublishableActionPlan.html#/s:8SwiftDux21PublishableActionPlanV4Bodya">Body</a></span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>body</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The body of the aciton plan.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux21PublishableActionPlanV3run4send8getState7Combine12AnyPublisherVyAA0D0_ps5NeverOGyAaJ_pc_xyctF"></a>
-                    <a name="//apple_ref/swift/Method/run(send:getState:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux21PublishableActionPlanV3run4send8getState7Combine12AnyPublisherVyAA0D0_ps5NeverOGyAaJ_pc_xyctF">run(send:getState:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Manually run the action plan. This can be useful to run an action plan inside containing action plan.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">(</span><span class="nv">send</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">,</span> <span class="nv">getState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux8GetStatea">GetState</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">body</span><span class="p">(</span><span class="nv">content</span><span class="p">:</span> <span class="kt">Content</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
                       </div>

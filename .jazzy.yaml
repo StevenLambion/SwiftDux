@@ -31,6 +31,5 @@ custom_categories:
   - name: SwiftUI
     children:
       - View
-      - MappedState
-      - Dispatcher
-      - StoreProvider
+      - Connector
+      - DispatcherProxy

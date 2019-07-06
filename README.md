@@ -143,6 +143,35 @@ extension AuthorView {
 
 ## Known Issues
 
+#### NavigationLink causes crash with environment object
+
+Beta 3 has a known bug with NavigationLink. Apple's workaround is to provide the environment objects directly to the navigationLink's destination view. SwiftDux has two environment objects that must be passed explicitly as shown below:
+
+```swift
+struct MasterListView : View {
+
+  @EnvironmentObject var storeContext: StoreContext<AppState>
+  @EnvironmentObject var dispatcherContext: DispatcherContext
+
+  var body: some View {
+    List {
+      ForEach(items) { item in
+        NavigationLink(destination: self.renderItemDetails(forId: item.id)) {
+          Text(item.name)
+        }
+      }
+    }
+  }
+
+  func renderItemDetails(forId id: String) -> some View {
+    ItemDetailView.connected(id: id)
+      .environmentObject(storeContext)
+      .environmentObject(dispatcherContext)
+  }
+
+}
+```
+
 #### onAppear() doesn't update the view when dispatching actions
 
 The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.

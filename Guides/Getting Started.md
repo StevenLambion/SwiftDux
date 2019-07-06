@@ -102,17 +102,15 @@ final class AppReducer : Reducer {
 
 ## Providing a Store
 
-The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `ProvideStore` to inject it into the environment.
+The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `provideStore(_:)` to inject it into the environment.
 
 ```swift
 import SwiftDux
 
 let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppReducer())
 
-let storeProvider = StoreProvider(store: store)
-
 window.rootViewController = UIHostingController(
-  rootView: RootView().modifier(storeProvider)
+  rootView: RootView().provideStore(store)
 )
 ```
 

@@ -14,7 +14,7 @@
     <a title="Other Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (88% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -69,7 +69,22 @@
                 <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
+                <a href="Structs/ActionPlan.html">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/PublishableActionPlan.html">PublishableActionPlan</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
               </li>
             </ul>
           </li>
@@ -85,14 +100,28 @@
               <li class="nav-group-task">
                 <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="SwiftUI.html">SwiftUI</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/View.html">View</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/Connector.html">Connector</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/DispatcherProxy.html">DispatcherProxy</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="Other Classes.html">Other Classes</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DispatcherContext.html">DispatcherContext</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Classes/StoreContext.html">StoreContext</a>
               </li>
@@ -110,18 +139,10 @@
             <a href="Other Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/DispatchProxy.html">DispatchProxy</a>
+                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
               <li class="nav-group-task">
                 <a href="Structs/StoreProvider.html">StoreProvider</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Typealiases.html">Other Type Aliases</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Typealiases.html#/s:8SwiftDux8Dispatcha">Dispatch</a>
               </li>
             </ul>
           </li>
@@ -140,9 +161,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12StoreContextC"></a>
-                    <a name="//apple_ref/swift/Class/StoreContext" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12StoreContextC">StoreContext</a>
+                    <a name="/s:8SwiftDux17DispatcherContextC"></a>
+                    <a name="//apple_ref/swift/Class/DispatcherContext" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux17DispatcherContextC">DispatcherContext</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -153,6 +174,38 @@
                         <p>Provides the application&rsquo;s store to views in the environment.</p>
 
 <p>Typically you should use the <code>Store&lt;_&gt;.connect(updateOn:wrapper:)</code> method.</p>
+
+                        <a href="Classes/DispatcherContext.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">DispatcherContext</span> <span class="p">:</span> <span class="kt">BindableObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12StoreContextC"></a>
+                    <a name="//apple_ref/swift/Class/StoreContext" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12StoreContextC">StoreContext</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
 
                         <a href="Classes/StoreContext.html" class="slightly-smaller">See more</a>
                       </div>
@@ -172,7 +225,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-19)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-07-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

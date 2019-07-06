@@ -13,7 +13,7 @@
     <a title="SwiftDux  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (85% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -108,13 +108,21 @@
                 <a href="Extensions/View.html">View</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/MappedState.html">MappedState</a>
+                <a href="Classes/Connector.html">Connector</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Dispatcher.html">Dispatcher</a>
+                <a href="Structs/DispatcherProxy.html">DispatcherProxy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DispatcherContext.html">DispatcherContext</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StoreProvider.html">StoreProvider</a>
+                <a href="Classes/StoreContext.html">StoreContext</a>
               </li>
             </ul>
           </li>
@@ -130,10 +138,10 @@
             <a href="Other Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/DispatchProxy.html">DispatchProxy</a>
+                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StateMapper.html">StateMapper</a>
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -179,7 +187,7 @@
 
 <span class="k">let</span> <span class="nv">package</span> <span class="o">=</span> <span class="kt">Package</span><span class="p">(</span>
   <span class="nv">dependencies</span><span class="p">:</span> <span class="p">[</span>
-    <span class="o">.</span><span class="kt">Package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/StevenLambion/SwiftDux.git"</span><span class="p">,</span> <span class="nv">majorVersion</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">minor</span><span class="p">:</span> <span class="mi">6</span><span class="p">)</span>
+    <span class="o">.</span><span class="kt">Package</span><span class="p">(</span><span class="nv">url</span><span class="p">:</span> <span class="s">"https://github.com/StevenLambion/SwiftDux.git"</span><span class="p">,</span> <span class="nv">majorVersion</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="nv">minor</span><span class="p">:</span> <span class="mi">7</span><span class="p">)</span>
   <span class="p">]</span>
 <span class="p">)</span>
 </code></pre>
@@ -189,7 +197,7 @@
   <span class="k">var</span> <span class="nv">store</span><span class="p">:</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">BookListView</span><span class="p">()</span>
+    <span class="kt">BookListView</span><span class="o">.</span><span class="nf">connected</span><span class="p">()</span>
       <span class="o">.</span><span class="nf">mapState</span><span class="p">(</span><span class="nv">updateOn</span><span class="p">:</span> <span class="kt">BookAction</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">)</span> <span class="k">in</span> <span class="n">state</span><span class="o">.</span><span class="n">books</span> <span class="p">}</span>
       <span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
   <span class="p">}</span>
@@ -198,23 +206,42 @@
 </code></pre>
 <h3 id='use-property-wrappers-to-inject-mapped-states-and-the-store-dispatcher' class='heading'>Use property wrappers to inject mapped states and the store dispatcher</h3>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">BookListView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@MappedState</span> <span class="k">var</span> <span class="nv">books</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Book</span><span class="o">&gt;</span>
-  <span class="kd">@Dispatcher</span> <span class="k">var</span> <span class="nv">send</span><span class="p">:</span> <span class="kt">SendAction</span>
+  <span class="k">var</span> <span class="nv">books</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Book</span><span class="o">&gt;</span>
+  <span class="k">var</span> <span class="nv">onRemoveBooks</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
+  <span class="k">var</span> <span class="nv">onMoveBooks</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
     <span class="kt">List</span> <span class="p">{</span>
       <span class="kt">ForEach</span><span class="p">(</span><span class="n">books</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
         <span class="kt">BookRow</span><span class="p">(</span><span class="nv">item</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
       <span class="p">}</span>
-      <span class="o">.</span><span class="n">onMove</span> <span class="p">{</span> <span class="nf">send</span><span class="p">(</span><span class="kt">BookAction</span><span class="o">.</span><span class="nf">moveBooks</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">}</span>
-      <span class="o">.</span><span class="n">onDelete</span>  <span class="p">{</span> <span class="nf">send</span><span class="p">(</span><span class="kt">BookAction</span><span class="o">.</span><span class="nf">removeBooks</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
+      <span class="o">.</span><span class="nf">onMove</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">onMoveBooks</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">onDelete</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">onRemoveBooks</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">BookListView</span> <span class="p">{</span>
+
+  <span class="kd">static</span> <span class="k">let</span> <span class="nv">connector</span> <span class="o">=</span> <span class="kt">Connector</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">BookAction</span> <span class="p">}</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="nv">authorId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="n">connector</span><span class="o">.</span><span class="n">mapToView</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+      <span class="k">guard</span> <span class="k">let</span> <span class="nv">author</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">authorId</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="kt">BookListView</span><span class="p">(</span>
+        <span class="nv">books</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">books</span><span class="p">,</span>
+        <span class="nv">onRemoveBooks</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">BookAction</span><span class="o">.</span><span class="nf">removeBooks</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
+        <span class="nv">onMoveBooks</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">BookAction</span><span class="o">.</span><span class="nf">moveBooks</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
 <span class="p">}</span>
 </code></pre>
 <h3 id='modify-actions-sent-from-child-views' class='heading'>Modify actions sent from child views</h3>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">AuthorView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@MappedState</span> <span class="nv">author</span><span class="p">:</span> <span class="kt">AuthorState</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
     <span class="kt">BookListView</span><span class="p">()</span>
@@ -222,32 +249,71 @@
       <span class="o">.</span><span class="nf">modifyActions</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">modifyBookActions</span><span class="p">)</span>
   <span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">modifyBookActions</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Action</span><span class="p">?</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">AuthorView</span> <span class="p">{</span>
+
+  <span class="kd">static</span> <span class="k">let</span> <span class="nv">actionProxy</span> <span class="o">=</span> <span class="kt">DispatcherProxy</span> <span class="p">{</span> <span class="n">action</span> <span class="k">in</span>
     <span class="k">if</span> <span class="k">let</span> <span class="nv">action</span> <span class="o">=</span> <span class="n">action</span> <span class="k">as?</span> <span class="kt">BookAction</span> <span class="p">{</span>
       <span class="k">return</span> <span class="kt">AuthorAction</span><span class="o">.</span><span class="nf">routeBookAction</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">action</span>
   <span class="p">}</span>
 
+  <span class="kd">static</span> <span class="k">let</span> <span class="nv">connector</span> <span class="o">=</span> <span class="kt">Connector</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">AuthorAction</span> <span class="p">}</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">(</span><span class="nv">authorId</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="n">connector</span><span class="o">.</span><span class="n">mapToView</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+      <span class="k">guard</span> <span class="k">let</span> <span class="nv">author</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="p">[</span><span class="n">authorId</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="kc">nil</span>
+      <span class="p">}</span>
+      <span class="k">return</span> <span class="kt">AuthorView</span><span class="p">(</span>
+        <span class="nv">author</span><span class="p">:</span> <span class="n">author</span>
+      <span class="p">)</span>
+      <span class="o">.</span><span class="nf">modifier</span><span class="p">(</span><span class="n">actionProxy</span><span class="p">)</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
 <span class="p">}</span>
 </code></pre>
 <h2 id='known-issues' class='heading'>Known Issues</h2>
+<h4 id='navigationlink-causes-crash-with-environment-object' class='heading'>NavigationLink causes crash with environment object</h4>
+
+<p>Beta 3 has a known bug with NavigationLink. Apple&rsquo;s workaround is to provide the environment objects directly to the navigationLink&rsquo;s destination view. SwiftDux has two environment objects that must be passed explicitly as shown below:</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MasterListView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+
+  <span class="kd">@EnvironmentObject</span> <span class="k">var</span> <span class="nv">storeContext</span><span class="p">:</span> <span class="kt">StoreContext</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span>
+  <span class="kd">@EnvironmentObject</span> <span class="k">var</span> <span class="nv">dispatcherContext</span><span class="p">:</span> <span class="kt">DispatcherContext</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">List</span> <span class="p">{</span>
+      <span class="kt">ForEach</span><span class="p">(</span><span class="n">items</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
+        <span class="kt">NavigationLink</span><span class="p">(</span><span class="nv">destination</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="nf">renderItemDetails</span><span class="p">(</span><span class="nv">forId</span><span class="p">:</span> <span class="n">item</span><span class="o">.</span><span class="n">id</span><span class="p">))</span> <span class="p">{</span>
+          <span class="kt">Text</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="p">}</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">renderItemDetails</span><span class="p">(</span><span class="n">forId</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">ItemDetailView</span><span class="o">.</span><span class="nf">connected</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="n">id</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">environmentObject</span><span class="p">(</span><span class="n">storeContext</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">environmentObject</span><span class="p">(</span><span class="n">dispatcherContext</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
 <h4 id='onappear-doesn-39-t-update-the-view-when-dispatching-actions' class='heading'>onAppear() doesn&rsquo;t update the view when dispatching actions</h4>
 
 <p>The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.</p>
-<h4 id='mappedstate-fails-to-find-its-state' class='heading'>@MappedState fails to find its state</h4>
+<h4 id='swiftui-doesn-39-t-properly-resubscribe-to-bindable-objects-after-their-initial-creation' class='heading'>SwiftUI doesn&rsquo;t properly resubscribe to bindable objects after their initial creation.</h4>
 
-<p>Make sure the mapState() method is called in the correct environment scope. For example, a NavigationButton&rsquo;s destination is not in the same scope as the current content of the NavigationView even though the Button is declared inside it. To fix this, call the mapState() method directly on the NavigationView.</p>
-<h4 id='when-using-modifyactions-some-views-don-39-t-update-properly' class='heading'>When using modifyActions() some views don&rsquo;t update properly.</h4>
-
-<p>When using modifyActions() both the original action and the new action are broadcasted. The new action updates the UI first. If the update affects any mapState() methods, a new environment object will be created for them. When the second action is fired the environment object of those mapped states haven&rsquo;t subscribed to the didChange publisher yet, so the action is ignored. This shouldn&rsquo;t be a problem, but SwiftUI also doesn&rsquo;t appear to refresh views when setting a new environment object to replace a previous one.</p>
-
-<p>The current workaround is to use the optional <q>exceptWhen</q> parameter of the mapState() method on the parent view to ignore the modified action. This stops the recreation of the child mapState() methods, and reduces unneeded rerendering. </p>
+<p>Create all bindable objects outside of SwiftUI before binding them. Avoid recreating the objects.</p>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-24)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-07-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
