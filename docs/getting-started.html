@@ -13,7 +13,7 @@
     <a title="Getting Started  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (85% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -108,13 +108,21 @@
                 <a href="Extensions/View.html">View</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/MappedState.html">MappedState</a>
+                <a href="Classes/Connector.html">Connector</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Dispatcher.html">Dispatcher</a>
+                <a href="Structs/DispatcherProxy.html">DispatcherProxy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DispatcherContext.html">DispatcherContext</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StoreProvider.html">StoreProvider</a>
+                <a href="Classes/StoreContext.html">StoreContext</a>
               </li>
             </ul>
           </li>
@@ -130,10 +138,10 @@
             <a href="Other Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/DispatchProxy.html">DispatchProxy</a>
+                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StateMapper.html">StateMapper</a>
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -186,13 +194,13 @@
 </code></pre>
 
 <p>It can also be useful to categorize actions by using a shared protocol:</p>
-<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">SettingsAction</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{}</span>
+<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">SettingsAction</span> <span class="p">:</span> <span class="kt">Action</span> <span class="p">{}</span>
 
-<span class="kd">enum</span> <span class="kt">GeneralSettingsAction</span><span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
+<span class="kd">enum</span> <span class="kt">GeneralSettingsAction</span> <span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
   <span class="o">...</span>
 <span class="p">}</span>
 
-<span class="kd">enum</span> <span class="kt">NetworkSettingsAction</span><span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
+<span class="kd">enum</span> <span class="kt">NetworkSettingsAction</span> <span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
   <span class="o">...</span>
 <span class="p">}</span>
 </code></pre>
@@ -237,29 +245,26 @@
 </code></pre>
 <h2 id='providing-a-store' class='heading'>Providing a Store</h2>
 
-<p>The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There&rsquo;s a convenient view modifier called <code>provideStore(_:)</code> to inject it into the environment. To map a particular state to views, use the <code>mapState(from:for:_:)</code> method.</p>
+<p>The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There&rsquo;s a convenient view modifier called <code>provideStore(_:)</code> to inject it into the environment.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
 <span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="kt">AppState</span><span class="p">(</span><span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoListState</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="p">())),</span> <span class="kt">AppReducer</span><span class="p">())</span>
 
 <span class="n">window</span><span class="o">.</span><span class="n">rootViewController</span> <span class="o">=</span> <span class="kt">UIHostingController</span><span class="p">(</span>
-  <span class="nv">rootView</span><span class="p">:</span> <span class="kt">RootView</span><span class="p">()</span>
-    <span class="o">.</span><span class="nf">mapState</span><span class="p">(</span><span class="nv">updateOn</span><span class="p">:</span> <span class="kt">TodoAction</span><span class="o">.</span><span class="k">self</span><span class="p">)</span> <span class="p">{</span> <span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">)</span> <span class="k">in</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span> <span class="p">}</span>
-    <span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+  <span class="nv">rootView</span><span class="p">:</span> <span class="kt">RootView</span><span class="p">()</span><span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
 <span class="p">)</span>
 </code></pre>
 <h2 id='creating-the-view' class='heading'>Creating the View</h2>
 
-<p>Use the <code>@MappedState</code> and the <code>@MapDispatch</code> property wrappers to bind the application state and dispatching system to a view. The property wrappers will keep your view up to date with the latest state. <code><a href="Structs/MappedState.html">MappedState</a></code> looks for a state that you&rsquo;ve mapped in the environment using <code>mapState(from:for:_:)</code>.</p>
+<p>Use the <code><a href="Classes/Connector.html">Connector</a></code> class to map the application state and dispatcher to a view. The connector acts as a reusable, stateless API to update a given view when an action is dispatched. Because it&rsquo;s referenced based it should be created statically outside of SwiftUI. A good spot is as a singleton in an extension of the view itself as shown below.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftUI</span>
 
 <span class="kd">struct</span> <span class="kt">TodosView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@State</span> <span class="k">var</span> <span class="nv">editMode</span><span class="p">:</span> <span class="kt">EditMode</span> <span class="o">=</span> <span class="o">.</span><span class="n">active</span>
-  <span class="kd">@MappedState</span> <span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">TodoItem</span><span class="o">&gt;</span>
-  <span class="kd">@Dispatcher</span> <span class="nv">send</span><span class="p">:</span> <span class="kt">SendAction</span>
 
   <span class="c1">// Will be populated by the state</span>
   <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItemState</span><span class="p">]</span>
+  <span class="k">var</span> <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
+  <span class="k">var</span> <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">(</span><span class="kt">IndexSet</span><span class="p">,</span> <span class="kt">Int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">()</span>
 
   <span class="c1">// These closures will be populated with action dispatchers.</span>
 
@@ -268,19 +273,27 @@
       <span class="kt">ForEach</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">{</span> <span class="n">item</span> <span class="k">in</span>
         <span class="kt">TodoItemRow</span><span class="p">(</span><span class="nv">item</span><span class="p">:</span> <span class="n">item</span><span class="p">)</span>
       <span class="p">}</span>
-      <span class="o">.</span><span class="nf">onDelete</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="n">removeTodos</span><span class="p">)</span>
-      <span class="o">.</span><span class="nf">onMove</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="n">moveTodos</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">onDelete</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">onRemoveTodos</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">onMove</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">onMoveTodos</span><span class="p">)</span>
     <span class="p">}</span>
     <span class="o">.</span><span class="nf">environment</span><span class="p">(\</span><span class="o">.</span><span class="n">editMode</span><span class="p">,</span> <span class="err">$</span><span class="n">editMode</span><span class="p">)</span>
   <span class="p">}</span>
+<span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">moveTodos</span><span class="p">(</span><span class="n">from</span> <span class="nv">indexSet</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span>
+<span class="kd">extension</span> <span class="kt">TodosView</span> <span class="p">{</span>
+
+  <span class="kd">static</span> <span class="k">let</span> <span class="nv">connector</span> <span class="o">=</span> <span class="kt">Connector</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">TodoAction</span> <span class="p">}</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="n">connector</span><span class="o">.</span><span class="n">mapToView</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+      <span class="kt">TodosView</span><span class="p">(</span>
+        <span class="nv">todos</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="p">,</span>
+        <span class="nv">onRemoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span> <span class="p">}</span>
+        <span class="nv">onMoveTodos</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="kd">func</span> <span class="nf">removeTodos</span><span class="p">(</span><span class="n">at</span> <span class="nv">indexSet</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nf">send</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">removeTodos</span><span class="p">(</span><span class="nv">at</span><span class="p">:</span> <span class="nv">$0</span><span class="p">))</span>
-  <span class="p">}</span>
 <span class="p">}</span>
 
 </code></pre>
@@ -289,7 +302,7 @@
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">RootView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">TodosView</span><span class="p">()</span>
+    <span class="kt">TodosView</span><span class="o">.</span><span class="nf">connected</span><span class="p">()</span>
   <span class="p">}</span>
 
 <span class="p">}</span>
@@ -298,7 +311,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-24)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-07-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

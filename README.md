@@ -41,7 +41,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 6)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 7)
   ]
 )
 ```
@@ -55,7 +55,7 @@ struct RootView : View {
   var store: Store<AppState>
 
   var body: some View {
-    BookListView()
+    BookListView.connected()
       .mapState(updateOn: BookAction.self) { (state: AppState) in state.books }
       .provideStore(store)
   }
@@ -67,18 +67,38 @@ struct RootView : View {
 
 ```swift
 struct BookListView : View {
-  @MappedState var books: OrderedState<Book>
-  @Dispatcher var send: SendAction
+  var books: OrderedState<Book>
+  var onRemoveBooks: (IndexSet) -> ()
+  var onMoveBooks: (IndexSet, Int) -> ()
 
   var body: some View {
     List {
       ForEach(books) { item in
         BookRow(item: item)
       }
-      .onMove { send(BookAction.moveBooks(from: $0, to: $1)) }
-      .onDelete  { send(BookAction.removeBooks(at: $0)) }
+      .onMove(perform: self.onMoveBooks)
+      .onDelete(perform: self.onRemoveBooks)
     }
   }
+}
+
+extension BookListView {
+
+  static let connector = Connector<AppState> { $0 is BookAction }
+
+  static func connected(authorId: String) -> some View {
+    connector.mapToView { state, dispatcher in
+      guard let author = state.authors[authorId] else {
+        return nil
+      }
+      return BookListView(
+        books: author.books,
+        onRemoveBooks: { dispatcher.send(BookAction.removeBooks(at: $0)) }
+        onMoveBooks: { dispatcher.send(BookAction.moveBooks(from: $0, to: $1)) }
+      )
+    }
+  }
+
 }
 ```
 
@@ -86,7 +106,6 @@ struct BookListView : View {
 
 ```swift
 struct AuthorView : View {
-  @MappedState author: AuthorState
 
   var body: some View {
     BookListView()
@@ -94,11 +113,29 @@ struct AuthorView : View {
       .modifyActions(self.modifyBookActions)
   }
 
-  func modifyBookActions(action: Action) -> Action? {
+}
+
+extension AuthorView {
+
+  static let actionProxy = DispatcherProxy { action in
     if let action = action as? BookAction {
       return AuthorAction.routeBookAction(for: author.id, action)
     }
     return action
+  }
+
+  static let connector = Connector<AppState> { $0 is AuthorAction }
+
+  static func connected(authorId: String) -> some View {
+    connector.mapToView { state, dispatcher in
+      guard let author = state.authors[authorId] else {
+        return nil
+      }
+      return AuthorView(
+        author: author
+      )
+      .modifier(actionProxy)
+    }
   }
 
 }
@@ -106,23 +143,42 @@ struct AuthorView : View {
 
 ## Known Issues
 
+#### NavigationLink causes crash with environment object
+
+Beta 3 has a known bug with NavigationLink. Apple's workaround is to provide the environment objects directly to the navigationLink's destination view. SwiftDux has two environment objects that must be passed explicitly as shown below:
+
+```swift
+struct MasterListView : View {
+
+  @EnvironmentObject var storeContext: StoreContext<AppState>
+  @EnvironmentObject var dispatcherContext: DispatcherContext
+
+  var body: some View {
+    List {
+      ForEach(items) { item in
+        NavigationLink(destination: self.renderItemDetails(forId: item.id)) {
+          Text(item.name)
+        }
+      }
+    }
+  }
+
+  func renderItemDetails(forId id: String) -> some View {
+    ItemDetailView.connected(id: id)
+      .environmentObject(storeContext)
+      .environmentObject(dispatcherContext)
+  }
+
+}
+```
+
 #### onAppear() doesn't update the view when dispatching actions
 
 The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.
 
-#### @MappedState fails to find its state
+#### SwiftUI doesn't properly resubscribe to bindable objects after their initial creation.
 
-Make sure the mapState() method is called in the correct environment scope. For example, a NavigationButton's destination is not in the same scope as the current content of the NavigationView even though the Button is declared inside it. To fix this, call the mapState() method directly on the NavigationView.
-
-#### When using modifyActions() some views don't update properly.
-
-When using modifyActions() both the original action and the new action are broadcasted. The new action updates the UI first. If the update affects any mapState() methods, a new environment object will be created for them. When the second action is fired the environment object of those mapped states haven't subscribed to the didChange publisher yet, so the action is ignored. This shouldn't be a problem, but SwiftUI also doesn't appear to refresh views when setting a new environment object to replace a previous one.
-
-The current workaround is to use the optional "exceptWhen" parameter of the mapState() method on the parent view to ignore the modified action. This stops the recreation of the child mapState() methods, and reduces unneeded rerendering.
-
-#### Child view doesn't update when MappedState changes after a parent view has been updated.
-
-There's inconsistent behavior when setting a particular type of environment object more than once in the same scope. It appears to have trouble re-subscribing. I've submitted a ticket to Apple.
+Create all bindable objects outside of SwiftUI before binding them. Avoid recreating the objects.
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg

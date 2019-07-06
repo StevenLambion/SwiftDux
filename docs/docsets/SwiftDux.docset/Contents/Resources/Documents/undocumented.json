@@ -22,6 +22,41 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
+      "line": 6,
+      "symbol": "ModifiedAction.action",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
+      "line": 7,
+      "symbol": "ModifiedAction.previousActions",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
+      "line": 9,
+      "symbol": "ModifiedAction.init(action:previousActions:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
+      "line": 14,
+      "symbol": "ModifiedAction.init(action:previousAction:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
+      "line": 24,
+      "symbol": "ModifiedAction.modified(with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
       "line": 90,
       "symbol": "OrderedState.Id",
@@ -30,78 +65,64 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 289,
+      "line": 290,
       "symbol": "OrderedState.subscript(_:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 309,
+      "line": 310,
       "symbol": "OrderedState.index(after:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
-      "line": 18,
-      "symbol": "Store.didChangeWithAction",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Dispatcher.swift",
-      "line": 21,
-      "symbol": "Dispatcher.value",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Dispatcher.swift",
-      "line": 25,
-      "symbol": "Dispatcher.init()",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 31,
+      "symbol": "Connector.init(updateWhen:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 21,
-      "symbol": "MappedState.value",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 25,
-      "symbol": "MappedState.init()",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 35,
+      "symbol": "Connector.mapToView(content:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StateMapper.swift",
-      "line": 30,
-      "symbol": "StateMapper.init(kindOfAction:_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 28,
-      "symbol": "StoreProvider.init(store:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 47,
-      "symbol": "DispatchProxy",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/DispatcherProxy.swift",
+      "line": 4,
+      "symbol": "DispatcherProxy",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/DispatcherProxy.swift",
+      "line": 9,
+      "symbol": "DispatcherProxy.init(modifyAction:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreContext.swift",
+      "line": 4,
+      "symbol": "StoreContext",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreContext.swift",
+      "line": 6,
+      "symbol": "StoreContext.store",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 52,
-      "symbol": "DispatchProxy.init(modifyAction:)",
+      "line": 10,
+      "symbol": "StoreProvider.init(store:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }

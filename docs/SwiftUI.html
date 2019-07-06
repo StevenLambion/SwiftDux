@@ -14,7 +14,7 @@
     <a title="SwiftUI  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SwiftDux Docs</a> (85% documented)</p>
+        <p><a href="index.html">SwiftDux Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -109,13 +109,21 @@
                 <a href="Extensions/View.html">View</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/MappedState.html">MappedState</a>
+                <a href="Classes/Connector.html">Connector</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/Dispatcher.html">Dispatcher</a>
+                <a href="Structs/DispatcherProxy.html">DispatcherProxy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/DispatcherContext.html">DispatcherContext</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StoreProvider.html">StoreProvider</a>
+                <a href="Classes/StoreContext.html">StoreContext</a>
               </li>
             </ul>
           </li>
@@ -131,10 +139,10 @@
             <a href="Other Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/DispatchProxy.html">DispatchProxy</a>
+                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="Structs/StateMapper.html">StateMapper</a>
+                <a href="Structs/StoreProvider.html">StoreProvider</a>
               </li>
             </ul>
           </li>
@@ -184,9 +192,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11MappedStateV"></a>
-                    <a name="//apple_ref/swift/Struct/MappedState" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11MappedStateV">MappedState</a>
+                    <a name="/s:8SwiftDux9ConnectorC"></a>
+                    <a name="//apple_ref/swift/Class/Connector" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux9ConnectorC">Connector</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -194,66 +202,37 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Retrieves a mapping of the application state from the environment and provides it to a property in a SwiftUI view.
-Use the <code>mapState(updateOn:_:)</code> method.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+                        <p>Connects the store&rsquo;s state to a view.</p>
 
-  <span class="kd">@MappedState</span> <span class="k">var</span> <span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoList</span>
-
+<p>A connector should be created as a singleton. It creates a stateless mechanism to update the connected view when the provided filter function returns
+true.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">BookListContainer</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="o">...</span>
 <span class="p">}</span>
-</code></pre>
 
-                        <a href="Structs/MappedState.html" class="slightly-smaller">See more</a>
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@propertyDelegate</span>
-<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedState</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">DynamicViewProperty</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+<span class="kd">extension</span> <span class="kt">BookListContainer</span> <span class="p">{</span>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux10DispatcherV"></a>
-                    <a name="//apple_ref/swift/Struct/Dispatcher" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10DispatcherV">Dispatcher</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Retrieves the dispatcher for the given state from the environment and maps it to a property in a SwiftUI view.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="k">let</span> <span class="nv">connector</span> <span class="o">=</span> <span class="kt">Connector</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">BookListAction</span> <span class="p">}</span>
 
-  <span class="kd">@Dispatcher</span> <span class="k">var</span> <span class="nv">send</span><span class="p">:</span> <span class="kt">SendAction</span>
-
-  <span class="kd">func</span> <span class="nf">login</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nf">dispatch</span><span class="p">(</span><span class="kt">UserActions</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="o">...</span><span class="p">))</span>
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">connected</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="n">connector</span><span class="o">.</span><span class="n">mapToView</span> <span class="p">{</span> <span class="n">state</span><span class="p">,</span> <span class="n">dispatcher</span> <span class="k">in</span>
+      <span class="kt">BookListContainer</span><span class="p">(</span>
+        <span class="nv">books</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">books</span>
+        <span class="nv">onAddBook</span><span class="p">:</span> <span class="p">{</span> <span class="n">dispatcher</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">BookListAction</span><span class="o">.</span><span class="nf">addBook</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
+      <span class="p">)</span>
+    <span class="p">}</span>
   <span class="p">}</span>
 
 <span class="p">}</span>
 </code></pre>
 
-                        <a href="Structs/Dispatcher.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/Connector.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@propertyDelegate</span>
-<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Dispatcher</span> <span class="p">:</span> <span class="kt">DynamicViewProperty</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Connector</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                         </div>
                       </div>
@@ -267,9 +246,9 @@ Use the <code>mapState(updateOn:_:)</code> method.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux13StoreProviderV"></a>
-                    <a name="//apple_ref/swift/Struct/StoreProvider" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux13StoreProviderV">StoreProvider</a>
+                    <a name="/s:8SwiftDux15DispatcherProxyV"></a>
+                    <a name="//apple_ref/swift/Struct/DispatcherProxy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux15DispatcherProxyV">DispatcherProxy</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -277,16 +256,15 @@ Use the <code>mapState(updateOn:_:)</code> method.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A view modifier that injects a store into the environment. Use the
-<code><a href="Extensions/View.html#/s:7SwiftUI4ViewP0A3DuxE12provideStoreyAA16_ModifiedContentVyxAD0F8ProviderVyqd__GGAD0F0Cyqd__GSeRd__SERd__lF">View.provideStore(_:)</a></code>` method instead of this type directly.</p>
+                        <p>Undocumented</p>
 
-                        <a href="Structs/StoreProvider.html" class="slightly-smaller">See more</a>
+                        <a href="Structs/DispatcherProxy.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StoreProvider</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">ViewModifier</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">DispatcherProxy</span> <span class="p">:</span> <span class="kt">ViewModifier</span></code></pre>
 
                         </div>
                       </div>
@@ -298,7 +276,7 @@ Use the <code>mapState(updateOn:_:)</code> method.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-06-24)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-07-06)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.6</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
