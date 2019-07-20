@@ -3,7 +3,7 @@ import Combine
 import SwiftUI
 
 internal class StateContext<State> : BindableObject where State : StateType {
-  var didChange = PassthroughSubject<Action, Never>()
+  var willChange = PassthroughSubject<Action, Never>()
 
   var filter: (Action) -> Bool
   
@@ -18,7 +18,7 @@ internal class StateContext<State> : BindableObject where State : StateType {
       guard oldValue !== store else { return }
       guard let store = store else { return }
       let didChangePublisher = store.didChange.filter(filter)
-      cancellable = didChangePublisher.subscribe(didChange)
+      cancellable = didChangePublisher.subscribe(willChange)
     }
   }
 

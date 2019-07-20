@@ -5,9 +5,9 @@ import Combine
 ///
 /// Typically you should use the `Store<_>.connect(updateOn:wrapper:)` method.
 public class DispatcherContext : BindableObject {
-  public var didChange = PassthroughSubject<Void, Never>()
+  public var willChange = PassthroughSubject<Void, Never>()
   var dispatcher: ActionDispatcher {
-    didSet { didChange.send() }
+    willSet { willChange.send() }
   }
   
   init(dispatcher: ActionDispatcher) {
