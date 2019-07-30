@@ -10,7 +10,7 @@ extension View {
   /// allows actions to be dispatched when the view appears.
   /// - Parameter perform: The action to run asynchronously
   public func onAppearAsync(perform: @escaping () -> ()) -> some View {
-    return self.onAppear {
+    onAppear {
       DispatchQueue.main.async(execute: perform)
     }
   }
@@ -18,7 +18,7 @@ extension View {
   /// Performs an action asynchronously on the main thread when a view appears.
   /// - Parameter perform: The action to run asynchronously
   public func onDisappearAsync(perform: @escaping () -> ()) -> some View {
-    return self.onDisappear {
+    onDisappear {
       DispatchQueue.main.async(execute: perform)
     }
   }
