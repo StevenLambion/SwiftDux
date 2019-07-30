@@ -25,8 +25,6 @@ public final class Store<State> where State : StateType {
     self.state = state
     self.runReducer = reducer.reduceAny
     self.didChange = didChangeWithActionSubject
-      .receive(on: RunLoop.main)
-      .share()
       .eraseToAnyPublisher()
   }
 
