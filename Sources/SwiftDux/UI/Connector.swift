@@ -24,6 +24,7 @@ import SwiftUI
 ///
 /// }
 /// ```
+@available(*, deprecated, message: "Use the Connectable API instead.")
 public final class Connector<State> where State : StateType {
   
   private let filter: (Action) -> Bool

@@ -35,6 +35,7 @@ extension View {
   /// - Parameters
   ///   - updateWhen: Update the state when the closure returns true
   ///   - mapState: Maps a superstate to a substate.
+  @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func connect<Superstate, State>(
     updateWhen filter: @escaping (Action)->Bool,
     mapState: @escaping (Superstate) -> State?

@@ -1,6 +1,7 @@
 import SwiftUI
 
 /// Makes a view "connectable" to the application state using a parameter value.
+@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol ParameterizedConnectable {
   associatedtype Superstate
   associatedtype State
