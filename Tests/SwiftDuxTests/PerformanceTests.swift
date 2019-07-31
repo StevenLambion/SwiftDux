@@ -22,6 +22,27 @@ final class PerformanceTests: XCTestCase {
       
     }
   }
+  
+  func testStoreUpdatePerformance() {
+    let subsriberCount = 10000
+    let sendCount = 100
+    var updateCounts = 0
+    var sinks = [AnyCancellable]()
+    let store = Store(state: TestState.defaultState, reducer: TestReducer())
+    
+    sinks.reserveCapacity(subsriberCount)
+    for _ in 1...subsriberCount {
+      sinks.append(store.didChange.sink { _ in updateCounts += 1 })
+    }
+    
+    measure {
+      updateCounts = 0
+      for _ in 1...sendCount {
+        store.send(TodoListAction.doNothing)
+      }
+      XCTAssertEqual(updateCounts, subsriberCount * sendCount)
+    }
+  }
 
   static var allTests = [
     ("testOrderedStatePerformance", testOrderedStatePerformance),

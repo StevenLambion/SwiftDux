@@ -7,6 +7,7 @@ enum TodoListAction: Action {
   case addTodo2(withText: String)
   case removeTodos(fromList: String, at: IndexSet)
   case moveTodos(inList: String, from: IndexSet, to: Int)
+  case doNothing
 }
 
 class TodoListReducer: Reducer {
@@ -20,6 +21,8 @@ class TodoListReducer: Reducer {
       state.todos.remove(at: indexSet)
     case .moveTodos(_, let indexSet, let index):
       state.todos.move(from: indexSet, to: index)
+    case .doNothing:
+      break
     }
     return state
   }
