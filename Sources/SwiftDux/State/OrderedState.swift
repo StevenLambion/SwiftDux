@@ -8,16 +8,16 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
   }
 
   /// The id type used by the substates.
-  typealias Id = Substate.Id
+  typealias ID = Substate.ID
 
   /// Holds the oredering knowledge of the values by their key.
-  var orderOfIds: [Id]
+  var orderOfIds: [ID]
 
   /// Holds the actual value referenced by its key.
-  var values: Dictionary<Id, Substate>
+  var values: Dictionary<ID, Substate>
 
   /// For the usage of ordered enumerations, this property caches a reverse lookup table from key to ordered position.
-  var cachedIdsByOrder: [Id: Int]?
+  var cachedIdsByOrder: [ID: Int]?
 
   /// Sets the initial values and their ordered positions.
   ///
@@ -25,7 +25,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
   /// - Parameters
   ///   - orderOfIds: The ids of each substate in a specific order.
   ///   - values: A lookup table of substates by their ids.
-  init(orderOfIds: [Id], values: [Id: Substate]) {
+  init(orderOfIds: [ID], values: [ID: Substate]) {
     self.orderOfIds = orderOfIds
     self.values = values
     self.cachedIdsByOrder = nil
@@ -42,9 +42,9 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
   ///
   /// - Parameter id: The key to look  up its ordered index position.
   /// - Returns: The ordered index that corrosponds to an id.
-  func index(ofId id: Id) -> Int {
+  func index(ofId id: ID) -> Int {
     if cachedIdsByOrder == nil {
-      self.cachedIdsByOrder = Dictionary<Id, Int>(
+      self.cachedIdsByOrder = Dictionary<ID, Int>(
         uniqueKeysWithValues: orderOfIds.enumerated().map { (index, id) in (id, index) }
       )
     }
@@ -87,7 +87,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
 /// ```
 public struct OrderedState<Substate> : StateType where Substate : IdentifiableState {
 
-  public typealias Id = Substate.Id
+  public typealias Id = Substate.ID
   public typealias Index = Int
 
   fileprivate var storage: OrderedStateStorage<Substate>

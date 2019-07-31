@@ -4,14 +4,7 @@ import Foundation
 ///
 /// This is typically used for entities stored in your state that might be accessed by id
 /// or displayed in a `List` view.
-public protocol IdentifiableState: StateType, Hashable {
-  
-  /// The type of identifier the state uses.
-  associatedtype Id: Comparable & Hashable & Codable
-  
-  /// A field to identify the entity, such as a uuid or number.
-  var id: Id { get set }
-}
+public protocol IdentifiableState : StateType, Identifiable, Equatable where ID: Codable {}
 
 extension IdentifiableState {
   
