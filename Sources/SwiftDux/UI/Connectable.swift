@@ -6,13 +6,21 @@ public protocol Connectable {
   associatedtype Superstate
   associatedtype State
   
-  /// Return true to update the view's state after the action has been dispatched.
+  /// Causes the view to be updated based on a dispatched action.
   /// - Parameter action: The dispatched action
   func updateWhen(action: Action) -> Bool
   
   /// Map a superstate to the state needed by the view using the provided parameter.
   /// - Parameter state: The superstate provided to the view from a superview.
   func map(state: Superstate) -> State?
+  
+}
+
+extension Connectable {
+  
+  public func updateWhen(action: Action) -> Bool {
+    action is NoUpdateAction
+  }
   
 }
 

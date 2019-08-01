@@ -18,10 +18,10 @@ import Combine
 @propertyWrapper
 public struct MappedDispatch : DynamicProperty {
 
-  @Environment(\.actionDispatcher) private var actionDispatcher
+  @EnvironmentObject private var dispatchConnection: DispatchConnection
   
   public var wrappedValue: SendAction {
-    { self.actionDispatcher.send($0) }
+    { [weak dispatchConnection] in dispatchConnection?.send(action: $0) }
   }
 
   public init() {}

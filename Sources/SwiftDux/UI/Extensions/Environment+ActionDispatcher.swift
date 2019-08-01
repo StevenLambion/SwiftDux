@@ -3,10 +3,8 @@ import Combine
 
 internal struct NoopActionDispatcher : ActionDispatcher {
   
-  @discardableResult
-  func send(_ action: Action) -> AnyPublisher<Void, Never> {
+  func send(_ action: Action) {
     print("Tried dispatching an action `\(action)` without providing a store object.")
-    return Just(()).eraseToAnyPublisher()
   }
   
   func proxy(modifyAction: ActionModifier?) -> ActionDispatcher {

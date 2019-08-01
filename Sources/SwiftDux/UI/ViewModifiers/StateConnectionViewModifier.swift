@@ -1,10 +1,15 @@
 import SwiftUI
 
+internal struct NoUpdateAction : Action {}
+
 /// A view modifier that injects a store into the environment.
 internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
   
   @EnvironmentObject private var superstateConnection: StateConnection<Superstate>
   @Environment(\.storeUpdated) private var storeUpdated
+  @Environment(\.actionDispatcher) private var actionDispatcher
+  
+  private var dispatchConnection = DispatchConnection()
   
   private var filter: (Action)->Bool
   private var mapState: (Superstate)->State?
@@ -15,14 +20,25 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
   }
 
   public func body(content: Content) -> some View {
-    content.environmentObject(StateConnection<State>(
-      getState: { [weak superstateConnection, mapState] in
-        guard let superstate: Superstate = superstateConnection?.getState() else { return nil }
+    let stateConnection = createStateConnection()
+    dispatchConnection.actionDispatcher = actionDispatcher
+    return content
+      .environmentObject(stateConnection)
+      .environmentObject(dispatchConnection)
+  }
+  
+  private func createStateConnection() -> StateConnection<State> {
+    let hasUpdate = !filter(NoUpdateAction())
+    let superGetState = superstateConnection.getState
+    return StateConnection<State>(
+      getState: { [mapState] in
+        guard let superstate: Superstate = superGetState() else { return nil }
         return mapState(superstate)
       },
-      willChangePublisher: storeUpdated.filter(filter).eraseToAnyPublisher())
+      willChangePublisher: hasUpdate ? storeUpdated.filter(filter).eraseToAnyPublisher() : nil
     )
   }
+
 
 }
 

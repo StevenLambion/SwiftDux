@@ -7,7 +7,7 @@ public protocol ParameterizedConnectable {
   associatedtype State
   associatedtype Parameter
   
-  /// Return true to update the view's state after the action has been dispatched.
+  /// Causes the view to be updated based on a dispatched action.
   /// - Parameter action: The dispatched action
   func updateWhen(action: Action, with parameter: Parameter) -> Bool
   
@@ -16,6 +16,14 @@ public protocol ParameterizedConnectable {
   ///   - state: The superstate provided to the view from a superview.
   ///   - parameter: A user defined parameter required to retrieve the state.
   func map(state: Superstate, with parameter: Parameter) -> State?
+  
+}
+
+extension ParameterizedConnectable {
+
+  public func updateWhen(action: Action, with parameter: Parameter) -> Bool {
+    action is NoUpdateAction
+  }
   
 }
 
