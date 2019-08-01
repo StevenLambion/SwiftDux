@@ -18,8 +18,7 @@ public protocol ActionDispatcher {
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
   /// - Returns: An optional publisher that can be used to indicate when the action is complete.
-  @discardableResult
-  func send(_ action: Action) -> AnyPublisher<Void, Never>
+  func send(_ action: Action)
   
   /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one. Actions will be modified
   /// by both the new proxy and the original dispatcher it was created from.

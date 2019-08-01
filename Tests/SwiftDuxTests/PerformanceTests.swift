@@ -24,8 +24,8 @@ final class PerformanceTests: XCTestCase {
   }
   
   func testStoreUpdatePerformance() {
-    let subsriberCount = 10000
-    let sendCount = 100
+    let subsriberCount = 100
+    let sendCount = 10000
     var updateCounts = 0
     var sinks = [AnyCancellable]()
     let store = Store(state: TestState.defaultState, reducer: TestReducer())
@@ -46,5 +46,6 @@ final class PerformanceTests: XCTestCase {
 
   static var allTests = [
     ("testOrderedStatePerformance", testOrderedStatePerformance),
+    ("testStoreUpdatePerformance", testStoreUpdatePerformance),
   ]
 }

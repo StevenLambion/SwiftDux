@@ -11,10 +11,7 @@ public final class Store<State> where State : StateType {
   public private(set) var state: State
   private let runReducer: (State, Action) -> State
 
-  private let didChangeWithActionSubject = PassthroughSubject<Action, Never>()
-
-  /// Subscribe to this publisher to be notified of state changes caused by a particular action.
-  public let didChange: AnyPublisher<Action, Never>
+  public let didChange = PassthroughSubject<Action, Never>()
 
   /// Creates a new store for the given state and reducer
   ///
@@ -24,8 +21,6 @@ public final class Store<State> where State : StateType {
   public init<R>(state: State, reducer: R) where R : Reducer, R.State == State {
     self.state = state
     self.runReducer = reducer.reduceAny
-    self.didChange = didChangeWithActionSubject
-      .eraseToAnyPublisher()
   }
 
 }
@@ -35,24 +30,22 @@ extension Store : ActionDispatcher, Subscriber {
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
   /// - Returns: An optional publisher that can be used to know when the action has completed.
-  @discardableResult
-  public func send(_ action: Action) -> AnyPublisher<Void, Never> {
+  public func send(_ action: Action) {
     switch action {
     case let action as ActionPlan<State>:
-      return self.send(actionPlan: action)
+      self.send(actionPlan: action)
     case let action as PublishableActionPlan<State>:
-      return self.send(actionPlan: action)
+      self.send(actionPlan: action)
     case let modifiedAction as ModifiedAction:
       self.state = runReducer(self.state, modifiedAction.action)
       modifiedAction.previousActions.forEach {
-        self.didChangeWithActionSubject.send($0)
+        self.didChange.send($0)
       }
-      self.didChangeWithActionSubject.send(modifiedAction.action)
+      self.didChange.send(modifiedAction.action)
     default:
       self.state = runReducer(self.state, action)
-      self.didChangeWithActionSubject.send(action)
+      self.didChange.send(action)
     }
-    return Just(()).eraseToAnyPublisher()
   }
 
   /// Handles the sending of normal action plans.
@@ -82,7 +75,7 @@ extension Store : ActionDispatcher, Subscriber {
   public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
     return StoreActionDispatcher(
       upstream: self,
-      upstreamActionSubject: self.didChangeWithActionSubject,
+      upstreamActionSubject: self.didChange,
       modifyAction: modifyAction
     )
   }

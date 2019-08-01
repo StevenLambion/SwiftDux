@@ -41,17 +41,16 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
 
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
-  @discardableResult
-  public func send(_ action: Action) -> AnyPublisher<Void, Never> {
+  public func send(_ action: Action) {
     if let action = action as? ActionPlan<State> {
-      return self.send(actionPlan: action)
+      self.send(actionPlan: action)
     } else if let action = action as? PublishableActionPlan<State> {
-      return self.send(actionPlan: action)
+      self.send(actionPlan: action)
     } else {
       if let modifyAction = modifyAction, let newAction = modifyAction(action) {
-        return upstream.send(ModifiedAction(action: newAction, previousAction: action))
+        upstream.send(ModifiedAction(action: newAction, previousAction: action))
       } else {
-        return upstream.send(action)
+        upstream.send(action)
       }
     }
   }
@@ -64,12 +63,10 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// to offload to other threads to perform complex workflows before pushing the changes into the state
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
-  @discardableResult
-  private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
+  private func send(actionPlan: ActionPlan<State>) {
     let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
     actionPlan.run(send: sendAction, getState: getState)
-    return Just(()).eraseToAnyPublisher()
   }
 
   /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
@@ -81,13 +78,11 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// effects that are unable to be performed from at the state level.
   /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
-  @discardableResult
-  private func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
+  private func send(actionPlan: PublishableActionPlan<State>) {
     let sendAction: SendAction = { [unowned self] in self.send($0) }
     let getState: GetState = { [unowned upstream] in upstream.state }
     let publisher  = actionPlan.run(send: sendAction, getState: getState).share()
     publisher.compactMap { $0 }.subscribe(self)
-    return publisher.map { _ in () }.eraseToAnyPublisher()
   }
 
 }
