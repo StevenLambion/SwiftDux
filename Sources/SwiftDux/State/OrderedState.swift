@@ -230,10 +230,11 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     /// don't allow moving if the moved index is inside the index set.
     guard !indexSet.contains(where: { $0 == index }) else { return }
     let copy = copyStorageIfNeeded()
-    let currentIdAtIndex = copy.orderOfIds[index]
+    let index = Swift.max(Swift.min(index, copy.orderOfIds.count), 0)
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
+    let offset = indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result }
     copy.orderOfIds.remove(at: indexSet)
-    copy.orderOfIds.insert(contentsOf: ids, at: copy.index(ofId: currentIdAtIndex) + 1)
+    copy.orderOfIds.insert(contentsOf: ids, at: index - offset)
     self.storage = copy
   }
 
