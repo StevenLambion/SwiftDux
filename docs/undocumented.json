@@ -2,21 +2,21 @@
   "warnings": [
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 34,
+      "line": 33,
       "symbol": "ActionDispatcher.receive(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 41,
+      "line": 40,
       "symbol": "ActionDispatcher.receive(completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 50,
+      "line": 49,
       "symbol": "ActionDispatcher.receive(subscription:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -57,6 +57,13 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/IdentifiableState.swift",
+      "line": 11,
+      "symbol": "IdentifiableState.hashValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
       "line": 90,
       "symbol": "OrderedState.Id",
@@ -78,52 +85,101 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
+      "line": 14,
+      "symbol": "Store.didChange",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connectable.swift",
+      "line": 6,
+      "symbol": "Connectable.Superstate",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connectable.swift",
+      "line": 7,
+      "symbol": "Connectable.State",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 31,
+      "line": 32,
       "symbol": "Connector.init(updateWhen:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 35,
+      "line": 36,
       "symbol": "Connector.mapToView(content:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/DispatcherProxy.swift",
-      "line": 4,
-      "symbol": "DispatcherProxy",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/DispatcherProxy.swift",
-      "line": 9,
-      "symbol": "DispatcherProxy.init(modifyAction:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreContext.swift",
-      "line": 4,
-      "symbol": "StoreContext",
-      "symbol_kind": "source.lang.swift.decl.class",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreContext.swift",
-      "line": 6,
-      "symbol": "StoreContext.store",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
+      "line": 23,
+      "symbol": "MappedDispatch.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/StoreProvider.swift",
-      "line": 10,
-      "symbol": "StoreProvider.init(store:)",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
+      "line": 27,
+      "symbol": "MappedDispatch.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 21,
+      "symbol": "MappedState.wrappedValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 30,
+      "symbol": "MappedState.projectedValue",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 37,
+      "symbol": "MappedState.binding",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
+      "line": 41,
+      "symbol": "MappedState.init()",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/ParameterizedConnectable.swift",
+      "line": 6,
+      "symbol": "ParameterizedConnectable.Superstate",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/ParameterizedConnectable.swift",
+      "line": 7,
+      "symbol": "ParameterizedConnectable.State",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/ParameterizedConnectable.swift",
+      "line": 8,
+      "symbol": "ParameterizedConnectable.Parameter",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
       "warning": "undocumented"
     }
   ],

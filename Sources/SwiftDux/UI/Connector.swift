@@ -24,16 +24,17 @@ import SwiftUI
 ///
 /// }
 /// ```
+@available(*, deprecated, message: "Use the Connectable API instead.")
 public final class Connector<State> where State : StateType {
   
-  private let stateContext: StateContext<State>
+  private let filter: (Action) -> Bool
   
   public init(updateWhen filter: @escaping (Action) -> Bool) {
-    self.stateContext = StateContext<State>(filter: filter)
+    self.filter = filter
   }
   
   public func mapToView<Content>(content: @escaping (State, ActionDispatcher) -> Content?) -> AnyView where Content : View {
-    AnyView(ConnectorView(stateContext: stateContext, content: content))
+    AnyView(ConnectorView(content: content).connect(updateWhen: filter) { (state: State) in state })
   }
   
 }

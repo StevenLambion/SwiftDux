@@ -23,6 +23,7 @@ custom_categories:
       - SendAction
       - GetState
       - ActionModifier
+      - ModifiedAction
   - name: Store
     children:
       - Store
@@ -31,5 +32,8 @@ custom_categories:
   - name: SwiftUI
     children:
       - View
+      - MappedState
+      - MappedDispatch
+      - Connectable
+      - ParameterizedConnectable
       - Connector
-      - DispatcherProxy
