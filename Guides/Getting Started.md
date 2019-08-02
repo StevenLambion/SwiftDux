@@ -102,12 +102,12 @@ final class AppReducer : Reducer {
 
 ## Providing a Store
 
-The store acts as the container of the state. In most cases, you simply need to initialize and provide the store to the root view of the application to get started. There's a convenient view modifier called `provideStore(_:)` to inject it into the environment.
+The store acts as the container of the state. Initialize the store with the application state and the reducer that will update it. Where you add the root view of the application, add the modifier `provideStore(_:)` to inject the store into the environment.
 
 ```swift
 import SwiftDux
 
-let store = Store(AppState(todoList: TodoListState(todos: OrderedState())), AppReducer())
+let store = Store(AppState(todos: OrderedState()), AppReducer())
 
 window.rootViewController = UIHostingController(
   rootView: RootView().provideStore(store)
@@ -116,57 +116,50 @@ window.rootViewController = UIHostingController(
 
 ## Creating the View
 
-Use the `Connector` class to map the application state and dispatcher to a view. The connector acts as a reusable, stateless API to update a given view when an action is dispatched. Because it's referenced based it should be created statically outside of SwiftUI. A good spot is as a singleton in an extension of the view itself as shown below.
+In your view, use the `MappedState` and `MappedDispatch` to inject both the required state and a way to send an action to the store. When the view dispatches an action, it will update itself automatically.
 
 ```swift
-import SwiftUI
+struct TodosView {
 
-struct TodosView : View {
-
-  // Will be populated by the state
-  var todos: [TodoItemState]
-  var onRemoveTodos: (IndexSet) -> ()
-  var onMoveTodos: (IndexSet, Int) -> ()
-
-  // These closures will be populated with action dispatchers.
+  @MappedState private var todos: OrderedState<Todo>
+  @MappedDispatch() private var dispatch
 
   var body: some View {
     List {
-      ForEach(todos) { item in
-        TodoItemRow(item: item)
+      ForEach(todos) { todo in
+        TodoItemRow(item: todo)
       }
-      .onDelete(perform: self.onRemoveTodos)
-      .onMove(perform: self.onMoveTodos)
-    }
-    .environment(\.editMode, $editMode)
-  }
-}
-
-extension TodosView {
-
-  static let connector = Connector<AppState> { $0 is TodoAction }
-
-  static func connected() -> some View {
-    connector.mapToView { state, dispatcher in
-      TodosView(
-        todos: state.todos,
-        onRemoveTodos: { dispatcher.send(TodoAction.removeTodos(at: $0)) }
-        onMoveTodos: { dispatcher.send(TodoAction.moveTodos(from: $0, to: $1)) }
-      )
+      .onDelete { self.dispatch(TodoAction.removeTodos(at: $0)) }
+      .onMove { self.dispatch(TodoAction.moveTodos(from: $0, to: $1)) }
     }
   }
 
 }
-
 ```
 
-Add the container to the root view:
+## Connecting State to the View
+
+The easiest way to connect the application state to the view is through the `Connectable` and `ParameterizedConnectable` protocols.
+
+Adhering to one of these protocols allows the view to map a parent state to the state required by it. It also adds a `connect()` or `connect(with:)` method to the view. This is how the state gets injected. Whereever the View is placed, you must always call the `connect()` method.
+
+```swift
+extension TodosView : Connectable {
+
+  func map(state: AppState) -> OrderedState<Todo>? {
+    state.todos
+  }
+
+}
+```
+
+Add the view to your application as shown below:
 
 ```swift
 struct RootView : View {
 
   var body: some View {
-    TodosView.connected()
+    TodosView().connect()
   }
 
 }

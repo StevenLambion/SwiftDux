@@ -12,16 +12,6 @@ This is still a work in progress.
 
 This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
 
-### Why another library?
-
-As someone expierienced with Rx, React and Redux, I was excited to see the introduction of SwiftUI and the Combine framework. After a couple of days, I noticed a lot of people asking questions about how best to architect their SwiftUI applications. I had already begun work on my own pet application, so I've ripped out the "redux" portion and added it here as its own library in the hopes that it might help others.
-
-There's more established libraries like [ReSwift](https://github.com/ReSwift/ReSwift/blob/master/README.md#example-projects) which may provide more functionality. Due to previous ABI instabilities and how easy it is to implement in Swift, I've always rolled my own.
-
-### Why dux?
-
-[Ducks](https://github.com/erikras/ducks-modular-redux) is an established and common way to organize your code into modules, so I thought it goes hand-in-hand with a library built around architecting an application. If you're new to tools like Redux and wonder how best to organize your files, ducks is a great option to begin with.
-
 ## Documentation
 
 Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html) website.
@@ -45,7 +35,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 7)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 8)
   ]
 )
 ```
@@ -55,101 +45,98 @@ let package = Package(
 ### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
-struct RootView : View {
-  var store: Store<AppState>
+var store: Store<AppState>
 
-  var body: some View {
-    BookListView.connected()
-      .mapState(updateOn: BookAction.self) { (state: AppState) in state.books }
-      .provideStore(store)
-  }
+...
 
-}
+RootView().provideStore(store)
 ```
 
-### Use property wrappers to inject mapped states and the store dispatcher
+### Inject the state into a view using property wrappers:
 
 ```swift
 struct BookListView : View {
-  var books: OrderedState<Book>
-  var onRemoveBooks: (IndexSet) -> ()
-  var onMoveBooks: (IndexSet, Int) -> ()
+
+  @MappedState private var books: OrderedState<Book>
+  @MappedDispatch() private var dispatch
 
   var body: some View {
     List {
-      ForEach(books) { item in
-        BookRow(item: item)
+      ForEach(books) { book in
+        BookRow(title: book.title)
       }
-      .onMove(perform: self.onMoveBooks)
-      .onDelete(perform: self.onRemoveBooks)
+      .onMove { self.dispatch(BookAction.move(from: $0, to: $1)) }
+      .onDelete { self.dispatch(BookAction.delete(at: $0)) }
     }
   }
 }
 
-extension BookListView {
+/// Adhere to the Connectable protocol to map a parent state to
+/// one that the view requires.
 
-  static let connector = Connector<AppState> { $0 is BookAction }
+extension BookListView : Connectable {
 
-  static func connected(authorId: String) -> some View {
-    connector.mapToView { state, dispatcher in
-      guard let author = state.authors[authorId] else {
-        return nil
-      }
-      return BookListView(
-        books: author.books,
-        onRemoveBooks: { dispatcher.send(BookAction.removeBooks(at: $0)) }
-        onMoveBooks: { dispatcher.send(BookAction.moveBooks(from: $0, to: $1)) }
-      )
-    }
+  func map(state: AppState) -> OrderedState<Book> {
+    state.books
   }
 
 }
 ```
 
-### Modify actions sent from child views
+### Update a view whenever an action is dispatched to the store.
+
+```swift
+extension BookListView : Connectable {
+
+  /// Views always update when dispatching an action, but
+  /// sometimes you may want it to update every time a given
+  /// action is sent to the store.
+
+  updateWhen(action: Action) -> Bool {
+    action is BookStatusAction
+  }
+
+  func map(state: AppState) -> OrderedState<Book> {
+    state.books
+  }
+
+}
+```
+
+### Reroute actions sent from child views
 
 ```swift
 struct AuthorView : View {
 
+  @MappedState private var author: Author
+
   var body: some View {
-    BookListView()
-      .mapState(updateOn: BookAction.self) { (state: AuthorState) in state.books }
-      .modifyActions(self.modifyBookActions)
-  }
-
-}
-
-extension AuthorView {
-
-  static let actionProxy = DispatcherProxy { action in
-    if let action = action as? BookAction {
-      return AuthorAction.routeBookAction(for: author.id, action)
-    }
-    return action
-  }
-
-  static let connector = Connector<AppState> { $0 is AuthorAction }
-
-  static func connected(authorId: String) -> some View {
-    connector.mapToView { state, dispatcher in
-      guard let author = state.authors[authorId] else {
-        return nil
+    BookListContainer()
+      .connect(with: author.id)
+      .onAction { [author] action in
+        if let action = action as? BookAction {
+          return AuthorAction.routeBookAction(for: author.id, action)
+        }
+        return action
       }
-      return AuthorView(
-        author: author
-      )
-      .modifier(actionProxy)
-    }
   }
 
 }
 ```
 
-## Known Issues
+## Known issues in SwiftUI
+
+#### @MappedDispatch is requiring an explicit type
+
+You must provide parentheses at the end of @MappedDispatch to initialize it without requiring an explicit type: `@MappedDispatch() var dispatch`
 
 #### onAppear() doesn't update the view when dispatching actions
 
 The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.
+
+#### TextField cursor doesn't keep up with text while typing
+
+Starting with beta 5, using an ObservableObject with a TextField causes the cursor to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. This will likely be fixed in a future beta.
 
 #### SwiftUI doesn't properly resubscribe to bindable objects after their initial creation.
 
