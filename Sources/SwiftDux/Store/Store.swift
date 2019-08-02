@@ -38,10 +38,9 @@ extension Store : ActionDispatcher, Subscriber {
       self.send(actionPlan: action)
     case let modifiedAction as ModifiedAction:
       self.state = runReducer(self.state, modifiedAction.action)
-      modifiedAction.previousActions.forEach {
-        self.didChange.send($0)
+      if let action = modifiedAction.previousActions.first {
+        self.didChange.send(action)
       }
-      self.didChange.send(modifiedAction.action)
     default:
       self.state = runReducer(self.state, action)
       self.didChange.send(action)
