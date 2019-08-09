@@ -2,17 +2,17 @@ import Foundation
 import Combine
 
 final internal class StateConnection<State> : ObservableObject, Identifiable {
-  var getState: (() -> State?)
-  var cancellable: AnyCancellable? = nil
+  var objectWillChange = ObservableObjectPublisher()
   
-  /// Required to cause a SwiftUI update. Sending directly to the objectWIllChange publisher has no effect
-  /// without some kind of state change.
-  @Published var causeRefresh: Action = EmptyAction()
+  var getState: () -> State?
   
-  init(getState: @escaping (() -> State?), willChangePublisher: AnyPublisher<Action, Never>?) {
+  private var cancellable: AnyCancellable? = nil
+  
+  init(getState: @escaping () -> State?, changePublisher: AnyPublisher<Void, Never>?) {
     self.getState = getState
-    self.cancellable = willChangePublisher?.sink { [weak self] _ in
-      self?.causeRefresh = EmptyAction()
+    self.cancellable = changePublisher?.sink { [weak self] _ in
+      guard let self = self else { return }
+      self.objectWillChange.send()
     }
   }
 }
