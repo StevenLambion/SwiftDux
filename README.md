@@ -138,11 +138,17 @@ The built-in onAppear method does not trigger a view update. Use the provided on
 
 Starting with beta 5, using an ObservableObject with a TextField causes the cursor to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. This will likely be fixed in a future beta.
 
+#### View doesn't update after it dispatches an action
+
+See next issue below. For some reason, the observable object for dispatched actions is ignored by SwiftUI after its parent view has re-rendered in some cases. The observable object used by the state continues to work fine. I'm currently investigating the issue. The current fix is to manually implement the updateWhen(action:) function to rerender the view.
+
 #### SwiftUI doesn't properly resubscribe to bindable objects after their initial creation.
 
 ~~Create all bindable objects outside of SwiftUI before binding them. Avoid recreating the objects.~~
 
-Apple says this is fixed in beta 4. A quick test project appears to confirm it.
+~~Apple says this is fixed in beta 4. A quick test project appears to confirm it.~~
+
+This appears to be almost fixed, but I'm still seeing it occur in one instance. I have not been able to verify if it's a bug in SwiftUI or a side-effect of its re-rendering behavior. I've submitted feedback to Apple.
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg
