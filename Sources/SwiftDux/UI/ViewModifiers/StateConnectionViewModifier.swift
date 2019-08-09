@@ -31,7 +31,7 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
         guard let superstate: Superstate = superGetState() else { return nil }
         return mapState(superstate)
       },
-      changePublisher: hasUpdate ? storeUpdated.print().filter(filter).map { _ in }.eraseToAnyPublisher() : nil
+      changePublisher: hasUpdate ? storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher() : nil
     )
     return stateConnection
   }

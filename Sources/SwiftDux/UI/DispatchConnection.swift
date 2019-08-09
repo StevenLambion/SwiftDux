@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-final class DispatchConnection : ObservableObject, Identifiable {
+internal final class DispatchConnection : ObservableObject, Identifiable {
   var objectWillChange = ObservableObjectPublisher()
   
   var actionDispatcher: ActionDispatcher
@@ -11,7 +11,7 @@ final class DispatchConnection : ObservableObject, Identifiable {
   }
   
   func send(action: Action) {
-    objectWillChange.send()
+    self.objectWillChange.send()
     actionDispatcher.send(action)
   }
 }
