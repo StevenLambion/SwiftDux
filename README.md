@@ -132,11 +132,13 @@ You must provide parentheses at the end of @MappedDispatch to initialize it with
 
 #### onAppear() doesn't update the view when dispatching actions
 
-The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.
+~~The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.~~
 
-#### TextField cursor doesn't keep up with text while typing
+It is now working correctly, but it only seems to run on views directly attached to a view controller under the hood. Typically this is the View directly passed to a NavigationLink. The onDisappear modifier is still not working. I'm unsure if it's some kind of optimization or incomplete functionality.
 
-Starting with beta 5, using an ObservableObject with a TextField causes the cursor to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. This will likely be fixed in a future beta.
+#### TextField caret doesn't keep up with text while typing
+
+Starting with beta 5, using an ObservableObject with a TextField causes the caret to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. I submitted a ticket.
 
 #### View doesn't update after it dispatches an action
 
