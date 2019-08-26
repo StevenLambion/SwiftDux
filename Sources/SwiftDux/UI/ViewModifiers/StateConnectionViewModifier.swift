@@ -1,5 +1,7 @@
 import SwiftUI
 
+/// Indicates a connectable view should not update when the state changes. The view will not subscribe to the store, and instead update
+/// only when it dispatches an action.
 public struct NoUpdateAction : Action {}
 
 /// A view modifier that injects a store into the environment.
@@ -68,7 +70,7 @@ extension View {
   /// The returned mapped state is provided to the environment and accessible through the `MappedState` property wrapper.
   ///
   /// - Parameters
-  ///   - updateWhen: Update the state when the closure returns true
+  ///   - updateWhen: Update the state when the closure returns true. If not provided, it will only update when dispatching an action.
   ///   - mapState: Maps a superstate to a substate.
   @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func connect<Superstate, State>(

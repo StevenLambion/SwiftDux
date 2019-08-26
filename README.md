@@ -142,7 +142,9 @@ Starting with beta 5, using an ObservableObject with a TextField causes the care
 
 #### View doesn't update after it dispatches an action
 
-See next issue below. For some reason, the observable object for dispatched actions is ignored by SwiftUI after its parent view has re-rendered in some cases. The observable object used by the state continues to work fine. I'm currently investigating the issue. The current fix is to manually implement the updateWhen(action:) function to rerender the view.
+~~See next issue below. For some reason, the observable object for dispatched actions is ignored by SwiftUI after its parent view has re-rendered in some cases. The observable object used by the state continues to work fine. I'm currently investigating the issue. The current fix is to manually implement the updateWhen(action:) function to rerender the view.~~
+
+This has been fixed by changing the dispatch connection from an environment object to an environment value. I had previously tried this in earlier betas, but it didn't work as expected. It appears to be fixed in the current beta.
 
 #### SwiftUI doesn't properly resubscribe to bindable objects after their initial creation.
 
@@ -150,7 +152,9 @@ See next issue below. For some reason, the observable object for dispatched acti
 
 ~~Apple says this is fixed in beta 4. A quick test project appears to confirm it.~~
 
-This appears to be almost fixed, but I'm still seeing it occur in one instance. I have not been able to verify if it's a bug in SwiftUI or a side-effect of its re-rendering behavior. I've submitted feedback to Apple.
+~~This appears to be almost fixed, but I'm still seeing it occur in one instance. I have not been able to verify if it's a bug in SwiftUI or a side-effect of its re-rendering behavior. I've submitted feedback to Apple.~~
+
+I went the route of using an environment value, and that appears to have fixed the issue for this library.
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg
