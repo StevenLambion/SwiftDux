@@ -72,14 +72,14 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 291,
+      "line": 290,
       "symbol": "OrderedState.subscript(_:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 311,
+      "line": 310,
       "symbol": "OrderedState.index(after:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -106,6 +106,20 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 32,
+      "symbol": "Connector.init(updateWhen:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 36,
+      "symbol": "Connector.mapToView(content:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
       "line": 23,
       "symbol": "MappedDispatch.wrappedValue",
@@ -121,28 +135,28 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 19,
+      "line": 21,
       "symbol": "MappedState.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 23,
+      "line": 30,
       "symbol": "MappedState.projectedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 30,
+      "line": 37,
       "symbol": "MappedState.binding",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 34,
+      "line": 41,
       "symbol": "MappedState.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

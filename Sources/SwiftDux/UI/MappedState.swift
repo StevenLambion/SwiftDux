@@ -15,21 +15,14 @@ import SwiftUI
 public struct MappedState<State> : DynamicProperty {
 
   @EnvironmentObject private var connection: StateConnection<State>
-
-  private var _value: State!
   
   public var wrappedValue: State {
-    get {
-      self._value
-    }
-    set {
-      self._value = newValue
-    }
+    connection.latestState!
   }
   
   public var projectedValue: Binding<State> {
     Binding<State>(
-      get: { self._value },
+      get: { self.wrappedValue },
       set: { _ in }
     )
   }
@@ -39,13 +32,5 @@ public struct MappedState<State> : DynamicProperty {
   }
 
   public init() {}
-  
-  public mutating func update() {
-    /// It should retrieve at least one value, but there's a chance the view may still exist briefly when the state does not,
-    /// so we only want to update if the state does exists.
-    if let newValue = connection.getState() {
-      self.wrappedValue = newValue
-    }
-  }
 
 }

@@ -14,7 +14,7 @@ public protocol Reducer {
   associatedtype State: StateType
   
   /// The supported actions of a reducer.
-  associatedtype ReducerAction: Action
+  associatedtype ReducerAction
   
   /// Operates on the state with the reducer's own actions, returning a fresh new copy of the state.
   ///
