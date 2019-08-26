@@ -20,9 +20,12 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
   public func body(content: Content) -> some View {
     let dispatchConnection = DispatchConnection(actionDispatcher: actionDispatcher)
     let stateConnection = createStateConnection(dispatchConnection)
-    return content
-      .environment(\.actionDispatcher, dispatchConnection)
-      .environmentObject(stateConnection)
+    return StateConnectionViewGuard(
+      stateConnection: stateConnection,
+      content: content
+        .environment(\.actionDispatcher, dispatchConnection)
+        .environmentObject(stateConnection)
+    )
   }
   
   private func createStateConnection(_ dispatchConnection: DispatchConnection) -> StateConnection<State> {
@@ -41,6 +44,22 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
   }
 
 }
+
+/// View that renders the UI of a state connection only when state isn't nil.
+internal struct StateConnectionViewGuard<State, Content> : View where Content : View {
+  
+  @ObservedObject var stateConnection: StateConnection<State>
+  var content: Content
+  
+  var body: some View {
+    if stateConnection.latestState != nil {
+      return AnyView(content)
+    }
+    return AnyView(EmptyView())
+  }
+  
+}
+
 
 extension View {
   
