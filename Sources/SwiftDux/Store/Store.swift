@@ -20,6 +20,7 @@ public final class Store<State> where State : StateType {
   /// - Parameters
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
   ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
+  ///   - middleware: One or more middleware plugins
   public init<R>(state: State, reducer: R, middleware: Middleware<State>...) where R : Reducer, R.State == State {
     self.state = state
     self.reduceAction = middleware.reversed().reduce(
@@ -44,29 +45,24 @@ extension Store : ActionDispatcher, Subscriber {
   public func send(_ action: Action) {
     switch action {
     case let action as ActionPlan<State>:
-      self.send(actionPlan: action)
-    case let action as PublishableActionPlan<State>:
-      self.send(actionPlan: action)
+      send(actionPlan: action)
     case let modifiedAction as ModifiedAction:
-      reduceAction(modifiedAction.action)
-      if let action = modifiedAction.previousActions.first {
-        self.didChange.send(action)
-      }
+      send(modifiedAction: modifiedAction)
     default:
       reduceAction(action)
     }
   }
   
   /// Handles the sending of normal action plans.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
   private func send(actionPlan: ActionPlan<State>) {
-    actionPlan.run(StoreProxy(store: self))
+    if let publisher = actionPlan.run(StoreProxy(store: self)) {
+      publisher.subscribe(self)
+    }
   }
-
-  /// Handles the sending of publishable action plans.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
-  public func send(actionPlan: PublishableActionPlan<State>) {
-    actionPlan.run(StoreProxy(store: self)).compactMap { $0 }.subscribe(self)
+  
+  private func send(modifiedAction: ModifiedAction) {
+    reduceAction(modifiedAction.action)
+    modifiedAction.previousActions.forEach { self.didChange.send($0) }
   }
   
   /// Create a new `StoreActionDispatcher<_>` that acts as a proxy between the action sender and the store. It optionally allows actions to be

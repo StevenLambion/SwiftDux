@@ -20,20 +20,18 @@ public protocol ActionDispatcher {
   /// - Returns: An optional publisher that can be used to indicate when the action is complete.
   func send(_ action: Action)
   
-  /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one. Actions will be modified
+  /// Create a new `ActionDispatcher` that acts as a proxy for the current one. Actions can be modified
   /// by both the new proxy and the original dispatcher it was created from.
-  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
+  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
   func proxy(modifyAction: ActionModifier?) -> ActionDispatcher
 
 }
 
 // Default `Subscriber` implementation
-extension ActionDispatcher where Self : Subscriber, Self.Input == Action?, Self.Failure == Never {
+extension ActionDispatcher where Self : Subscriber, Self.Input == Action, Self.Failure == Never {
 
-  public func receive(_ input: Action?) -> Subscribers.Demand {
-    if  let input = input {
-      self.send(input)
-    }
+  public func receive(_ input: Action) -> Subscribers.Demand {
+    self.send(input)
     return .unlimited
   }
 

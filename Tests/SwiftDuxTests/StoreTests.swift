@@ -15,29 +15,37 @@ final class StoreTests: XCTestCase {
     XCTAssertEqual(store.state.text, "New text")
   }
   
+  func testActionPlans() {
+    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
+    store.send(ActionPlan<TestSendingState> { store in
+      store.send(TestSendingAction.setText("1234"))
+    })
+    XCTAssertEqual(store.state.text, "1234")
+  }
+  
   func testSubscribingToActionPlans() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
-    store.send(PublishableActionPlan<TestSendingState> { _, _ in
-      Just(TestSendingAction.setText("1234")).eraseToAnyPublisher()
+    store.send(ActionPlan<TestSendingState> { store in
+      Just<Action>(TestSendingAction.setText("1234"))
     })
     XCTAssertEqual(store.state.text, "1234")
   }
   
   func testSubscribingToComplexActionPlans() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
-    store.send(PublishableActionPlan<TestSendingState> { dispatch, getState in
-      return Just<Int>(getState().value)
+    store.send(ActionPlan<TestSendingState> { store in
+      Just<Int>(store.state?.value ?? 0)
         .map { value -> Int in
-          dispatch(TestSendingAction.setValue(value + 1))
-          return getState().value
+          store.send(TestSendingAction.setValue(value + 1))
+          return store.state?.value ?? 0
         }
         .map { value -> Int in
-          dispatch(TestSendingAction.setValue(value + 1))
-          return getState().value
+          store.send(TestSendingAction.setValue(value + 1))
+          return store.state?.value ?? 0
         }
         .map { value -> Action in
           TestSendingAction.setValue(value + 1)
-        }.eraseToAnyPublisher()
+        }
     })
     XCTAssertEqual(store.state.value, 3)
   }
@@ -45,7 +53,9 @@ final class StoreTests: XCTestCase {
   static var allTests = [
     ("testInitialStateValue", testInitialStateValue),
     ("testSendingAction", testSendingAction),
+    ("testActionPlans", testActionPlans),
     ("testSubscribingToActionPlans", testSubscribingToActionPlans),
+    ("testSubscribingToComplexActionPlans", testSubscribingToComplexActionPlans),
   ]
 }
 
