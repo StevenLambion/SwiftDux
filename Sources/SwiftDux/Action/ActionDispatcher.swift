@@ -22,8 +22,10 @@ public protocol ActionDispatcher {
   
   /// Create a new `ActionDispatcher` that acts as a proxy for the current one. Actions can be modified
   /// by both the new proxy and the original dispatcher it was created from.
-  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
-  func proxy(modifyAction: ActionModifier?) -> ActionDispatcher
+  /// - Parameters
+  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
+  ///   - sentAction: Called directly after an action was sent up stream.
+  func proxy(modifyAction: ActionModifier?, sentAction: ((Action)->())?) -> ActionDispatcher
 
 }
 
@@ -31,7 +33,7 @@ public protocol ActionDispatcher {
 extension ActionDispatcher where Self : Subscriber, Self.Input == Action, Self.Failure == Never {
 
   public func receive(_ input: Action) -> Subscribers.Demand {
-    self.send(input)
+    send(input)
     return .unlimited
   }
 

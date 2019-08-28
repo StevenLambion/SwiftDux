@@ -26,6 +26,7 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
+  private let sentAction: ((Action)->())?
   
   var combineIdentifier: CombineIdentifier {
     upstream.combineIdentifier
@@ -36,9 +37,10 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
   ///   - upstream: The store object.
   ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  init(upstream: Store<State>, modifyAction: ActionModifier? = nil) {
+  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) {
     self.upstream = upstream
     self.modifyAction = modifyAction
+    self.sentAction = sentAction
   }
 
   /// Sends an action to a reducer to mutate the state of the application.
@@ -52,6 +54,7 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
       } else {
         upstream.send(action)
       }
+      sentAction?(action)
     }
   }
 
@@ -75,8 +78,10 @@ extension StoreActionDispatcher {
 
   /// Create a new `ActionDispatcher` that acts as a proxy of the current one. Actions will be modified
   /// by both the new proxy and the original dispatcher it was created from.
-  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+  /// - Parameters
+  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
+  ///   - sentAction: Called directly after an action was sent up stream.
+  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper: ActionModifier? = nil
     if let modifyAction = modifyAction {
@@ -91,7 +96,8 @@ extension StoreActionDispatcher {
     }
     return StoreActionDispatcher<State>(
       upstream: self.upstream,
-      modifyAction: modifyActionWrapper
+      modifyAction: modifyActionWrapper,
+      sentAction: sentAction
     )
   }
 

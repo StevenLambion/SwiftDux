@@ -65,13 +65,16 @@ extension Store : ActionDispatcher, Subscriber {
     modifiedAction.previousActions.forEach { self.didChange.send($0) }
   }
   
-  /// Create a new `StoreActionDispatcher<_>` that acts as a proxy between the action sender and the store. It optionally allows actions to be
+  /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
   /// modified or monitored.
-  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+  /// - Parameters
+  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
+  ///   - sentAction: Called directly after an action was sent up stream.
+  public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
     return StoreActionDispatcher(
       upstream: self,
-      modifyAction: modifyAction
+      modifyAction: modifyAction,
+      sentAction: sentAction
     )
   }
 

@@ -40,7 +40,7 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
       },
       changePublisher: hasUpdate
         ? storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
-        : dispatchConnection.didDispatchActionPublisher.eraseToAnyPublisher()
+        : dispatchConnection.didDispatchAction.eraseToAnyPublisher()
     )
     return stateConnection
   }
