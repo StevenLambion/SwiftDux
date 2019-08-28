@@ -22,20 +22,22 @@ import Combine
 ///   }
 /// }
 /// ```
-public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
+public struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
 
   private let upstream: Store<State>
-  private let upstreamActionSubject: PassthroughSubject<Action, Never>
   private let modifyAction: ActionModifier?
+  
+  public var combineIdentifier: CombineIdentifier {
+    upstream.combineIdentifier
+  }
 
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
   ///   - upstream: The store object.
   ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  public init(upstream: Store<State>, upstreamActionSubject: PassthroughSubject<Action, Never>, modifyAction: ActionModifier? = nil) {
+  public init(upstream: Store<State>, modifyAction: ActionModifier? = nil) {
     self.upstream = upstream
-    self.upstreamActionSubject = upstreamActionSubject
     self.modifyAction = modifyAction
   }
 
@@ -64,9 +66,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
-    let sendAction: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned upstream] in upstream.state }
-    actionPlan.run(send: sendAction, getState: getState)
+    actionPlan.run(StoreProxy(store: upstream))
   }
 
   /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
@@ -79,10 +79,7 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
   /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
   private func send(actionPlan: PublishableActionPlan<State>) {
-    let sendAction: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan.run(send: sendAction, getState: getState).share()
-    publisher.compactMap { $0 }.subscribe(self)
+    actionPlan.run(StoreProxy(store: upstream)).compactMap { $0 }.subscribe(self)
   }
 
 }
@@ -105,7 +102,6 @@ extension StoreActionDispatcher {
     }
     return StoreActionDispatcher<State>(
       upstream: self.upstream,
-      upstreamActionSubject: self.upstreamActionSubject,
       modifyAction: modifyActionWrapper
     )
   }

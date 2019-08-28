@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 /// A closure that returns the current state of a store.
-public typealias GetState<State> = () -> State where State : StateType
+public typealias GetState<State> = () -> State? where State : StateType
 
 /// Encapsulates multiple actions into a packaged up "action plan"
 ///```
@@ -35,7 +35,7 @@ public struct ActionPlan<State> : Action where State : StateType {
   /// - Parameters:
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
-  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> ()
+  public typealias Body = (StoreProxy<State>) -> ()
   
   private var body: Body
   
@@ -46,8 +46,8 @@ public struct ActionPlan<State> : Action where State : StateType {
   }
   
   /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
-  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) {
-    self.body(send, getState)
+  public func run(_ store: StoreProxy<State>) {
+    self.body(store)
   }
 }
 
@@ -61,7 +61,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
   /// - Returns: A publisher that can send actions to the store.
-  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> AnyPublisher<Action, Never>
+  public typealias Body = (StoreProxy<State>) -> AnyPublisher<Action, Never>
   
   private var body: Body
   
@@ -72,7 +72,7 @@ public struct PublishableActionPlan<State> : Action where State : StateType {
   }
   
   /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
-  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) -> AnyPublisher<Action, Never> {
-    self.body(send, getState)
+  public func run(_ store: StoreProxy<State>) -> AnyPublisher<Action, Never> {
+    self.body(store)
   }
 }
