@@ -1,6 +1,7 @@
 import SwiftUI
 import Combine
 
+/// Default value of the actionDispatcher environment value.
 internal struct NoopActionDispatcher : ActionDispatcher {
   
   func send(_ action: Action) {
@@ -20,7 +21,9 @@ internal struct ActionDispatcherKey : EnvironmentKey {
 }
 
 extension EnvironmentValues {
- 
+  
+ /// Environment value to supply an actionDispatcher. This is used by the MappedDispatch to retrieve
+ /// an action dispatcher from the environment.
   internal var actionDispatcher: ActionDispatcher {
     get {
       self[ActionDispatcherKey.self]

@@ -21,6 +21,7 @@ public protocol ParameterizedConnectable {
 
 extension ParameterizedConnectable {
 
+  /// Default implementation disables updates by action.
   public func updateWhen(action: Action, with parameter: Parameter) -> Bool {
     action is NoUpdateAction
   }

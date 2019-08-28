@@ -48,7 +48,7 @@ internal struct StateConnectionViewModifier<Superstate, State> : ViewModifier {
 }
 
 /// View that renders the UI of a state connection only when state isn't nil.
-internal struct StateConnectionViewGuard<State, Content> : View where Content : View {
+private struct StateConnectionViewGuard<State, Content> : View where Content : View {
   
   @ObservedObject var stateConnection: StateConnection<State>
   var content: Content
