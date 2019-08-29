@@ -9,7 +9,7 @@ public final class Store<State> where State : StateType {
 
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
-  
+
   private var reduceAction: SendAction!
 
   /// Subscribe for state changes. It emits the latest action sent to the store.
@@ -41,7 +41,6 @@ extension Store : ActionDispatcher, Subscriber {
 
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
   public func send(_ action: Action) {
     switch action {
     case let action as ActionPlan<State>:
@@ -52,21 +51,21 @@ extension Store : ActionDispatcher, Subscriber {
       reduceAction(action)
     }
   }
-  
+
   /// Handles the sending of normal action plans.
   private func send(actionPlan: ActionPlan<State>) {
     if let publisher = actionPlan.run(StoreProxy(store: self)) {
       publisher.subscribe(self)
     }
   }
-  
+
   private func send(modifiedAction: ModifiedAction) {
     reduceAction(modifiedAction.action)
     modifiedAction.previousActions.forEach { self.didChange.send($0) }
   }
-  
+
   /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
-  /// modified or monitored.
+  /// modified or tracked.
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.

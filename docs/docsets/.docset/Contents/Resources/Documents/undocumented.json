@@ -2,7 +2,7 @@
   "warnings": [
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 33,
+      "line": 35,
       "symbol": "ActionDispatcher.receive(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -22,41 +22,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 6,
-      "symbol": "ModifiedAction.action",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 7,
-      "symbol": "ModifiedAction.previousActions",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 9,
-      "symbol": "ModifiedAction.init(action:previousActions:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 14,
-      "symbol": "ModifiedAction.init(action:previousAction:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 24,
-      "symbol": "ModifiedAction.modified(with:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/IdentifiableState.swift",
       "line": 11,
       "symbol": "IdentifiableState.hashValue",
@@ -72,22 +37,22 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 290,
+      "line": 291,
       "symbol": "OrderedState.subscript(_:)",
       "symbol_kind": "source.lang.swift.decl.function.subscript",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 310,
+      "line": 311,
       "symbol": "OrderedState.index(after:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
+      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreProxy.swift",
       "line": 14,
-      "symbol": "Store.didChange",
+      "symbol": "StoreProxy.didChange",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
@@ -106,20 +71,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 32,
-      "symbol": "Connector.init(updateWhen:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 36,
-      "symbol": "Connector.mapToView(content:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
       "line": 23,
       "symbol": "MappedDispatch.wrappedValue",
@@ -135,28 +86,28 @@
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 21,
+      "line": 19,
       "symbol": "MappedState.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 30,
+      "line": 23,
       "symbol": "MappedState.projectedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 37,
+      "line": 30,
       "symbol": "MappedState.binding",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 41,
+      "line": 34,
       "symbol": "MappedState.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"

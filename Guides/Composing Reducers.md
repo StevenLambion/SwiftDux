@@ -1,6 +1,6 @@
 # Composing Reducers
 
-To comprehend large and complex applications, you need to structure the state into bite-sized components that can be composed together. Below is an example of an application state with 3 levels of state: the app, a list of authors, and a list of books.
+To comprehend large and complex applications, you need to structure the state into bite-sized components that can be composed together. Below is an example of an application state with 3 levels: the app state that contains a list of authors, an author state that contains a list of books, and a book state.
 
 Each part should contain their own separate actions and reducers if needed.
 
@@ -21,7 +21,7 @@ struct Book : IdentifiableState {
 }
 ```
 
-The `AppReducer` is the root reducer of the application. It must accept and dispatch all actions to the rest of the reducers
+The `AppReducer` is the root reducer of the application. It must accept and dispatch all actions to the rest of the reducers. It does this by implementing `reduceNext(state:action:)`
 
 ```swift
 class AppReducer : Reducer {
@@ -40,11 +40,11 @@ class AppReducer : Reducer {
     }
   }
 
-  // Delegate all actions to the subreducers.
+  // Delegate all other actions to the subreducers.
 
   reduceNext(state: AppState, action: Action) -> AppState {
     return AppState(
-      scenes: state.authors.mapValues {
+      authors: state.authors.mapValues {
         self.authorReducer.reduceAny(state: $0, action action)
       }
     )

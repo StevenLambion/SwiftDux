@@ -16,19 +16,16 @@ custom_categories:
   - name: Actions
     children:
       - Action
-      - EmptyAction
       - ActionPlan
-      - PublishableActionPlan
       - ActionDispatcher
       - SendAction
-      - GetState
+      - EmptyAction
       - ActionModifier
-      - ModifiedAction
   - name: Store
     children:
       - Store
       - Reducer
-      - StoreActionDispatcher
+      - StoreProxy
   - name: SwiftUI
     children:
       - View
@@ -36,3 +33,7 @@ custom_categories:
       - MappedDispatch
       - Connectable
       - ParameterizedConnectable
+  - name: Advanced
+    children:
+      - Middleware
+      - PrintActionMiddleware(printer:)

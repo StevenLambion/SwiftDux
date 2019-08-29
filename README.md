@@ -10,7 +10,23 @@ This is still a work in progress.
 
 ## Introduction
 
-This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
+This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
+
+This library is designed around Combine and SwiftUI. For a more established library that doesn't require iOS 13, check out [ReSwift](https://github.com/ReSwift/ReSwift).
+
+## Features
+
+- Redux-like API for state management.
+  - `Middleware` support
+  - `ActionPlan` for action-based workflows.
+    - Use them like action creators in Redux.
+    - Supports async operations.
+    - Supports returning a Combine publisher
+- SwiftUI integration.
+  - `@MappedState` injects state into a view.
+  - `Connectable` API connects and maps the application state into SwiftUI.
+  - `onAction(perform:)` view modifier allows you to track or modify dispatched actions.
+  - `OrderedState<_>` for displaying a collection of state objects in a List view.
 
 ## Documentation
 
@@ -24,7 +40,7 @@ Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-start
 
 ### Xcode 11
 
-Use the new swift package manager integration to include the libary.
+Use the new swift package manager integration to include the library.
 
 ### Swift Package Manager
 
@@ -35,7 +51,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 9)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 10)
   ]
 )
 ```
@@ -45,7 +61,11 @@ let package = Package(
 ### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
-var store: Store<AppState>
+var store = Store<AppState>(
+  state: AppState(),
+  reducer: AppReducer(),
+  middleware: PrintActionMiddleware()
+)
 
 ...
 
@@ -103,7 +123,7 @@ extension BookListView : Connectable {
 }
 ```
 
-### Reroute actions sent from child views
+### Modify actions sent from child views before they get to the store
 
 ```swift
 struct AuthorView : View {
@@ -130,31 +150,9 @@ struct AuthorView : View {
 
 You must provide parentheses at the end of @MappedDispatch to initialize it without requiring an explicit type: `@MappedDispatch() var dispatch`
 
-#### onAppear() doesn't update the view when dispatching actions
-
-~~The built-in onAppear method does not trigger a view update. Use the provided onAppearAsync() instead.~~
-
-It is now working correctly, but it only seems to run on views directly attached to a view controller under the hood. Typically this is the View directly passed to a NavigationLink. The onDisappear modifier is still not working. I'm unsure if it's some kind of optimization or incomplete functionality.
-
 #### TextField caret doesn't keep up with text while typing
 
 Starting with beta 5, using an ObservableObject with a TextField causes the caret to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. I submitted a ticket.
-
-#### View doesn't update after it dispatches an action
-
-~~See next issue below. For some reason, the observable object for dispatched actions is ignored by SwiftUI after its parent view has re-rendered in some cases. The observable object used by the state continues to work fine. I'm currently investigating the issue. The current fix is to manually implement the updateWhen(action:) function to rerender the view.~~
-
-This has been fixed by changing the dispatch connection from an environment object to an environment value. I had previously tried this in earlier betas, but it didn't work as expected. It appears to be fixed in the current beta.
-
-#### SwiftUI doesn't properly resubscribe to bindable objects after their initial creation.
-
-~~Create all bindable objects outside of SwiftUI before binding them. Avoid recreating the objects.~~
-
-~~Apple says this is fixed in beta 4. A quick test project appears to confirm it.~~
-
-~~This appears to be almost fixed, but I'm still seeing it occur in one instance. I have not been able to verify if it's a bug in SwiftUI or a side-effect of its re-rendering behavior. I've submitted feedback to Apple.~~
-
-I went the route of using an environment value, and that appears to have fixed the issue for this library.
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg

@@ -2,7 +2,7 @@
 
 ## Xcode 11
 
-Use the new swift package manager integration to include the libary.
+Use the new swift package manager integration to include the library.
 
 ## Package.swift
 
@@ -13,7 +13,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 9)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 10)
   ]
 )
 ```

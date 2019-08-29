@@ -27,7 +27,7 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
   private let sentAction: ((Action)->())?
-  
+
   var combineIdentifier: CombineIdentifier {
     upstream.combineIdentifier
   }
