@@ -172,33 +172,40 @@
 <p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an <a href="https://guide.elm-lang.org/architecture/">elm-like architecture</a> using a single, centralized state container. For more information about the architecture and this library, take a look at the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">getting started guide</a>.</p>
 
 <p>This library is designed around Combine and SwiftUI. For a more established library that doesn&rsquo;t require iOS 13, check out <a href="https://github.com/ReSwift/ReSwift">ReSwift</a>.</p>
-<h2 id='features' class='heading'>Features</h2>
-
-<ul>
-<li>Redux-like API for state management.
+<h2 id='top-features' class='heading'>Top Features</h2>
+<h3 id='redux-like-state-management' class='heading'>Redux-like State Management.</h3>
 
 <ul>
 <li><code><a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a></code> support</li>
-<li><code><a href="Structs/ActionPlan.html">ActionPlan</a></code> for action-based workflows.</li>
+<li><code><a href="Structs/ActionPlan.html">ActionPlan</a></code> for action-based workflows.
+
+<ul>
 <li>Use them like action creators in Redux.</li>
 <li>Supports async operations.</li>
 <li>Supports returning a Combine publisher</li>
 </ul></li>
-<li>SwiftUI integration.
+<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> for managing an ordered collection of state objects.</li>
+</ul>
+<h3 id='swiftui-integration' class='heading'>SwiftUI Integration.</h3>
 
 <ul>
 <li><code>@MappedState</code> injects state into a view.</li>
-<li><code><a href="Protocols/Connectable.html">Connectable</a></code> API connects and maps the application state into SwiftUI.</li>
-<li><code>onAction(perform:)</code> view modifier allows you to track or modify dispatched actions.</li>
-<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> for displaying a collection of state objects in a List view.</li>
+<li><code>@MappedDispatch</code> let&rsquo;s views dispatch actions.
+
+<ul>
+<li>Automatically updates the view after each sent action.</li>
+<li>Supports action plans.</li>
 </ul></li>
+<li><code><a href="Protocols/Connectable.html">Connectable</a></code> API connects and maps the application state into SwiftUI.</li>
+<li><code>onAction(perform:)</code> allows you to track or modify dispatched actions.</li>
+<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> has direct support of List views.</li>
 </ul>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
 <p>Visit the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">documentation</a> website.</p>
 <h2 id='example' class='heading'>Example</h2>
 
-<p><a href="https://github.com/StevenLambion/SwiftUI-Todo-Example">Todo Example</a></p>
+<p><a href="https://github.com/StevenLambion/SwiftUI-Todo-Example">Todo Example App</a></p>
 <h2 id='installation' class='heading'>Installation</h2>
 <h3 id='xcode-11' class='heading'>Xcode 11</h3>
 

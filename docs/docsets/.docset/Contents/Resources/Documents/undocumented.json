@@ -50,13 +50,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/StoreProxy.swift",
-      "line": 14,
-      "symbol": "StoreProxy.didChange",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connectable.swift",
       "line": 6,
       "symbol": "Connectable.Superstate",

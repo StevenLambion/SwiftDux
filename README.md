@@ -14,19 +14,26 @@ This is yet another redux inspired state management solution for swift. It's bui
 
 This library is designed around Combine and SwiftUI. For a more established library that doesn't require iOS 13, check out [ReSwift](https://github.com/ReSwift/ReSwift).
 
-## Features
+## Top Features
 
-- Redux-like API for state management.
-  - `Middleware` support
-  - `ActionPlan` for action-based workflows.
-    - Use them like action creators in Redux.
-    - Supports async operations.
-    - Supports returning a Combine publisher
-- SwiftUI integration.
-  - `@MappedState` injects state into a view.
-  - `Connectable` API connects and maps the application state into SwiftUI.
-  - `onAction(perform:)` view modifier allows you to track or modify dispatched actions.
-  - `OrderedState<_>` for displaying a collection of state objects in a List view.
+### Redux-like State Management.
+
+- `Middleware` support
+- `ActionPlan` for action-based workflows.
+  - Use them like action creators in Redux.
+  - Supports async operations.
+  - Supports returning a Combine publisher
+- `OrderedState<_>` for managing an ordered collection of state objects.
+
+### SwiftUI Integration.
+
+- `@MappedState` injects state into a view.
+- `@MappedDispatch` let's views dispatch actions.
+  - Automatically updates the view after each sent action.
+  - Supports action plans.
+- `Connectable` API connects and maps the application state into SwiftUI.
+- `onAction(perform:)` allows you to track or modify dispatched actions.
+- `OrderedState<_>` has direct support of List views.
 
 ## Documentation
 
@@ -34,7 +41,7 @@ Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-start
 
 ## Example
 
-[Todo Example](https://github.com/StevenLambion/SwiftUI-Todo-Example)
+[Todo Example App](https://github.com/StevenLambion/SwiftUI-Todo-Example)
 
 ## Installation
 
