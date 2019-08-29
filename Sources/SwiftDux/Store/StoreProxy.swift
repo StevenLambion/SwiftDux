@@ -25,8 +25,8 @@ public struct StoreProxy<State> where State: StateType {
     getState()
   }
 
-  internal init(store: Store<State>, next: SendAction? = nil) {
-    let send: SendAction = { [weak store] in store?.send($0) }
+  internal init(store: Store<State>, send: SendAction? = nil, next: SendAction? = nil) {
+    let send: SendAction = send ?? { [weak store] in store?.send($0) }
     self.didChange = store.didChange
     self.getState = { [weak store] in store?.state }
     self.send = send

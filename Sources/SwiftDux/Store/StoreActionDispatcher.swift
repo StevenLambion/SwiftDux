@@ -67,7 +67,7 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
-    if let publisher = actionPlan.run(StoreProxy(store: upstream)) {
+    if let publisher = actionPlan.run(StoreProxy(store: upstream, send: self.send)) {
       publisher.subscribe(self)
     }
   }
