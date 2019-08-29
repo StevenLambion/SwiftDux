@@ -18,6 +18,7 @@ public protocol Connectable {
 
 extension Connectable {
   
+  /// Default implementation disables updates by action.
   public func updateWhen(action: Action) -> Bool {
     action is NoUpdateAction
   }

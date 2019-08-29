@@ -8,6 +8,8 @@ internal struct StoreUpdatedKey : EnvironmentKey {
 
 extension EnvironmentValues {
  
+  /// Environment value to supply a subject that publishes store updates. This is used by the MappedState to
+  /// update views when an action is dispatched.
   internal var storeUpdated: PassthroughSubject<Action, Never> {
     get {
       self[StoreUpdatedKey.self]

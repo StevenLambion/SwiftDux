@@ -22,36 +22,39 @@ import Combine
 ///   }
 /// }
 /// ```
-public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
+internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
 
   private let upstream: Store<State>
-  private let upstreamActionSubject: PassthroughSubject<Action, Never>
   private let modifyAction: ActionModifier?
+  private let sentAction: ((Action)->())?
+
+  var combineIdentifier: CombineIdentifier {
+    upstream.combineIdentifier
+  }
 
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
   ///   - upstream: The store object.
   ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  public init(upstream: Store<State>, upstreamActionSubject: PassthroughSubject<Action, Never>, modifyAction: ActionModifier? = nil) {
+  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) {
     self.upstream = upstream
-    self.upstreamActionSubject = upstreamActionSubject
     self.modifyAction = modifyAction
+    self.sentAction = sentAction
   }
 
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
-  public func send(_ action: Action) {
+  func send(_ action: Action) {
     if let action = action as? ActionPlan<State> {
-      self.send(actionPlan: action)
-    } else if let action = action as? PublishableActionPlan<State> {
-      self.send(actionPlan: action)
+      send(actionPlan: action)
     } else {
       if let modifyAction = modifyAction, let newAction = modifyAction(action) {
         upstream.send(ModifiedAction(action: newAction, previousAction: action))
       } else {
         upstream.send(action)
       }
+      sentAction?(action)
     }
   }
 
@@ -64,37 +67,23 @@ public final class StoreActionDispatcher<State> : ActionDispatcher, Subscriber w
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
-    let sendAction: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned upstream] in upstream.state }
-    actionPlan.run(send: sendAction, getState: getState)
-  }
-
-  /// Sends a self contained action plan that a dispatcher can subscribe to. The plan may send
-  /// actions directly to the store object, or it can opt to publish them. In most cases, there should be
-  /// at least one primary action that is published.
-  ///
-  /// The caller to the method will recieve an optional publisher to notify it that an action was sent. It can
-  /// also be used to signify the completion of the action plan to allow the trigger of external events or side
-  /// effects that are unable to be performed from at the state level.
-  /// - Parameter actionPlan: An action plan that optionally publishes actions to be dispatched.
-  /// - Returns: A void publisher that notifies subscribers when an action has been dispatched or when the action plan has completed.
-  private func send(actionPlan: PublishableActionPlan<State>) {
-    let sendAction: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned upstream] in upstream.state }
-    let publisher  = actionPlan.run(send: sendAction, getState: getState).share()
-    publisher.compactMap { $0 }.subscribe(self)
+    if let publisher = actionPlan.run(StoreProxy(store: upstream, send: self.send)) {
+      publisher.subscribe(self)
+    }
   }
 
 }
 
 extension StoreActionDispatcher {
 
-  /// Create a new `StoreActionDispatcher<_>` that proxies off of the current one. Actions will be modified
+  /// Create a new `ActionDispatcher` that acts as a proxy of the current one. Actions will be modified
   /// by both the new proxy and the original dispatcher it was created from.
-  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+  /// - Parameters
+  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
+  ///   - sentAction: Called directly after an action was sent up stream.
+  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
     let upstreamModifyAction = self.modifyAction
-    var modifyActionWrapper = upstreamModifyAction
+    var modifyActionWrapper: ActionModifier? = nil
     if let modifyAction = modifyAction {
       modifyActionWrapper = {
         if let action = modifyAction($0) {
@@ -102,11 +91,13 @@ extension StoreActionDispatcher {
         }
         return nil
       }
+    } else {
+      modifyActionWrapper = upstreamModifyAction
     }
     return StoreActionDispatcher<State>(
       upstream: self.upstream,
-      upstreamActionSubject: self.upstreamActionSubject,
-      modifyAction: modifyActionWrapper
+      modifyAction: modifyActionWrapper,
+      sentAction: sentAction
     )
   }
 

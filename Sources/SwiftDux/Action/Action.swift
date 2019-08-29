@@ -1,9 +1,9 @@
 import Foundation
 
-/// Specifies a type as a dispatchable action.
+/// A dispatchable action that provides information to a reducer to mutate the state of the application.
 ///
 /// Typically this is done with enum types, however,  it could be added to protocols or structs if
-/// a more complex solution is needed.
+/// a more complex solution is needed. Structs are also a could choice if actions need to be codable.
 ///
 /// ```
 ///   enum TodoList : Action {

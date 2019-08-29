@@ -1,6 +1,6 @@
 # Getting Started
 
-SwiftDux helps build SwiftUI-based applications around an [elm-like archectiture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. It has 4 basic principles:
+SwiftDux helps build SwiftUI-based applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. It has 4 basic principles:
 
 - **State** - An immutable, single source of truth within the application.
 - **Action** - Describes a state change.
@@ -13,9 +13,9 @@ SwiftDux helps build SwiftUI-based applications around an [elm-like archectiture
 
 ## Creating the State
 
-The state is a single, immutable structure containing all stateful aspects of your application. It should be viewed as the single source of truth. Because its immutable, you should implement it using structs by default. Only when there's performance considerations, such as large datasets, should classes be used.
+The state is a single, immutable structure acting as the single source of truth within your application. Because its immutable, you should implement it using structs by default.
 
-Below is an example of a todo app. It has a root `AppState` as well as an ordered list of `TodoState` objects. When storing entities in state, the `IdentifiableState` protocol can be used to help certain SwiftDux APIs work with them.
+Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoState` objects. When storing entities in state, the `IdentifiableState` protocol should be used.
 
 ```swift
 import SwiftDux
@@ -25,7 +25,7 @@ struct AppState : StateTyoe {
 }
 
 struct TodoItem : IdentifiableState {
-  vae id: String,
+  var id: String,
   var text: String
 }
 ```
@@ -141,7 +141,7 @@ struct TodosView {
 
 The easiest way to connect the application state to the view is through the `Connectable` and `ParameterizedConnectable` protocols.
 
-Adhering to one of these protocols allows the view to map a parent state to the state required by it. It also adds a `connect()` or `connect(with:)` method to the view. This is how the state gets injected. Whereever the View is placed, you must always call the `connect()` method.
+Adhering to one of these protocols allows the view to map a parent state to the required state. It also adds a `connect()` or `connect(with:)` method to the view. This is how the state will get injected.
 
 ```swift
 extension TodosView : Connectable {
@@ -153,7 +153,7 @@ extension TodosView : Connectable {
 }
 ```
 
-Add the view to your application as shown below:
+Add the view to your application as shown below. Wherever the view is placed, you must always call the `connect()` method. This is what injects and tracks the state inside SwiftUI.
 
 ```swift
 struct RootView : View {

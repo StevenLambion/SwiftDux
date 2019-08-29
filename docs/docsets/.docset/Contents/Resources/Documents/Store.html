@@ -14,7 +14,7 @@
     <a title="Store  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (80% documented)</p>
+        <p><a href="index.html"> Docs</a> (83% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -66,13 +66,7 @@
                 <a href="Actions.html#/s:8SwiftDux6ActionP">Action</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Structs/ActionPlan.html">ActionPlan</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/PublishableActionPlan.html">PublishableActionPlan</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
@@ -81,13 +75,10 @@
                 <a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
+                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
                 <a href="Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
             </ul>
           </li>
@@ -101,7 +92,7 @@
                 <a href="Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
+                <a href="Structs/StoreProxy.html">StoreProxy</a>
               </li>
             </ul>
           </li>
@@ -126,10 +117,29 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Advanced.html">Advanced</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Advanced.html#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Functions.html#/s:8SwiftDux20defaultActionPrinteryySSF">defaultActionPrinter(_:)</a>
               </li>
             </ul>
           </li>
@@ -229,9 +239,9 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux21StoreActionDispatcherC"></a>
-                    <a name="//apple_ref/swift/Class/StoreActionDispatcher" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux21StoreActionDispatcherC">StoreActionDispatcher</a>
+                    <a name="/s:8SwiftDux10StoreProxyV"></a>
+                    <a name="//apple_ref/swift/Struct/StoreProxy" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10StoreProxyV">StoreProxy</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -239,33 +249,20 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>A dispatcher tied to an upstream <code><a href="Classes/Store.html">Store&lt;_&gt;</a></code> object. This is useful to proxy dispatched actions.</p>
+                        <p>Creates a proxy of the store object for use by middleware.</p>
 
-<p>Use the <code>Store&lt;_&gt;.dispatcher(modifyAction:)</code> or the <code><a href="Classes/StoreActionDispatcher.html#/s:8SwiftDux21StoreActionDispatcherC5proxy06modifyD0AA0dE0_pAA0D0_pSgAaG_pcSg_tF">StoreActionDispatcher&lt;_&gt;.proxy(modifyAction:)</a></code>
-methods to create a new <code>StoreActionDispatcher</code>.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">ParentView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+<p>Middleware may use the store proxy to retreive the current state, send actions,
+continue to the next middleware, or subscribe to store changes. With the proxy,
+middleware don&rsquo;t have to worry about retaining the store. Instead, the proxy provides
+a safe API to access a weak reference to it.</p>
 
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">ChildView</span><span class="p">()</span>
-      <span class="o">.</span><span class="nf">modifyActions</span><span class="p">(</span><span class="k">self</span><span class="o">.</span><span class="n">routeChildActions</span><span class="p">)</span>
-  <span class="p">}</span>
-
-  <span class="kd">func</span> <span class="nf">routeChildActions</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Action</span><span class="p">?</span> <span class="p">{</span>
-    <span class="k">if</span> <span class="k">let</span> <span class="nv">action</span> <span class="o">=</span> <span class="nv">$0</span> <span class="k">as?</span> <span class="kt">ChildAction</span> <span class="p">{</span>
-      <span class="k">return</span> <span class="kt">ParentAction</span><span class="o">.</span><span class="nf">routeChildAction</span><span class="p">(</span><span class="n">action</span><span class="p">,</span> <span class="nv">forId</span><span class="p">:</span> <span class="n">parentId</span><span class="p">)</span>
-    <span class="p">}</span>
-    <span class="k">return</span> <span class="n">action</span> <span class="c1">// Send original action.</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre>
-
-                        <a href="Classes/StoreActionDispatcher.html" class="slightly-smaller">See more</a>
+                        <a href="Structs/StoreProxy.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">StoreActionDispatcher</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/ActionDispatcher.html">ActionDispatcher</a></span><span class="p">,</span> <span class="kt">Subscriber</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StoreProxy</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                         </div>
                       </div>
@@ -277,7 +274,7 @@ methods to create a new <code>StoreActionDispatcher</code>.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-26)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-28)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

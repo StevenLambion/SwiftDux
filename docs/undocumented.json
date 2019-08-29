@@ -2,7 +2,7 @@
   "warnings": [
     {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
-      "line": 33,
+      "line": 35,
       "symbol": "ActionDispatcher.receive(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -18,41 +18,6 @@
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ActionDispatcher.swift",
       "line": 49,
       "symbol": "ActionDispatcher.receive(subscription:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 6,
-      "symbol": "ModifiedAction.action",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 7,
-      "symbol": "ModifiedAction.previousActions",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 9,
-      "symbol": "ModifiedAction.init(action:previousActions:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 14,
-      "symbol": "ModifiedAction.init(action:previousAction:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Action/ModifiedAction.swift",
-      "line": 24,
-      "symbol": "ModifiedAction.modified(with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
@@ -82,13 +47,6 @@
       "line": 311,
       "symbol": "OrderedState.index(after:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
-      "line": 14,
-      "symbol": "Store.didChange",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {

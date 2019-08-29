@@ -42,6 +42,7 @@ enum AppAction {
   case moveBooks(from: IndexSet, to: Int)
   case removeBooks(at: IndexSet)
 }
+
 class AppReducer : Reducer {
 
   reduce(state: AppState, action: AppAction) -> AppState {

@@ -1,22 +1,22 @@
 import Foundation
 import Combine
 
-/// A closure that returns the current state of a store.
-public typealias GetState<State> = () -> State where State : StateType
-
 /// Encapsulates multiple actions into a packaged up "action plan"
 ///```
-///   struct UserActionPlans {
+///   enum UserAction {
 ///
-///     static func getUser(byId id: String) -> ActionPlan<AppState> {
-///       return ActionPlan<AppState> { dispatch, getState in
-///         guard !getState().users.hasValue(id) else { return }
-///         dispatch(UserAction.setLoading(true))
-///         let sink = UserService.getUser(id)
-///           .map { UserAction.setUser($0) }
-///           .subscribe {
-///             dispatch($0)
-///             dispatch(UserAction.setLoading(false))
+///     static func loadUser(byId id: String) -> ActionPlan<AppState> {
+///       ActionPlan<AppState> { store in
+///         guard !store.state?.users.hasValue(id) else { return nil }
+///         store.send(UserAction.setLoading(true))
+///         return UserService.getUser(id)
+///           .first()
+///           .flatMap { user in
+///               Publishers.Sequence<[Action], Never>(sequence: [
+///                 UserAction.setUser(user)
+///                 UserAction.setLoading(false)
+///               ])
+///             }
 ///           }
 ///       }
 ///     }
@@ -26,53 +26,34 @@ public typealias GetState<State> = () -> State where State : StateType
 ///   // Somewhere inside a view:
 ///
 ///   func loadUser() {
-///     dispatcher.send(UserActionPlans.getUser(self.id))
+///     dispatch(UserAction.loadUser(byId: self.id))
 ///   }
 ///```.
 public struct ActionPlan<State> : Action where State : StateType {
-  
-  /// The body of an action plan
-  /// - Parameters:
-  ///   - dispatch: Dispatches an action synchronously.
-  ///   - getState: Gets the latest snapshot of the application's state.
-  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> ()
-  
-  private var body: Body
-  
-  /// Create a new action plan.
-  /// - Parameter body: The body of the aciton plan.
-  public init(_ body: @escaping Body) {
-    self.body = body
-  }
-  
-  /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
-  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) {
-    self.body(send, getState)
-  }
-}
 
-/// An action plan that may optionally publish actions to the store. The send method of the action
-/// dispatcher  returns back a publisher to allow events to be triggered when an action is sent or
-/// the publisher has completed.
-public struct PublishableActionPlan<State> : Action where State : StateType {
-  
   /// The body of a publishable action plan.
   /// - Parameters:
   ///   - dispatch: Dispatches an action synchronously.
   ///   - getState: Gets the latest snapshot of the application's state.
   /// - Returns: A publisher that can send actions to the store.
-  public typealias Body = (@escaping SendAction, @escaping GetState<State>) -> AnyPublisher<Action, Never>
-  
+  public typealias Body = (StoreProxy<State>) -> AnyPublisher<Action, Never>?
+
   private var body: Body
-  
-  /// Create a new action plan.
-  /// - Parameter body: The body of the aciton plan.
-  public init(_ body: @escaping Body) {
-    self.body = body
+
+  /// Create a new action plan that returns an optional publisher.
+  /// - Parameter body: The body of the action plan.
+  public init<P>(_ body: @escaping (StoreProxy<State>) -> P?) where P : Publisher, P.Output == Action, P.Failure == Never {
+    self.body = { body($0)?.eraseToAnyPublisher() }
   }
-  
+
+  /// Create a new action plan.
+  /// - Parameter body: The body of the action plan.
+  public init(_ body: @escaping (StoreProxy<State>)->()) {
+    self.body = { body($0); return nil; }
+  }
+
   /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
-  public func run(send: @escaping SendAction, getState: @escaping GetState<State>) -> AnyPublisher<Action, Never> {
-    self.body(send, getState)
+  public func run(_ store: StoreProxy<State>) -> AnyPublisher<Action, Never>? {
+    self.body(store)
   }
 }

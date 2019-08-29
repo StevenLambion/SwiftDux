@@ -13,12 +13,12 @@ final class StoreActionDispatcherTests: XCTestCase {
   
   func testModifyingActionsValue() {
     let store = Store(state: TestState.defaultState, reducer: TestReducer())
-    let dispatcher = store.proxy {
+    let dispatcher = store.proxy(modifyAction: {
       if $0 is TodoListAction {
         return TestAction.routeTodoAction(forList: "123", action: $0)
       }
       return $0
-    }
+    })
     dispatcher.send(TodoListAction.addTodo2(withText: "My Todo"))
     XCTAssertEqual(store.state.todoLists["123"]?.todos.filter { $0.text == "My Todo"}.count, 1)
   }

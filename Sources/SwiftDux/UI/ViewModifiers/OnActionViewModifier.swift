@@ -11,7 +11,7 @@ internal struct OnActionViewModifier: ViewModifier {
   }
   
   public func body(content: Content) -> some View {
-    let proxy = actionDispatcher.proxy(modifyAction: perform)
+    let proxy = actionDispatcher.proxy(modifyAction: perform, sentAction: nil)
     return content.environment(\.actionDispatcher, proxy)
   }
   

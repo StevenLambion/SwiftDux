@@ -13,7 +13,7 @@
     <a title="Composing Reducers  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (80% documented)</p>
+        <p><a href="index.html"> Docs</a> (83% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -65,13 +65,7 @@
                 <a href="Actions.html#/s:8SwiftDux6ActionP">Action</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Structs/ActionPlan.html">ActionPlan</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/PublishableActionPlan.html">PublishableActionPlan</a>
               </li>
               <li class="nav-group-task">
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
@@ -80,13 +74,10 @@
                 <a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
+                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
                 <a href="Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
             </ul>
           </li>
@@ -100,7 +91,7 @@
                 <a href="Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
+                <a href="Structs/StoreProxy.html">StoreProxy</a>
               </li>
             </ul>
           </li>
@@ -125,10 +116,29 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="Advanced.html">Advanced</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Advanced.html#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other Functions.html#/s:8SwiftDux20defaultActionPrinteryySSF">defaultActionPrinter(_:)</a>
               </li>
             </ul>
           </li>
@@ -148,7 +158,7 @@
             
             <h1 id='composing-reducers' class='heading'>Composing Reducers</h1>
 
-<p>To comprehend large and complex applications, you need to structure the state into bite-sized components that can be composed together. Below is an example of an application state with 3 levels of state: the app, a list of authors, and a list of books.</p>
+<p>To comprehend large and complex applications, you need to structure the state into bite-sized components that can be composed together. Below is an example of an application state with 3 levels: the app state that contains a list of authors, an author state that contains a list of books, and a book state.</p>
 
 <p>Each part should contain their own separate actions and reducers if needed.</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">AppState</span> <span class="p">:</span> <span class="kt">StateType</span> <span class="p">{</span>
@@ -167,7 +177,7 @@
 <span class="p">}</span>
 </code></pre>
 
-<p>The <code>AppReducer</code> is the root reducer of the application. It must accept and dispatch all actions to the rest of the reducers</p>
+<p>The <code>AppReducer</code> is the root reducer of the application. It must accept and dispatch all actions to the rest of the reducers. It does this by implementing <code>reduceNext(state:action:)</code></p>
 <pre class="highlight swift"><code><span class="kd">class</span> <span class="kt">AppReducer</span> <span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
 
   <span class="k">let</span> <span class="nv">authorReducer</span><span class="p">:</span> <span class="kt">AuthorReducer</span><span class="p">()</span>
@@ -184,11 +194,11 @@
     <span class="p">}</span>
   <span class="p">}</span>
 
-  <span class="c1">// Delegate all actions to the subreducers.</span>
+  <span class="c1">// Delegate all other actions to the subreducers.</span>
 
   <span class="nf">reduceNext</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">action</span><span class="p">:</span> <span class="kt">Action</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AppState</span> <span class="p">{</span>
     <span class="k">return</span> <span class="kt">AppState</span><span class="p">(</span>
-      <span class="nv">scenes</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">mapValues</span> <span class="p">{</span>
+      <span class="nv">authors</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">authors</span><span class="o">.</span><span class="n">mapValues</span> <span class="p">{</span>
         <span class="k">self</span><span class="o">.</span><span class="n">authorReducer</span><span class="o">.</span><span class="nf">reduceAny</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="n">action</span> <span class="n">action</span><span class="p">)</span>
       <span class="p">}</span>
     <span class="p">)</span>
@@ -216,7 +226,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-26)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-28)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

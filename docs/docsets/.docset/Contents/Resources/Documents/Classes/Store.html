@@ -14,7 +14,7 @@
     <a title="Store Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (80% documented)</p>
+        <p><a href="../index.html"> Docs</a> (83% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -66,13 +66,7 @@
                 <a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/ActionPlan.html">ActionPlan</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/PublishableActionPlan.html">PublishableActionPlan</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
@@ -81,13 +75,10 @@
                 <a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux8GetStatea">GetState</a>
+                <a href="../Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/ModifiedAction.html">ModifiedAction</a>
               </li>
             </ul>
           </li>
@@ -101,7 +92,7 @@
                 <a href="../Protocols/Reducer.html">Reducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher</a>
+                <a href="../Structs/StoreProxy.html">StoreProxy</a>
               </li>
             </ul>
           </li>
@@ -126,10 +117,29 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="../Advanced.html">Advanced</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Advanced.html#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Other Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Functions.html">Other Functions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Functions.html#/s:8SwiftDux20defaultActionPrinteryySSF">defaultActionPrinter(_:)</a>
               </li>
             </ul>
           </li>
@@ -202,7 +212,7 @@ Use the didChange publisher to be notified of changes.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Subscribe for state changes. It emits the latest action sent to the store.</p>
 
                       </div>
                       <div class="declaration">
@@ -219,9 +229,9 @@ Use the didChange publisher to be notified of changes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux5StoreC5state7reducerACyxGx_qd__tc5StateQyd__RszAA7ReducerRd__lufc"></a>
-                    <a name="//apple_ref/swift/Method/init(state:reducer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC5state7reducerACyxGx_qd__tc5StateQyd__RszAA7ReducerRd__lufc">init(state:reducer:)</a>
+                    <a name="/s:8SwiftDux5StoreC5state7reducer10middlewareACyxGx_qd__yAA6Action_pcAA0C5ProxyVyxGcdtc5StateQyd__RszAA7ReducerRd__lufc"></a>
+                    <a name="//apple_ref/swift/Method/init(state:reducer:middleware:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC5state7reducer10middlewareACyxGx_qd__yAA6Action_pcAA0C5ProxyVyxGcdtc5StateQyd__RszAA7ReducerRd__lufc">init(state:reducer:middleware:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -236,7 +246,7 @@ Use the didChange publisher to be notified of changes.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">reducer</span><span class="p">:</span> <span class="kt">R</span><span class="p">)</span> <span class="k">where</span> <span class="kt">State</span> <span class="o">==</span> <span class="kt">R</span><span class="o">.</span><span class="kt">State</span><span class="p">,</span> <span class="kt">R</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html">Reducer</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">R</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">,</span> <span class="nv">reducer</span><span class="p">:</span> <span class="kt">R</span><span class="p">,</span> <span class="nv">middleware</span><span class="p">:</span> <span class="kt"><a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;...</span><span class="p">)</span> <span class="k">where</span> <span class="kt">State</span> <span class="o">==</span> <span class="kt">R</span><span class="o">.</span><span class="kt">State</span><span class="p">,</span> <span class="kt">R</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/Reducer.html">Reducer</a></span></code></pre>
 
                         </div>
                       </div>
@@ -290,19 +300,15 @@ Use the didChange publisher to be notified of changes.</p>
                           </tbody>
                         </table>
                       </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>An optional publisher that can be used to know when the action has completed.</p>
-                      </div>
                     </section>
                   </div>
                 </li>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux5StoreC4send10actionPlan7Combine12AnyPublisherVyyts5NeverOGAA017PublishableActionF0VyxG_tF"></a>
-                    <a name="//apple_ref/swift/Method/send(actionPlan:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC4send10actionPlan7Combine12AnyPublisherVyyts5NeverOGAA017PublishableActionF0VyxG_tF">send(actionPlan:)</a>
+                    <a name="/s:8SwiftDux5StoreC5proxy12modifyAction04sentF0AA0F10Dispatcher_pAA0F0_pSgAaH_pcSg_yAaH_pcSgtF"></a>
+                    <a name="//apple_ref/swift/Method/proxy(modifyAction:sentAction:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux5StoreC5proxy12modifyAction04sentF0AA0F10Dispatcher_pAA0F0_pSgAaH_pcSg_yAaH_pcSgtF">proxy(modifyAction:sentAction:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -310,68 +316,17 @@ Use the didChange publisher to be notified of changes.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Handles the sending of publishable action plans.</p>
+                        <p>Create a new <code><a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a></code> that acts as a proxy between the action sender and the store. It optionally allows actions to be
+modified or tracked.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@discardableResult</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="nv">actionPlan</span><span class="p">:</span> <span class="kt"><a href="../Structs/PublishableActionPlan.html">PublishableActionPlan</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt">Void</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">proxy</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span> <span class="nv">sentAction</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a></span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>An optional publisher that can be used to know when the action has completed.</p>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux5StoreC5proxy12modifyActionAA0F10Dispatcher_pAA0F0_pSgAaG_pcSg_tF"></a>
-                    <a name="//apple_ref/swift/Method/proxy(modifyAction:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC5proxy12modifyActionAA0F10Dispatcher_pAA0F0_pSgAaG_pcSg_tF">proxy(modifyAction:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Create a new <code><a href="../Classes/StoreActionDispatcher.html">StoreActionDispatcher&lt;_&gt;</a></code> that acts as a proxy between the action sender and the store. It optionally allows actions to be
-modified or monitored.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">proxy</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a></span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>modifyAction</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A closure to modify the action before it continues up stream.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -381,7 +336,7 @@ modified or monitored.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-26)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-28)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

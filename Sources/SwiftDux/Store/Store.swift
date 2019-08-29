@@ -9,8 +9,10 @@ public final class Store<State> where State : StateType {
 
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
-  private let runReducer: (State, Action) -> State
 
+  private var reduceAction: SendAction!
+
+  /// Subscribe for state changes. It emits the latest action sent to the store.
   public let didChange = PassthroughSubject<Action, Never>()
 
   /// Creates a new store for the given state and reducer
@@ -18,9 +20,19 @@ public final class Store<State> where State : StateType {
   /// - Parameters
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
   ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
-  public init<R>(state: State, reducer: R) where R : Reducer, R.State == State {
+  ///   - middleware: One or more middleware plugins
+  public init<R>(state: State, reducer: R, middleware: Middleware<State>...) where R : Reducer, R.State == State {
     self.state = state
-    self.runReducer = reducer.reduceAny
+    self.reduceAction = middleware.reversed().reduce(
+      { [weak self] action in
+        guard let self = self else { return }
+        self.state = reducer.reduceAny(state: self.state, action: action)
+        self.didChange.send(action)
+      },
+      { next, middleware in
+        middleware(StoreProxy(store: self, next: next))
+      }
+    )
   }
 
 }
@@ -29,53 +41,39 @@ extension Store : ActionDispatcher, Subscriber {
 
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
   public func send(_ action: Action) {
     switch action {
     case let action as ActionPlan<State>:
-      self.send(actionPlan: action)
-    case let action as PublishableActionPlan<State>:
-      self.send(actionPlan: action)
+      send(actionPlan: action)
     case let modifiedAction as ModifiedAction:
-      self.state = runReducer(self.state, modifiedAction.action)
-      if let action = modifiedAction.previousActions.first {
-        self.didChange.send(action)
-      }
+      send(modifiedAction: modifiedAction)
     default:
-      self.state = runReducer(self.state, action)
-      self.didChange.send(action)
+      reduceAction(action)
     }
   }
 
   /// Handles the sending of normal action plans.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
-  @discardableResult
-  private func send(actionPlan: ActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let send: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned self] in self.state }
-    actionPlan.run(send: send, getState: getState)
-    return Just(()).eraseToAnyPublisher()
+  private func send(actionPlan: ActionPlan<State>) {
+    if let publisher = actionPlan.run(StoreProxy(store: self)) {
+      publisher.subscribe(self)
+    }
   }
 
-  /// Handles the sending of publishable action plans.
-  /// - Returns: An optional publisher that can be used to know when the action has completed.
-  @discardableResult
-  public func send(actionPlan: PublishableActionPlan<State>) -> AnyPublisher<Void, Never> {
-    let send: SendAction = { [unowned self] in self.send($0) }
-    let getState: GetState = { [unowned self] in self.state }
-    let publisher  = actionPlan.run(send: send, getState: getState).share()
-    publisher.compactMap { $0 }.subscribe(self)
-    return publisher.map { _ in () }.eraseToAnyPublisher()
+  private func send(modifiedAction: ModifiedAction) {
+    reduceAction(modifiedAction.action)
+    modifiedAction.previousActions.forEach { self.didChange.send($0) }
   }
 
-  /// Create a new `StoreActionDispatcher<_>` that acts as a proxy between the action sender and the store. It optionally allows actions to be
-  /// modified or monitored.
-  /// - Parameter modifyAction: A closure to modify the action before it continues up stream.
-  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+  /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
+  /// modified or tracked.
+  /// - Parameters
+  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
+  ///   - sentAction: Called directly after an action was sent up stream.
+  public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
     return StoreActionDispatcher(
       upstream: self,
-      upstreamActionSubject: self.didChange,
-      modifyAction: modifyAction
+      modifyAction: modifyAction,
+      sentAction: sentAction
     )
   }
 
