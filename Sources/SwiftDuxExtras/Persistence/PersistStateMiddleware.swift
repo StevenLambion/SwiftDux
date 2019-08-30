@@ -15,7 +15,7 @@ public func PersistStateMiddleware<State, SP> (
 ) -> Middleware<State> where SP : StatePersistor, State == SP.State, SP.Failure == Never, SP.Input == State {
   { store in { action in
     defer { store.next(action) }
-    guard case .prepare = action as? StoreAction else { return }
+    guard case .prepare = action as? StoreAction<State> else { return }
     if saveOnChange {
       persistor.save(from: store, debounceFor: interval)
     } else {
@@ -25,7 +25,7 @@ public func PersistStateMiddleware<State, SP> (
       persistor.save(from: publisher)
     }
     if let state = persistor.restore() {
-      store.send(PersistStateAction<State>.restore(state: state))
+      store.send(StoreAction<State>.reset(state: state))
     }
   }}
 }
