@@ -1,6 +1,10 @@
 import Foundation
 import Combine
 
+public enum StoreAction : Action {
+  case prepare
+}
+
 /// The primary container of an application's state.
 ///
 /// The store both contains and mutates the state through a provided reducer as it's sent actions.
@@ -33,6 +37,7 @@ public final class Store<State> where State : StateType {
         middleware(StoreProxy(store: self, next: next))
       }
     )
+    self.reduceAction(StoreAction.prepare)
   }
 
 }
