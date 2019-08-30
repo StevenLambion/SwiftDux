@@ -13,7 +13,7 @@ let package = Package(
     // Products define the executables and libraries produced by a package, and make them visible to other packages.
     .library(
       name: "SwiftDux",
-      targets: ["SwiftDux"]),
+      targets: ["SwiftDux", "SwiftDuxExtras"]),
   ],
   dependencies: [
     // Dependencies declare other packages that this package depends on.
@@ -25,6 +25,9 @@ let package = Package(
     .target(
       name: "SwiftDux",
       dependencies: []),
+    .target(
+      name: "SwiftDuxExtras",
+      dependencies: ["SwiftDux"]),
     .testTarget(
       name: "SwiftDuxTests",
       dependencies: ["SwiftDux"]),
