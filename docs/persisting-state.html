@@ -13,7 +13,7 @@
     <a title="Persisting State  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (82% documented)</p>
+        <p><a href="index.html"> Docs</a> (84% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -178,17 +178,12 @@
 </code></pre>
 <h2 id='use-middleware-to-set-up-state-persistence' class='heading'>Use middleware to set up state persistence</h2>
 
-<p>A state persistor can be used by itself, but SwiftDuxExtras provides a convenient API to hook it up to the store.</p>
-
-<ul>
-<li><code>PersistStateReducer</code> wraps your root application reducer to provide state restoration.</li>
-<li><code>PersistStateMiddleware</code> handles all the logic of persisting and restoring the state.</li>
-</ul>
+<p>A state persistor can be used by itself, but SwiftDuxExtras provides a convenient middleware to do all the work for you.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDuxExtras</span>
 
 <span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span>
   <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">(),</span>
-  <span class="nv">reducer</span><span class="p">:</span> <span class="kt">PersistStateReducer</span><span class="p">(</span><span class="kt">AppReducer</span><span class="p">())),</span>
+  <span class="nv">reducer</span><span class="p">:</span> <span class="kt">AppReducer</span><span class="p">(),</span>
   <span class="nv">middleware</span><span class="p">:</span> <span class="p">[</span><span class="kt">PersistStateMiddleware</span><span class="p">(</span><span class="kt">JSONStatePersistor</span><span class="p">())]</span>
 <span class="p">)</span>
 

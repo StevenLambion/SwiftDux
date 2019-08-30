@@ -81,7 +81,7 @@ var store = Store(state: AppState(), reducer: AppReducer())
 
 var store = Store(
   state: AppState(),
-  reducer: PersistStateReducer(AppReducer()),
+  reducer: AppReducer(),
   middleware: [
     PrintActionMiddleware(),
     PersistStateMiddleware(JSONStatePersistor())

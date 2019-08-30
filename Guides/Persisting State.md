@@ -24,17 +24,14 @@ let persistor = JSONStatePersistor(location: remoteLocation)
 
 ## Use middleware to set up state persistence
 
-A state persistor can be used by itself, but SwiftDuxExtras provides a convenient API to hook it up to the store.
-
-- `PersistStateReducer` wraps your root application reducer to provide state restoration.
-- `PersistStateMiddleware` handles all the logic of persisting and restoring the state.
+A state persistor can be used by itself, but SwiftDuxExtras provides a convenient middleware to do all the work for you.
 
 ```swift
 import SwiftDuxExtras
 
 let store = Store(
   state: AppState(),
-  reducer: PersistStateReducer(AppReducer())),
+  reducer: AppReducer(),
   middleware: [PersistStateMiddleware(JSONStatePersistor())]
 )
 

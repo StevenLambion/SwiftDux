@@ -50,20 +50,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
-      "line": 4,
-      "symbol": "StoreAction",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/Store/Store.swift",
-      "line": 5,
-      "symbol": "StoreAction.prepare",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/steve/Developer/SwiftDux/Sources/SwiftDux/UI/Connectable.swift",
       "line": 6,
       "symbol": "Connectable.Superstate",
