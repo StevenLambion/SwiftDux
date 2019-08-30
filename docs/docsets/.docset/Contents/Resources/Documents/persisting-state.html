@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Advanced  Reference</title>
+    <title>Persisting State  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,7 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Section/Advanced" class="dashAnchor"></a>
-    <a title="Advanced  Reference"></a>
+    <a title="Persisting State  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html"> Docs</a> (82% documented)</p>
@@ -22,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="index.html"> Reference</a>
         <img id="carat" src="img/carat.png" />
-        Advanced  Reference
+        Persisting State  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -156,50 +155,47 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Advanced</h1>
             
-          </section>
-          <section class="section task-group-section">
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux10Middlewarea"></a>
-                    <a name="//apple_ref/swift/Alias/Middleware" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10Middlewarea">Middleware</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Middleware perform actions on the the store when actions are dispatched to it.</p>
+            <h1 id='persisting-state' class='heading'>Persisting State</h1>
 
-<p>Before an action is given to a reducer, middleware have an opportunity to handle it
-themselves. They may dispatch their own actions, transform the current action, or
-block an incoming ones from continuing.</p>
+<p>SwiftDux provides a state persistence API in the <code>SwiftDuxExtras</code> module. The API is designed to be flexible for use in a variety of cases. The two typical purposes are saving the application state for the user and providing the latest state object to a debugging tool.</p>
+<h2 id='create-a-state-persistor' class='heading'>Create a state persistor</h2>
 
-<p>Middleware can also be used to set up external hooks from services.</p>
+<p>SwiftDuxExtras comes with a <code>StatePersistor</code> protocol to implement a new persistor type, but it also provides a concrete <code>JSONStatePersistor</code> class.</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDuxExtras</span>
 
-<p>For a reducer&rsquo;s own state and actions, implement the <code>reduce(state:action:)</code>.
-For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p>
+<span class="c1">/// Initiate with no parameters to saves the state to a default location.</span>
 
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Middleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+<span class="k">let</span> <span class="nv">persistor</span> <span class="o">=</span> <span class="kt">JSONStatePersistor</span><span class="p">()</span>
 
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
+<span class="c1">/// Initiate with `fileUrl` to saves the state to a a url of the local filesystem.</span>
+
+<span class="k">let</span> <span class="nv">persistor</span> <span class="o">=</span> <span class="kt">JSONStatePersistor</span><span class="p">(</span><span class="nv">fileUrl</span><span class="p">:</span> <span class="n">appDataUrl</span><span class="p">)</span>
+
+<span class="c1">/// Provide a custom `StatePersistenceLocation` for more flexibility.</span>
+
+<span class="k">let</span> <span class="nv">persistor</span> <span class="o">=</span> <span class="kt">JSONStatePersistor</span><span class="p">(</span><span class="nv">location</span><span class="p">:</span> <span class="n">remoteLocation</span><span class="p">)</span>
+</code></pre>
+<h2 id='use-middleware-to-set-up-state-persistence' class='heading'>Use middleware to set up state persistence</h2>
+
+<p>A state persistor can be used by itself, but SwiftDuxExtras provides a convenient API to hook it up to the store.</p>
+
+<ul>
+<li><code>PersistStateReducer</code> wraps your root application reducer to provide state restoration.</li>
+<li><code>PersistStateMiddleware</code> handles all the logic of persisting and restoring the state.</li>
+</ul>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDuxExtras</span>
+
+<span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span>
+  <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">(),</span>
+  <span class="nv">reducer</span><span class="p">:</span> <span class="kt">PersistStateReducer</span><span class="p">(</span><span class="kt">AppReducer</span><span class="p">())),</span>
+  <span class="nv">middleware</span><span class="p">:</span> <span class="p">[</span><span class="kt">PersistStateMiddleware</span><span class="p">(</span><span class="kt">JSONStatePersistor</span><span class="p">())]</span>
+<span class="p">)</span>
+
+</code></pre>
+
+<p>With the above code, the application will automatically persist the state when there&rsquo;s changes. The state will automatically be restored on application launch.</p>
+
           </section>
         </section>
         <section id="footer">

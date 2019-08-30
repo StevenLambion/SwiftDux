@@ -8,6 +8,7 @@ custom_categories:
       - "Getting Started"
       - "Composing Reducers"
       - "SwiftUI List Support"
+      - "Persisting State"
   - name: State
     children:
       - StateType

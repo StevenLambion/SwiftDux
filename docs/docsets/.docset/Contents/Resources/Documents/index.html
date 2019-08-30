@@ -13,7 +13,7 @@
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (83% documented)</p>
+        <p><a href="index.html"> Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -41,6 +41,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="swiftui-list-support.html">SwiftUI List Support</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="persisting-state.html">Persisting State</a>
               </li>
             </ul>
           </li>
@@ -121,8 +124,13 @@
               <li class="nav-group-task">
                 <a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Advanced.html#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
+                <a href="Enums/StoreAction.html">StoreAction</a>
               </li>
             </ul>
           </li>
@@ -131,14 +139,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:8SwiftDux20defaultActionPrinteryySSF">defaultActionPrinter(_:)</a>
               </li>
             </ul>
           </li>
@@ -200,6 +200,12 @@
 <li><code>onAction(perform:)</code> allows you to track or modify dispatched actions.</li>
 <li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> has direct support of List views.</li>
 </ul>
+<h3 id='extras' class='heading'>Extras</h3>
+
+<ul>
+<li><code>PersistStateMiddleware</code> to automatically persist and restore application state.</li>
+<li><code>PrintActionMiddleware</code> Simple middleware that prints out each dispatched action for debugging.</li>
+</ul>
 <h2 id='documentation' class='heading'>Documentation</h2>
 
 <p>Visit the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">documentation</a> website.</p>
@@ -223,13 +229,22 @@
 </code></pre>
 <h2 id='swiftui-examples' class='heading'>SwiftUI Examples</h2>
 <h3 id='adding-the-swiftdux-store-to-the-swiftui-environment' class='heading'>Adding the SwiftDux store to the SwiftUI environment:</h3>
-<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span><span class="p">(</span>
+<pre class="highlight swift"><code><span class="c1">/// Basic store example</span>
+
+<span class="k">var</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">(),</span> <span class="nv">reducer</span><span class="p">:</span> <span class="kt">AppReducer</span><span class="p">())</span>
+
+<span class="c1">/// Advanced store example with middleware</span>
+
+<span class="k">var</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span>
   <span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">(),</span>
-  <span class="nv">reducer</span><span class="p">:</span> <span class="kt">AppReducer</span><span class="p">(),</span>
-  <span class="nv">middleware</span><span class="p">:</span> <span class="kt">PrintActionMiddleware</span><span class="p">()</span>
+  <span class="nv">reducer</span><span class="p">:</span> <span class="kt">PersistStateReducer</span><span class="p">(</span><span class="kt">AppReducer</span><span class="p">()),</span>
+  <span class="nv">middleware</span><span class="p">:</span> <span class="p">[</span>
+    <span class="kt">PrintActionMiddleware</span><span class="p">(),</span>
+    <span class="kt">PersistStateMiddleware</span><span class="p">(</span><span class="kt">JSONStatePersistor</span><span class="p">())</span>
+  <span class="p">]</span>
 <span class="p">)</span>
 
-<span class="o">...</span>
+<span class="c1">/// Inject the store</span>
 
 <span class="kt">RootView</span><span class="p">()</span><span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
 </code></pre>
@@ -307,7 +322,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-28)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

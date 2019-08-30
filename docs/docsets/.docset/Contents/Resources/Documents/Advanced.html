@@ -14,7 +14,7 @@
     <a title="Advanced  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (83% documented)</p>
+        <p><a href="index.html"> Docs</a> (82% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -42,6 +42,9 @@
               </li>
               <li class="nav-group-task">
                 <a href="swiftui-list-support.html">SwiftUI List Support</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="persisting-state.html">Persisting State</a>
               </li>
             </ul>
           </li>
@@ -122,8 +125,13 @@
               <li class="nav-group-task">
                 <a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
               </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Advanced.html#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
+                <a href="Enums/StoreAction.html">StoreAction</a>
               </li>
             </ul>
           </li>
@@ -132,14 +140,6 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Other Functions.html">Other Functions</a>
-            <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other Functions.html#/s:8SwiftDux20defaultActionPrinteryySSF">defaultActionPrinter(_:)</a>
               </li>
             </ul>
           </li>
@@ -200,60 +200,10 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF"></a>
-                    <a name="//apple_ref/swift/Function/PrintActionMiddleware(printer:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux21PrintActionMiddleware7printeryAA0D0_pcAA10StoreProxyVyxGcySSc_tSeRzSERzlF">PrintActionMiddleware(printer:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>A simple middlware that prints the description of the latest action.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="kt">PrintActionMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">(</span><span class="nv">printer</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">String</span><span class="p">)</span><span class="o">-&gt;</span><span class="p">()</span> <span class="o">=</span> <span class="n">defaultActionPrinter</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span></code></pre>
-
-                        </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>printer</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>A custom printer for the action&rsquo;s discription. Defaults to print().</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-28)</p>
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-08-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
