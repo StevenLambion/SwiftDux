@@ -35,6 +35,11 @@ This library is designed around Combine and SwiftUI. For a more established libr
 - `onAction(perform:)` allows you to track or modify dispatched actions.
 - `OrderedState<_>` has direct support of List views.
 
+### Extras
+
+- `PersistStateMiddleware` to automatically persist and restore application state.
+- `PrintActionMiddleware` Simple middleware that prints out each dispatched action for debugging.
+
 ## Documentation
 
 Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html) website.
@@ -68,13 +73,22 @@ let package = Package(
 ### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
-var store = Store<AppState>(
+/// Basic store example
+
+var store = Store(state: AppState(), reducer: AppReducer())
+
+/// Advanced store example with middleware
+
+var store = Store(
   state: AppState(),
   reducer: AppReducer(),
-  middleware: PrintActionMiddleware()
+  middleware: [
+    PrintActionMiddleware(),
+    PersistStateMiddleware(JSONStatePersistor())
+  ]
 )
 
-...
+/// Inject the store
 
 RootView().provideStore(store)
 ```

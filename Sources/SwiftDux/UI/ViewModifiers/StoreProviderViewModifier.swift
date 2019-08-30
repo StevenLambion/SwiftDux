@@ -15,7 +15,10 @@ internal struct StoreProviderViewModifier<State> : ViewModifier where State : St
         guard let store = store else { return nil }
         return store.state
       },
-      changePublisher: Future<Void, Never> { _ in }.eraseToAnyPublisher()
+      changePublisher: store.didChange
+        .filter { $0 is StoreAction<State> }
+        .map { _ in }
+        .eraseToAnyPublisher()
     )
     self.actionDispatcher = store.proxy()
   }
