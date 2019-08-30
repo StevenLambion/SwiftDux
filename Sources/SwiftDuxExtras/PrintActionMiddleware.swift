@@ -1,5 +1,5 @@
 import Foundation
-import Combine
+import SwiftDux
 
 /// Default printer for the `PrintActionMiddleware<_>`
 public func defaultActionPrinter(_ actionDiscription: String) {
@@ -10,7 +10,7 @@ public func defaultActionPrinter(_ actionDiscription: String) {
 /// - Parameter printer: A custom printer for the action's discription. Defaults to print().
 public func PrintActionMiddleware<State> (printer: @escaping (String)->() = defaultActionPrinter) -> Middleware<State> {
   { store in { action in
+    defer { store.next(action) }
     printer(String(describing: action))
-    store.next(action)
   }}
 }

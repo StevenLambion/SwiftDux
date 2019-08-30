@@ -1,5 +1,4 @@
 import Foundation
-import Combine
 
 /// Persist the application state as JSON.
 public final class JSONStatePersistor<State> : StatePersistor where State : Codable {
