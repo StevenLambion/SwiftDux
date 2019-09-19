@@ -54,10 +54,7 @@ private struct StateConnectionViewGuard<State, Content> : View where Content : V
   var content: Content
   
   var body: some View {
-    if stateConnection.latestState != nil {
-      return AnyView(content)
-    }
-    return AnyView(EmptyView())
+    stateConnection.latestState.map { _ in content }    
   }
   
 }
