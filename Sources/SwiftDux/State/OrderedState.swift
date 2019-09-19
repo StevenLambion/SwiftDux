@@ -1,7 +1,7 @@
 import Foundation
 
 /// Storage for the ordered state to decrease the copying of the internal data structures.
-fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Substate : IdentifiableState  {
+fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState {
   enum CodingKeys: String, CodingKey {
     case orderOfIds
     case values
@@ -85,7 +85,7 @@ fileprivate class OrderedStateStorage<Substate> : Codable, Equatable where Subst
 /// }
 ///
 /// ```
-public struct OrderedState<Substate> : StateType where Substate : IdentifiableState {
+public struct OrderedState<Substate>: StateType where Substate: IdentifiableState {
 
   public typealias Id = Substate.ID
   public typealias Index = Int
@@ -106,7 +106,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   /// - Parameters
   ///   - orderOfIds: The ids of each substate in a specific order.
   ///   - values: A lookup table of substates by their ids.
-  private init(orderOfIds: [Id], values: [Id:Substate]) {
+  private init(orderOfIds: [Id], values: [Id: Substate]) {
     self.storage = OrderedStateStorage(
       orderOfIds: orderOfIds,
       values: values
@@ -116,7 +116,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
   /// - Parameter values: An array of substates. The position of each substate will be used as the initial order.
   public init(_ values: [Substate]) {
-    var valueByIndex = [Id:Substate](minimumCapacity: values.count)
+    var valueByIndex = [Id: Substate](minimumCapacity: values.count)
     let orderOfIds: [Id] = values.map {
       valueByIndex[$0.id] = $0
       return $0.id
@@ -147,7 +147,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   /// Append a new substate to the end of the `OrderedState`.
   /// - Parameter value: A new substate to append to the end of the list.
   public mutating func append(_ value: Substate) {
-    self.remove(forId: value.id) // Remove if it already exists.
+    self.remove(forId: value.id)  // Remove if it already exists.
     let copy = copyStorageIfNeeded()
     copy.orderOfIds.append(value.id)
     copy.values[value.id] = value
@@ -178,12 +178,11 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
     }
   }
 
-
   /// Inserts a collection of substates at the given index `OrderedState`.
   /// - Parameters
   ///   - values: The new substates to insert. This must be an ordered collection for defined behavior.
   ///   - index: The index of the inserted substates. This will adjust the overall order of the list.
-  public mutating func insert<C>(contentsOf values: C, at index: Int) where C : Collection, C.Element == Substate {
+  public mutating func insert<C>(contentsOf values: C, at index: Int) where C: Collection, C.Element == Substate {
     let copy = copyStorageIfNeeded()
     let ids = values.map { value -> Id in
       copy.values[value.id] = value
@@ -218,7 +217,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
   public mutating func remove(at indexSet: IndexSet) {
     let copy = copyStorageIfNeeded()
     indexSet.forEach { copy.values.removeValue(forKey: copy.orderOfIds[$0]) }
-    copy.orderOfIds.remove(at:  indexSet)
+    copy.orderOfIds.remove(at: indexSet)
     self.storage = copy
   }
 
@@ -265,7 +264,7 @@ public struct OrderedState<Substate> : StateType where Substate : IdentifiableSt
 
 }
 
-extension OrderedState : MutableCollection {
+extension OrderedState: MutableCollection {
 
   public func index(after i: Int) -> Int {
     return storage.orderOfIds.index(after: i)
@@ -315,7 +314,7 @@ extension OrderedState : MutableCollection {
 
 }
 
-extension OrderedState : RandomAccessCollection {
+extension OrderedState: RandomAccessCollection {
 }
 
 extension RangeReplaceableCollection where Self: MutableCollection, Index == Int {
@@ -331,8 +330,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
     var j = index(after: i)
     var k = indexes.integerGreaterThan(i) ?? endIndex
     while j != endIndex {
-      if k != j { swapAt(i, j); formIndex(after: &i) }
-      else { k = indexes.integerGreaterThan(k) ?? endIndex }
+      if k != j { swapAt(i, j); formIndex(after: &i) } else { k = indexes.integerGreaterThan(k) ?? endIndex }
       formIndex(after: &j)
     }
     removeSubrange(i...)

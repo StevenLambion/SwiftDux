@@ -29,7 +29,7 @@ import Combine
 ///     dispatch(UserAction.loadUser(byId: self.id))
 ///   }
 ///```.
-public struct ActionPlan<State> : Action where State : StateType {
+public struct ActionPlan<State>: Action where State: StateType {
 
   /// The body of a publishable action plan.
   /// - Parameters:
@@ -42,14 +42,14 @@ public struct ActionPlan<State> : Action where State : StateType {
 
   /// Create a new action plan that returns an optional publisher.
   /// - Parameter body: The body of the action plan.
-  public init<P>(_ body: @escaping (StoreProxy<State>) -> P?) where P : Publisher, P.Output == Action, P.Failure == Never {
+  public init<P>(_ body: @escaping (StoreProxy<State>) -> P?) where P: Publisher, P.Output == Action, P.Failure == Never {
     self.body = { body($0)?.eraseToAnyPublisher() }
   }
 
   /// Create a new action plan.
   /// - Parameter body: The body of the action plan.
-  public init(_ body: @escaping (StoreProxy<State>)->()) {
-    self.body = { body($0); return nil; }
+  public init(_ body: @escaping (StoreProxy<State>) -> ()) {
+    self.body = { body($0); return nil;  }
   }
 
   /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.

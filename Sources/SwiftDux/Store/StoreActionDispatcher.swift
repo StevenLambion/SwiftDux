@@ -22,11 +22,11 @@ import Combine
 ///   }
 /// }
 /// ```
-internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
+internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
-  private let sentAction: ((Action)->())?
+  private let sentAction: ((Action) -> ())?
 
   var combineIdentifier: CombineIdentifier {
     upstream.combineIdentifier
@@ -37,7 +37,7 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
   ///   - upstream: The store object.
   ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) {
+  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action) -> ())? = nil) {
     self.upstream = upstream
     self.modifyAction = modifyAction
     self.sentAction = sentAction
@@ -81,7 +81,7 @@ extension StoreActionDispatcher {
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
-  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
+  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> ())? = nil) -> ActionDispatcher {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper: ActionModifier? = nil
     if let modifyAction = modifyAction {

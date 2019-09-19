@@ -117,7 +117,7 @@ struct BookListView : View {
 
 extension BookListView : Connectable {
 
-  func map(state: AppState) -> OrderedState<Book> {
+  func map(state: AppState) -> OrderedState<Book>? {
     state.books
   }
 
@@ -137,7 +137,7 @@ extension BookListView : Connectable {
     action is BookStatusAction
   }
 
-  func map(state: AppState) -> OrderedState<Book> {
+  func map(state: AppState) -> OrderedState<Book>? {
     state.books
   }
 
@@ -164,18 +164,6 @@ struct AuthorView : View {
 
 }
 ```
-
-## Known issues in SwiftUI
-
-#### @MappedDispatch is requiring an explicit type
-
-You must provide parentheses at the end of @MappedDispatch to initialize it without requiring an explicit type: `@MappedDispatch() var dispatch`
-
-#### TextField caret doesn't keep up with text while typing
-
-~~Starting with beta 5, using an ObservableObject with a TextField causes the caret to fall behind the text changes while typing too fast. This doesn't appear to effect @State properties, but I have been able to reproduce it using a simple ObservableObject based model. I submitted a ticket.~~
-
-Fixed in iOS 13.1
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg

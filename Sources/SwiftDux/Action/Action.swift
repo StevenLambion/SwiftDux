@@ -25,4 +25,4 @@ import Foundation
 public protocol Action {}
 
 /// A noop action used by reducers that may not have their own actions.
-public struct EmptyAction : Action {}
+public struct EmptyAction: Action {}

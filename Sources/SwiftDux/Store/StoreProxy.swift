@@ -9,7 +9,7 @@ import Combine
 /// a safe API to access a weak reference to it.
 public struct StoreProxy<State> where State: StateType {
 
-  private var getState: ()->State?
+  private var getState: () -> State?
 
   /// Subscribe to state changes.
   public var didChange: PassthroughSubject<Action, Never>
