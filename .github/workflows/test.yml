@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@master
       - name: Run tests
         run: |
-          xcode-select -s /Applications/Xcode_11.app
+          sudo xcode-select -s /Applications/Xcode_11.app
           mint
         env:
           destination: ${{ matrix.destination }}
