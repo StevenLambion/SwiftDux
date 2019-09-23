@@ -1,0 +1,18 @@
+on: [push, pull_request]
+name: Test
+jobs:
+  test:
+    name: Test
+    runs-on: macOS-latest
+    strategy:
+      matrix:
+        destination: ["platform=iOS Simulator,OS=13.0,name=iPhone Xs"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Run tests
+        run: |
+          xcode-select /Applications/Xcode_11.app
+          mint
+        env:
+          destination: ${{ matrix.destination }}
