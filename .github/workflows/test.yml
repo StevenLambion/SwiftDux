@@ -14,6 +14,10 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_11.app
           brew install mint
-          mint
+          mint install
+          swift-format -r -m lint Sources
+          swift package generate-xcodeproj
+          xcodebuild clean test -project SwiftDux.xcodeproj -scheme SwiftDux-Package -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO
+          bash <(curl -s https://codecov.io/bash)
         env:
           destination: ${{ matrix.destination }}
