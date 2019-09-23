@@ -16,10 +16,10 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_11.app
           brew install mint
-          mint bootstrap
+          mint install apple/swift-format
       - name: Lint
         run: |
-          swift-format -r -m lint Sources
+          mint run swift-format -r -m lint Sources
       - name: Test
         run: |
           swift package generate-xcodeproj
