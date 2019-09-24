@@ -19,7 +19,7 @@ jobs:
           mint install apple/swift-format
       - name: Lint
         run: |
-          mint run swift-format -r -m lint Sources
+          swift-format -r -m lint Sources
       - name: Test
         run: |
           swift package generate-xcodeproj
