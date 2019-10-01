@@ -3,7 +3,7 @@ import SwiftDux
 
 fileprivate func getDefaultFileUrl() -> URL {
   if let directoryURL = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
-    return directoryURL.appendingPathComponent("appData.json");
+    return directoryURL.appendingPathComponent("appData.json")
   }
   fatalError("Unable to create default file url for StatePersistor")
 }

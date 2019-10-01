@@ -1,9 +1,9 @@
-import Foundation
 import Combine
+import Foundation
 
 /// A closure that dispatches an action
 /// - Parameter action: Dispatches the given state synchronously.
-public typealias SendAction = (Action) -> ()
+public typealias SendAction = (Action) -> Void
 
 /// A closure that can return a new action from a previous one. If no action is returned,
 /// the original action is not sent.
@@ -25,7 +25,7 @@ public protocol ActionDispatcher {
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> ())?) -> ActionDispatcher
+  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
 
 }
 

@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// Creates a proxy of the store object for use by middleware.
 ///

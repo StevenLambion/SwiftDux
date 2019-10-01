@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// Middleware perform actions on the the store when actions are dispatched to it.
 ///

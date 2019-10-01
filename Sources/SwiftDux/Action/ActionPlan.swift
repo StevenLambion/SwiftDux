@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// Encapsulates multiple actions into a packaged up "action plan"
 ///```
@@ -48,8 +48,11 @@ public struct ActionPlan<State>: Action where State: StateType {
 
   /// Create a new action plan.
   /// - Parameter body: The body of the action plan.
-  public init(_ body: @escaping (StoreProxy<State>) -> ()) {
-    self.body = { body($0); return nil;  }
+  public init(_ body: @escaping (StoreProxy<State>) -> Void) {
+    self.body = {
+      body($0)
+      return nil
+    }
   }
 
   /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.

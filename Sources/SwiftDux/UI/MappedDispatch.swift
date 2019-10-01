@@ -1,6 +1,6 @@
+import Combine
 import Foundation
 import SwiftUI
-import Combine
 
 /// Injects a function as a property in a view to dispatch actions to the provided store.
 /// ```

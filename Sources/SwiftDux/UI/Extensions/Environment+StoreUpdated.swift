@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 internal struct StoreUpdatedKey: EnvironmentKey {
   typealias Value = PassthroughSubject<Action, Never>

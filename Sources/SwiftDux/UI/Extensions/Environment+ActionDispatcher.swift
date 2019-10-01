@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 /// Default value of the actionDispatcher environment value.
 internal struct NoopActionDispatcher: ActionDispatcher {
@@ -8,7 +8,7 @@ internal struct NoopActionDispatcher: ActionDispatcher {
     print("Tried dispatching an action `\(action)` without providing a store object.")
   }
 
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> ())?) -> ActionDispatcher {
+  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher {
     print("Tried proxy an action dispatcher before providing a store object.")
     return self
   }

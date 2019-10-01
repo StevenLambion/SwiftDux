@@ -10,16 +10,17 @@ internal struct StoreProviderViewModifier<State>: ViewModifier where State: Stat
 
   internal init(store: Store<State>) {
     self.store = store
-    self.connection = StateConnection<State>(
-      getState: { [weak store] in
-        guard let store = store else { return nil }
-        return store.state
-      },
-      changePublisher: store.didChange
-        .filter { $0 is StoreAction<State> }
-        .map { _ in }
-        .eraseToAnyPublisher()
-    )
+    self.connection
+      = StateConnection<State>(
+        getState: { [weak store] in
+          guard let store = store else { return nil }
+          return store.state
+        },
+        changePublisher: store.didChange
+          .filter { $0 is StoreAction<State> }
+          .map { _ in }
+          .eraseToAnyPublisher()
+      )
     self.actionDispatcher = store.proxy()
   }
 

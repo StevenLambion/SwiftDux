@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// Used internally to wrap modified actions. This allows the store to publish changes in the correct order that actions were sent.
 internal struct ModifiedAction: Action {

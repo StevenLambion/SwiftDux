@@ -1,5 +1,5 @@
-import SwiftUI
 import Combine
+import SwiftUI
 
 internal struct OnActionViewModifier: ViewModifier {
   @Environment(\.actionDispatcher) private var actionDispatcher

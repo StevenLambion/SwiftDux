@@ -6,14 +6,14 @@ import Foundation
 /// or displayed in a `List` view.
 public protocol IdentifiableState: StateType, Identifiable, Equatable where ID: Codable {}
 
-public extension IdentifiableState {
+extension IdentifiableState {
 
-  var hashValue: Int {
+  public var hashValue: Int {
     return id.hashValue
   }
 
   /// The default hashing uses the hash from the `id` property.
-  func hash(into hasher: inout Hasher) {
+  public func hash(into hasher: inout Hasher) {
     id.hash(into: &hasher)
   }
 

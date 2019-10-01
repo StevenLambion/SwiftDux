@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// The primary container of an application's state.
 ///
@@ -24,16 +24,17 @@ public final class Store<State> where State: StateType {
   public init<R>(state: State, reducer: R, middleware: [Middleware<State>] = []) where R: Reducer, R.State == State {
     let storeReducer = StoreReducer(reducer)
     self.state = state
-    self.reduceAction = middleware.reversed().reduce(
-      { [weak self] action in
-        guard let self = self else { return }
-        self.state = storeReducer.reduceAny(state: self.state, action: action)
-        self.didChange.send(action)
-      },
-      { next, middleware in
-        middleware(StoreProxy(store: self, next: next))
-      }
-    )
+    self.reduceAction
+      = middleware.reversed().reduce(
+        { [weak self] action in
+          guard let self = self else { return }
+          self.state = storeReducer.reduceAny(state: self.state, action: action)
+          self.didChange.send(action)
+        },
+        { next, middleware in
+          middleware(StoreProxy(store: self, next: next))
+        }
+      )
     self.reduceAction(StoreAction<State>.prepare)
   }
 
@@ -71,7 +72,7 @@ extension Store: ActionDispatcher, Subscriber {
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
-  public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> ())? = nil) -> ActionDispatcher {
+  public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
     return StoreActionDispatcher(
       upstream: self,
       modifyAction: modifyAction,
