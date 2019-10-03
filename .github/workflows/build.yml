@@ -16,7 +16,7 @@ jobs:
         run: |
           sudo xcode-select -s /Applications/Xcode_11.app
           brew install mint
-          mint install apple/swift-format
+          mint install apple/swift-format@swift-5.1-branch
       - name: Check code formatting
         run: |
           swift-format -r -m lint Sources
