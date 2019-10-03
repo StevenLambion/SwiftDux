@@ -8,13 +8,19 @@ public protocol ParameterizedConnectable {
   associatedtype Parameter
 
   /// Causes the view to be updated based on a dispatched action.
-  /// - Parameter action: The dispatched action
+  /// 
+  /// - Parameters
+  ///   - action: The dispatched action
+  ///   - parameter: A user defined parameter required to retrieve the state.
+  /// - Returns: True if the view should update.
   func updateWhen(action: Action, with parameter: Parameter) -> Bool
 
-  /// Map a superstate to the state needed by the view using the provided parameter.
+  /// The method can return nil until the state becomes available. While it is nil, the view
+  /// will not be rendered.
   /// - Parameters
   ///   - state: The superstate provided to the view from a superview.
   ///   - parameter: A user defined parameter required to retrieve the state.
+  /// - Returns: The state if possible.
   func map(state: Superstate, with parameter: Parameter) -> State?
 
 }
@@ -30,10 +36,19 @@ extension ParameterizedConnectable {
 
 extension ParameterizedConnectable where Self: View {
 
+  // swift-format-disable: ValidateDocumentationComments
+
   /// Connect the view to the application state via a provided parameter
+  ///
   /// - Parameter parameter: A view specific value required to connect the appropriate state.
+  /// - Returns: The connected view.
   public func connect(with parameter: Parameter) -> some View {
-    self.connect(updateWhen: { [updateWhen] in updateWhen($0, parameter) }) { [map] in map($0, parameter) }
+    self.connect(
+      updateWhen: { [updateWhen] in updateWhen($0, parameter) },
+      mapState: { [map] in map($0, parameter) }
+    )
   }
+
+  // swift-format-enable: ValidateDocumentationComments
 
 }

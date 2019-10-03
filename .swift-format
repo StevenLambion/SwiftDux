@@ -43,7 +43,7 @@
     "UseLetInEveryBoundCaseVariable" : true,
     "UseShorthandTypeNames" : true,
     "UseSingleLinePropertyGetter" : true,
-    "UseSynthesizedInitializer" : true,
+    "UseSynthesizedInitializer" : false,
     "UseTripleSlashForDocumentationComments" : true,
     "ValidateDocumentationComments" : true
   },

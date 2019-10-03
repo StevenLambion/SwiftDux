@@ -24,6 +24,7 @@ public struct LocalStatePersistentLocation: StatePersistentLocation {
 
   /// Save the data to the local filesystem.
   /// - Parameter data: The data to save.
+  /// - Returns: True if the save was successful.
   public func save(_ data: Data) -> Bool {
     do {
       try data.write(to: fileUrl)
@@ -35,6 +36,7 @@ public struct LocalStatePersistentLocation: StatePersistentLocation {
   }
 
   /// Retrieve the data from the local filesystem.
+  /// - Returns: The data if successful.
   public func restore() -> Data? {
     try? Data(contentsOf: fileUrl)
   }

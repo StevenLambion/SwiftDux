@@ -35,7 +35,9 @@ internal struct StoreProviderViewModifier<State>: ViewModifier where State: Stat
 
 extension View {
 
-  /// Injects a store into the environment. The store can then be used by the `@EnvironmentObject`
+  /// Injects a store into the environment.
+  ///
+  /// The store can then be used by the `@EnvironmentObject`
   /// property wrapper. This method also enables the use of `View.mapState(updateOn:_:)` to
   /// map substates to a view.
   /// ```
@@ -52,6 +54,7 @@ extension View {
   /// }
   /// ```
   /// - Parameter store: The store object to inject.
+  /// - Returns: The modified view.
   @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
     return modifier(StoreProviderViewModifier<State>(store: store))

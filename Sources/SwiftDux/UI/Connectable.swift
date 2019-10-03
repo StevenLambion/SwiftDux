@@ -7,11 +7,17 @@ public protocol Connectable {
   associatedtype State
 
   /// Causes the view to be updated based on a dispatched action.
+  ///
   /// - Parameter action: The dispatched action
+  /// - Returns: True if the view should update.
   func updateWhen(action: Action) -> Bool
 
   /// Map a superstate to the state needed by the view using the provided parameter.
+  ///
+  /// The method can return nil until the state becomes available. While it is nil, the view
+  /// will not be rendered.
   /// - Parameter state: The superstate provided to the view from a superview.
+  /// - Returns: The state if possible.
   func map(state: Superstate) -> State?
 
 }
@@ -28,6 +34,8 @@ extension Connectable {
 extension Connectable where Self: View {
 
   /// Connect the view to the application state
+  ///
+  /// - Returns: The connected view.
   public func connect() -> some View {
     self.connect(updateWhen: self.updateWhen, mapState: self.map)
   }

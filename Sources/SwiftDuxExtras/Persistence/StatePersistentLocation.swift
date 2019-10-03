@@ -8,9 +8,11 @@ public protocol StatePersistentLocation {
 
   /// Save the state data to storage.
   /// - Parameter data: The data to save.
+  /// - Returns: True if the save was successful.
   func save(_ data: Data) -> Bool
 
   /// Retreive the state from storage.
+  /// - Returns: Data if successful.
   func restore() -> Data?
 
 }

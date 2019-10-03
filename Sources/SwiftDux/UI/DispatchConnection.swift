@@ -4,12 +4,12 @@ import Foundation
 internal final class DispatchConnection: ActionDispatcher, Subscriber {
   var didDispatchAction = ObservableObjectPublisher()
 
-  private var actionDispatcher: ActionDispatcher!
+  private var actionDispatcher: ActionDispatcher
 
   init(actionDispatcher: ActionDispatcher) {
     self.actionDispatcher
-      = actionDispatcher.proxy(modifyAction: nil) { [weak self] _ in
-        self?.didDispatchAction.send()
+      = actionDispatcher.proxy(modifyAction: nil) { [didDispatchAction] _ in
+        didDispatchAction.send()
       }
   }
 

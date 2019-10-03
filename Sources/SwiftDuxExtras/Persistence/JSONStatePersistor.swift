@@ -10,19 +10,24 @@ public final class JSONStatePersistor<State>: StatePersistor where State: Codabl
   private let decoder = JSONDecoder()
 
   /// Initiate a new state persistor with a given location of the stored data.
+  ///
   /// - Parameter location: The location of the stored data.
   public init(location: StatePersistentLocation) {
     self.location = location
   }
 
   /// Encode the state to JSON data.
+  ///
   /// - Parameter state: The state
+  /// - Returns: The encoded state
   public func encode(state: State) throws -> Data {
     try encoder.encode(state)
   }
 
   /// Decode the JSON data into a new state.
+  ///
   /// - Parameter data: The json data
+  /// - Returns: The decoded state
   public func decode(data: Data) throws -> State {
     try decoder.decode(State.self, from: data)
   }

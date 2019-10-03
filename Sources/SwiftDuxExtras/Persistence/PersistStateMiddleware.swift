@@ -3,12 +3,15 @@ import Foundation
 import SwiftDux
 import UIKit
 
+// swift-format-disable: AlwaysUseLowerCamelCase
+
 /// Hooks up state peristence to the store.
 /// - Parameters
 ///   - persistor: The state persistor to use.
 ///   - saveOnChange: Saves the state when it changes, else, it saves when the app enters the backgroound.
-///   - debounceFor: The debounce interval for saving on changes.
+///   - interval: The debounce interval for saving on changes.
 ///   - shouldRestore: Closure used to validate the state before restoring it. This is useful if the state's schema version has changed.
+/// - Returns: The middleware
 public func PersistStateMiddleware<State, SP>(
   _ persistor: SP,
   saveOnChange: Bool = true,

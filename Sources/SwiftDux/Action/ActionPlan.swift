@@ -2,6 +2,7 @@ import Combine
 import Foundation
 
 /// Encapsulates multiple actions into a packaged up "action plan"
+///
 ///```
 ///   enum UserAction {
 ///
@@ -32,21 +33,22 @@ import Foundation
 public struct ActionPlan<State>: Action where State: StateType {
 
   /// The body of a publishable action plan.
-  /// - Parameters:
-  ///   - dispatch: Dispatches an action synchronously.
-  ///   - getState: Gets the latest snapshot of the application's state.
+  ///
+  /// - Parameter StoreProxy: Dispatch actions or retreive the current state from the store.
   /// - Returns: A publisher that can send actions to the store.
   public typealias Body = (StoreProxy<State>) -> AnyPublisher<Action, Never>?
 
   private var body: Body
 
   /// Create a new action plan that returns an optional publisher.
+  ///
   /// - Parameter body: The body of the action plan.
   public init<P>(_ body: @escaping (StoreProxy<State>) -> P?) where P: Publisher, P.Output == Action, P.Failure == Never {
     self.body = { body($0)?.eraseToAnyPublisher() }
   }
 
   /// Create a new action plan.
+  ///
   /// - Parameter body: The body of the action plan.
   public init(_ body: @escaping (StoreProxy<State>) -> Void) {
     self.body = {
@@ -55,7 +57,11 @@ public struct ActionPlan<State>: Action where State: StateType {
     }
   }
 
-  /// Manually run the action plan. This can be useful to run an action plan inside containing action plan.
+  /// Manually run the action plan.
+  ///
+  /// this can be useful to run an action plan inside a containing action plan.
+  /// - Parameter store: Dispatch actions or retreive the current state from the store.
+  /// - Returns: A publisher that can send actions to the store.
   public func run(_ store: StoreProxy<State>) -> AnyPublisher<Action, Never>? {
     self.body(store)
   }

@@ -10,10 +10,12 @@ public final class Store<State> where State: StateType {
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
 
-  private var reduceAction: SendAction!
+  private var reduceAction: SendAction = { _ in }
 
   /// Subscribe for state changes. It emits the latest action sent to the store.
   public let didChange = PassthroughSubject<Action, Never>()
+
+  // swift-format-disable: ValidateDocumentationComments
 
   /// Creates a new store for the given state and reducer
   ///
@@ -38,9 +40,13 @@ public final class Store<State> where State: StateType {
     self.reduceAction(StoreAction<State>.prepare)
   }
 
+  // swift-format-enable: ValidateDocumentationComments
+
 }
 
 extension Store: ActionDispatcher, Subscriber {
+
+  // swift-format-disable: UseLetInEveryBoundCaseVariable
 
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
@@ -54,6 +60,8 @@ extension Store: ActionDispatcher, Subscriber {
       reduceAction(action)
     }
   }
+
+  // swift-format-enable: UseLetInEveryBoundCaseVariable
 
   /// Handles the sending of normal action plans.
   private func send(actionPlan: ActionPlan<State>) {
@@ -72,6 +80,7 @@ extension Store: ActionDispatcher, Subscriber {
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
+  /// - Returns: a new action dispatcher.
   public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
     return StoreActionDispatcher(
       upstream: self,

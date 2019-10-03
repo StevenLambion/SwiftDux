@@ -12,27 +12,37 @@ public protocol StatePersistor: Subscriber {
   var location: StatePersistentLocation { get }
 
   /// Initiate a new persistor for the give location.
+  ///
+  /// - Parameter location: The location where the data will be saved and restored from.
   init(location: StatePersistentLocation)
 
   /// Encodes the state into a raw data object.
+  ///
+  ///  - Parameter state: The state to encode
+  /// - Returns: The encoded state.
   func encode(state: State) throws -> Data
 
   /// Decode raw data into a new state object.
+  ///
   /// - Parameter data: The data to decode.
+  /// - Returns: The decoded state
   func decode(data: Data) throws -> State
 
 }
 
 extension StatePersistor {
 
-  /// Initiate a new json persistor with a given location of the stored data.
-  /// - Parameter location: The location of the stored data.
+  /// Initiate a new json persistor with a given location of the stored data on the local file system.
+  ///
+  /// - Parameter fileUrl: The url where the state will be saved and restored from on the local file system.
   public init(fileUrl: URL? = nil) {
     self.init(location: LocalStatePersistentLocation(fileUrl: fileUrl))
   }
 
   /// Save the state object to a storage location.
-  /// It returns true if it succeeds.
+  ///
+  /// - Parameter state: The state to save.
+  /// - Returns: True if successful.
   @discardableResult
   public func save(_ state: State) -> Bool {
     do {
@@ -44,6 +54,8 @@ extension StatePersistor {
   }
 
   /// Restore the state from storage.
+  ///
+  /// - Returns: The state if successful.
   public func restore() -> State? {
     guard let data = location.restore() else { return nil }
     do {
@@ -58,9 +70,10 @@ extension StatePersistor {
 extension StatePersistor where Self: Subscriber, Self.Input == State, Self.Failure == Never {
 
   /// Subscribe to a publisher to save the state automatically.
+  ///
   /// - Parameters
-  ///   - from: The publisher to subsctibe to.
-  ///   - debounceFor: The time interval to debounce the updates against.
+  ///   - publisher: The publisher to subsctibe to.
+  ///   - interval: The time interval to debounce the updates against.
   public func save<P>(
     from publisher: P,
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
@@ -71,9 +84,10 @@ extension StatePersistor where Self: Subscriber, Self.Input == State, Self.Failu
   }
 
   /// Subscribe to a store to save the state automatically.
+  ///
   /// - Parameters
-  ///   - from: The store to subsctibe to.
-  ///   - debounceFor: The time interval to debounce the updates against.
+  ///   - store: The store to subsctibe to.
+  ///   - interval: The time interval to debounce the updates against.
   public func save(
     from store: Store<State>,
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
@@ -85,9 +99,10 @@ extension StatePersistor where Self: Subscriber, Self.Input == State, Self.Failu
   }
 
   /// Subscribe to a store to save the state automatically.
+  ///
   /// - Parameters
-  ///   - from: The store to subsctibe to.
-  ///   - debounceFor: The time interval to debounce the updates against.
+  ///   - store: The store to subsctibe to.
+  ///   - interval: The time interval to debounce the updates against.
   public func save(
     from store: StoreProxy<State>,
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
