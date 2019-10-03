@@ -4,9 +4,8 @@
 
 [![Swift Version][swift-image]][swift-url]
 ![Platform Versions][ios-image]
-[![License][license-image]][license-url]
-
-This is still a work in progress.
+[![Github workflow][github-workflow-image]](https://github.com/StevenLambion/SwiftDux/actions)
+[![codecov][codecov-image]](https://codecov.io/gh/StevenLambion/SwiftDux)
 
 ## Introduction
 
@@ -174,3 +173,5 @@ struct AuthorView : View {
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
 [codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com
+[github-workflow-image]: https://github.com/StevenLambion/SwiftDux/workflows/build/badge.svg
+[codecov-image]: https://codecov.io/gh/StevenLambion/SwiftDux/branch/master/graph/badge.svg
