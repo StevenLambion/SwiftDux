@@ -12,21 +12,21 @@ import SwiftUI
 /// ```
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 @propertyWrapper
-public struct MappedState<State> : DynamicProperty {
+public struct MappedState<State>: DynamicProperty {
 
   @EnvironmentObject private var connection: StateConnection<State>
-  
+
   public var wrappedValue: State {
     connection.latestState!
   }
-  
+
   public var projectedValue: Binding<State> {
     Binding<State>(
       get: { self.wrappedValue },
       set: { _ in }
     )
   }
-  
+
   public var binding: Binding<State> {
     projectedValue
   }

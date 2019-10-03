@@ -1,22 +1,23 @@
-import Foundation
 import Combine
+import Foundation
 
-internal final class DispatchConnection : ActionDispatcher, Subscriber {
+internal final class DispatchConnection: ActionDispatcher, Subscriber {
   var didDispatchAction = ObservableObjectPublisher()
-  
-  private var actionDispatcher: ActionDispatcher!
-  
+
+  private var actionDispatcher: ActionDispatcher
+
   init(actionDispatcher: ActionDispatcher) {
-    self.actionDispatcher = actionDispatcher.proxy(modifyAction: nil) { [weak self] _ in
-      self?.didDispatchAction.send()
-    }
+    self.actionDispatcher
+      = actionDispatcher.proxy(modifyAction: nil) { [didDispatchAction] _ in
+        didDispatchAction.send()
+      }
   }
-  
+
   func send(_ action: Action) {
     actionDispatcher.send(action)
   }
-  
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action)->())?) -> ActionDispatcher {
+
+  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher {
     actionDispatcher.proxy(modifyAction: modifyAction, sentAction: sentAction)
   }
 }

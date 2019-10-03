@@ -2,8 +2,8 @@ import Foundation
 import SwiftDux
 
 fileprivate func getDefaultFileUrl() -> URL {
-  if let directoryURL =  try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
-    return directoryURL.appendingPathComponent("appData.json");
+  if let directoryURL = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
+    return directoryURL.appendingPathComponent("appData.json")
   }
   fatalError("Unable to create default file url for StatePersistor")
 }
@@ -11,19 +11,20 @@ fileprivate func getDefaultFileUrl() -> URL {
 /// The location of application state within the local filesystem.
 ///
 /// By default, it stores the application state inside the Application Support directory.
-public struct LocalStatePersistentLocation : StatePersistentLocation {
-  
+public struct LocalStatePersistentLocation: StatePersistentLocation {
+
   /// The file location in the local filesystem.
   public let fileUrl: URL
-  
+
   /// Initiate a new location with an optional file url.
   /// - Parameter fileUrl: An optional url of the file location.
   public init(fileUrl: URL? = nil) {
     self.fileUrl = fileUrl ?? getDefaultFileUrl()
   }
-  
+
   /// Save the data to the local filesystem.
   /// - Parameter data: The data to save.
+  /// - Returns: True if the save was successful.
   public func save(_ data: Data) -> Bool {
     do {
       try data.write(to: fileUrl)
@@ -33,10 +34,11 @@ public struct LocalStatePersistentLocation : StatePersistentLocation {
       return false
     }
   }
-  
+
   /// Retrieve the data from the local filesystem.
+  /// - Returns: The data if successful.
   public func restore() -> Data? {
     try? Data(contentsOf: fileUrl)
   }
-  
+
 }

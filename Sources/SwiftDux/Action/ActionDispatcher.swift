@@ -1,9 +1,10 @@
-import Foundation
 import Combine
+import Foundation
 
-/// A closure that dispatches an action
+/// A closure that dispatches an action.
+///
 /// - Parameter action: Dispatches the given state synchronously.
-public typealias SendAction = (Action) -> ()
+public typealias SendAction = (Action) -> Void
 
 /// A closure that can return a new action from a previous one. If no action is returned,
 /// the original action is not sent.
@@ -17,20 +18,21 @@ public protocol ActionDispatcher {
 
   /// Sends an action to a reducer to mutate the state of the application.
   /// - Parameter action: An action to dispatch to the store.
-  /// - Returns: An optional publisher that can be used to indicate when the action is complete.
   func send(_ action: Action)
-  
-  /// Create a new `ActionDispatcher` that acts as a proxy for the current one. Actions can be modified
-  /// by both the new proxy and the original dispatcher it was created from.
+
+  /// Create a new `ActionDispatcher` that acts as a proxy for the current one.
+  ///
+  /// Actions can be modified by both the new proxy and the original dispatcher it was created from.
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action)->())?) -> ActionDispatcher
+  /// - Returns: a new action dispatcher.
+  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
 
 }
 
-// Default `Subscriber` implementation
-extension ActionDispatcher where Self : Subscriber, Self.Input == Action, Self.Failure == Never {
+/// Default `Subscriber` implementation.
+extension ActionDispatcher where Self: Subscriber, Self.Input == Action, Self.Failure == Never {
 
   public func receive(_ input: Action) -> Subscribers.Demand {
     send(input)

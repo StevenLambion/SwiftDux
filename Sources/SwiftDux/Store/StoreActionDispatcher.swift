@@ -1,5 +1,5 @@
-import Foundation
 import Combine
+import Foundation
 
 /// A dispatcher tied to an upstream `Store<_>` object. This is useful to proxy dispatched actions.
 ///
@@ -22,11 +22,11 @@ import Combine
 ///   }
 /// }
 /// ```
-internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber where State : StateType {
+internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
-  private let sentAction: ((Action)->())?
+  private let sentAction: ((Action) -> Void)?
 
   var combineIdentifier: CombineIdentifier {
     upstream.combineIdentifier
@@ -35,9 +35,9 @@ internal struct StoreActionDispatcher<State> : ActionDispatcher, Subscriber wher
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
   ///   - upstream: The store object.
-  ///   - upstreamActionSubject: A subject used to fire actions that have been modified by the dispatcher. Typically this is provided from the upstream store
   ///   - modifyAction: Modifies a dispatched action before sending it off to the upstream store.
-  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) {
+  ///   - sentAction: Callback fired when an action was sent by this dispatcher.
+  init(upstream: Store<State>, modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) {
     self.upstream = upstream
     self.modifyAction = modifyAction
     self.sentAction = sentAction
@@ -81,7 +81,8 @@ extension StoreActionDispatcher {
   /// - Parameters
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
-  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action)->())? = nil) -> ActionDispatcher {
+  /// - Returns: a new action dispatcher.
+  func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
     let upstreamModifyAction = self.modifyAction
     var modifyActionWrapper: ActionModifier? = nil
     if let modifyAction = modifyAction {
