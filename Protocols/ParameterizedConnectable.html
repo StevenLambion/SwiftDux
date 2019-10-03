@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ParameterizedConnectable Protocol Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a name="//apple_ref/swift/Protocol/ParameterizedConnectable" class="dashAnchor"></a>
+    <a title="ParameterizedConnectable Protocol Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="../index.html"> Docs</a> (86% documented)</p>
+        <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="../index.html"> Reference</a>
+        <img id="carat" src="../img/carat.png" />
+        ParameterizedConnectable Protocol Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="../Documentation.html">Documentation</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../installation.html">Installation</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../getting-started.html">Getting Started</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../composing-reducers.html">Composing Reducers</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../swiftui-list-support.html">SwiftUI List Support</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../persisting-state.html">Persisting State</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../State.html">State</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/IdentifiableState.html">IdentifiableState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OrderedState.html">OrderedState</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Actions.html">Actions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActionPlan.html">ActionPlan</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Store.html">Store</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/Store.html">Store</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Reducer.html">Reducer</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StoreProxy.html">StoreProxy</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../SwiftUI.html">SwiftUI</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/View.html">View</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MappedState.html">MappedState</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/MappedDispatch.html">MappedDispatch</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/Connectable.html">Connectable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Advanced.html">Advanced</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Enums.html">Other Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Enums/StoreAction.html">StoreAction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Extensions.html">Other Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            <h1>ParameterizedConnectable</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+<span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">ParameterizedConnectable</span></code></pre>
+
+                </div>
+              </div>
+            <p>Makes a view <q>connectable</q> to the application state using a parameter value.</p>
+
+          </section>
+          <section class="section task-group-section">
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa"></a>
+                    <a name="//apple_ref/swift/Alias/Superstate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Superstate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP5StateQa"></a>
+                    <a name="//apple_ref/swift/Alias/State" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP5StateQa">State</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP9ParameterQa"></a>
+                    <a name="//apple_ref/swift/Alias/Parameter" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Parameter</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP10updateWhen6action4withSbAA6Action_p_9ParameterQztF"></a>
+                    <a name="//apple_ref/swift/Method/updateWhen(action:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP10updateWhen6action4withSbAA6Action_p_9ParameterQztF">updateWhen(action:with:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Causes the view to be updated based on a dispatched action.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Default implementation disables updates by action.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">updateWhen</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>True if the view should update.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP3map5state4with5StateQzSg10SuperstateQz_9ParameterQztF"></a>
+                    <a name="//apple_ref/swift/Method/map(state:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP3map5state4with5StateQzSg10SuperstateQz_9ParameterQztF">map(state:with:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The method can return nil until the state becomes available. While it is nil, the view
+will not be rendered.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP5StateQa">State</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The state if possible.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux24ParameterizedConnectablePAA0A2UI4ViewRzrlE7connect4withQr9ParameterACQz_tF"></a>
+                    <a name="//apple_ref/swift/Method/connect(with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectablePAA0A2UI4ViewRzrlE7connect4withQr9ParameterACQz_tF">connect(with:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Extension method
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Connect the view to the application state via a provided parameter</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">connect</span><span class="p">(</span><span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>parameter</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A view specific value required to connect the appropriate state.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The connected view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-03)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>
