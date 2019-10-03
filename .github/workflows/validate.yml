@@ -21,11 +21,10 @@ jobs:
         run: |
           swift-format -r -m lint Sources
       - name: Run tests
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         run: |
           swift package generate-xcodeproj --enable-code-coverage
           xcodebuild -project SwiftDux.xcodeproj -scheme SwiftDux-Package -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=NO test
           bash <(curl -s https://codecov.io/bash)
         env:
           destination: ${{ matrix.destination }}
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
