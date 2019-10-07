@@ -1,5 +1,7 @@
 import Foundation
 
+fileprivate struct IgnoredDecodedState: Codable {}
+
 /// Storage for the ordered state to decrease the copying of the internal data structures.
 fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState {
   enum CodingKeys: String, CodingKey {
@@ -95,15 +97,16 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
 
   /// The substates as an ordered array
   public var values: [Substate] {
-    return storage.orderOfIds.map { storage.values[$0]! }
+    storage.orderOfIds.map { storage.values[$0]! }
   }
 
   /// The number of substates
   public var count: Int {
-    return storage.orderOfIds.count
+    storage.orderOfIds.count
   }
 
   /// Used for internal copy operations.
+  ///
   /// - Parameters
   ///   - orderOfIds: The ids of each substate in a specific order.
   ///   - values: A lookup table of substates by their ids.
@@ -116,6 +119,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   }
 
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
+  /// 
   /// - Parameter values: An array of substates. The position of each substate will be used as the initial order.
   public init(_ values: [Substate]) {
     var valueByIndex = [Id: Substate](minimumCapacity: values.count)
@@ -132,6 +136,34 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     self.init(value)
   }
 
+  ///Decodes the `OrderState<_>` from an unkeyed container.
+  ///
+  /// This allows the `OrderedState<_>` to be decoded from a simple array.
+  ///
+  /// - Parameter decoder: The decoder.
+  public init(from decoder: Decoder) throws {
+    var container = try decoder.unkeyedContainer()
+    var values = [Substate]()
+    while !container.isAtEnd {
+      do {
+        values.append(try container.decode(Substate.self))
+      } catch {
+        _ = try container.decode(IgnoredDecodedState.self)
+      }
+    }
+    self.init(values)
+  }
+
+  /// Encodes the `OrderState<_>` as an unkeyed container of values.
+  ///
+  /// This allows the `OrderedState<_>` to be encoded as simple array.
+  ///
+  /// - Parameter encoder: The encoder.
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.unkeyedContainer()
+    try container.encode(contentsOf: values)
+  }
+
   /// Used internally to copy the storage for mutating operations.
   ///
   /// It's designed not to copy if it's singularily owned by a single copy of the `OrderedState` struct.
@@ -144,6 +176,16 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     }
     storage.invalidateCache()
     return storage
+  }
+
+  /// Retrieves a value by its id.
+  ///
+  /// The subscript API should be used in most cases. This method is
+  /// provided in case the Substate's id type is also an int.
+  /// - Parameter id: The id of the substate.
+  /// - Returns: The substate if it exists.
+  public func value(forId id: Id) -> Substate? {
+    return storage.values[id]
   }
 
   /// Append a new substate to the end of the `OrderedState`.
@@ -241,7 +283,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     let copy = copyStorageIfNeeded()
     let index = Swift.max(Swift.min(index, copy.orderOfIds.count), 0)
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
-    let offset = indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result }
+    let offset = Swift.max(indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result } - 1, 0)
     copy.orderOfIds.remove(at: indexSet)
     copy.orderOfIds.insert(contentsOf: ids, at: index - offset)
     self.storage = copy
@@ -282,12 +324,12 @@ extension OrderedState: MutableCollection {
 
   /// The starting index of the collection.
   public var startIndex: Int {
-    return storage.orderOfIds.startIndex
+    storage.orderOfIds.startIndex
   }
 
   /// The last index of the collection.
   public var endIndex: Int {
-    return storage.orderOfIds.endIndex
+    storage.orderOfIds.endIndex
   }
 
   /// Subscript based on the index of the substate.
@@ -296,7 +338,7 @@ extension OrderedState: MutableCollection {
   /// - Returns: The substate
   public subscript(position: Int) -> Substate {
     get {
-      return storage.values[storage.orderOfIds[position]]!
+      storage.values[storage.orderOfIds[position]]!
     }
     set(newValue) {
       self.insert(newValue, at: position)
@@ -309,7 +351,7 @@ extension OrderedState: MutableCollection {
   /// - Returns: The substate
   public subscript(position: Id) -> Substate? {
     get {
-      return storage.values[position]
+      value(forId: position)
     }
     set(newValue) {
       guard let newValue = newValue else { return }
@@ -378,7 +420,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 extension OrderedState: Equatable {
 
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
-    return lhs.storage === rhs.storage
+    return lhs.storage == rhs.storage
   }
 
 }
