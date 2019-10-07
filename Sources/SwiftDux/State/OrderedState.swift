@@ -1,5 +1,7 @@
 import Foundation
 
+fileprivate struct IgnoredDecodedState: Codable {}
+
 /// Storage for the ordered state to decrease the copying of the internal data structures.
 fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState {
   enum CodingKeys: String, CodingKey {
@@ -130,6 +132,34 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   /// - Parameter value: A variadic list of substates. The position of each substate will be used as the initial order.
   public init(_ value: Substate...) {
     self.init(value)
+  }
+  
+  ///Decodes the `OrderState<_>` from an unkeyed container.
+  ///
+  /// This allows the `OrderedState<_>` to be decoded from a simple array.
+  ///
+  /// - Parameter decoder: The decoder.
+  public init(from decoder: Decoder) throws {
+    var container = try decoder.unkeyedContainer()
+    var values = [Substate]()
+    while !container.isAtEnd {
+      do {
+        values.append(try container.decode(Substate.self))
+      } catch {
+        _ = try container.decode(IgnoredDecodedState.self)
+      }
+    }
+    self.init(values)
+  }
+  
+  /// Encodes the `OrderState<_>` as an unkeyed container of values.
+  ///
+  /// This allows the `OrderedState<_>` to be encoded as simple array.
+  ///
+  /// - Parameter encoder: The encoder.
+  public func encode(to encoder: Encoder) throws {
+    var container = encoder.unkeyedContainer()
+    try container.encode(contentsOf: values)
   }
 
   /// Used internally to copy the storage for mutating operations.
