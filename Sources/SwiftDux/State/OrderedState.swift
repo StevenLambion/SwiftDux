@@ -106,6 +106,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   }
 
   /// Used for internal copy operations.
+  ///
   /// - Parameters
   ///   - orderOfIds: The ids of each substate in a specific order.
   ///   - values: A lookup table of substates by their ids.
@@ -118,6 +119,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   }
 
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
+  /// 
   /// - Parameter values: An array of substates. The position of each substate will be used as the initial order.
   public init(_ values: [Substate]) {
     var valueByIndex = [Id: Substate](minimumCapacity: values.count)
@@ -133,7 +135,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   public init(_ value: Substate...) {
     self.init(value)
   }
-  
+
   ///Decodes the `OrderState<_>` from an unkeyed container.
   ///
   /// This allows the `OrderedState<_>` to be decoded from a simple array.
@@ -151,7 +153,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     }
     self.init(values)
   }
-  
+
   /// Encodes the `OrderState<_>` as an unkeyed container of values.
   ///
   /// This allows the `OrderedState<_>` to be encoded as simple array.
@@ -271,7 +273,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     let copy = copyStorageIfNeeded()
     let index = Swift.max(Swift.min(index, copy.orderOfIds.count), 0)
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
-    let offset = indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result }
+    let offset = Swift.max(indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result } - 1, 0)
     copy.orderOfIds.remove(at: indexSet)
     copy.orderOfIds.insert(contentsOf: ids, at: index - offset)
     self.storage = copy

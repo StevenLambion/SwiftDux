@@ -14,7 +14,7 @@ final class PerformanceTests: XCTestCase {
       
       let firstMoveItem = store.state.todoLists["123"]?.todos.values[300]
       store.send(TodoListAction.moveTodos(inList: "123", from: IndexSet(300...5000), to: 8000))
-      XCTAssertEqual(firstMoveItem?.id, store.state.todoLists["123"]?.todos.values[3299].id)
+      XCTAssertEqual(firstMoveItem?.id, store.state.todoLists["123"]?.todos.values[3300].id)
       
       let firstUndeletedItem = store.state.todoLists["123"]?.todos.values[3001]
       store.send(TodoListAction.removeTodos(fromList: "123", at: IndexSet(100...3000)))
