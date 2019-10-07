@@ -97,12 +97,12 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
 
   /// The substates as an ordered array
   public var values: [Substate] {
-    return storage.orderOfIds.map { storage.values[$0]! }
+    storage.orderOfIds.map { storage.values[$0]! }
   }
 
   /// The number of substates
   public var count: Int {
-    return storage.orderOfIds.count
+    storage.orderOfIds.count
   }
 
   /// Used for internal copy operations.
@@ -176,6 +176,16 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     }
     storage.invalidateCache()
     return storage
+  }
+
+  /// Retrieves a value by its id.
+  ///
+  /// The subscript API should be used in most cases. This method is
+  /// provided in case the Substate's id type is also an int.
+  /// - Parameter id: The id of the substate.
+  /// - Returns: The substate if it exists.
+  public func value(forId id: Id) -> Substate? {
+    return storage.values[id]
   }
 
   /// Append a new substate to the end of the `OrderedState`.
@@ -314,12 +324,12 @@ extension OrderedState: MutableCollection {
 
   /// The starting index of the collection.
   public var startIndex: Int {
-    return storage.orderOfIds.startIndex
+    storage.orderOfIds.startIndex
   }
 
   /// The last index of the collection.
   public var endIndex: Int {
-    return storage.orderOfIds.endIndex
+    storage.orderOfIds.endIndex
   }
 
   /// Subscript based on the index of the substate.
@@ -328,7 +338,7 @@ extension OrderedState: MutableCollection {
   /// - Returns: The substate
   public subscript(position: Int) -> Substate {
     get {
-      return storage.values[storage.orderOfIds[position]]!
+      storage.values[storage.orderOfIds[position]]!
     }
     set(newValue) {
       self.insert(newValue, at: position)
@@ -341,7 +351,7 @@ extension OrderedState: MutableCollection {
   /// - Returns: The substate
   public subscript(position: Id) -> Substate? {
     get {
-      return storage.values[position]
+      value(forId: position)
     }
     set(newValue) {
       guard let newValue = newValue else { return }
@@ -410,7 +420,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 extension OrderedState: Equatable {
 
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
-    return lhs.storage === rhs.storage
+    return lhs.storage == rhs.storage
   }
 
 }

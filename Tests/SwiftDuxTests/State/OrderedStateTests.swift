@@ -126,6 +126,31 @@ final class OrderedStateTests: XCTestCase {
     let results = OrderedState(john, bob, bill).filter { $0.name == "Bob" }
     XCTAssertEqual(results, [bob])
   }
+  
+  func testIndexSubscript() {
+    let state = OrderedState(john, bob, bill).sorted { $0.name < $1.name }
+    XCTAssertEqual(state[2], john)
+  }
+  
+  func testIdSubscript() {
+    let state = OrderedState(john, bob, bill).sorted { $0.name < $1.name }
+    XCTAssertEqual(state["2"], bob)
+  }
+  
+  func testIdSubscriptWithInteger() {
+    let state = OrderedState(
+      Fruit(id: 1, name: "apple"),
+      Fruit(id: 2, name: "orange"),
+      Fruit(id: 3, name: "banana")
+    )
+    XCTAssertEqual(state[2], Fruit(id: 3, name: "banana"))
+    XCTAssertEqual(state.value(forId: 2), Fruit(id: 2, name: "orange"))
+  }
+  
+  func testEquality() {
+    XCTAssertNotEqual(OrderedState(bob, john, bill), OrderedState(john, bob, bill))
+    XCTAssertEqual(OrderedState(john, bob, bill), OrderedState(john, bob, bill))
+  }
 
   static var allTests = [
     ("testInitializeWithArray", testInitializeWithArray),
@@ -143,13 +168,25 @@ final class OrderedStateTests: XCTestCase {
     ("testMoveTwoUsersFoward", testMoveTwoUsersFoward),
     ("testMoveTwoUsersBackwards", testMoveTwoUsersBackwards),
     ("testMoveAllUsers", testMoveAllUsers),
+    ("testSort", testSort),
+    ("testSorted", testSorted),
+    ("testFilter", testFilter),
+    ("testIndexSubscript", testIndexSubscript),
+    ("testIdSubscript", testIdSubscript),
+    ("testIdSubscriptWithInteger", testIdSubscriptWithInteger),
+    ("testEquality", testEquality),
   ]
 }
 
 extension OrderedStateTests {
   
-  struct User: IdentifiableState {
+  struct User: IdentifiableState, Equatable {
     var id: String
+    var name: String
+  }
+  
+  struct Fruit: IdentifiableState {
+    var id: Double
     var name: String
   }
   
