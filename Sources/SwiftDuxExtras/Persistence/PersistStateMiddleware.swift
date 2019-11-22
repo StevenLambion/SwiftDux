@@ -4,17 +4,17 @@ import SwiftDux
 
 #if canImport(UIKit)
 
-import UIKit
-fileprivate let notification: NSNotification.Name? = UIApplication.didEnterBackgroundNotification
+  import UIKit
+  fileprivate let notification: NSNotification.Name? = UIApplication.didEnterBackgroundNotification
 
 #elseif canImport(AppKit)
 
-import AppKit
-fileprivate let notification: NSNotification.Name? = NSApplication.willResignActiveNotification
+  import AppKit
+  fileprivate let notification: NSNotification.Name? = NSApplication.willResignActiveNotification
 
 #else
 
-fileprivate let notification: NSNotification.Name? = nil
+  fileprivate let notification: NSNotification.Name? = nil
 
 #endif
 
