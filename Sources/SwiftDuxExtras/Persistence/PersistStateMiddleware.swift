@@ -1,7 +1,22 @@
 import Combine
 import Foundation
 import SwiftDux
+
+#if canImport(UIKit)
+
 import UIKit
+fileprivate let notification: NSNotification.Name? = UIApplication.didEnterBackgroundNotification
+
+#elseif canImport(AppKit)
+
+import AppKit
+fileprivate let notification: NSNotification.Name? = NSApplication.willResignActiveNotification
+
+#else
+
+fileprivate let notification: NSNotification.Name? = nil
+
+#endif
 
 // swift-format-disable: AlwaysUseLowerCamelCase
 
@@ -25,9 +40,9 @@ public func PersistStateMiddleware<State, SP>(
 
       if saveOnChange {
         persistor.save(from: store, debounceFor: interval)
-      } else {
+      } else if let notification = notification {
         let publisher = NotificationCenter.default
-          .publisher(for: UIApplication.didEnterBackgroundNotification)
+          .publisher(for: notification)
           .compactMap { _ in store.state }
         persistor.save(from: publisher)
       }
