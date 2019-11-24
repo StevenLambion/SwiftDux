@@ -46,10 +46,9 @@ fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substa
   /// - Returns: The ordered index that corrosponds to an id.
   func index(ofId id: ID) -> Int {
     if cachedIdsByOrder == nil {
-      self.cachedIdsByOrder
-        = [ID: Int](
-          uniqueKeysWithValues: orderOfIds.enumerated().map { (index, id) in (id, index) }
-        )
+      self.cachedIdsByOrder = [ID: Int](
+        uniqueKeysWithValues: orderOfIds.enumerated().map { (index, id) in (id, index) }
+      )
     }
     return self.cachedIdsByOrder![id]!
   }
@@ -111,11 +110,10 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   ///   - orderOfIds: The ids of each substate in a specific order.
   ///   - values: A lookup table of substates by their ids.
   private init(orderOfIds: [Id], values: [Id: Substate]) {
-    self.storage
-      = OrderedStateStorage(
-        orderOfIds: orderOfIds,
-        values: values
-      )
+    self.storage = OrderedStateStorage(
+      orderOfIds: orderOfIds,
+      values: values
+    )
   }
 
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
