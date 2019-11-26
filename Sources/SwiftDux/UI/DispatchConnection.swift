@@ -7,10 +7,9 @@ internal final class DispatchConnection: ActionDispatcher, Subscriber {
   private var actionDispatcher: ActionDispatcher
 
   init(actionDispatcher: ActionDispatcher) {
-    self.actionDispatcher
-      = actionDispatcher.proxy(modifyAction: nil) { [didDispatchAction] _ in
-        didDispatchAction.send()
-      }
+    self.actionDispatcher = actionDispatcher.proxy(modifyAction: nil) { [didDispatchAction] _ in
+      didDispatchAction.send()
+    }
   }
 
   func send(_ action: Action) {

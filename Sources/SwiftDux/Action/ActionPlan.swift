@@ -106,10 +106,9 @@ public struct ActionPlan<State>: Action where State: StateType {
       ActionPlan<State> { store -> () in
         guard cancelled == false else { return }
         guard let publisher = self.run(store) else { return }
-        publisherCancellable
-          = publisher.sink { action in
-            store.send(action)
-          }
+        publisherCancellable = publisher.sink { action in
+          store.send(action)
+        }
       }
     )
 

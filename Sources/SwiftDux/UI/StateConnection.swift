@@ -16,10 +16,9 @@ internal final class StateConnection<State>: ObservableObject, Identifiable {
   init(getState: @escaping () -> State?, changePublisher: AnyPublisher<Void, Never>) {
     self.getState = getState
     self.latestState = getState()
-    self.cancellable
-      = changePublisher.sink { [weak self] in
-        guard let self = self else { return }
-        self.latestState = getState()
-      }
+    self.cancellable = changePublisher.sink { [weak self] in
+      guard let self = self else { return }
+      self.latestState = getState()
+    }
   }
 }

@@ -24,7 +24,8 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
     let stateConnection = createStateConnection(dispatchConnection)
     return StateConnectionViewGuard(
       stateConnection: stateConnection,
-      content: content
+      content:
+        content
         .environment(\.actionDispatcher, dispatchConnection)
         .environmentObject(stateConnection)
     )
@@ -35,7 +36,7 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
     let superGetState = superstateConnection.getState
     let stateConnection = StateConnection<State>(
       getState: { [mapState] in
-        guard let superstate: Superstate = superGetState() else { return nil }
+        guard let superstate:Superstate = superGetState() else { return nil }
         return mapState(superstate)
       },
       changePublisher: hasUpdate
