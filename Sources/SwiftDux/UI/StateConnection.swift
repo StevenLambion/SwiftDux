@@ -11,7 +11,7 @@ internal final class StateConnection<State>: ObservableObject, Identifiable {
 
   var getState: () -> State?
 
-  private var cancellable: AnyCancellable? = nil
+  private var cancellable: Cancellable? = nil
 
   init(getState: @escaping () -> State?, changePublisher: AnyPublisher<Void, Never>) {
     self.getState = getState

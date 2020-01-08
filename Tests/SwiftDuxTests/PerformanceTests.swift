@@ -27,7 +27,7 @@ final class PerformanceTests: XCTestCase {
     let subsriberCount = 100
     let sendCount = 10000
     var updateCounts = 0
-    var sinks = [AnyCancellable]()
+    var sinks = [Cancellable]()
     let store = Store(state: TestState.defaultState, reducer: TestReducer())
     
     sinks.reserveCapacity(subsriberCount)
