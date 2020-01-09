@@ -15,8 +15,7 @@ internal struct OnAppearDispatchViewModifier: ViewModifier {
   }
 
   public func body(content: Content) -> some View {
-    return
-      content
+    content
       .onAppear { [action, dispatch] in
         guard self.cancellable == nil else { return }
         if let actionPlan = action as? CancellableAction {
@@ -27,6 +26,7 @@ internal struct OnAppearDispatchViewModifier: ViewModifier {
       }
       .onDisappear { [cancelOnDisappear] in
         if cancelOnDisappear {
+          self.cancellable?.cancel()
           self.cancellable = nil
         }
       }
@@ -36,9 +36,20 @@ internal struct OnAppearDispatchViewModifier: ViewModifier {
 
 extension View {
 
-  /// Sends the provided action when a view first appears. If an action plan is provided, it will send it as a cancellable plan.
+  /// Sends the provided action when the view appears. If an action plan is provided, it will send it as a cancellable plan.
   /// This let's the view modifier automatically clean up the publisher if it's connected to an external service or API when the view
-  /// is removed from the UI.
+  /// disappears.
+  ///
+  /// ```
+  /// @MappedState var items: [TodoItem]
+  ///
+  /// var body: some View {
+  ///   Group {
+  ///     TodoList(items: items)
+  ///   }
+  ///   .onAppear(dispatch: ActionPlans.queryTodoItems)
+  /// }
+  /// ```
   ///
   /// - Parameters:
   ///   - action: An action to dispatch every time the view appears.
