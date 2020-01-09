@@ -40,14 +40,43 @@ extension View {
   /// This let's the view modifier automatically clean up the publisher if it's connected to an external service or API when the view
   /// disappears.
   ///
+  ///  In the follow example an ActionPlan is created that automatically updates a list of todos when the filter property of the TodoList state changes. All the view needs to do is dispatch the action when it appears.
   /// ```
-  /// @MappedState var items: [TodoItem]
+  /// // In the TodoListAction file:
+  ///
+  /// enum TodoListAction: Action {
+  ///   case setTodos([TodoItem])
+  ///   case setFilterBy(String)
+  /// }
+  ///
+  /// extension TodoListAction {
+  ///
+  ///   static func queryTodos(from services: Services) -> Action {
+  ///     ActionPlan<AppState> { store in
+  ///       store.didChange
+  ///         .filter { $0 is TodoListAction }
+  ///         .map { _ in store.state?.todoList.filterBy ?? "" }
+  ///         .removeDuplicates()
+  ///         .flatMap { filter in
+  ///           services
+  ///             .queryTodos(filter: filter)
+  ///             .catch { _ in Just<[TodoItem]>([]) }
+  ///             .map { todos -> Action in TodoListAction.setTodos(todos) }
+  ///         }
+  ///     }
+  ///   }
+  /// }
+  ///
+  /// // In a SwiftUI View:
+  ///
+  /// @Environment(\.services) private var services
+  /// @MappedState private var todos: [TodoItem]
   ///
   /// var body: some View {
   ///   Group {
-  ///     TodoList(items: items)
+  ///     renderTodos(todos: todos)
   ///   }
-  ///   .onAppear(dispatch: ActionPlans.queryTodoItems)
+  ///   .onAppear(dispatch: TodoListAction.queryTodos(from: services))
   /// }
   /// ```
   ///

@@ -67,6 +67,7 @@ extension Store: ActionDispatcher, Subscriber {
     if let publisher = actionPlan.run(StoreProxy(store: self)) {
       publisher.subscribe(self)
     }
+    didChange.send(actionPlan)
   }
 
   private func send(modifiedAction: ModifiedAction) {
