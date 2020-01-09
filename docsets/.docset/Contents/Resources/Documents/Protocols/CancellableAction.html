@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StoreAction Enumeration Reference</title>
+    <title>CancellableAction Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Enum/StoreAction" class="dashAnchor"></a>
-    <a title="StoreAction Enumeration Reference"></a>
+    <a name="//apple_ref/swift/Protocol/CancellableAction" class="dashAnchor"></a>
+    <a title="CancellableAction Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (87% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        StoreAction Enumeration Reference
+        CancellableAction Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -164,14 +164,16 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>StoreAction</h1>
+            <h1>CancellableAction</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StoreAction</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CancellableAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                 </div>
               </div>
-            <p>Actions performed for the store itself.</p>
+            <p>An action that can return a cancellable object. Don&rsquo;t use this protocol directly.
+Instead, use an ActionPlan. This allows action plans with a publisher to be explicitly cancelled by
+their source dispatcher rather than internally or by the store.</p>
 
           </section>
           <section class="section task-group-section">
@@ -180,9 +182,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11StoreActionO7prepareyACyxGAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/prepare" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11StoreActionO7prepareyACyxGAEmlF">prepare</a>
+                    <a name="/s:8SwiftDux17CancellableActionP06sendAsC0y7Combine0C0_pyAA0D0_pXEF"></a>
+                    <a name="//apple_ref/swift/Method/sendAsCancellable(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux17CancellableActionP06sendAsC0y7Combine0C0_pyAA0D0_pXEF">sendAsCancellable(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -190,45 +192,65 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Called at the initialization step of the store to allow reducers and middleware an oppertunity
-to set up configurations  Store actions may be dispatched at this stage, but other middleware
-and reducers might not be ready yet if they require any preparation themselves.</p>
+                        <p>Send an action that returns a cancellabe object.</p>
+
+<p>This is useful for action plans that return a publisher that require a cancellable step. For example, a web request
+that should be cancelled if the user navigates away from the relevant view.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+
+  <span class="kd">@MappedDispatch</span><span class="p">()</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">dispatch</span>
+
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
+
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">signUpCancellable</span><span class="p">:</span> <span class="kt">AnyCancellable</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">Group</span> <span class="p">{</span>
+      <span class="c1">/// ...signup form</span>
+      <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">signUp</span><span class="p">)</span> <span class="p">{</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Sign Up"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="o">.</span><span class="n">onDisappear</span> <span class="p">{</span> <span class="k">self</span><span class="o">.</span><span class="n">signUpCancellable</span><span class="p">?</span><span class="o">.</span><span class="nf">cancel</span><span class="p">()</span> <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">signUp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">signUpCancellable</span> <span class="o">=</span> <span class="nf">signUpActionPlan</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">dispatch</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="n">prepare</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">_</span> <span class="nv">send</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Cancellable</span></code></pre>
 
                         </div>
                       </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux11StoreActionO5resetyACyxGx_tcAEmlF"></a>
-                    <a name="//apple_ref/swift/Element/reset(state:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11StoreActionO5resetyACyxGx_tcAEmlF">reset(state:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Reset the entire state of the application.</p>
-
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>send</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The send function that dispatches an action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="k">case</span> <span class="nf">reset</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">State</span><span class="p">)</span></code></pre>
-
-                        </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>AnyCancellable to cancel the action plan.</p>
                       </div>
                     </section>
                   </div>

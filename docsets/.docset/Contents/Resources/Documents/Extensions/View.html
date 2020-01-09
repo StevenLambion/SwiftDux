@@ -14,7 +14,7 @@
     <a title="View Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (86% documented)</p>
+        <p><a href="../index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -128,7 +128,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/StoreAction.html">StoreAction</a>
@@ -136,7 +136,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
@@ -144,10 +144,18 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
+                <a href="../Protocols/CancellableAction.html">CancellableAction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
               </li>
             </ul>
           </li>
@@ -159,8 +167,7 @@
             <h1>View</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
-<span class="kd">extension</span> <span class="kt">View</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">View</span></code></pre>
 
                 </div>
               </div>
@@ -193,7 +200,7 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">onAppearAsync</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
@@ -244,7 +251,7 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">onDisappearAsync</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
@@ -275,10 +282,6 @@ allows actions to be dispatched when the view appears.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -299,7 +302,7 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">onAction</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
@@ -330,10 +333,111 @@ allows actions to be dispatched when the view appears.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7SwiftUI4ViewP0A3DuxE8onAppear8dispatch17cancelOnDisappearQrAD6Action_p_SbtF"></a>
+                    <a name="//apple_ref/swift/Method/onAppear(dispatch:cancelOnDisappear:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE8onAppear8dispatch17cancelOnDisappearQrAD6Action_p_SbtF">onAppear(dispatch:cancelOnDisappear:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sends the provided action when the view appears. If an action plan is provided, it will send it as a cancellable plan.
+This let&rsquo;s the view modifier automatically clean up the publisher if it&rsquo;s connected to an external service or API when the view
+disappears.</p>
+
+<p>In the follow example an ActionPlan is created that automatically updates a list of todos when the filter property of the TodoList state changes. All the view needs to do is dispatch the action when it appears.</p>
+<pre class="highlight swift"><code><span class="c1">// In the TodoListAction file:</span>
+
+<span class="kd">enum</span> <span class="kt">TodoListAction</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
+  <span class="k">case</span> <span class="nf">setTodos</span><span class="p">([</span><span class="kt">TodoItem</span><span class="p">])</span>
+  <span class="k">case</span> <span class="nf">setFilterBy</span><span class="p">(</span><span class="kt">String</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">TodoListAction</span> <span class="p">{</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">queryTodos</span><span class="p">(</span><span class="n">from</span> <span class="nv">services</span><span class="p">:</span> <span class="kt">Services</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Action</span> <span class="p">{</span>
+    <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="k">in</span>
+      <span class="n">store</span><span class="o">.</span><span class="n">didChange</span>
+        <span class="o">.</span><span class="n">filter</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">TodoListAction</span> <span class="p">}</span>
+        <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="p">?</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">??</span> <span class="s">""</span> <span class="p">}</span>
+        <span class="o">.</span><span class="nf">removeDuplicates</span><span class="p">()</span>
+        <span class="o">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">filter</span> <span class="k">in</span>
+          <span class="n">services</span>
+            <span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="n">filter</span><span class="p">)</span>
+            <span class="o">.</span><span class="k">catch</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="kt">Just</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">TodoItem</span><span class="p">]</span><span class="o">&gt;</span><span class="p">([])</span> <span class="p">}</span>
+            <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">todos</span> <span class="o">-&gt;</span> <span class="kt">Action</span> <span class="k">in</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">setTodos</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// In a SwiftUI View:</span>
+
+<span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">services</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">services</span>
+<span class="kd">@MappedState</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItem</span><span class="p">]</span>
+
+<span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="kt">Group</span> <span class="p">{</span>
+    <span class="nf">renderTodos</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="n">todos</span><span class="p">)</span>
+  <span class="p">}</span>
+  <span class="o">.</span><span class="nf">onAppear</span><span class="p">(</span><span class="nv">dispatch</span><span class="p">:</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">services</span><span class="p">))</span>
+<span class="p">}</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">onAppear</span><span class="p">(</span><span class="n">dispatch</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="nv">cancelOnDisappear</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>action</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An action to dispatch every time the view appears.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>cancelOnDisappear</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>It will cancel any subscription from the action when the view disappears. If false, it keeps
+the subscription alive and reppearances of the view will not re-call the action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The modified view.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -356,9 +460,9 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">connect</span><span class="o">&lt;</span><span class="kt">Superstate</span><span class="p">,</span> <span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">updateWhen</span> <span class="nv">filter</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt"><a href="../Other Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a></span> <span class="p">},</span>
+  <span class="n">updateWhen</span> <span class="nv">filter</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt"><a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a></span> <span class="p">},</span>
   <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Superstate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">State</span><span class="p">?</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
@@ -371,10 +475,6 @@ allows actions to be dispatched when the view appears.</p>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -411,7 +511,7 @@ map substates to a view.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">provideStore</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                         </div>
@@ -447,8 +547,8 @@ map substates to a view.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-03)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

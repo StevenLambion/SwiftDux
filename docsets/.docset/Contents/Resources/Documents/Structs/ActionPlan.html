@@ -14,7 +14,7 @@
     <a title="ActionPlan Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (86% documented)</p>
+        <p><a href="../index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -128,7 +128,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/StoreAction.html">StoreAction</a>
@@ -136,7 +136,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
@@ -144,10 +144,18 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
+                <a href="../Protocols/CancellableAction.html">CancellableAction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
               </li>
             </ul>
           </li>
@@ -159,11 +167,11 @@
             <h1>ActionPlan</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CancellableAction.html">CancellableAction</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
 
                 </div>
               </div>
-            <p>Encapsulates multiple actions into a packaged up <q>action plan</q></p>
+            <p>Encapsulates multiple actions into a packaged up &ldquo;action plan&rdquo;</p>
 <pre class="highlight swift"><code>   <span class="kd">enum</span> <span class="kt">UserAction</span> <span class="p">{</span>
 
      <span class="kd">static</span> <span class="kd">func</span> <span class="nf">loadUser</span><span class="p">(</span><span class="n">byId</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span>
@@ -266,7 +274,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">P</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">P</span><span class="p">?)</span> <span class="k">where</span> <span class="kt">P</span><span class="p">:</span> <span class="kt">Publisher</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">P</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">P</span><span class="p">?)</span> <span class="k">where</span> <span class="kt">P</span> <span class="p">:</span> <span class="kt">Publisher</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                         </div>
                       </div>
@@ -390,13 +398,89 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux10ActionPlanV17sendAsCancellabley7Combine0G0_pyAA0C0_pXEF"></a>
+                    <a name="//apple_ref/swift/Method/sendAsCancellable(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10ActionPlanV17sendAsCancellabley7Combine0G0_pyAA0C0_pXEF">sendAsCancellable(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Send an action plan that can be cancelled.</p>
+
+<p>This is useful for action plans that return a publisher that require a cancellable step. For example, a web request
+that should be cancelled if the user navigates away from the relevant view.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+
+  <span class="kd">@MappedDispatch</span><span class="p">()</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">dispatch</span>
+
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
+
+  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">signUpCancellable</span><span class="p">:</span> <span class="kt">AnyCancellable</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">Group</span> <span class="p">{</span>
+      <span class="c1">/// ...signup form</span>
+      <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">signUp</span><span class="p">)</span> <span class="p">{</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Sign Up"</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="o">.</span><span class="n">onDisappear</span> <span class="p">{</span> <span class="k">self</span><span class="o">.</span><span class="n">signUpCancellable</span><span class="p">?</span><span class="o">.</span><span class="nf">cancel</span><span class="p">()</span> <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">signUp</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">signUpCancellable</span> <span class="o">=</span> <span class="nf">signUpActionPlan</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">dispatch</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">_</span> <span class="nv">send</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Cancellable</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>send</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The send function that dispatches an action.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>AnyCancellable to cancel the action plan.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-03)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

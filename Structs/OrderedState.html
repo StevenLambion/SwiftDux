@@ -14,7 +14,7 @@
     <a title="OrderedState Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (86% documented)</p>
+        <p><a href="../index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -128,7 +128,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Enums.html">Other Enumerations</a>
+            <a href="../Other%20Enums.html">Other Enumerations</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/StoreAction.html">StoreAction</a>
@@ -136,7 +136,7 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Extensions.html">Other Extensions</a>
+            <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
@@ -144,10 +144,18 @@
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Other Structs.html">Other Structures</a>
+            <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
+                <a href="../Protocols/CancellableAction.html">CancellableAction</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Structs.html">Other Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
               </li>
             </ul>
           </li>
@@ -160,6 +168,9 @@
               <div class="declaration">
                 <div class="language">
                   <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Substate</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a></span> <span class="k">where</span> <span class="kt">Substate</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/IdentifiableState.html">IdentifiableState</a></span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">OrderedState</span><span class="p">:</span> <span class="kt">MutableCollection</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">OrderedState</span><span class="p">:</span> <span class="kt">RandomAccessCollection</span></code></pre>
+<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">OrderedState</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                 </div>
               </div>
@@ -388,6 +399,155 @@ This struct manages that responsibility for you. It also provides conveniences f
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12OrderedStateV4fromACyxGs7Decoder_p_tKcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12OrderedStateV4fromACyxGs7Decoder_p_tKcfc">init(from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Decodes the <code>OrderState&lt;_&gt;</code> from an unkeyed container.</p>
+
+<p>This allows the <code>OrderedState&lt;_&gt;</code> to be decoded from a simple array.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">from</span> <span class="nv">decoder</span><span class="p">:</span> <span class="kt">Decoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>decoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The decoder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12OrderedStateV6encode2toys7Encoder_p_tKF"></a>
+                    <a name="//apple_ref/swift/Method/encode(to:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12OrderedStateV6encode2toys7Encoder_p_tKF">encode(to:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Encodes the <code>OrderState&lt;_&gt;</code> as an unkeyed container of values.</p>
+
+<p>This allows the <code>OrderedState&lt;_&gt;</code> to be encoded as simple array.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">encode</span><span class="p">(</span><span class="n">to</span> <span class="nv">encoder</span><span class="p">:</span> <span class="kt">Encoder</span><span class="p">)</span> <span class="k">throws</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>encoder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The encoder.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux12OrderedStateV5value5forIdxSg2IDQz_tF"></a>
+                    <a name="//apple_ref/swift/Method/value(forId:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12OrderedStateV5value5forIdxSg2IDQz_tF">value(forId:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves a value by its id.</p>
+
+<p>The subscript API should be used in most cases. This method is
+provided in case the Substate&rsquo;s id type is also an int.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">value</span><span class="p">(</span><span class="n">forId</span> <span class="nv">id</span><span class="p">:</span> <span class="kt"><a href="../Structs/OrderedState.html#/s:8SwiftDux12OrderedStateV2Ida">Id</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Substate</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>id</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The id of the substate.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The substate if it exists.</p>
                       </div>
                     </section>
                   </div>
@@ -849,10 +1009,6 @@ This struct manages that responsibility for you. It also provides conveniences f
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1138,10 +1294,6 @@ This struct manages that responsibility for you. It also provides conveniences f
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul>
                 <li class="item">
                   <div>
                     <code>
@@ -1173,8 +1325,8 @@ This struct manages that responsibility for you. It also provides conveniences f
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2019-10-03)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.10.0</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-09)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

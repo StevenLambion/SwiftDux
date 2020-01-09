@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Other Enumerations  Reference</title>
+    <title>Other Protocols  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Section/Other Enumerations" class="dashAnchor"></a>
-    <a title="Other Enumerations  Reference"></a>
+    <a name="//apple_ref/swift/Section/Other Protocols" class="dashAnchor"></a>
+    <a title="Other Protocols  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html"> Docs</a> (87% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="index.html"> Reference</a>
         <img id="carat" src="img/carat.png" />
-        Other Enumerations  Reference
+        Other Protocols  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -164,8 +164,8 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Other Enumerations</h1>
-            <p>The following enumerations are available globally.</p>
+            <h1>Other Protocols</h1>
+            <p>The following protocols are available globally.</p>
 
           </section>
           <section class="section task-group-section">
@@ -174,9 +174,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11StoreActionO"></a>
-                    <a name="//apple_ref/swift/Enum/StoreAction" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11StoreActionO">StoreAction</a>
+                    <a name="/s:8SwiftDux17CancellableActionP"></a>
+                    <a name="//apple_ref/swift/Protocol/CancellableAction" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux17CancellableActionP">CancellableAction</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -184,15 +184,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Actions performed for the store itself.</p>
+                        <p>An action that can return a cancellable object. Don&rsquo;t use this protocol directly.
+Instead, use an ActionPlan. This allows action plans with a publisher to be explicitly cancelled by
+their source dispatcher rather than internally or by the store.</p>
 
-                        <a href="Enums/StoreAction.html" class="slightly-smaller">See more</a>
+                        <a href="Protocols/CancellableAction.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">StoreAction</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CancellableAction</span> <span class="p">:</span> <span class="kt"><a href="Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                         </div>
                       </div>
