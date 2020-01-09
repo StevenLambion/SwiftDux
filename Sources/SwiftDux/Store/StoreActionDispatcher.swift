@@ -70,6 +70,8 @@ internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where
     if let publisher = actionPlan.run(StoreProxy(store: upstream, send: self.send)) {
       publisher.subscribe(self)
     }
+    upstream.didChange.send(actionPlan)
+    sentAction?(actionPlan)
   }
 
 }

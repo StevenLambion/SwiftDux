@@ -30,7 +30,7 @@ import Foundation
 ///     dispatch(UserAction.loadUser(byId: self.id))
 ///   }
 ///```.
-public struct ActionPlan<State>: Action where State: StateType {
+public struct ActionPlan<State>: CancellableAction where State: StateType {
 
   /// The body of a publishable action plan.
   ///
@@ -98,13 +98,11 @@ public struct ActionPlan<State>: Action where State: StateType {
   ///
   /// - Parameter send: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
-  public func sendAsCancellable(_ send: SendAction) -> AnyCancellable {
-    var cancelled: Bool = false
-    var publisherCancellable: AnyCancellable? = nil
+  public func sendAsCancellable(_ send: SendAction) -> Cancellable {
+    var publisherCancellable: Cancellable? = nil
 
     send(
       ActionPlan<State> { store -> () in
-        guard cancelled == false else { return }
         guard let publisher = self.run(store) else { return }
         publisherCancellable = publisher.sink { action in
           store.send(action)
@@ -112,8 +110,7 @@ public struct ActionPlan<State>: Action where State: StateType {
       }
     )
 
-    return AnyCancellable {
-      cancelled = true
+    return AnyCancellable { [publisherCancellable] in
       publisherCancellable?.cancel()
     }
   }
