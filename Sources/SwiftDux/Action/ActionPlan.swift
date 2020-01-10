@@ -40,6 +40,8 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
 
   private var body: Body
 
+  internal var nextActions: [Action] = []
+
   /// Create a new action plan that returns an optional publisher.
   ///
   /// - Parameter body: The body of the action plan.
@@ -63,7 +65,21 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   /// - Parameter store: Dispatch actions or retreive the current state from the store.
   /// - Returns: A publisher that can send actions to the store.
   public func run(_ store: StoreProxy<State>) -> AnyPublisher<Action, Never>? {
-    self.body(store)
+    guard var nextAction = nextActions.first as? ActionPlan<State> else {
+      return body(store)
+    }
+
+    nextAction.nextActions = Array(nextActions[1...])
+
+    if let publisher = body(store) {
+      return publisher.handleEvents(
+        receiveCompletion: { _ in store.send(nextAction) },
+        receiveCancel: { store.send(nextAction) }
+      ).eraseToAnyPublisher()
+    }
+
+    store.send(nextAction)
+    return nil
   }
 
   /// Send an action plan that can be cancelled.
@@ -113,5 +129,38 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
     return AnyCancellable { [publisherCancellable] in
       publisherCancellable?.cancel()
     }
+  }
+
+  /// Dispatches another action plan after this one has completed. This allows
+  /// action plans to be chained together to perform their actions synchronously.
+  ///
+  /// - Parameter actionPlans: One or mroe action plans to chain after this one.
+  /// - Returns: A new action plan that chains the source plan with the provided ones in the parameter.
+  public func then(_ actionPlans: ActionPlan<State>...) -> ActionPlan<State> {
+    var copy = self
+    copy.nextActions.append(contentsOf: actionPlans)
+    return copy
+  }
+
+  /// Calls the provided block once the action plan has completed. The current state is
+  /// provided to the block.
+  ///
+  /// - Parameter block: A block of code to execute once the action plan has completed.
+  /// - Returns: A new action plan.
+  public func then(_ block: @escaping (State) -> Void) -> ActionPlan<State> {
+    then(
+      ActionPlan<State> { store in
+        guard let state = store.state else { return }
+        block(state)
+      }
+    )
+  }
+
+  /// Calls the provided block once the action plan has completed.
+  ///
+  /// - Parameter block: A block of code to execute once the action plan has completed.
+  /// - Returns: A new action plan.
+  public func then(_ block: @escaping () -> Void) -> ActionPlan<State> {
+    then(ActionPlan<State> { _ in block() })
   }
 }
