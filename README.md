@@ -13,27 +13,27 @@ This is yet another redux inspired state management solution for swift. It's bui
 
 This library is designed around Combine and SwiftUI. For a more established library that doesn't require iOS 13, check out [ReSwift](https://github.com/ReSwift/ReSwift).
 
-## Top Features
+## Features
 
 ### Redux-like State Management.
 
-- `Middleware` support
-- `ActionPlan` for action-based workflows.
-  - Use them like action creators in Redux.
-  - Supports async operations.
-  - Supports returning a Combine publisher.
+- Familiar API to Redux.
+- Middleware is support.
+- Incapsulate action-based workflows via `ActionPlan`.
+  - Dispatched like any other action.
+  - Perform async operations.
+  - Optionally return a Combine publisher.
   - Chain multiple action plans together.
   - Call a code block when an action plan completes.
-- `OrderedState<_>` for managing an ordered collection of state objects.
+- Manage ordered collections of objects using  `OrderedState<_>`.
 
 ### SwiftUI Integration.
 
 - `@MappedState` injects state into a view.
-- `@MappedDispatch` let's views dispatch actions.
-  - Automatically updates the view after each sent action.
-  - Supports action plans.
-- `Connectable` API connects and maps the application state into SwiftUI.
-- `OrderedState<_>` has direct support of List views.
+- `@MappedDispatch` let's views dispatch actions, and automatically update them.
+- `Connectable` maps the application state to a `View`.
+- `StateBinder` creates two-way bindings between a state value and a dispatchable action for use by inputs such as TextFields.
+- `OrderedState<_>` has a compatible API for List events such as onDelete and onMove.
 - Added `View` methods:
   - `provideStore(_:)` Injects the SwiftDux store.
   - `onAction(perform:)` allows you to track or modify dispatched actions.
@@ -170,6 +170,7 @@ extension TodoListAction {
         .filter { $0 is TodoListAction }
         .map { _ in store.state?.todoList.filterBy ?? "" }
         .removeDuplicates()
+        .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
         .flatMap { filter in services.queryTodos(filter: filter) }
         .catch { _ in Just<[TodoItem]>([]) }
         .map { todos -> Action in TodoListAction.setTodos(todos) }
@@ -189,6 +190,35 @@ var body: some View {
   .onAppear(dispatch: TodoListAction.queryTodos(from: services))
 }
 ```
+
+### Create two-way bindings for TextFields using a StateBinder:
+```swift
+struct TodoRow : View {
+  
+  @MappedState private var props: Props
+  
+  var body: some View {
+    TextField("", text: props.text)
+  }
+  
+}
+
+extension TodoRow : ParameterizedConnectable {
+  
+  struct Props {
+    var text: Binding<String>
+  }
+  
+  func map(state: TodoList, with parameter: String, binder: StateBinder) -> Props? {
+    guard let todo = state.todos[parameter] else { return nil }
+    return Props(
+      text: binder.bind(todo.text) { TodosAction.setText(forId: todo.id, text: $0) }
+    )
+  }
+  
+}
+```
+
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg

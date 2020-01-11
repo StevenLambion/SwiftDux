@@ -12,9 +12,9 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
   @Environment(\.actionDispatcher) private var actionDispatcher
 
   private var filter: (Action) -> Bool
-  private var mapState: (Superstate) -> State?
+  private var mapState: (Superstate, StateBinder) -> State?
 
-  internal init(filter: @escaping (Action) -> Bool, mapState: @escaping (Superstate) -> State?) {
+  internal init(filter: @escaping (Action) -> Bool, mapState: @escaping (Superstate, StateBinder) -> State?) {
     self.filter = filter
     self.mapState = mapState
   }
@@ -37,7 +37,7 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
     let stateConnection = StateConnection<State>(
       getState: { [mapState] in
         guard let superstate:Superstate = superGetState() else { return nil }
-        return mapState(superstate)
+        return mapState(superstate, StateBinder(actionDispatcher: dispatchConnection))
       },
       changePublisher: hasUpdate
         ? storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
@@ -72,7 +72,7 @@ extension View {
   @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func connect<Superstate, State>(
     updateWhen filter: @escaping (Action) -> Bool = { $0 is NoUpdateAction },
-    mapState: @escaping (Superstate) -> State?
+    mapState: @escaping (Superstate, StateBinder) -> State?
   ) -> some View {
     self.modifier(StateConnectionViewModifier(filter: filter, mapState: mapState))
   }
