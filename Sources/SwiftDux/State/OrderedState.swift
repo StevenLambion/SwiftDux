@@ -281,7 +281,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
     let copy = copyStorageIfNeeded()
     let index = Swift.max(Swift.min(index, copy.orderOfIds.count), 0)
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
-    let offset = Swift.max(indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result } - 1, 0)
+    let offset = Swift.max(indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result }, 0)
     copy.orderOfIds.remove(at: indexSet)
     copy.orderOfIds.insert(contentsOf: ids, at: index - offset)
     self.storage = copy
