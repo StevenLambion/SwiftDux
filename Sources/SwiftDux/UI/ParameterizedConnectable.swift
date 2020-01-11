@@ -23,6 +23,15 @@ public protocol ParameterizedConnectable {
   /// - Returns: The state if possible.
   func map(state: Superstate, with parameter: Parameter) -> State?
 
+  /// The method can return nil until the state becomes available. While it is nil, the view
+  /// will not be rendered.
+  /// - Parameters
+  ///   - state: The superstate provided to the view from a superview.
+  ///   - parameter: A user defined parameter required to retrieve the state.
+  ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
+  /// - Returns: The state if possible.
+  func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> State?
+
 }
 
 extension ParameterizedConnectable {
@@ -30,6 +39,16 @@ extension ParameterizedConnectable {
   /// Default implementation disables updates by action.
   public func updateWhen(action: Action, with parameter: Parameter) -> Bool {
     action is NoUpdateAction
+  }
+
+  /// Default implementation. Returns nil.
+  public func map(state: Superstate, with parameter: Parameter) -> State? {
+    nil
+  }
+
+  /// Default implementation. Calls the other map function.
+  public func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> State? {
+    map(state: state, with: parameter)
   }
 
 }
@@ -45,7 +64,7 @@ extension ParameterizedConnectable where Self: View {
   public func connect(with parameter: Parameter) -> some View {
     self.connect(
       updateWhen: { [updateWhen] in updateWhen($0, parameter) },
-      mapState: { [map] in map($0, parameter) }
+      mapState: { self.map(state: $0, with: parameter, binder: $1) }
     )
   }
 
