@@ -16,6 +16,10 @@ public struct MappedState<State>: DynamicProperty {
 
   @EnvironmentObject private var connection: StateConnection<State>
 
+  // Needed by SwiftUI in case StateBinder is used. This attaches the required
+  // subscriptions.
+  @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher
+
   public var wrappedValue: State {
     connection.latestState!
   }
