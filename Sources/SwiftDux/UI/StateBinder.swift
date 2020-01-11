@@ -1,7 +1,9 @@
 import Foundation
 import SwiftUI
 
-/// Binds a state to an action for use by controls that expect a two-way binding type such as TextFields.
+/// Binds a state to a setter based action for use by controls that expect a two-way binding value such as TextFields.
+/// This is useful for simple actions that are expected to be dispatched many times a second. It should be avoided by any
+/// complicated or asynchronous actions.
 ///
 /// ```
 /// func map(state: AppState, binder: StateBinder) -> Props? {
@@ -21,11 +23,11 @@ public struct StateBinder {
   ///   - get: The state to retrieve.
   ///   - dispatch: Given a new version of the state, it returns an action to dispatch.
   /// - Returns: A new Binding object.
-  public func bind<T>(_ get: @autoclosure @escaping () -> T, dispatch: @escaping (T) -> Action?) -> Binding<T> {
+  public func bind<T>(_ getState: @autoclosure @escaping () -> T, dispatch getAction: @escaping (T) -> Action?) -> Binding<T> {
     Binding<T>(
-      get: get,
+      get: getState,
       set: { [actionDispatcher] in
-        guard let action = dispatch($0) else { return }
+        guard let action = getAction($0) else { return }
         actionDispatcher.send(action)
       }
     )
