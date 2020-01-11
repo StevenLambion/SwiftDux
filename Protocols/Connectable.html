@@ -157,6 +157,9 @@
               <li class="nav-group-task">
                 <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
               </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StateBinder.html">StateBinder</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -297,6 +300,9 @@
                     <a name="//apple_ref/swift/Method/map(state:)" class="dashAnchor"></a>
                     <a class="token" href="#/s:8SwiftDux11ConnectableP3map5state5StateQzSg10SuperstateQz_tF">map(state:)</a>
                     </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
                   </div>
                   <div class="height-container">
                     <div class="pointer-container"></div>
@@ -307,6 +313,11 @@
 
 <p>The method can return nil until the state becomes available. While it is nil, the view
 will not be rendered.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Default implementation. Returns nil.</p>
 
                       </div>
                       <div class="declaration">
@@ -330,6 +341,79 @@ will not be rendered.</p>
                               <td>
                                 <div>
                                   <p>The superstate provided to the view from a superview.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>The state if possible.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux11ConnectableP3map5state6binder5StateQzSg10SuperstateQz_AA0G6BinderVtF"></a>
+                    <a name="//apple_ref/swift/Method/map(state:binder:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux11ConnectableP3map5state6binder5StateQzSg10SuperstateQz_AA0G6BinderVtF">map(state:binder:)</a>
+                    </code>
+                      <span class="declaration-note">
+                        Default implementation
+                      </span>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Map a superstate to the state needed by the view using the provided parameter.</p>
+
+<p>The method can return nil until the state becomes available. While it is nil, the view
+will not be rendered.</p>
+
+                      </div>
+                      <h4>Default Implementation</h4>
+                      <div class="default_impl abstract">
+                        <p>Default implementation. Calls the other map function.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/Connectable.html#/s:8SwiftDux11ConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt"><a href="../Structs/StateBinder.html">StateBinder</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/Connectable.html#/s:8SwiftDux11ConnectableP5StateQa">State</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>state</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The superstate provided to the view from a superview.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>binder</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Helper that creates Binding types beteen the state and a dispatcable action</p>
                                 </div>
                               </td>
                             </tr>
@@ -395,7 +479,7 @@ will not be rendered.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-10)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-11)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

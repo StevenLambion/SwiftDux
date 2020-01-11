@@ -156,6 +156,9 @@
               <li class="nav-group-task">
                 <a href="Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
               </li>
+              <li class="nav-group-task">
+                <a href="Structs/StateBinder.html">StateBinder</a>
+              </li>
             </ul>
           </li>
         </ul>
@@ -179,34 +182,31 @@
 <p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an <a href="https://guide.elm-lang.org/architecture/">elm-like architecture</a> using a single, centralized state container. For more information about the architecture and this library, take a look at the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">getting started guide</a>.</p>
 
 <p>This library is designed around Combine and SwiftUI. For a more established library that doesn&rsquo;t require iOS 13, check out <a href="https://github.com/ReSwift/ReSwift">ReSwift</a>.</p>
-<h2 id='top-features' class='heading'>Top Features</h2>
+<h2 id='features' class='heading'>Features</h2>
 <h3 id='redux-like-state-management' class='heading'>Redux-like State Management.</h3>
 
 <ul>
-<li><code><a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a></code> support</li>
-<li><code><a href="Structs/ActionPlan.html">ActionPlan</a></code> for action-based workflows.
+<li>Familiar API to Redux.</li>
+<li>Middleware is support.</li>
+<li>Incapsulate action-based workflows via <code><a href="Structs/ActionPlan.html">ActionPlan</a></code>.
 
 <ul>
-<li>Use them like action creators in Redux.</li>
-<li>Supports async operations.</li>
-<li>Supports returning a Combine publisher.</li>
+<li>Dispatched like any other action.</li>
+<li>Perform async operations.</li>
+<li>Optionally return a Combine publisher.</li>
 <li>Chain multiple action plans together.</li>
 <li>Call a code block when an action plan completes.</li>
 </ul></li>
-<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> for managing an ordered collection of state objects.</li>
+<li>Manage ordered collections of objects using  <code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code>.</li>
 </ul>
 <h3 id='swiftui-integration' class='heading'>SwiftUI Integration.</h3>
 
 <ul>
 <li><code>@MappedState</code> injects state into a view.</li>
-<li><code>@MappedDispatch</code> let&rsquo;s views dispatch actions.
-
-<ul>
-<li>Automatically updates the view after each sent action.</li>
-<li>Supports action plans.</li>
-</ul></li>
-<li><code><a href="Protocols/Connectable.html">Connectable</a></code> API connects and maps the application state into SwiftUI.</li>
-<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> has direct support of List views.</li>
+<li><code>@MappedDispatch</code> let&rsquo;s views dispatch actions, and automatically update them.</li>
+<li><code><a href="Protocols/Connectable.html">Connectable</a></code> maps the application state to a <code>View</code>.</li>
+<li><code><a href="Structs/StateBinder.html">StateBinder</a></code> creates two-way bindings between a state value and a dispatchable action for use by inputs such as TextFields.</li>
+<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> has a compatible API for List events such as onDelete and onMove.</li>
 <li>Added <code>View</code> methods:
 
 <ul>
@@ -328,6 +328,7 @@
         <span class="o">.</span><span class="n">filter</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">TodoListAction</span> <span class="p">}</span>
         <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="p">?</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">??</span> <span class="s">""</span> <span class="p">}</span>
         <span class="o">.</span><span class="nf">removeDuplicates</span><span class="p">()</span>
+        <span class="o">.</span><span class="nf">debounce</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">milliseconds</span><span class="p">(</span><span class="mi">300</span><span class="p">),</span> <span class="nv">scheduler</span><span class="p">:</span> <span class="kt">RunLoop</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
         <span class="o">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">filter</span> <span class="k">in</span> <span class="n">services</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="n">filter</span><span class="p">)</span> <span class="p">}</span>
         <span class="o">.</span><span class="k">catch</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="kt">Just</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">TodoItem</span><span class="p">]</span><span class="o">&gt;</span><span class="p">([])</span> <span class="p">}</span>
         <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">todos</span> <span class="o">-&gt;</span> <span class="kt">Action</span> <span class="k">in</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">setTodos</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">}</span>
@@ -347,11 +348,37 @@
   <span class="o">.</span><span class="nf">onAppear</span><span class="p">(</span><span class="nv">dispatch</span><span class="p">:</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">services</span><span class="p">))</span>
 <span class="p">}</span>
 </code></pre>
+<h3 id='create-two-way-bindings-for-textfields-using-a-statebinder' class='heading'>Create two-way bindings for TextFields using a StateBinder:</h3>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">TodoRow</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
+
+  <span class="kd">@MappedState</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">props</span><span class="p">:</span> <span class="kt">Props</span>
+
+  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">TextField</span><span class="p">(</span><span class="s">""</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="n">props</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+
+<span class="kd">extension</span> <span class="kt">TodoRow</span> <span class="p">:</span> <span class="kt">ParameterizedConnectable</span> <span class="p">{</span>
+
+  <span class="kd">struct</span> <span class="kt">Props</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">text</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">TodoList</span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt">StateBinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Props</span><span class="p">?</span> <span class="p">{</span>
+    <span class="k">guard</span> <span class="k">let</span> <span class="nv">todo</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="kt">Props</span><span class="p">(</span>
+      <span class="nv">text</span><span class="p">:</span> <span class="n">binder</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">todo</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="p">{</span> <span class="kt">TodosAction</span><span class="o">.</span><span class="nf">setText</span><span class="p">(</span><span class="nv">forId</span><span class="p">:</span> <span class="n">todo</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-10)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-11)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

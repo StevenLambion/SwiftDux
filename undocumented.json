@@ -58,28 +58,28 @@
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 19,
+      "line": 23,
       "symbol": "MappedState.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 23,
+      "line": 27,
       "symbol": "MappedState.projectedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 30,
+      "line": 34,
       "symbol": "MappedState.binding",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 34,
+      "line": 38,
       "symbol": "MappedState.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
