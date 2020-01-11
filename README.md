@@ -21,7 +21,9 @@ This library is designed around Combine and SwiftUI. For a more established libr
 - `ActionPlan` for action-based workflows.
   - Use them like action creators in Redux.
   - Supports async operations.
-  - Supports returning a Combine publisher
+  - Supports returning a Combine publisher.
+  - Chain multiple action plans together.
+  - Call a code block when an action plan completes.
 - `OrderedState<_>` for managing an ordered collection of state objects.
 
 ### SwiftUI Integration.
@@ -31,8 +33,11 @@ This library is designed around Combine and SwiftUI. For a more established libr
   - Automatically updates the view after each sent action.
   - Supports action plans.
 - `Connectable` API connects and maps the application state into SwiftUI.
-- `onAction(perform:)` allows you to track or modify dispatched actions.
 - `OrderedState<_>` has direct support of List views.
+- Added `View` methods:
+  - `provideStore(_:)` Injects the SwiftDux store.
+  - `onAction(perform:)` allows you to track or modify dispatched actions.
+  - `onAppear(dispatch:)` sends an action when a view appears. It automatically handles publishers returend from action plans, cancelling them when the view disappears. 
 
 ### Extras
 
@@ -62,7 +67,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 11)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 0, minor: 12)
   ]
 )
 ```
@@ -72,11 +77,11 @@ let package = Package(
 ### Adding the SwiftDux store to the SwiftUI environment:
 
 ```swift
-/// Basic store example
+ Basic store example
 
 var store = Store(state: AppState(), reducer: AppReducer())
 
-/// Advanced store example with middleware
+ Advanced store example with middleware
 
 var store = Store(
   state: AppState(),
@@ -87,7 +92,7 @@ var store = Store(
   ]
 )
 
-/// Inject the store
+ Inject the store
 
 RootView().provideStore(store)
 ```
@@ -111,8 +116,8 @@ struct BookListView : View {
   }
 }
 
-/// Adhere to the Connectable protocol to map a parent state to
-/// one that the view requires.
+ Adhere to the Connectable protocol to map a parent state to
+ one that the view requires.
 
 extension BookListView : Connectable {
 
@@ -123,14 +128,14 @@ extension BookListView : Connectable {
 }
 ```
 
-### Update a view whenever an action is dispatched to the store.
+### Update a view whenever an action is dispatched to the store:
 
 ```swift
 extension BookListView : Connectable {
 
-  /// Views always update when dispatching an action, but
-  /// sometimes you may want it to update every time a given
-  /// action is sent to the store.
+   // Views always update when dispatching an action, but
+   // sometimes you may want it to update every time a given
+   // action is sent to the store.
 
   updateWhen(action: Action) -> Bool {
     action is BookStatusAction
@@ -143,24 +148,45 @@ extension BookListView : Connectable {
 }
 ```
 
-### Modify actions sent from child views before they get to the store
+### Perform external data queries:
 
 ```swift
-struct AuthorView : View {
 
-  @MappedState private var author: Author
+// Create an action type:
 
-  var body: some View {
-    BookListContainer()
-      .connect(with: author.id)
-      .onAction { [author] action in
-        if let action = action as? BookAction {
-          return AuthorAction.routeBookAction(for: author.id, action)
-        }
-        return action
-      }
+enum TodoListAction: Action {
+  case setTodos([TodoItem])
+  case setFilterBy(String)
+}
+
+// Add an action plan that queries an external service, and
+// reruns the query if the filter value of the state changes:
+
+extension TodoListAction {
+
+  static func queryTodos(from services: Services) -> Action {
+    ActionPlan<AppState> { store in
+      store.didChange
+        .filter { $0 is TodoListAction }
+        .map { _ in store.state?.todoList.filterBy ?? "" }
+        .removeDuplicates()
+        .flatMap { filter in services.queryTodos(filter: filter) }
+        .catch { _ in Just<[TodoItem]>([]) }
+        .map { todos -> Action in TodoListAction.setTodos(todos) }
+    }
   }
+}
 
+// In a SwiftUI View:
+
+@Environment(\.services) private var services
+@MappedState private var todos: [TodoItem]
+
+var body: some View {
+  Group {
+    renderTodos(todos: todos)
+  }
+  .onAppear(dispatch: TodoListAction.queryTodos(from: services))
 }
 ```
 
