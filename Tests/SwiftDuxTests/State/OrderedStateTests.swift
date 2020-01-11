@@ -83,7 +83,7 @@ final class OrderedStateTests: XCTestCase {
   
   func testMoveOneUserFoward() {
     var state = OrderedState(bob, bill, john)
-    state.move(from: IndexSet([1]), to: 2)
+    state.move(from: IndexSet([1]), to: 3)
     XCTAssertEqual(state.values, [bob, john, bill])
   }
   
@@ -95,7 +95,7 @@ final class OrderedStateTests: XCTestCase {
   
   func testMoveTwoUsersFoward() {
     var state = OrderedState(bob, bill, john)
-    state.move(from: IndexSet([0,1]), to: 2)
+    state.move(from: IndexSet([0,1]), to: 3)
     XCTAssertEqual(state.values, [john, bob, bill])
   }
   
