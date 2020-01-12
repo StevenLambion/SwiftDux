@@ -7,8 +7,6 @@
 [![Github workflow][github-workflow-image]](https://github.com/StevenLambion/SwiftDux/actions)
 [![codecov][codecov-image]](https://codecov.io/gh/StevenLambion/SwiftDux)
 
-## Introduction
-
 This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
 
 This library is designed around Combine and SwiftUI. For a more established library that doesn't require iOS 13, check out [ReSwift](https://github.com/ReSwift/ReSwift).
@@ -16,51 +14,39 @@ This library is designed around Combine and SwiftUI. For a more established libr
 ## Features
 
 ### Redux-like State Management.
-
 - Familiar API to Redux.
 - Middleware is support.
-- Incapsulate action-based workflows via `ActionPlan`.
-  - Dispatched like any other action.
-  - Perform async operations.
-  - Optionally return a Combine publisher.
-  - Chain multiple action plans together.
-  - Call a code block when an action plan completes.
+- Incapsulate action-based workflows via `ActionPlans`.
 - Manage ordered collections of objects using  `OrderedState<_>`.
 
 ### SwiftUI Integration.
 
-- `@MappedState` injects state into a view.
-- `@MappedDispatch` let's views dispatch actions, and automatically update them.
-- `Connectable` maps the application state to a `View`.
-- `StateBinder` creates two-way bindings between a state value and a dispatchable action for use by inputs such as TextFields.
-- `OrderedState<_>` has a compatible API for List events such as onDelete and onMove.
-- Added `View` methods:
+- `@MappedState` and `@MappedDispatch` injects state and dispatch actions from views.
+- `Connectable` protocol maps the application state to the props required by a view.
+- `Binding<_>` support for views like `TextField`.
+- `OrderedState<_>` has a compatible API for List events such as `onDelete` and `onMove`.
+- Notable `View` methods:
   - `provideStore(_:)` Injects the SwiftDux store.
-  - `onAction(perform:)` allows you to track or modify dispatched actions.
-  - `onAppear(dispatch:)` sends an action when a view appears. It automatically handles publishers returend from action plans, cancelling them when the view disappears. 
+  - `onAction(perform:)` track or modify dispatched actions from subviews.
+  - `onAppear(dispatch:)` sends an action when a view appears, and cleans up any action plans that might return a publisher. 
 
-### Extras
+### Built-in Middleware (Under the SwiftDuxExtras module)
 
-- `PersistStateMiddleware` to automatically persist and restore application state.
-- `PrintActionMiddleware` Simple middleware that prints out each dispatched action for debugging.
+- `PersistStateMiddleware` automatically persists and restores the application state.
+- `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
 
-## Documentation
+# Installation
 
-Visit the [documentation](https://stevenlambion.github.io/SwiftDux/getting-started.html) website.
+## Prerequisites
+- Xcode 11+
+- Swift 5.1+
+- iOS 13+, macOS 10.15+, tvOS 13+, or watchOS 6+
 
-## Example
+## Install via Xcode 11:
 
-[Todo Example App](https://github.com/StevenLambion/SwiftUI-Todo-Example)
+Search for SwiftDux in Xcode's Swift Package Manager integration.
 
-## Installation
-
-### Xcode 11
-
-Use the new swift package manager integration to include the library.
-
-### Swift Package Manager
-
-Include the library as a dependencies as shown below:
+## Install via the Swift Package Manager:
 
 ```swift
 import PackageDescription
@@ -72,153 +58,304 @@ let package = Package(
 )
 ```
 
-## SwiftUI Examples
+# Demo Application
 
-### Adding the SwiftDux store to the SwiftUI environment:
+Take a look at the [Todo Example App](https://github.com/StevenLambion/SwiftUI-Todo-Example) to see how SwiftDux works.
+
+# Getting Started
+
+SwiftDux helps build SwiftUI-based applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. It has 4 basic principles:
+
+- **State** - An immutable, single source of truth within the application.
+- **Action** - Describes a single change of the state.
+- **Reducer** - Returns a new state by consuming the previous one with an action.
+- **View** - The visual representation of the current state.
+
+<div style="text-align:center">
+  <img src="Guides/Images/architecture.jpg" width="400"/>
+</div>
+
+## State
+
+The state is a single, immutable structure acting as the single source of truth within the application.
+
+Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoState` objects. When storing entities in state, the `IdentifiableState` protocol should be used to display them in a list.
 
 ```swift
- Basic store example
+import SwiftDux
 
-var store = Store(state: AppState(), reducer: AppReducer())
+struct AppState: StateTyoe {
+  todos: OrderedState<TodoItem>
+}
 
- Advanced store example with middleware
-
-var store = Store(
-  state: AppState(),
-  reducer: AppReducer(),
-  middleware: [
-    PrintActionMiddleware(),
-    PersistStateMiddleware(JSONStatePersistor())
-  ]
-)
-
- Inject the store
-
-RootView().provideStore(store)
+struct TodoItem: IdentifiableState {
+  var id: String,
+  var text: String
+}
 ```
 
-### Inject the state into a view using property wrappers:
+## Actions
+
+An action is a description of how the state will change. They're typically dispatched from events in the application, such as a user clicking a button. Swift's enum type is ideal for actions, but structs and classes could be used if required.
 
 ```swift
-struct BookListView : View {
+import SwiftDux
 
-  @MappedState private var books: OrderedState<Book>
+enum TodoAction: Action {
+  case addTodo(text: String)
+  case removeTodos(at: IndexSet)
+  case moveTodos(from: IndexSet, to: Int)
+}
+```
+
+It can be useful to categorize actions through a shared protocol:
+
+```swift
+protocol SettingsAction: Action {}
+
+enum GeneralSettingsAction: SettingsAction {
+  ...
+}
+
+enum NetworkSettingsAction: SettingsAction {
+  ...
+}
+```
+
+## Reducers
+
+A reducer consumes an action to produce a new state. There's always a root reducer that consumes all actions. From here, it can delegate out to sub-reducers. Each reducer conforms to a single type of action.
+
+The `Reducer` protocol has two primary methods to override:
+
+- `reduce(state:action:)` - For actions supported by the reducer.
+- `reduceNext(state:action:)` - Dispatches an action to any sub-reducers. This method is optional.
+
+```swift
+final class TodosReducer: Reducer {
+
+  func reduce(state: OrderedState<TodoItem>, action: TodoAction) -> OrderedState<TodoItem> {
+    var state = state
+    switch action {
+    case .addTodo(let text):
+      let id = UUID().uuidString
+      state.append(TodoItemState(id: id, text: text))
+    case .removeTodos(let indexSet):
+      state.remove(at: indexSet)
+    case .moveTodos(let indexSet, let index):
+      state.move(from: indexSet, to: index)
+    }
+    return state
+  }
+
+}
+```
+
+```swift
+final class AppReducer: Reducer {
+  let todosReducer = TodosReducer()
+
+  func reduceNext(state: AppState, action: TodoAction) -> AppState {
+    State(
+      todos: todosReducer.reduceAny(state.todos, action)
+    )
+  }
+
+}
+```
+
+## Store
+
+The store acts as the container of the state. Initialize the store with a default state and the root reducer. Then use the `provideStore(_:)` view modifier at the root of the application to inject the store into the environment.
+
+```swift
+import SwiftDux
+
+let store = Store(AppState(todos: OrderedState()), AppReducer())
+
+window.rootViewController = UIHostingController(
+  rootView: RootView().provideStore(store)
+)
+```
+
+## Connectable View
+
+In a view, use `@MappedState` and `@MappedDispatch` to inject the state and dispatch actions to the store. When the view dispatches an action, it updates itself automatically.
+
+```swift
+struct TodosView {
+
+  @MappedState private var todos: OrderedState<Todo>
   @MappedDispatch() private var dispatch
 
   var body: some View {
     List {
-      ForEach(books) { book in
-        BookRow(title: book.title)
+      ForEach(todos) { todo in
+        TodoItemRow(item: todo)
       }
-      .onMove { self.dispatch(BookAction.move(from: $0, to: $1)) }
-      .onDelete { self.dispatch(BookAction.delete(at: $0)) }
+      .onDelete { self.dispatch(TodoAction.removeTodos(at: $0)) }
+      .onMove { self.dispatch(TodoAction.moveTodos(from: $0, to: $1)) }
     }
   }
+
 }
+```
 
- Adhere to the Connectable protocol to map a parent state to
- one that the view requires.
+The easiest way to connect the application state to the view is through the `Connectable` protocol. Adhering to this protocol allows the view to map a parent state to the required state.
 
-extension BookListView : Connectable {
+```swift
+extension TodosView: Connectable {
 
-  func map(state: AppState) -> OrderedState<Book>? {
-    state.books
+  func map(state: AppState) -> OrderedState<Todo>? {
+    state.todos
   }
 
 }
 ```
 
-### Update a view whenever an action is dispatched to the store:
+When placing the view, the `connect()` method must be called to inject the application state into the view.
 
 ```swift
-extension BookListView : Connectable {
+struct RootView: View {
 
-   // Views always update when dispatching an action, but
-   // sometimes you may want it to update every time a given
-   // action is sent to the store.
-
-  updateWhen(action: Action) -> Bool {
-    action is BookStatusAction
-  }
-
-  func map(state: AppState) -> OrderedState<Book>? {
-    state.books
+  var body: some View {
+    TodosView().connect()
   }
 
 }
 ```
 
-### Perform external data queries:
+## Parameterized Connectable View
+In some cases, a parameter needs to be passed to a connected view. For example, the id of an object. This can be handled using the `ParameterizedConnectable` protocol. It is nearly identical to `Connectable`, but requires a parameter be passed in.
 
 ```swift
+extension TodoDetailsView: ParameterizedConnectable {
 
-// Create an action type:
+  func map(state: TodoList, parameter: String) -> Todo? {
+    state[parameter]
+  }
 
-enum TodoListAction: Action {
-  case setTodos([TodoItem])
-  case setFilterBy(String)
 }
 
-// Add an action plan that queries an external service, and
-// reruns the query if the filter value of the state changes:
+// Use the connect(with:) method to use the view:
 
-extension TodoListAction {
+TodoDetailsView().connect(with: todoId)
+```
 
-  static func queryTodos(from services: Services) -> Action {
+## Binding<_> Support
+
+SwiftUI has a focus on two-way bindings over a unidirectional flow. To better support this, SwiftDux provides a convenient API through the `Connectable` protocol using a `StateBinder` object. Use the `map(state:binder:)` method on the protocol as shown below.
+
+```swift
+struct LoginForm: View {
+
+  @MappedState private var props: Props
+
+  var body: some View {
+    VStack {
+      TextField("Email", text: props.email)
+      /* ... */
+    }
+  }
+
+}
+
+extension LoginForm: Connectable {
+
+  struct Props {
+    var email: Binding<String>
+  }
+
+  func map(state: AppState, binder: StateBinder) -> Props? {
+    var loginForm = state.loginForm
+    return Props(
+      email: binder.bind(loginForm.email) { LoginFormAction.setEmail($0) }
+    )
+  }
+
+
+}
+```
+
+## Action Plans
+An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic.
+
+```swift
+/// Dispatch multiple actions together:
+
+let plan = ActionPlan<AppState> { store in
+  store.send(actionA)
+  store.send(actionB)
+  store.send(actionC)
+}
+
+/// Perform async operations:
+
+let plan = ActionPlan<AppState> { store in
+  DispatchQueue.global().async {
+    store.send(actionA)
+    store.send(actionB)
+    store.send(actionC)
+  }
+}
+
+/// Publish actions to the store:
+
+let plan = ActionPlan<AppState> { store -> Publishers.Sequence<Action, Never> in
+  Publishers.Sequence<Action, Never>(sequence: [
+    actionA,
+    actionB,
+    actionC
+  }
+}
+
+/// In a View, dispatch the action plan like any other action:
+
+dispatch(plan)
+```
+
+## Query External Services
+Action plans can be used in conjunction with the `onAppear(dispatch:)` view modifier to connect to external data sources when a view appears. If the action plan returns a publisher, it will automatically cancel when the view disappears. Optionally, use `onAppear(dispatch:cancelOnDisappear:)` if the publisher should continue.
+
+Action plans can also subscribe to the store. This is useful when the query needs to be refreshed if the application state changes. Rather than imperatively handling this by re-sending the action plan, it can be done more declaratively within it. The store's `didChange` subject will emit at least once after the action plan returns a publisher.
+
+Here's an example of an action plan that queries for todos. It updates whenever the filter changes. It also debounces to reduce the amount of queries sent to the external services.
+
+```swift
+struct ActionPlans {
+  var services: Services
+}
+
+extension ActionPlans {
+
+  var queryTodos: Action {
     ActionPlan<AppState> { store in
       store.didChange
         .filter { $0 is TodoListAction }
         .map { _ in store.state?.todoList.filterBy ?? "" }
         .removeDuplicates()
         .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-        .flatMap { filter in services.queryTodos(filter: filter) }
+        .flatMap { filter in self.services.queryTodos(filter: filter) }
         .catch { _ in Just<[TodoItem]>([]) }
         .map { todos -> Action in TodoListAction.setTodos(todos) }
     }
   }
+
 }
 
-// In a SwiftUI View:
+struct TodoListView: View {
+  @Environment(\.actionPlans) private var actionPlans
+  @MappedState private var todos: [TodoItem]
 
-@Environment(\.services) private var services
-@MappedState private var todos: [TodoItem]
-
-var body: some View {
-  Group {
-    renderTodos(todos: todos)
-  }
-  .onAppear(dispatch: TodoListAction.queryTodos(from: services))
-}
-```
-
-### Create two-way bindings for TextFields using a StateBinder:
-```swift
-struct TodoRow : View {
-  
-  @MappedState private var props: Props
-  
   var body: some View {
-    TextField("", text: props.text)
+    renderTodos(todos: todos)
+      .onAppear(dispatch: actionPlans.queryTodos)
   }
-  
-}
 
-extension TodoRow : ParameterizedConnectable {
-  
-  struct Props {
-    var text: Binding<String>
-  }
-  
-  func map(state: TodoList, with parameter: String, binder: StateBinder) -> Props? {
-    guard let todo = state.todos[parameter] else { return nil }
-    return Props(
-      text: binder.bind(todo.text) { TodosAction.setText(forId: todo.id, text: $0) }
-    )
-  }
-  
+  // ...
+
 }
 ```
-
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
 [ios-image]: https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg
