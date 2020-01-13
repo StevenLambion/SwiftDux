@@ -21,7 +21,7 @@ extension IdentifiableState {
   public func hash(into hasher: inout Hasher) {
     id.hash(into: &hasher)
   }
-  
+
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.id == rhs.id
   }
