@@ -43,7 +43,7 @@ extension Reducer {
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
   public func reduce(state: State, action: EmptyAction) -> State {
-    return state
+    state
   }
 
   /// Default implementation. Returns the state without modifying it.
@@ -53,7 +53,7 @@ extension Reducer {
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
   public func reduceNext(state: State, action: Action) -> State {
-    return state
+    state
   }
 
   /// Send any kind of action to a reducer. The recuder will determine what it can do with

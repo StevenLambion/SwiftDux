@@ -22,7 +22,7 @@ import Foundation
 ///   }
 /// }
 /// ```
-internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
+internal final class StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?

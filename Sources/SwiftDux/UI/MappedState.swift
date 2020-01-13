@@ -21,18 +21,10 @@ public struct MappedState<State>: DynamicProperty {
   @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher
 
   public var wrappedValue: State {
-    connection.latestState!
-  }
-
-  public var projectedValue: Binding<State> {
-    Binding<State>(
-      get: { self.wrappedValue },
-      set: { _ in }
-    )
-  }
-
-  public var binding: Binding<State> {
-    projectedValue
+    guard let state = connection.latestState else {
+      fatalError("State was not connected before using @MappedState")
+    }
+    return state
   }
 
   public init() {}

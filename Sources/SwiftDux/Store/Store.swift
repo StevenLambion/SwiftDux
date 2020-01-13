@@ -82,7 +82,7 @@ extension Store: ActionDispatcher, Subscriber {
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
   public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
-    return StoreActionDispatcher(
+    StoreActionDispatcher(
       upstream: self,
       modifyAction: modifyAction,
       sentAction: sentAction
