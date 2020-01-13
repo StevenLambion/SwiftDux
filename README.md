@@ -7,17 +7,15 @@
 [![Github workflow][github-workflow-image]](https://github.com/StevenLambion/SwiftDux/actions)
 [![codecov][codecov-image]](https://codecov.io/gh/StevenLambion/SwiftDux)
 
-This is yet another redux inspired state management solution for swift. It's built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. For more information about the architecture and this library, take a look at the [getting started guide](https://stevenlambion.github.io/SwiftDux/getting-started.html).
-
-This library is designed around Combine and SwiftUI. For a more established library that doesn't require iOS 13, check out [ReSwift](https://github.com/ReSwift/ReSwift).
+SwiftDux is a redux inspired state management solution built around the Combine and SwiftUI frameworks. If you need to target an older operating system or require a more established library,  check out [ReSwift](https://github.com/ReSwift/ReSwift).
 
 ## Features
 
 ### Redux-like State Management.
 - Familiar API to Redux.
-- Middleware is support.
 - Incapsulate action-based workflows via `ActionPlans`.
 - Manage ordered collections of objects using  `OrderedState<_>`.
+- Extend functionality with `Middleware`.
 
 ### SwiftUI Integration.
 
