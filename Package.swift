@@ -22,6 +22,6 @@ let package = Package(
       dependencies: ["SwiftDux"]),
     .testTarget(
       name: "SwiftDuxTests",
-      dependencies: ["SwiftDux"]),
+      dependencies: ["SwiftDux", "SwiftDuxExtras"]),
   ]
 )
