@@ -119,7 +119,7 @@ final class ActionPlanTests: XCTestCase {
   
   func testChainedActionPlansWithPublisher() {
     let actionPlanA = ActionPlan<TestState> { store -> AnyPublisher<Action, Never> in
-      Just(TestAction.actionB).throttle(for: .milliseconds(100), scheduler: RunLoop.main, latest: true).eraseToAnyPublisher()
+      Just(TestAction.actionB).delay(for: .milliseconds(10), scheduler: RunLoop.main).eraseToAnyPublisher()
     }
     let actionPlanB = ActionPlan<TestState> { store in
       store.send(TestAction.actionA)

@@ -30,10 +30,10 @@ class JSONStatePersistorTests: XCTestCase {
   func testSaveStateWithPubisher() {
     let persistor = JSONStatePersistor<TestState>(location: location)
     let expectation = XCTestExpectation()
-    let cancellable = location.didSave.first().sink { expectation.fulfill() }
-    let persistCancellable = [TestState(name: "John"), TestState(name: "Bob")].publisher
-      .throttle(for: .milliseconds(10), scheduler: RunLoop.main, latest: true)
-      .persist(with: persistor)
+    let cancellable = location.didSave.dropFirst().sink { expectation.fulfill() }
+    let publisher = [TestState(name: "John"), TestState(name: "Bob")].publisher
+    .delay(for: .milliseconds(10), scheduler: RunLoop.main)
+    let persistCancellable = publisher.persist(with: persistor)
     
     wait(for: [expectation], timeout: 10)
     cancellable.cancel()
