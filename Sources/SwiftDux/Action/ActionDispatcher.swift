@@ -30,26 +30,3 @@ public protocol ActionDispatcher {
   func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
 
 }
-
-/// Default `Subscriber` implementation.
-extension ActionDispatcher where Self: Subscriber, Self.Input == Action, Self.Failure == Never {
-
-  public func receive(_ input: Action) -> Subscribers.Demand {
-    send(input)
-    return .unlimited
-  }
-
-  public func receive(completion: Subscribers.Completion<Never>) {
-    switch completion {
-    case .finished:
-      break
-    case .failure:
-      fatalError("This should never be called.")
-    }
-  }
-
-  public func receive(subscription: Subscription) {
-    subscription.request(.unlimited)
-  }
-
-}

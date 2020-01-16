@@ -22,15 +22,11 @@ import Foundation
 ///   }
 /// }
 /// ```
-internal final class StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
+internal final class StoreActionDispatcher<State>: ActionDispatcher where State: StateType {
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
   private let sentAction: ((Action) -> Void)?
-
-  var combineIdentifier: CombineIdentifier {
-    upstream.combineIdentifier
-  }
 
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
@@ -67,10 +63,12 @@ internal final class StoreActionDispatcher<State>: ActionDispatcher, Subscriber 
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
-    if let publisher = actionPlan.run(StoreProxy(store: upstream, send: self.send)) {
-      publisher.subscribe(self)
+    var cancellable: AnyCancellable?
+    cancellable = actionPlan.run(StoreProxy(store: upstream)) { _ in
+      cancellable?.cancel()
+      cancellable = nil
     }
-    upstream.didChange.send(actionPlan)
+    upstream.didChangeSubject.send(actionPlan)
     sentAction?(actionPlan)
   }
 

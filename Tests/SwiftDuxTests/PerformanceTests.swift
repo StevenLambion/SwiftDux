@@ -42,6 +42,7 @@ final class PerformanceTests: XCTestCase {
       }
       XCTAssertEqual(updateCounts, subsriberCount * sendCount)
     }
+    print("Sent \(updateCounts) updates")
   }
 
   static var allTests = [

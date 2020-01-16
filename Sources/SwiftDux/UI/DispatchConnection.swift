@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-internal final class DispatchConnection: ActionDispatcher, Subscriber {
+internal final class DispatchConnection: ActionDispatcher {
   var didDispatchAction = ObservableObjectPublisher()
 
   private var actionDispatcher: ActionDispatcher

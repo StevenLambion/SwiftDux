@@ -12,7 +12,7 @@ public struct StoreProxy<State> where State: StateType {
   private var getState: () -> State?
 
   /// Subscribe to state changes.
-  public var didChange: PassthroughSubject<Action, Never>
+  public var didChange: AnyPublisher<Action, Never>
 
   /// Send an action to the store.
   public var send: SendAction
