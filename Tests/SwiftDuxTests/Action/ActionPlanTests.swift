@@ -55,15 +55,16 @@ final class ActionPlanTests: XCTestCase {
   
   func testPublishableActionPlan() {
     let actionPlan = ActionPlan<TestState> { _ in
-      Publishers.Sequence<[Action], Never>(sequence: [TestAction.actionB, TestAction.actionA])
+      [TestAction.actionB, TestAction.actionA].publisher
     }
-    if let publisher = actionPlan.run(storeProxy) {
-      _ = publisher.sink(receiveValue: sendAction)
-    }
+    let cancellable = actionPlan.run(storeProxy)
+
     assertActionsWereSent([
       TestAction.actionB,
       TestAction.actionA
     ])
+    
+    cancellable?.cancel()
   }
   
   func testCancellableActionPlan() {
@@ -118,7 +119,7 @@ final class ActionPlanTests: XCTestCase {
   
   func testChainedActionPlansWithPublisher() {
     let actionPlanA = ActionPlan<TestState> { store -> AnyPublisher<Action, Never> in
-      Just(TestAction.actionB).delay(for: .milliseconds(100), scheduler: RunLoop.main).eraseToAnyPublisher()
+      Just(TestAction.actionB).throttle(for: .milliseconds(100), scheduler: RunLoop.main, latest: true).eraseToAnyPublisher()
     }
     let actionPlanB = ActionPlan<TestState> { store in
       store.send(TestAction.actionA)
@@ -140,7 +141,7 @@ final class ActionPlanTests: XCTestCase {
     
     store.send(chainedActionPlan)
     
-    wait(for: [expectation], timeout: 10000.0)
+    wait(for: [expectation], timeout: 10.0)
     
     cancellable.cancel()
     

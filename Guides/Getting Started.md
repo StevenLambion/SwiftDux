@@ -238,11 +238,7 @@ let plan = ActionPlan<AppState> { store in
 /// Publish actions to the store:
 
 let plan = ActionPlan<AppState> { store -> Publishers.Sequence<Action, Never> in
-  Publishers.Sequence<Action, Never>(sequence: [
-    actionA,
-    actionB,
-    actionC
-  }
+  [actionA, actionB, actionC].publisher
 }
 
 /// In a View, dispatch the action plan like any other action:

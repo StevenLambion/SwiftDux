@@ -32,19 +32,23 @@ public func PersistStateMiddleware<State, SP>(
   saveOnChange: Bool = true,
   debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100),
   shouldRestore: @escaping (State) -> Bool = { _ in true }
-) -> Middleware<State> where SP: StatePersistor, State == SP.State, SP.Failure == Never, SP.Input == State {
-  { store in
+) -> Middleware<State> where SP: StatePersistor, State == SP.State {
+  var subscriptionCancellable: AnyCancellable? = nil
+  return { store in
     { action in
       defer { store.next(action) }
       guard case .prepare = action as? StoreAction<State> else { return }
 
       if saveOnChange {
-        persistor.save(from: store, debounceFor: interval)
+        subscriptionCancellable = persistor.save(from: store, debounceFor: interval)
       } else if let notification = notification {
-        let publisher = NotificationCenter.default
+        subscriptionCancellable = NotificationCenter.default
           .publisher(for: notification)
+          .throttle(for: interval, scheduler: RunLoop.main, latest: true)
           .compactMap { _ in store.state }
-        persistor.save(from: publisher)
+          .persist(with: persistor)
+      } else {
+        print("Failed to initiate persistence using notifiation.")
       }
 
       if let state = persistor.restore(), shouldRestore(state) {

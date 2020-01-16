@@ -1,3 +1,4 @@
+import Combine
 import Foundation
 
 /// Persist the application state as JSON.
@@ -8,6 +9,13 @@ public final class JSONStatePersistor<State>: StatePersistor where State: Codabl
 
   private let encoder = JSONEncoder()
   private let decoder = JSONDecoder()
+
+  private var subscription: Subscription? {
+    willSet {
+      guard let subscription = subscription else { return }
+      subscription.cancel()
+    }
+  }
 
   /// Initiate a new state persistor with a given location of the stored data.
   ///

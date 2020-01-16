@@ -3,7 +3,7 @@ import Foundation
 import SwiftDux
 
 /// Persists and restores application state.
-public protocol StatePersistor: Subscriber {
+public protocol StatePersistor {
 
   /// The type of application state to persist.
   associatedtype State: Codable
@@ -65,37 +65,20 @@ extension StatePersistor {
     }
   }
 
-}
-
-extension StatePersistor where Self: Subscriber, Self.Input == State, Self.Failure == Never {
-
-  /// Subscribe to a publisher to save the state automatically.
-  ///
-  /// - Parameters
-  ///   - publisher: The publisher to subsctibe to.
-  ///   - interval: The time interval to debounce the updates against.
-  public func save<P>(
-    from publisher: P,
-    debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
-  ) where P: Publisher, P.Output == Input, P.Failure == Never {
-    publisher
-      .debounce(for: interval, scheduler: RunLoop.main)
-      .subscribe(self)
-  }
-
   /// Subscribe to a store to save the state automatically.
   ///
   /// - Parameters
   ///   - store: The store to subsctibe to.
   ///   - interval: The time interval to debounce the updates against.
+  /// - Returns: A cancellable to unsubscribe from the store.
   public func save(
     from store: Store<State>,
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
-  ) {
-    save(
-      from: store.didChange.compactMap { [weak store] _ in store?.state },
-      debounceFor: interval
-    )
+  ) -> AnyCancellable {
+    store.didChange
+      .throttle(for: interval, scheduler: RunLoop.main, latest: true)
+      .compactMap { [weak store] _ in store?.state }
+      .persist(with: self)
   }
 
   /// Subscribe to a store to save the state automatically.
@@ -103,35 +86,14 @@ extension StatePersistor where Self: Subscriber, Self.Input == State, Self.Failu
   /// - Parameters
   ///   - store: The store to subsctibe to.
   ///   - interval: The time interval to debounce the updates against.
+  /// - Returns: A cancellable to unsubscribe from the store.
   public func save(
     from store: StoreProxy<State>,
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
-  ) {
-    save(
-      from: store.didChange.compactMap { _ in store.state },
-      debounceFor: interval
-    )
+  ) -> AnyCancellable {
+    store.didChange
+      .throttle(for: interval, scheduler: RunLoop.main, latest: true)
+      .compactMap { _ in store.state }
+      .persist(with: self)
   }
-
-  public func receive(subscription: Subscription) {
-    subscription.request(.max(1))
-  }
-
-  public func receive(_ input: State) -> Subscribers.Demand {
-    if save(input) {
-      return .max(1)
-    }
-    return .none
-  }
-
-  public func receive(completion: Subscribers.Completion<Never>) {
-    switch completion {
-    case .failure(let error):
-      print("Failed to encode the state object.")
-      print(error)
-    case .finished:
-      break
-    }
-  }
-
 }
