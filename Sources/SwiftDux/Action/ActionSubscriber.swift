@@ -8,6 +8,7 @@ final public class ActionSubscriber: Subscriber {
 
   let sendAction: SendAction
   let receivedCompletion: ReceivedCompletion?
+
   var subscription: Subscription? = nil {
     willSet {
       guard let subscription = subscription else { return }
@@ -67,6 +68,7 @@ extension Publisher where Output == Action, Failure == Never {
     self.subscribe(subscriber)
     return AnyCancellable {
       subscriber.subscription?.cancel()
+
     }
   }
 

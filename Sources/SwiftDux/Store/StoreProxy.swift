@@ -9,27 +9,38 @@ import Foundation
 /// a safe API to access a weak reference to it.
 public struct StoreProxy<State> where State: StateType {
 
-  private var getState: () -> State?
-
   /// Subscribe to state changes.
-  public var didChange: AnyPublisher<Action, Never>
-
-  /// Send an action to the store.
-  public var send: SendAction
+  private var store: Store<State>
 
   /// Send an action to the next middleware
-  public var next: SendAction
+  private var nextBlock: SendAction?
+
+  private var doneBlock: (() -> Void)?
 
   /// Retrieves the latest state from the store.
-  public var state: State? {
-    getState()
+  public var state: State {
+    store.state
   }
 
-  internal init(store: Store<State>, send: SendAction? = nil, next: SendAction? = nil) {
-    let send: SendAction = send ?? { [weak store] in store?.send($0) }
-    self.didChange = store.didChange
-    self.getState = { [weak store] in store?.state }
-    self.send = send
-    self.next = next ?? send
+  public var didChange: AnyPublisher<Action, Never> {
+    store.didChange
+  }
+
+  internal init(store: Store<State>, next: SendAction? = nil, done: (() -> Void)? = nil) {
+    self.store = store
+    self.nextBlock = next
+    self.doneBlock = done
+  }
+
+  public func send(_ action: Action) {
+    store.send(action)
+  }
+
+  public func next(_ action: Action) {
+    nextBlock?(action)
+  }
+
+  public func done() {
+    doneBlock?()
   }
 }

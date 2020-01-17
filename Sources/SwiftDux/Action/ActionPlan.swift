@@ -77,7 +77,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   ///   - store: Dispatch actions or retreive the current state from the store.
   ///   - completed: A block that's called when the plan has completed.
   /// - Returns: A publisher that can send actions to the store.
-  public func run(_ store: StoreProxy<State>, completed: @escaping () -> Void) -> AnyCancellable? {
+  public func run(_ store: StoreProxy<State>, completed: @escaping ActionSubscriber.ReceivedCompletion = {}) -> AnyCancellable? {
     guard var nextAction = nextActions.first as? ActionPlan<State> else {
       return body(store, completed)
     }
@@ -134,8 +134,9 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
       }
     )
 
-    return AnyCancellable { [publisherCancellable] in
+    return AnyCancellable {
       publisherCancellable?.cancel()
+      publisherCancellable = nil
     }
   }
 
@@ -158,8 +159,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   public func then(_ block: @escaping (State) -> Void) -> ActionPlan<State> {
     then(
       ActionPlan<State> { store in
-        guard let state = store.state else { return }
-        block(state)
+        block(store.state)
       }
     )
   }
