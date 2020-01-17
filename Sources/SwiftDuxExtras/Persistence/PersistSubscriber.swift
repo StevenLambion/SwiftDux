@@ -31,7 +31,12 @@ final public class PersistSubscriber<Input, Persistor>: Subscriber where Persist
   }
 
   public func receive(completion: Subscribers.Completion<Never>) {
-
+    subscription = nil
+  }
+  
+  public func cancel() {
+    subscription?.cancel()
+    subscription = nil
   }
 
 }
@@ -44,7 +49,7 @@ extension Publisher where Output: Codable, Failure == Never {
   public func persist<P>(with persistor: P) -> AnyCancellable where P: StatePersistor, P.State == Output {
     let subscriber = PersistSubscriber(persistor: persistor)
     self.subscribe(subscriber)
-    return AnyCancellable { subscriber.subscription?.cancel() }
+    return AnyCancellable { [subscriber] in subscriber.cancel() }
   }
 
 }

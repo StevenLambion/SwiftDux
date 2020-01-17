@@ -33,6 +33,12 @@ final public class ActionSubscriber: Subscriber {
 
   public func receive(completion: Subscribers.Completion<Never>) {
     receivedCompletion?()
+    subscription = nil
+  }
+
+  public func cancel() {
+    subscription?.cancel()
+    subscription = nil
   }
 
 }
@@ -45,14 +51,7 @@ extension Publisher where Output == Action, Failure == Never {
   ///   - receivedCompletion: An optional block called when the publisher completes.
   /// - Returns: A cancellable to unsubscribe.
   public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable {
-    let subscriber = ActionSubscriber(
-      sendAction: { actionDispatcher.send($0) },
-      receivedCompletion: receivedCompletion
-    )
-    self.subscribe(subscriber)
-    return AnyCancellable {
-      subscriber.subscription?.cancel()
-    }
+    self.send(to: actionDispatcher.send, receivedCompletion: receivedCompletion)
   }
 
   /// Subscribe to a publisher of actions, and send the results to an action dispatcher.
@@ -66,9 +65,8 @@ extension Publisher where Output == Action, Failure == Never {
       receivedCompletion: receivedCompletion
     )
     self.subscribe(subscriber)
-    return AnyCancellable {
-      subscriber.subscription?.cancel()
-
+    return AnyCancellable { [subscriber] in
+      subscriber.cancel()
     }
   }
 
