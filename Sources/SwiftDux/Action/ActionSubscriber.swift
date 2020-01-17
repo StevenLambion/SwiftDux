@@ -4,7 +4,7 @@ import Foundation
 /// Subscribes to a publisher of actions, and sends them to an action dispatcher.
 final public class ActionSubscriber: Subscriber {
 
-  public typealias ReceivedCompletion = (Subscribers.Completion<Never>) -> Void
+  public typealias ReceivedCompletion = () -> Void
 
   let sendAction: SendAction
   let receivedCompletion: ReceivedCompletion?
@@ -31,7 +31,7 @@ final public class ActionSubscriber: Subscriber {
   }
 
   public func receive(completion: Subscribers.Completion<Never>) {
-    receivedCompletion?(completion)
+    receivedCompletion?()
   }
 
 }
@@ -43,7 +43,7 @@ extension Publisher where Output == Action, Failure == Never {
   ///   - actionDispatcher: The ActionDispatcher
   ///   - receivedCompletion: An optional block called when the publisher completes.
   /// - Returns: A cancellable to unsubscribe.
-  public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: @escaping (Subscribers.Completion<Never>) -> Void = { _ in }) -> AnyCancellable {
+  public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable {
     let subscriber = ActionSubscriber(
       sendAction: { actionDispatcher.send($0) },
       receivedCompletion: receivedCompletion

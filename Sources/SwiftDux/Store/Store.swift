@@ -67,8 +67,8 @@ extension Store: ActionDispatcher {
 
   /// Handles the sending of normal action plans.
   private func send(actionPlan: ActionPlan<State>) {
-    var cancellable: AnyCancellable?
-    cancellable = actionPlan.run(StoreProxy(store: self)) { _ in
+    var cancellable: AnyCancellable? = nil
+    cancellable = actionPlan.run(StoreProxy(store: self)) {
       cancellable?.cancel()
       cancellable = nil
     }
@@ -94,4 +94,27 @@ extension Store: ActionDispatcher {
     )
   }
 
+}
+
+extension Publisher where Output == Action, Failure == Never {
+
+  /// Subscribe to a publisher of actions, and send the results to a store.
+  /// - Parameters:
+  ///   - store: A store proxy
+  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Returns: A cancellable to unsubscribe.
+  public func send<State>(to store: Store<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
+  where State: StateType {
+    self.send(to: store, receivedCompletion: receivedCompletion)
+  }
+
+  /// Subscribe to a publisher of actions, and send the results to a store.
+  /// - Parameters:
+  ///   - store: A store proxy
+  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Returns: A cancellable to unsubscribe.
+  public func send<State>(to store: StoreProxy<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
+  where State: StateType {
+    self.send(to: store.send, receivedCompletion: receivedCompletion)
+  }
 }

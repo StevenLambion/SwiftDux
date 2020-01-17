@@ -17,8 +17,8 @@ final class StoreTests: XCTestCase {
   
   func testActionPlans() {
     let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
-    store.send(ActionPlan<TestSendingState> { store in
-      store.send(TestSendingAction.setText("1234"))
+    store.send(ActionPlan<TestSendingState> { store, next in
+      Just(TestSendingAction.setText("1234")).send(to: store, receivedCompletion: next)
     })
     XCTAssertEqual(store.state.text, "1234")
   }

@@ -64,7 +64,7 @@ internal final class StoreActionDispatcher<State>: ActionDispatcher where State:
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
     var cancellable: AnyCancellable?
-    cancellable = actionPlan.run(StoreProxy(store: upstream)) { _ in
+    cancellable = actionPlan.run(StoreProxy(store: upstream)) {
       cancellable?.cancel()
       cancellable = nil
     }

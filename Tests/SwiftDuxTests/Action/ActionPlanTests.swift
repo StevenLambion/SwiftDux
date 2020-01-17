@@ -16,7 +16,7 @@ final class ActionPlanTests: XCTestCase {
         self?.sentActions.append(action)
       }
       if let action = action as? ActionPlan<TestState>, let storeProxy = self?.storeProxy {
-        _ = action.run(storeProxy)
+        _ = action.run(storeProxy) {}
       }
     }
     storeProxy = StoreProxy(store: store, send: sendAction)
@@ -29,13 +29,15 @@ final class ActionPlanTests: XCTestCase {
   
   func testEmptyActionPlan() {
     let actionPlan = ActionPlan<TestState> { _ in }
-    _ = actionPlan.run(storeProxy)
+    _ = actionPlan.run(storeProxy) {}
     assertActionsWereSent([])
   }
   
   func testBasicActionPlan() {
-    let actionPlan = ActionPlan<TestState> { $0.send(TestAction.actionA) }
-    _ = actionPlan.run(storeProxy)
+    let actionPlan = ActionPlan<TestState> {
+      $0.send(TestAction.actionA)
+    }
+    _ = actionPlan.run(storeProxy) {}
     assertActionsWereSent([TestAction.actionA])
   }
   
@@ -45,7 +47,7 @@ final class ActionPlanTests: XCTestCase {
       $0.send(TestAction.actionB)
       $0.send(TestAction.actionA)
     }
-    _ = actionPlan.run(storeProxy)
+    _ = actionPlan.run(storeProxy) {}
     assertActionsWereSent([
       TestAction.actionA,
       TestAction.actionB,
@@ -57,7 +59,7 @@ final class ActionPlanTests: XCTestCase {
     let actionPlan = ActionPlan<TestState> { _ in
       [TestAction.actionB, TestAction.actionA].publisher
     }
-    let cancellable = actionPlan.run(storeProxy)
+    let cancellable = actionPlan.run(storeProxy) {}
 
     assertActionsWereSent([
       TestAction.actionB,
@@ -108,7 +110,7 @@ final class ActionPlanTests: XCTestCase {
     }
     let chainedActionPlan = actionPlanA.then(actionPlanB).then(actionPlanC)
     
-    _ = chainedActionPlan.run(storeProxy)
+    _ = chainedActionPlan.run(storeProxy) {}
     
     assertActionsWereSent([
       TestAction.actionB,
@@ -124,8 +126,8 @@ final class ActionPlanTests: XCTestCase {
     let actionPlanB = ActionPlan<TestState> { store in
       store.send(TestAction.actionA)
     }
-    let actionPlanC = ActionPlan<TestState> { store -> Just<Action> in
-      Just(TestAction.actionB)
+    let actionPlanC = ActionPlan<TestState> { store, next in
+      Just(TestAction.actionB).send(to: store, receivedCompletion: next)
     }
     let expectation = XCTestExpectation(description: "Expect one cancellation")
     let chainedActionPlan = actionPlanA.then(actionPlanB).then(actionPlanC).then { 
