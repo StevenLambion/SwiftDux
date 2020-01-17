@@ -30,7 +30,7 @@ import SwiftDux
 public func PersistStateMiddleware<State, SP>(
   _ persistor: SP,
   saveOnChange: Bool = true,
-  debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100),
+  debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1),
   shouldRestore: @escaping (State) -> Bool = { _ in true }
 ) -> Middleware<State> where SP: StatePersistor, State == SP.State {
   var subscriptionCancellable: AnyCancellable? = nil
@@ -44,7 +44,7 @@ public func PersistStateMiddleware<State, SP>(
       } else if let notification = notification {
         subscriptionCancellable = NotificationCenter.default
           .publisher(for: notification)
-          .throttle(for: interval, scheduler: RunLoop.main, latest: true)
+          .debounce(for: interval, scheduler: RunLoop.main)
           .compactMap { _ in store.state }
           .persist(with: persistor)
       } else {

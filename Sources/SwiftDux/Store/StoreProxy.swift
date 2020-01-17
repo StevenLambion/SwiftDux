@@ -22,6 +22,7 @@ public struct StoreProxy<State> where State: StateType {
     store.state
   }
 
+  /// Emits after the specified action was sent to the store.
   public var didChange: AnyPublisher<Action, Never> {
     store.didChange
   }
@@ -32,14 +33,22 @@ public struct StoreProxy<State> where State: StateType {
     self.doneBlock = done
   }
 
+  /// Send an action to the store.
+  /// - Parameter action: The action to send
   public func send(_ action: Action) {
     store.send(action)
   }
 
+  /// Use this in middleware to send an action to the next
+  /// step in the pipeline. Outside of middleware, it does nothing.
+  /// - Parameter action: The action to send
   public func next(_ action: Action) {
     nextBlock?(action)
   }
 
+  /// Used by action plans to tell the store that a publisher has completed or cancelled its work.
+  /// Only use this if the action plan is not returning a publisher or subscribing via ActionSubscriber.
+  /// This is not needed by action plans that don't return a cancellable.
   public func done() {
     doneBlock?()
   }

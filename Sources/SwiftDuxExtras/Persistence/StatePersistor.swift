@@ -73,11 +73,12 @@ extension StatePersistor {
   /// - Returns: A cancellable to unsubscribe from the store.
   public func save(
     from store: Store<State>,
-    debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
+    debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .throttle(for: interval, scheduler: RunLoop.main, latest: true)
-      .compactMap { [weak store] _ in store?.state }
+      .filter { !($0 is StoreAction<State>) }
+      .debounce(for: interval, scheduler: RunLoop.main)
+      .compactMap { [weak store] (action: Action) in store?.state }
       .persist(with: self)
   }
 
@@ -89,10 +90,11 @@ extension StatePersistor {
   /// - Returns: A cancellable to unsubscribe from the store.
   public func save(
     from store: StoreProxy<State>,
-    debounceFor interval: RunLoop.SchedulerTimeType.Stride = .milliseconds(100)
+    debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .throttle(for: interval, scheduler: RunLoop.main, latest: true)
+      .filter { !($0 is StoreAction<State>) }
+      .debounce(for: interval, scheduler: RunLoop.main)
       .compactMap { _ in store.state }
       .persist(with: self)
   }
