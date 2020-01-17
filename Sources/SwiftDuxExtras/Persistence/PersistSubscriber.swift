@@ -33,7 +33,7 @@ final public class PersistSubscriber<Input, Persistor>: Subscriber where Persist
   public func receive(completion: Subscribers.Completion<Never>) {
     subscription = nil
   }
-  
+
   public func cancel() {
     subscription?.cancel()
     subscription = nil
