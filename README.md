@@ -299,11 +299,17 @@ let plan = ActionPlan<AppState> { store in
 
 /// Publish actions to the store:
 
-let plan = ActionPlan<AppState> { store -> Publishers.Sequence<Action, Never> in
-  [actionA, actionB, actionC].publisher
+let plan = ActionPlan<AppState> { store, completed in
+  let actions = [
+    actionA,
+    actionB,
+    actionC
+  ]
+  
+  actions.publisher.send(to: store, receivedCompletion: completed)
 }
 
-/// In a View, dispatch the action plan like any other action:
+/// In a View, dispatch the plan like any other action:
 
 dispatch(plan)
 ```
@@ -323,7 +329,7 @@ struct ActionPlans {
 extension ActionPlans {
 
   var queryTodos: Action {
-    ActionPlan<AppState> { store in
+    ActionPlan<AppState> { store, completed in
       store.didChange
         .filter { $0 is TodoListAction }
         .map { _ in store.state?.todoList.filterBy ?? "" }
@@ -332,6 +338,7 @@ extension ActionPlans {
         .flatMap { filter in self.services.queryTodos(filter: filter) }
         .catch { _ in Just<[TodoItem]>([]) }
         .map { todos -> Action in TodoListAction.setTodos(todos) }
+        .send(to: store, receivedCompletion: completed)
     }
   }
 
