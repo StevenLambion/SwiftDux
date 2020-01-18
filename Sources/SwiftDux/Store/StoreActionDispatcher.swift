@@ -3,7 +3,7 @@ import Foundation
 
 /// A dispatcher tied to an upstream `Store<_>` object. This is useful to proxy dispatched actions.
 ///
-/// Use the `Store<_>.dispatcher(modifyAction:)` or the `StoreActionDispatcher<_>.proxy(modifyAction:)`
+/// Use the `Store<_>.proxy(modifyAction:)` or the `StoreActionDispatcher<_>.proxy(modifyAction:)`
 /// methods to create a new `StoreActionDispatcher`.
 ///
 /// ```
@@ -45,7 +45,7 @@ internal final class StoreActionDispatcher<State>: ActionDispatcher where State:
     if let action = action as? ActionPlan<State> {
       send(actionPlan: action)
     } else {
-      if let modifyAction = modifyAction, let newAction = modifyAction(action) {
+      if let newAction = modifyAction?(action) {
         upstream.send(ModifiedAction(action: newAction, previousAction: action))
       } else {
         upstream.send(action)
@@ -89,21 +89,18 @@ extension StoreActionDispatcher {
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
   func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
-    let upstreamModifyAction = self.modifyAction
-    var modifyActionWrapper: ActionModifier? = nil
-    if let modifyAction = modifyAction {
-      modifyActionWrapper = {
-        if let action = modifyAction($0) {
-          return upstreamModifyAction?(action) ?? action
-        }
-        return nil
-      }
-    } else {
-      modifyActionWrapper = upstreamModifyAction
-    }
-    return StoreActionDispatcher<State>(
+    StoreActionDispatcher<State>(
       upstream: self.upstream,
-      modifyAction: modifyActionWrapper,
+      modifyAction: { [weak self] (action: Action) -> Action? in
+        var action: Action? = action
+        if let unwrappedAction = action, let modifyAction = modifyAction {
+          action = modifyAction(unwrappedAction)
+        }
+        if let unwrappedAction = action, let nextModifyAction = self?.modifyAction {
+          action = nextModifyAction(unwrappedAction)
+        }
+        return action
+      },
       sentAction: sentAction
     )
   }

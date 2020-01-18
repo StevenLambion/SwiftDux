@@ -1,14 +1,14 @@
 import Combine
 import Foundation
 
-internal final class DispatchConnection: ActionDispatcher {
-  var didDispatchAction = ObservableObjectPublisher()
+internal final class DispatchConnection: ActionDispatcher, ObservableObject {
+  var objectWillChange: ObservableObjectPublisher = ObservableObjectPublisher()
 
   private var actionDispatcher: ActionDispatcher
 
   init(actionDispatcher: ActionDispatcher) {
-    self.actionDispatcher = actionDispatcher.proxy(modifyAction: nil) { [didDispatchAction] _ in
-      didDispatchAction.send()
+    self.actionDispatcher = actionDispatcher.proxy(modifyAction: nil) { [objectWillChange] _ in
+      objectWillChange.send()
     }
   }
 

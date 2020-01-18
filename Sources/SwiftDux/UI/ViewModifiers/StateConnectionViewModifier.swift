@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 /// Indicates a connectable view should not update when the state changes. The view will not subscribe to the store, and instead update
@@ -32,18 +33,23 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
   }
 
   private func createStateConnection(_ dispatchConnection: DispatchConnection) -> StateConnection<State> {
-    let hasUpdate = !filter(NoUpdateAction())
-    let superGetState = superstateConnection.getState
+    let getSuperstate = superstateConnection.getState
     let stateConnection = StateConnection<State>(
       getState: { [mapState] in
-        guard let superstate:Superstate = superGetState() else { return nil }
+        guard let superstate = getSuperstate() else { return nil }
         return mapState(superstate, StateBinder(actionDispatcher: dispatchConnection))
       },
-      changePublisher: hasUpdate
-        ? storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
-        : dispatchConnection.didDispatchAction.eraseToAnyPublisher()
+      changePublisher: createChangePublisher(from: dispatchConnection)
     )
     return stateConnection
+  }
+
+  private func createChangePublisher(from dispatchConnection: DispatchConnection) -> AnyPublisher<Void, Never> {
+    guard !filter(NoUpdateAction()) else {
+      return dispatchConnection.objectWillChange.eraseToAnyPublisher()
+    }
+    let filterPublisher = storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
+    return dispatchConnection.objectWillChange.merge(with: filterPublisher).eraseToAnyPublisher()
   }
 
 }

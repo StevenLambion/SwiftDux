@@ -16,8 +16,7 @@ internal final class StateConnection<State>: ObservableObject, Identifiable {
     self.getState = getState
     self.latestState = getState()
     self.cancellable = changePublisher?.sink { [weak self] in
-      guard let self = self else { return }
-      self.latestState = getState()
+      self?.latestState = getState()
     }
   }
 }

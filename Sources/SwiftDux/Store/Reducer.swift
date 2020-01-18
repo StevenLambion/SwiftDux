@@ -66,9 +66,9 @@ extension Reducer {
   public func reduceAny(state: State, action: Action) -> State {
     var state = state
     if let reducerAction = action as? ReducerAction {
-      state = self.reduce(state: state, action: reducerAction)
+      state = reduce(state: state, action: reducerAction)
     }
-    return self.reduceNext(state: state, action: action)
+    return reduceNext(state: state, action: action)
   }
 
 }
