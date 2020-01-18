@@ -38,7 +38,9 @@ extension ParameterizedConnectable {
 
   /// Default implementation disables updates by action.
   public func updateWhen(action: Action, with parameter: Parameter) -> Bool {
-    action is NoUpdateAction
+    guard let action = action as? NoUpdateAction else { return false }
+    action.unused = true
+    return true
   }
 
   /// Default implementation. Returns nil.

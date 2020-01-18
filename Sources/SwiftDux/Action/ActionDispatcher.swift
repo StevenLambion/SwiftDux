@@ -27,29 +27,6 @@ public protocol ActionDispatcher {
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
-
-}
-
-/// Default `Subscriber` implementation.
-extension ActionDispatcher where Self: Subscriber, Self.Input == Action, Self.Failure == Never {
-
-  public func receive(_ input: Action) -> Subscribers.Demand {
-    send(input)
-    return .unlimited
-  }
-
-  public func receive(completion: Subscribers.Completion<Never>) {
-    switch completion {
-    case .finished:
-      break
-    case .failure:
-      fatalError("This should never be called.")
-    }
-  }
-
-  public func receive(subscription: Subscription) {
-    subscription.request(.unlimited)
-  }
+  func proxy(modifyAction: ActionModifier?, sentAction: SendAction?) -> ActionDispatcher
 
 }

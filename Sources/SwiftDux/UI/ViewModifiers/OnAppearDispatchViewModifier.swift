@@ -89,5 +89,4 @@ extension View {
   public func onAppear(dispatch action: Action, cancelOnDisappear: Bool = true) -> some View {
     modifier(OnAppearDispatchViewModifier(action: action, cancelOnDisappear: cancelOnDisappear))
   }
-
 }

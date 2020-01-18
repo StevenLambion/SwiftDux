@@ -8,7 +8,7 @@ struct TestState: StateType {
 extension TestState {
   
   static var defaultState: TestState {
-    return TestState(
+    TestState(
       todoLists: OrderedState(
         TodoListState(
           id: "123",

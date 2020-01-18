@@ -3,28 +3,33 @@ import Combine
 @testable import SwiftDux
 
 final class StoreTests: XCTestCase {
+  var store: Store<TestSendingState>!
+  
+  override func setUp() {
+    store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
+  }
+  
+  override func tearDown() {
+    store = nil
+  }
   
   func testInitialStateValue() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     XCTAssertEqual(store.state.text, "initial text")
   }
   
   func testSendingAction() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(TestSendingAction.setText("New text"))
     XCTAssertEqual(store.state.text, "New text")
   }
   
   func testActionPlans() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
-    store.send(ActionPlan<TestSendingState> { store in
-      store.send(TestSendingAction.setText("1234"))
+    store.send(ActionPlan<TestSendingState> { store, next in
+      Just(TestSendingAction.setText("1234")).send(to: store, receivedCompletion: next)
     })
     XCTAssertEqual(store.state.text, "1234")
   }
   
   func testSubscribingToActionPlans() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(ActionPlan<TestSendingState> { store in
       Just<Action>(TestSendingAction.setText("1234"))
     })
@@ -32,16 +37,15 @@ final class StoreTests: XCTestCase {
   }
   
   func testSubscribingToComplexActionPlans() {
-    let store = Store(state: TestSendingState(text: "initial text"), reducer: TestSendingReducer())
     store.send(ActionPlan<TestSendingState> { store in
-      Just<Int>(store.state?.value ?? 0)
+      Just<Int>(store.state.value)
         .map { value -> Int in
           store.send(TestSendingAction.setValue(value + 1))
-          return store.state?.value ?? 0
+          return store.state.value
         }
         .map { value -> Int in
           store.send(TestSendingAction.setValue(value + 1))
-          return store.state?.value ?? 0
+          return store.state.value
         }
         .map { value -> Action in
           TestSendingAction.setValue(value + 1)
@@ -50,13 +54,41 @@ final class StoreTests: XCTestCase {
     XCTAssertEqual(store.state.value, 3)
   }
 
-  static var allTests = [
-    ("testInitialStateValue", testInitialStateValue),
-    ("testSendingAction", testSendingAction),
-    ("testActionPlans", testActionPlans),
-    ("testSubscribingToActionPlans", testSubscribingToActionPlans),
-    ("testSubscribingToComplexActionPlans", testSubscribingToComplexActionPlans),
-  ]
+  func testStoreCleansUpSubscriptions() {
+    let expectation = XCTestExpectation(description: "Expect cancellation")
+    var cancellables = Set<AnyCancellable>()
+    
+    expectation.expectedFulfillmentCount = 6
+    
+    let actionPlan = ActionPlan<TestSendingState> { store, completed in
+      let cancellable = Just(TestSendingAction.setText("test"))
+        .delay(for: .milliseconds(10), scheduler: RunLoop.main)
+        .send(to: store, receivedCompletion: completed)
+      
+      cancellable.store(in: &cancellables)
+      
+      // Make sure there's only one cancellable at a time to validate
+      // the action plans are running synchronously and not leaving
+      // cancellables around.
+      return AnyCancellable {
+        XCTAssertEqual(cancellables.count, 1)
+        cancellables.remove(cancellable)
+        expectation.fulfill()
+      }
+    }
+    
+    let groupedPlans = actionPlan
+      .then(actionPlan)
+      .then(actionPlan)
+      .then(actionPlan)
+      .then(actionPlan)
+      .then(actionPlan)
+    
+    store.send(groupedPlans)
+    
+    wait(for: [expectation], timeout: 1.0)
+    XCTAssertEqual(cancellables.count, 0)
+  }
 }
 
 extension StoreTests {

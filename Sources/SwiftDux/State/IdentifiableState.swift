@@ -12,7 +12,7 @@ extension IdentifiableState {
   ///
   /// - Parameter hasher: The hasher to apply the hash into.
   public var hashValue: Int {
-    return id.hashValue
+    id.hashValue
   }
 
   /// Applies the hash of the id to the hasher.
@@ -20,6 +20,10 @@ extension IdentifiableState {
   /// - Parameter hasher: The hasher to apply the id's hash into.
   public func hash(into hasher: inout Hasher) {
     id.hash(into: &hasher)
+  }
+
+  public static func == (lhs: Self, rhs: Self) -> Bool {
+    lhs.id == rhs.id
   }
 
 }

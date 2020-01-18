@@ -9,27 +9,47 @@ import Foundation
 /// a safe API to access a weak reference to it.
 public struct StoreProxy<State> where State: StateType {
 
-  private var getState: () -> State?
-
   /// Subscribe to state changes.
-  public var didChange: PassthroughSubject<Action, Never>
-
-  /// Send an action to the store.
-  public var send: SendAction
+  private var store: Store<State>
 
   /// Send an action to the next middleware
-  public var next: SendAction
+  private var nextBlock: SendAction?
+
+  private var doneBlock: (() -> Void)?
 
   /// Retrieves the latest state from the store.
-  public var state: State? {
-    getState()
+  public var state: State {
+    store.state
   }
 
-  internal init(store: Store<State>, send: SendAction? = nil, next: SendAction? = nil) {
-    let send: SendAction = send ?? { [weak store] in store?.send($0) }
-    self.didChange = store.didChange
-    self.getState = { [weak store] in store?.state }
-    self.send = send
-    self.next = next ?? send
+  /// Emits after the specified action was sent to the store.
+  public var didChange: AnyPublisher<Action, Never> {
+    store.didChange
+  }
+
+  internal init(store: Store<State>, next: SendAction? = nil, done: (() -> Void)? = nil) {
+    self.store = store
+    self.nextBlock = next
+    self.doneBlock = done
+  }
+
+  /// Send an action to the store.
+  /// - Parameter action: The action to send
+  public func send(_ action: Action) {
+    store.send(action)
+  }
+
+  /// Use this in middleware to send an action to the next
+  /// step in the pipeline. Outside of middleware, it does nothing.
+  /// - Parameter action: The action to send
+  public func next(_ action: Action) {
+    nextBlock?(action)
+  }
+
+  /// Used by action plans to tell the store that a publisher has completed or cancelled its work.
+  /// Only use this if the action plan is not returning a publisher or subscribing via ActionSubscriber.
+  /// This is not needed by action plans that don't return a cancellable.
+  public func done() {
+    doneBlock?()
   }
 }

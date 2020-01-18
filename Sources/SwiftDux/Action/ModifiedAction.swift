@@ -13,7 +13,6 @@ internal struct ModifiedAction: Action {
 
   init(action: Action, previousAction: Action) {
     self.action = action
-
     if let previousAction = previousAction as? ModifiedAction {
       self.previousActions = previousAction.previousActions + [previousAction.action]
     } else {
@@ -22,11 +21,9 @@ internal struct ModifiedAction: Action {
   }
 
   func modified(with newAction: Action) -> ModifiedAction {
-    var newPreviousActions = previousActions
-    newPreviousActions.append(action)
-    return ModifiedAction(
+    ModifiedAction(
       action: newAction,
-      previousActions: newPreviousActions
+      previousActions: previousActions + [action]
     )
   }
 }

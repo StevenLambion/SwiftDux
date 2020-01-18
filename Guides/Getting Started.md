@@ -202,6 +202,8 @@ extension LoginForm: Connectable {
     var email: Binding<String>
   }
 
+  // Use map(state:binder:) to create bindings for the view.
+
   func map(state: AppState, binder: StateBinder) -> Props? {
     var loginForm = state.loginForm
     return Props(
@@ -211,6 +213,35 @@ extension LoginForm: Connectable {
 
 
 }
+```
+
+## Previewing Connected Views
+To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add `provideStore(_:)` after the connect method.
+
+```swift
+#if DEBUG
+public enum TodoRowContainer_Previews: PreviewProvider {
+  static var store: Store<TodoList> {
+    Store(
+      state: TodoList(
+        id: "1",
+        name: "TodoList",
+        todos: .init([
+          Todo(id: "1", text: "Get milk")
+        ])
+      ),
+      reducer: TodosReducer()
+    )
+  }
+  
+  public static var previews: some View {
+    TodoRowContainer()
+      .connect(with: "1")
+      .provideStore(store)
+  }
+  
+}
+#endif
 ```
 
 ## Action Plans
@@ -237,15 +268,16 @@ let plan = ActionPlan<AppState> { store in
 
 /// Publish actions to the store:
 
-let plan = ActionPlan<AppState> { store -> Publishers.Sequence<Action, Never> in
-  Publishers.Sequence<Action, Never>(sequence: [
+let plan = ActionPlan<AppState> { store, completed in
+  let actions = [
     actionA,
     actionB,
     actionC
-  }
+  ].publisher
+  return actions.send(to: store, receivedCompletion: completed)
 }
 
-/// In a View, dispatch the action plan like any other action:
+/// In a View, dispatch the plan like any other action:
 
 dispatch(plan)
 ```
@@ -265,15 +297,16 @@ struct ActionPlans {
 extension ActionPlans {
 
   var queryTodos: Action {
-    ActionPlan<AppState> { store in
+    ActionPlan<AppState> { store, completed in
       store.didChange
         .filter { $0 is TodoListAction }
-        .map { _ in store.state?.todoList.filterBy ?? "" }
+        .map { _ in store.state.todoList.filterBy }
         .removeDuplicates()
         .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
         .flatMap { filter in self.services.queryTodos(filter: filter) }
         .catch { _ in Just<[TodoItem]>([]) }
         .map { todos -> Action in TodoListAction.setTodos(todos) }
+        .send(to: store, receivedCompletion: completed)
     }
   }
 

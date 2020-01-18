@@ -10,10 +10,12 @@ public final class Store<State> where State: StateType {
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
 
+  /// Subscribe for state changes. It emits the latest action sent to the store.
+  public let didChange: AnyPublisher<Action, Never>
+
   private var reduceAction: SendAction = { _ in }
 
-  /// Subscribe for state changes. It emits the latest action sent to the store.
-  public let didChange = PassthroughSubject<Action, Never>()
+  internal let didChangeSubject = PassthroughSubject<Action, Never>()
 
   // swift-format-disable: ValidateDocumentationComments
 
@@ -26,11 +28,12 @@ public final class Store<State> where State: StateType {
   public init<R>(state: State, reducer: R, middleware: [Middleware<State>] = []) where R: Reducer, R.State == State {
     let storeReducer = StoreReducer(reducer)
     self.state = state
+    self.didChange = didChangeSubject.eraseToAnyPublisher()
     self.reduceAction = middleware.reversed().reduce(
       { [weak self] action in
         guard let self = self else { return }
         self.state = storeReducer.reduceAny(state: self.state, action: action)
-        self.didChange.send(action)
+        self.didChangeSubject.send(action)
       },
       { next, middleware in
         middleware(StoreProxy(store: self, next: next))
@@ -43,7 +46,7 @@ public final class Store<State> where State: StateType {
 
 }
 
-extension Store: ActionDispatcher, Subscriber {
+extension Store: ActionDispatcher {
 
   // swift-format-disable: UseLetInEveryBoundCaseVariable
 
@@ -64,15 +67,23 @@ extension Store: ActionDispatcher, Subscriber {
 
   /// Handles the sending of normal action plans.
   private func send(actionPlan: ActionPlan<State>) {
-    if let publisher = actionPlan.run(StoreProxy(store: self)) {
-      publisher.subscribe(self)
+    var cancellable: AnyCancellable? = nil
+    let storeProxy = StoreProxy(
+      store: self,
+      done: {
+        cancellable?.cancel()
+        cancellable = nil
+      }
+    )
+    cancellable = actionPlan.run(storeProxy) { [storeProxy] in
+      storeProxy.done()
     }
-    didChange.send(actionPlan)
+    didChangeSubject.send(actionPlan)
   }
 
   private func send(modifiedAction: ModifiedAction) {
     reduceAction(modifiedAction.action)
-    modifiedAction.previousActions.forEach { self.didChange.send($0) }
+    modifiedAction.previousActions.forEach { self.didChangeSubject.send($0) }
   }
 
   /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
@@ -82,11 +93,38 @@ extension Store: ActionDispatcher, Subscriber {
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
   public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
-    return StoreActionDispatcher(
+    StoreActionDispatcher(
       upstream: self,
       modifyAction: modifyAction,
       sentAction: sentAction
     )
   }
 
+}
+
+extension Publisher where Output == Action, Failure == Never {
+
+  /// Subscribe to a publisher of actions, and send the results to a store.
+  /// - Parameters:
+  ///   - store: A store proxy
+  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Returns: A cancellable to unsubscribe.
+  public func send<State>(to store: Store<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
+  where State: StateType {
+    self.send(to: store, receivedCompletion: receivedCompletion)
+  }
+
+  /// Subscribe to a publisher of actions, and send the results to a store.
+  /// - Parameters:
+  ///   - store: A store proxy
+  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Returns: A cancellable to unsubscribe.
+  public func send<State>(to store: StoreProxy<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
+  where State: StateType {
+    let cancellable = self.send(to: store.send, receivedCompletion: receivedCompletion)
+    return AnyCancellable { [cancellable] in
+      cancellable.cancel()
+      store.done()
+    }
+  }
 }

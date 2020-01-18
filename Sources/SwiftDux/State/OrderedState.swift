@@ -34,7 +34,7 @@ fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substa
   }
 
   static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
-    return lhs.orderOfIds == rhs.orderOfIds && lhs.values == lhs.values
+    lhs.orderOfIds == rhs.orderOfIds && lhs.values == lhs.values
   }
 
   /// Returns the ordered index position of a key.
@@ -183,7 +183,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   /// - Parameter id: The id of the substate.
   /// - Returns: The substate if it exists.
   public func value(forId id: Id) -> Substate? {
-    return storage.values[id]
+    storage.values[id]
   }
 
   /// Append a new substate to the end of the `OrderedState`.
@@ -310,7 +310,7 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   /// - Parameter isIncluded: Indicate the state should be included in the returned array.
   /// - Returns: an array of substates filtered by the provided operation.
   public func filter(_ isIncluded: (Substate) -> Bool) -> [Substate] {
-    return storage.orderOfIds.compactMap { id -> Substate? in
+    storage.orderOfIds.compactMap { id -> Substate? in
       let value = storage.values[id]!
       return isIncluded(value) ? value : nil
     }
@@ -418,7 +418,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
 extension OrderedState: Equatable {
 
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
-    return lhs.storage == rhs.storage
+    lhs.storage == rhs.storage
   }
 
 }

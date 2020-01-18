@@ -3,7 +3,7 @@ import Foundation
 
 /// A dispatcher tied to an upstream `Store<_>` object. This is useful to proxy dispatched actions.
 ///
-/// Use the `Store<_>.dispatcher(modifyAction:)` or the `StoreActionDispatcher<_>.proxy(modifyAction:)`
+/// Use the `Store<_>.proxy(modifyAction:)` or the `StoreActionDispatcher<_>.proxy(modifyAction:)`
 /// methods to create a new `StoreActionDispatcher`.
 ///
 /// ```
@@ -22,15 +22,11 @@ import Foundation
 ///   }
 /// }
 /// ```
-internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where State: StateType {
+internal final class StoreActionDispatcher<State>: ActionDispatcher where State: StateType {
 
   private let upstream: Store<State>
   private let modifyAction: ActionModifier?
   private let sentAction: ((Action) -> Void)?
-
-  var combineIdentifier: CombineIdentifier {
-    upstream.combineIdentifier
-  }
 
   /// Creates a new `StoreActionDispatcher` for the upstream store.
   /// - Parameters
@@ -49,7 +45,7 @@ internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where
     if let action = action as? ActionPlan<State> {
       send(actionPlan: action)
     } else {
-      if let modifyAction = modifyAction, let newAction = modifyAction(action) {
+      if let newAction = modifyAction?(action) {
         upstream.send(ModifiedAction(action: newAction, previousAction: action))
       } else {
         upstream.send(action)
@@ -67,10 +63,18 @@ internal struct StoreActionDispatcher<State>: ActionDispatcher, Subscriber where
   /// on the main thread.
   /// - Parameter actionPlan: The action to dispatch
   private func send(actionPlan: ActionPlan<State>) {
-    if let publisher = actionPlan.run(StoreProxy(store: upstream, send: self.send)) {
-      publisher.subscribe(self)
+    var cancellable: AnyCancellable?
+    let storeProxy = StoreProxy(
+      store: upstream,
+      done: {
+        cancellable?.cancel()
+        cancellable = nil
+      }
+    )
+    cancellable = actionPlan.run(storeProxy) { [storeProxy] in
+      storeProxy.done()
     }
-    upstream.didChange.send(actionPlan)
+    upstream.didChangeSubject.send(actionPlan)
     sentAction?(actionPlan)
   }
 
@@ -85,21 +89,18 @@ extension StoreActionDispatcher {
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
   func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
-    let upstreamModifyAction = self.modifyAction
-    var modifyActionWrapper: ActionModifier? = nil
-    if let modifyAction = modifyAction {
-      modifyActionWrapper = {
-        if let action = modifyAction($0) {
-          return upstreamModifyAction?(action) ?? action
-        }
-        return nil
-      }
-    } else {
-      modifyActionWrapper = upstreamModifyAction
-    }
-    return StoreActionDispatcher<State>(
+    StoreActionDispatcher<State>(
       upstream: self.upstream,
-      modifyAction: modifyActionWrapper,
+      modifyAction: { [weak self] (action: Action) -> Action? in
+        var action: Action? = action
+        if let unwrappedAction = action, let modifyAction = modifyAction {
+          action = modifyAction(unwrappedAction)
+        }
+        if let unwrappedAction = action, let nextModifyAction = self?.modifyAction {
+          action = nextModifyAction(unwrappedAction)
+        }
+        return action
+      },
       sentAction: sentAction
     )
   }

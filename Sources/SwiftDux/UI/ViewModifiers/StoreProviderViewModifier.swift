@@ -3,7 +3,6 @@ import SwiftUI
 
 /// A view modifier that injects a store into the environment.
 internal struct StoreProviderViewModifier<State>: ViewModifier where State: StateType {
-
   private var store: Store<State>
   private var connection: StateConnection<State>
   private var actionDispatcher: ActionDispatcher

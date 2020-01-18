@@ -1,20 +1,22 @@
+import Combine
 import SwiftUI
 
 /// Indicates a connectable view should not update when the state changes. The view will not subscribe to the store, and instead update
 /// only when it dispatches an action.
-public struct NoUpdateAction: Action {}
+internal final class NoUpdateAction: Action {
+  var unused: Bool = false
+}
 
 /// A view modifier that injects a store into the environment.
 internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
-
   @EnvironmentObject private var superstateConnection: StateConnection<Superstate>
   @Environment(\.storeUpdated) private var storeUpdated
   @Environment(\.actionDispatcher) private var actionDispatcher
 
-  private var filter: (Action) -> Bool
+  private var filter: ((Action) -> Bool)?
   private var mapState: (Superstate, StateBinder) -> State?
 
-  internal init(filter: @escaping (Action) -> Bool, mapState: @escaping (Superstate, StateBinder) -> State?) {
+  internal init(filter: ((Action) -> Bool)?, mapState: @escaping (Superstate, StateBinder) -> State?) {
     self.filter = filter
     self.mapState = mapState
   }
@@ -32,18 +34,29 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
   }
 
   private func createStateConnection(_ dispatchConnection: DispatchConnection) -> StateConnection<State> {
-    let hasUpdate = !filter(NoUpdateAction())
-    let superGetState = superstateConnection.getState
+    let getSuperstate = superstateConnection.getState
     let stateConnection = StateConnection<State>(
       getState: { [mapState] in
-        guard let superstate:Superstate = superGetState() else { return nil }
+        guard let superstate = getSuperstate() else { return nil }
         return mapState(superstate, StateBinder(actionDispatcher: dispatchConnection))
       },
-      changePublisher: hasUpdate
-        ? storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
-        : nil
+      changePublisher: createChangePublisher(from: dispatchConnection)
     )
     return stateConnection
+  }
+
+  private func createChangePublisher(from dispatchConnection: DispatchConnection) -> AnyPublisher<Void, Never> {
+    guard let filter = filter, hasUpdateFilter() else {
+      return dispatchConnection.objectWillChange.eraseToAnyPublisher()
+    }
+    let filterPublisher = storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
+    return dispatchConnection.objectWillChange.merge(with: filterPublisher).eraseToAnyPublisher()
+  }
+
+  private func hasUpdateFilter() -> Bool {
+    let noUpdateAction = NoUpdateAction()
+    _ = filter?(noUpdateAction)
+    return !noUpdateAction.unused
   }
 
 }
@@ -71,7 +84,7 @@ extension View {
   /// - Returns: The modified view.
   @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func connect<Superstate, State>(
-    updateWhen filter: @escaping (Action) -> Bool = { $0 is NoUpdateAction },
+    updateWhen filter: ((Action) -> Bool)? = nil,
     mapState: @escaping (Superstate, StateBinder) -> State?
   ) -> some View {
     self.modifier(StateConnectionViewModifier(filter: filter, mapState: mapState))

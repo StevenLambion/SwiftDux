@@ -43,7 +43,7 @@ class AppReducer : Reducer {
   // Delegate all other actions to the subreducers.
 
   reduceNext(state: AppState, action: Action) -> AppState {
-    return AppState(
+    AppState(
       authors: state.authors.mapValues {
         self.authorReducer.reduceAny(state: $0, action action)
       }

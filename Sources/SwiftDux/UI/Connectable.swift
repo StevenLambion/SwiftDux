@@ -3,6 +3,7 @@ import SwiftUI
 /// Makes a view "connectable" to the application state.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol Connectable {
+
   associatedtype Superstate
   associatedtype State
 
@@ -36,7 +37,9 @@ extension Connectable {
 
   /// Default implementation disables updates by action.
   public func updateWhen(action: Action) -> Bool {
-    action is NoUpdateAction
+    guard let action = action as? NoUpdateAction else { return false }
+    action.unused = true
+    return true
   }
 
   /// Default implementation. Returns nil.

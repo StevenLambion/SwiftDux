@@ -7,18 +7,19 @@ import Foundation
 ///   enum UserAction {
 ///
 ///     static func loadUser(byId id: String) -> ActionPlan<AppState> {
-///       ActionPlan<AppState> { store in
-///         guard !store.state?.users.hasValue(id) else { return nil }
+///       ActionPlan<AppState> { store, completed in
+///         guard !store.state.users.hasValue(id) else { return nil }
 ///         store.send(UserAction.setLoading(true))
 ///         return UserService.getUser(id)
 ///           .first()
 ///           .flatMap { user in
-///               Publishers.Sequence<[Action], Never>(sequence: [
+///               [
 ///                 UserAction.setUser(user)
 ///                 UserAction.setLoading(false)
-///               ])
+///               ].publisher
 ///             }
 ///           }
+///           .send(to: store, receivedCompletion: completed)
 ///       }
 ///     }
 ///
@@ -36,25 +37,34 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   ///
   /// - Parameter StoreProxy: Dispatch actions or retreive the current state from the store.
   /// - Returns: A publisher that can send actions to the store.
-  public typealias Body = (StoreProxy<State>) -> AnyPublisher<Action, Never>?
+  public typealias Body = (StoreProxy<State>, @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable?
 
   private var body: Body
-
-  internal var nextActions: [Action] = []
+  private var nextActions: [Action] = []
 
   /// Create a new action plan that returns an optional publisher.
   ///
   /// - Parameter body: The body of the action plan.
-  public init<P>(_ body: @escaping (StoreProxy<State>) -> P?) where P: Publisher, P.Output == Action, P.Failure == Never {
-    self.body = { body($0)?.eraseToAnyPublisher() }
+  public init(_ body: @escaping Body) {
+    self.body = body
+  }
+
+  /// Create a new action plan that returns an optional publisher.
+  ///
+  /// - Parameter body: The body of the action plan.
+  public init<P>(_ body: @escaping (StoreProxy<State>) -> P) where P: Publisher, P.Output == Action, P.Failure == Never {
+    self.body = { store, completed in
+      body(store).send(to: store, receivedCompletion: completed)
+    }
   }
 
   /// Create a new action plan.
   ///
   /// - Parameter body: The body of the action plan.
   public init(_ body: @escaping (StoreProxy<State>) -> Void) {
-    self.body = {
-      body($0)
+    self.body = { store, completed in
+      body(store)
+      completed()
       return nil
     }
   }
@@ -62,24 +72,21 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   /// Manually run the action plan.
   ///
   /// this can be useful to run an action plan inside a containing action plan.
-  /// - Parameter store: Dispatch actions or retreive the current state from the store.
+  /// - Parameters
+  ///   - store: Dispatch actions or retreive the current state from the store.
+  ///   - completed: A block that's called when the plan has completed.
   /// - Returns: A publisher that can send actions to the store.
-  public func run(_ store: StoreProxy<State>) -> AnyPublisher<Action, Never>? {
+  public func run(_ store: StoreProxy<State>, completed: @escaping ActionSubscriber.ReceivedCompletion = {}) -> AnyCancellable? {
     guard var nextAction = nextActions.first as? ActionPlan<State> else {
-      return body(store)
+      return body(store, completed)
     }
 
     nextAction.nextActions = Array(nextActions[1...])
 
-    if let publisher = body(store) {
-      return publisher.handleEvents(
-        receiveCompletion: { _ in store.send(nextAction) },
-        receiveCancel: { store.send(nextAction) }
-      ).eraseToAnyPublisher()
+    return body(store) {
+      completed()
+      store.send(nextAction)
     }
-
-    store.send(nextAction)
-    return nil
   }
 
   /// Send an action plan that can be cancelled.
@@ -115,19 +122,20 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   /// - Parameter send: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
   public func sendAsCancellable(_ send: SendAction) -> Cancellable {
-    var publisherCancellable: Cancellable? = nil
-
+    var publisherCancellable: AnyCancellable? = nil
     send(
-      ActionPlan<State> { store -> () in
-        guard let publisher = self.run(store) else { return }
-        publisherCancellable = publisher.sink { action in
-          store.send(action)
+      ActionPlan<State> { store, completed in
+        publisherCancellable = self.run(store) {
+          publisherCancellable = nil
+          completed()
         }
+        return publisherCancellable
       }
     )
 
-    return AnyCancellable { [publisherCancellable] in
+    return AnyCancellable {
       publisherCancellable?.cancel()
+      publisherCancellable = nil
     }
   }
 
@@ -150,8 +158,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   public func then(_ block: @escaping (State) -> Void) -> ActionPlan<State> {
     then(
       ActionPlan<State> { store in
-        guard let state = store.state else { return }
-        block(state)
+        block(store.state)
       }
     )
   }
@@ -161,6 +168,10 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   /// - Parameter block: A block of code to execute once the action plan has completed.
   /// - Returns: A new action plan.
   public func then(_ block: @escaping () -> Void) -> ActionPlan<State> {
-    then(ActionPlan<State> { _ in block() })
+    then(
+      ActionPlan<State> { _ in
+        block()
+      }
+    )
   }
 }
