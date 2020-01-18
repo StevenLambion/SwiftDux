@@ -36,7 +36,9 @@ extension Connectable {
 
   /// Default implementation disables updates by action.
   public func updateWhen(action: Action) -> Bool {
-    action is NoUpdateAction
+    guard let action = action as? NoUpdateAction else { return false }
+    action.unused = true
+    return true
   }
 
   /// Default implementation. Returns nil.
