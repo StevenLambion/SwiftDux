@@ -7,28 +7,21 @@
 [![Github workflow][github-workflow-image]](https://github.com/StevenLambion/SwiftDux/actions)
 [![codecov][codecov-image]](https://codecov.io/gh/StevenLambion/SwiftDux)
 
-SwiftDux is a redux inspired state management solution built around the Combine and SwiftUI frameworks. If you need to target an older operating system or require a more established library,  check out [ReSwift](https://github.com/ReSwift/ReSwift).
+SwiftDux is a redux inspired state management solution built on top of Combine and SwiftUI. It presents a way to implement an elm or flux like architecture as an alternative to the MVVM-like patterns Apple has presented. It allows you to build an application around predictable state using reactive, unidirectional data flows.
+
+## Should I use this?
+
+SwiftDux relies on advance functionality of SwiftUI that may break or change between Xcode updates. Because of this, it is in constant development and should be considered a beta until SwiftUI has a more stable release. If you're starting a new application using SwiftUI that will be released with or after the next major OS, then it should be OK to use this library. If you need to target an older operating system or require a more established library,  check out [ReSwift](https://github.com/ReSwift/ReSwift) instead.
 
 ## Features
 
-### Redux-like State Management.
-- Familiar API to Redux.
-- Incapsulate action-based workflows via `ActionPlans`.
-- Manage ordered collections of objects using  `OrderedState<_>`.
-- Extend functionality with `Middleware`.
+- Familiar API to __Redux__.
+- Built for __SwiftUI__
+- __Middleware__ support
+- __Combine__ powered __Action Plans__ to incapsulate async workflows.
+- __OrderedState<_>__ to display sorted entities in List views.
 
-### SwiftUI Integration.
-
-- `@MappedState` and `@MappedDispatch` injects state and dispatch actions from views.
-- `Connectable` protocol maps the application state to the props required by a view.
-- `Binding<_>` support for views like `TextField`.
-- `OrderedState<_>` has a compatible API for List events such as `onDelete` and `onMove`.
-- Notable `View` methods:
-  - `provideStore(_:)` Injects the SwiftDux store.
-  - `onAction(perform:)` track or modify dispatched actions from subviews.
-  - `onAppear(dispatch:)` sends an action when a view appears, and cleans up any action plans that might return a publisher. 
-
-### Built-in Middleware (Under the SwiftDuxExtras module)
+## Built-in Middleware
 
 - `PersistStateMiddleware` automatically persists and restores the application state.
 - `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
@@ -264,6 +257,8 @@ extension LoginForm: Connectable {
     var email: Binding<String>
   }
 
+  // Use map(state:binder:) to create bindings for the view.
+
   func map(state: AppState, binder: StateBinder) -> Props? {
     var loginForm = state.loginForm
     return Props(
@@ -304,9 +299,8 @@ let plan = ActionPlan<AppState> { store, completed in
     actionA,
     actionB,
     actionC
-  ]
-  
-  actions.publisher.send(to: store, receivedCompletion: completed)
+  ].publisher
+  return actions.send(to: store, receivedCompletion: completed)
 }
 
 /// In a View, dispatch the plan like any other action:
@@ -332,7 +326,7 @@ extension ActionPlans {
     ActionPlan<AppState> { store, completed in
       store.didChange
         .filter { $0 is TodoListAction }
-        .map { _ in store.state?.todoList.filterBy ?? "" }
+        .map { _ in store.state.todoList.filterBy }
         .removeDuplicates()
         .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
         .flatMap { filter in self.services.queryTodos(filter: filter) }
@@ -356,6 +350,35 @@ struct TodoListView: View {
   // ...
 
 }
+```
+
+## Previewing Connected Views
+To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add `provideStore(_:)` after the connect method.
+
+```swift
+#if DEBUG
+public enum TodoRowContainer_Previews: PreviewProvider {
+  static var store: Store<TodoList> {
+    Store(
+      state: TodoList(
+        id: "1",
+        name: "TodoList",
+        todos: .init([
+          Todo(id: "1", text: "Get milk")
+        ])
+      ),
+      reducer: TodosReducer()
+    )
+  }
+  
+  public static var previews: some View {
+    TodoRowContainer()
+      .connect(with: "1")
+      .provideStore(store)
+  }
+  
+}
+#endif
 ```
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
