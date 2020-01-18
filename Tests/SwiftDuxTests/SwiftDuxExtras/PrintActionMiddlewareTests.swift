@@ -15,7 +15,7 @@ final class PrintActionMiddlewareTests: XCTestCase {
       state: TestState(),
       reducer: TestReducer(),
       middleware: [
-        PrintActionMiddleware { log.append($0) }
+        PrintActionMiddleware(printer: { log.append($0) })
       ]
     )
     store.send(TestAction.actionB)
