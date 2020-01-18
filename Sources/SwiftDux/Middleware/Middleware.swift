@@ -11,4 +11,21 @@ import Foundation
 ///
 /// For a reducer's own state and actions, implement the `reduce(state:action:)`.
 /// For subreducers, implement the `reduceNext(state:action:)` method.
-public typealias Middleware<State: StateType> = (StoreProxy<State>) -> SendAction
+public protocol Middleware {
+
+  /// Perform any middleware actions within this function.
+  ///
+  /// - Parameters:
+  ///   - store: The store object. Use `store.next` when the middleware is complete.
+  ///   - action: The latest dispatched action to process.
+  func run<State>(store: StoreProxy<State>, action: Action) where State: StateType
+
+}
+
+extension Middleware {
+
+  internal func compile<State>(store: (StoreProxy<State>)) -> SendAction {
+    { action in self.run(store: store, action: action) }
+  }
+
+}
