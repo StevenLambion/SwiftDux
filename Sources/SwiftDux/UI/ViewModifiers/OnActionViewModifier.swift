@@ -3,7 +3,6 @@ import SwiftUI
 
 internal struct OnActionViewModifier: ViewModifier {
   @Environment(\.actionDispatcher) private var actionDispatcher
-
   private var perform: ActionModifier? = nil
 
   internal init(perform: ActionModifier? = nil) {
@@ -14,7 +13,6 @@ internal struct OnActionViewModifier: ViewModifier {
     let proxy = actionDispatcher.proxy(modifyAction: perform, sentAction: nil)
     return content.environment(\.actionDispatcher, proxy)
   }
-
 }
 
 extension View {
@@ -27,5 +25,4 @@ extension View {
   public func onAction(perform: @escaping ActionModifier) -> some View {
     modifier(OnActionViewModifier(perform: perform))
   }
-
 }

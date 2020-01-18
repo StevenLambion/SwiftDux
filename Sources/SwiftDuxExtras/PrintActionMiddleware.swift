@@ -2,19 +2,23 @@ import Foundation
 import SwiftDux
 
 /// Default printer for the `PrintActionMiddleware<_>`
-public func defaultActionPrinter(_ actionDiscription: String) {
-  print(actionDiscription)
+fileprivate func defaultActionPrinter(_ actionDescription: String) {
+  print(actionDescription)
 }
 
 // swift-format-disable: AlwaysUseLowerCamelCase
 
 /// A simple middlware that prints the description of the latest action.
-/// - Parameter printer: A custom printer for the action's discription. Defaults to print().
+/// - Parameters:
+///   - printer: A custom printer for the action's discription. Defaults to print().
+///   - filter: Filter what actions get printed.
 /// - Returns: The middleware
-public func PrintActionMiddleware<State>(printer: @escaping (String) -> Void = defaultActionPrinter) -> Middleware<State> {
-  { store in
+public func PrintActionMiddleware<State>(printer: ((String) -> Void)? = nil, filter: @escaping (Action) -> Bool = { _ in true }) -> Middleware<State> {
+  let printer = printer ?? defaultActionPrinter
+  return { store in
     { action in
       defer { store.next(action) }
+      guard filter(action) else { return }
       printer(String(describing: action))
     }
   }

@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 internal final class DispatchConnection: ActionDispatcher, ObservableObject {
-  var objectWillChange: ObservableObjectPublisher = ObservableObjectPublisher()
+  var objectWillChange = ObservableObjectPublisher()
 
   private var actionDispatcher: ActionDispatcher
 

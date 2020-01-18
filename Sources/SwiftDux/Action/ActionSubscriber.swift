@@ -6,17 +6,16 @@ final public class ActionSubscriber: Subscriber {
 
   public typealias ReceivedCompletion = () -> Void
 
-  let sendAction: SendAction
-  let receivedCompletion: ReceivedCompletion?
-
-  var subscription: Subscription? = nil {
+  private let sendAction: SendAction
+  private let receivedCompletion: ReceivedCompletion?
+  private var subscription: Subscription? = nil {
     willSet {
       guard let subscription = subscription else { return }
       subscription.cancel()
     }
   }
 
-  init(sendAction: @escaping SendAction, receivedCompletion: ReceivedCompletion?) {
+  internal init(sendAction: @escaping SendAction, receivedCompletion: ReceivedCompletion?) {
     self.sendAction = sendAction
     self.receivedCompletion = receivedCompletion
   }

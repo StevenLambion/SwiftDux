@@ -14,7 +14,6 @@ import SwiftUI
 /// }
 /// ```
 public struct StateBinder {
-
   internal var actionDispatcher: ActionDispatcher
 
   /// Create a binding between a given state and an action.
@@ -32,5 +31,4 @@ public struct StateBinder {
       }
     )
   }
-
 }

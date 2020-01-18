@@ -8,7 +8,7 @@ import Foundation
 ///
 ///     static func loadUser(byId id: String) -> ActionPlan<AppState> {
 ///       ActionPlan<AppState> { store, completed in
-///         guard !store.state?.users.hasValue(id) else { return nil }
+///         guard !store.state.users.hasValue(id) else { return nil }
 ///         store.send(UserAction.setLoading(true))
 ///         return UserService.getUser(id)
 ///           .first()
@@ -40,8 +40,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   public typealias Body = (StoreProxy<State>, @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable?
 
   private var body: Body
-
-  internal var nextActions: [Action] = []
+  private var nextActions: [Action] = []
 
   /// Create a new action plan that returns an optional publisher.
   ///

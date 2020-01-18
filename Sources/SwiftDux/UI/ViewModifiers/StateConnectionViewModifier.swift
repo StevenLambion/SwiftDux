@@ -9,7 +9,6 @@ internal final class NoUpdateAction: Action {
 
 /// A view modifier that injects a store into the environment.
 internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
-
   @EnvironmentObject private var superstateConnection: StateConnection<Superstate>
   @Environment(\.storeUpdated) private var storeUpdated
   @Environment(\.actionDispatcher) private var actionDispatcher

@@ -27,6 +27,6 @@ public protocol ActionDispatcher {
   ///   - modifyAction: An optional closure to modify the action before it continues up stream.
   ///   - sentAction: Called directly after an action was sent up stream.
   /// - Returns: a new action dispatcher.
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
+  func proxy(modifyAction: ActionModifier?, sentAction: SendAction?) -> ActionDispatcher
 
 }
