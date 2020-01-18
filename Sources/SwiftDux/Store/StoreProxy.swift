@@ -10,7 +10,7 @@ import Foundation
 public struct StoreProxy<State> where State: StateType {
 
   /// Subscribe to state changes.
-  private var store: Store<State>
+  private unowned var store: Store<State>
 
   /// Send an action to the next middleware
   private var nextBlock: SendAction?

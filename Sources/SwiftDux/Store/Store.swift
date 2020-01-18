@@ -25,7 +25,7 @@ public final class Store<State> where State: StateType {
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
   ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
   ///   - middleware: One or more middleware plugins
-  public init<R>(state: State, reducer: R, middleware: [Middleware<State>] = []) where R: Reducer, R.State == State {
+  public init<R>(state: State, reducer: R, middleware: [Middleware] = []) where R: Reducer, R.State == State {
     let storeReducer = StoreReducer(reducer)
     self.state = state
     self.didChange = didChangeSubject.eraseToAnyPublisher()
@@ -36,7 +36,7 @@ public final class Store<State> where State: StateType {
         self.didChangeSubject.send(action)
       },
       { next, middleware in
-        middleware(StoreProxy(store: self, next: next))
+        middleware.compile(store: StoreProxy(store: self, next: next))
       }
     )
     self.reduceAction(StoreAction<State>.prepare)
