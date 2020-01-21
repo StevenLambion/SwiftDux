@@ -41,11 +41,3 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
     )
   }
 }
-
-extension Binding: Equatable where Value: Equatable {
-
-  public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
-    lhs.wrappedValue == rhs.wrappedValue
-  }
-
-}
