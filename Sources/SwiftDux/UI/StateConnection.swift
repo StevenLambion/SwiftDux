@@ -8,7 +8,7 @@ import SwiftUI
 /// typically fires from the store after the state has been modified, or directly from an action being dispatched.
 internal final class StateConnection<State>: ObservableObject, Identifiable where State: Equatable {
   @Published var state: State?
-  
+
   private var getState: () -> State? = { nil }
   private var changePublisher: AnyPublisher<Action, Never>
   private var cancellable: Cancellable? = nil
@@ -17,7 +17,7 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
     self.getState = getState
     self.changePublisher = changePublisher
     self.state = getState()
-    
+
     if emitChanges {
       self.cancellable = changePublisher.compactMap { _ in getState() }.sink { [weak self] state in
         guard state != self?.state else { return }
@@ -25,7 +25,7 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
       }
     }
   }
-  
+
   func map<Substate>(
     state mapState: @escaping (State, StateBinder) -> Substate?,
     changePublisher: AnyPublisher<Action, Never>? = nil,
@@ -43,9 +43,9 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
 }
 
 extension Binding: Equatable where Value: Equatable {
-  
+
   public static func == (lhs: Binding<Value>, rhs: Binding<Value>) -> Bool {
     lhs.wrappedValue == rhs.wrappedValue
   }
-  
+
 }

@@ -39,7 +39,6 @@ final public class ActionSubscriber: Subscriber {
     subscription?.cancel()
     subscription = nil
   }
-
 }
 
 extension Publisher where Output == Action, Failure == Never {
@@ -68,5 +67,4 @@ extension Publisher where Output == Action, Failure == Never {
       subscriber.cancel()
     }
   }
-
 }

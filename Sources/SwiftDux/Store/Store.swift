@@ -82,7 +82,7 @@ extension Store: ActionDispatcher {
   }
 
   private func send(modifiedAction: ModifiedAction) {
-    reduceAction(modifiedAction.action)
+    send(modifiedAction.action)
     modifiedAction.previousActions.forEach { self.didChangeSubject.send($0) }
   }
 

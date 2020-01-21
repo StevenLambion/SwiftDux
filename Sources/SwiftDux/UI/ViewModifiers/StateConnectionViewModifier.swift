@@ -7,7 +7,6 @@ internal final class NoUpdateAction: Action {
   var unused: Bool = false
 }
 
-/// A view modifier that injects a store into the environment.
 internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier where Superstate: Equatable, State: Equatable {
   @EnvironmentObject private var superstateConnection: StateConnection<Superstate>
   @Environment(\.storeUpdated) private var storeUpdated
@@ -24,8 +23,10 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier whe
     let stateConnection = superstateConnection.map(
       state: mapState,
       changePublisher: createChangePublisher(),
-      binder: StateBinder(actionDispatcher: actionDispatcher
-    ))
+      binder: StateBinder(
+        actionDispatcher: actionDispatcher
+      )
+    )
     return stateConnection.state.map { _ in
       content.environmentObject(stateConnection)
     }

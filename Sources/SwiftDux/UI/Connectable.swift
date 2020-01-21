@@ -51,7 +51,6 @@ extension Connectable {
   public func map(state: Superstate, binder: StateBinder) -> Props? {
     map(state: state)
   }
-
 }
 
 extension Connectable where Self: View {
@@ -62,5 +61,4 @@ extension Connectable where Self: View {
   public func connect() -> some View {
     self.connect(mapState: self.map)
   }
-
 }

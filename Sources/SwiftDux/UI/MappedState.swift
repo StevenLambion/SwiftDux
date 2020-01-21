@@ -19,7 +19,7 @@ public struct MappedState<State>: DynamicProperty where State: Equatable {
   // Needed by SwiftUI in case StateBinder is used. This attaches the required
   // subscriptions.
   @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher
-  
+
   public var wrappedValue: State {
     guard let state = connection.state else {
       fatalError("State was not connected before using @MappedState")

@@ -27,5 +27,4 @@ extension Middleware {
   internal func compile<State>(store: (StoreProxy<State>)) -> SendAction {
     { action in self.run(store: store, action: action) }
   }
-
 }
