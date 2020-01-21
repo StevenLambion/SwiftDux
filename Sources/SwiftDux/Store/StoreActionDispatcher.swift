@@ -92,14 +92,14 @@ extension StoreActionDispatcher {
     StoreActionDispatcher<State>(
       upstream: self.upstream,
       modifyAction: { [weak self] (action: Action) -> Action? in
-        var action: Action? = action
-        if let unwrappedAction = action, let modifyAction = modifyAction {
-          action = modifyAction(unwrappedAction)
+        var modifiedAction: Action?
+        if let modifyAction = modifyAction {
+          modifiedAction = modifyAction(action)
         }
-        if let unwrappedAction = action, let nextModifyAction = self?.modifyAction {
-          action = nextModifyAction(unwrappedAction)
+        if let nextModifyAction = self?.modifyAction {
+          modifiedAction = nextModifyAction(modifiedAction ?? action)
         }
-        return action
+        return modifiedAction
       },
       sentAction: sentAction
     )

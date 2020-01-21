@@ -4,7 +4,7 @@ import Foundation
 ///
 /// This is typically used for entities stored in your state that might be accessed by id
 /// or displayed in a `List` view.
-public protocol IdentifiableState: StateType, Identifiable, Equatable where ID: Codable {}
+public protocol IdentifiableState: StateType, Identifiable where ID: Codable {}
 
 extension IdentifiableState {
 
@@ -21,9 +21,4 @@ extension IdentifiableState {
   public func hash(into hasher: inout Hasher) {
     id.hash(into: &hasher)
   }
-
-  public static func == (lhs: Self, rhs: Self) -> Bool {
-    lhs.id == rhs.id
-  }
-
 }

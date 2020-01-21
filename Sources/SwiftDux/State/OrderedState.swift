@@ -34,7 +34,7 @@ fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substa
   }
 
   static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
-    lhs.orderOfIds == rhs.orderOfIds && lhs.values == lhs.values
+    lhs.orderOfIds == rhs.orderOfIds && lhs.values == rhs.values
   }
 
   /// Returns the ordered index position of a key.
@@ -415,7 +415,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
   }
 }
 
-extension OrderedState: Equatable {
+extension OrderedState {
 
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
     lhs.storage == rhs.storage

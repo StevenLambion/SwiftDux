@@ -8,7 +8,7 @@ internal final class NoUpdateAction: Action {
 }
 
 /// A view modifier that injects a store into the environment.
-internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
+internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier where Superstate: Equatable, State: Equatable {
   @EnvironmentObject private var superstateConnection: StateConnection<Superstate>
   @Environment(\.storeUpdated) private var storeUpdated
   @Environment(\.actionDispatcher) private var actionDispatcher
@@ -17,58 +17,31 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier {
   private var mapState: (Superstate, StateBinder) -> State?
 
   internal init(filter: ((Action) -> Bool)?, mapState: @escaping (Superstate, StateBinder) -> State?) {
-    self.filter = filter
     self.mapState = mapState
   }
 
-  public func body(content: Content) -> some View {
-    let dispatchConnection = DispatchConnection(actionDispatcher: actionDispatcher)
-    let stateConnection = createStateConnection(dispatchConnection)
-    return StateConnectionViewGuard(
-      stateConnection: stateConnection,
-      content:
-        content
-        .environment(\.actionDispatcher, dispatchConnection)
-        .environmentObject(stateConnection)
-    )
-  }
-
-  private func createStateConnection(_ dispatchConnection: DispatchConnection) -> StateConnection<State> {
-    let getSuperstate = superstateConnection.getState
-    let stateConnection = StateConnection<State>(
-      getState: { [mapState] in
-        guard let superstate = getSuperstate() else { return nil }
-        return mapState(superstate, StateBinder(actionDispatcher: dispatchConnection))
-      },
-      changePublisher: createChangePublisher(from: dispatchConnection)
-    )
-    return stateConnection
-  }
-
-  private func createChangePublisher(from dispatchConnection: DispatchConnection) -> AnyPublisher<Void, Never> {
-    guard let filter = filter, hasUpdateFilter() else {
-      return dispatchConnection.objectWillChange.eraseToAnyPublisher()
+  func body(content: Content) -> some View {
+    let stateConnection = superstateConnection.map(
+      state: mapState,
+      changePublisher: createChangePublisher(),
+      binder: StateBinder(actionDispatcher: actionDispatcher
+    ))
+    return stateConnection.state.map { _ in
+      content.environmentObject(stateConnection)
     }
-    let filterPublisher = storeUpdated.filter(filter).map { _ in }.eraseToAnyPublisher()
-    return dispatchConnection.objectWillChange.merge(with: filterPublisher).eraseToAnyPublisher()
+  }
+
+  private func createChangePublisher() -> AnyPublisher<Action, Never> {
+    guard let filter = filter, hasUpdateFilter() else {
+      return storeUpdated
+    }
+    return storeUpdated.filter(filter).eraseToAnyPublisher()
   }
 
   private func hasUpdateFilter() -> Bool {
     let noUpdateAction = NoUpdateAction()
     _ = filter?(noUpdateAction)
     return !noUpdateAction.unused
-  }
-
-}
-
-/// View that renders the UI of a state connection only when state isn't nil.
-private struct StateConnectionViewGuard<State, Content>: View where Content: View {
-
-  @ObservedObject var stateConnection: StateConnection<State>
-  var content: Content
-
-  var body: some View {
-    stateConnection.latestState.map { _ in content }
   }
 
 }
@@ -86,7 +59,7 @@ extension View {
   public func connect<Superstate, State>(
     updateWhen filter: ((Action) -> Bool)? = nil,
     mapState: @escaping (Superstate, StateBinder) -> State?
-  ) -> some View {
+  ) -> some View where Superstate: Equatable, State: Equatable {
     self.modifier(StateConnectionViewModifier(filter: filter, mapState: mapState))
   }
 

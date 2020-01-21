@@ -253,7 +253,7 @@ struct LoginForm: View {
 
 extension LoginForm: Connectable {
 
-  struct Props {
+  struct Props: Equatable {
     var email: Binding<String>
   }
 

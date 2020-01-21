@@ -71,7 +71,7 @@ extension JSONStatePersistorTests {
     case setName(String)
   }
   
-  struct TestState: StateType, Equatable {
+  struct TestState: StateType {
     var name: String = ""
   }
   

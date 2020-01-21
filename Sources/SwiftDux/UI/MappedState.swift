@@ -12,16 +12,16 @@ import SwiftUI
 /// ```
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 @propertyWrapper
-public struct MappedState<State>: DynamicProperty {
+public struct MappedState<State>: DynamicProperty where State: Equatable {
 
   @EnvironmentObject private var connection: StateConnection<State>
 
   // Needed by SwiftUI in case StateBinder is used. This attaches the required
   // subscriptions.
   @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher
-
+  
   public var wrappedValue: State {
-    guard let state = connection.latestState else {
+    guard let state = connection.state else {
       fatalError("State was not connected before using @MappedState")
     }
     return state

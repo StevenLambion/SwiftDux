@@ -3,8 +3,8 @@ import SwiftUI
 /// Makes a view "connectable" to the application state using a parameter value.
 @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol ParameterizedConnectable {
-  associatedtype Superstate
-  associatedtype State
+  associatedtype Superstate: Equatable
+  associatedtype Props: Equatable
   associatedtype Parameter
 
   /// Causes the view to be updated based on a dispatched action.
@@ -21,7 +21,7 @@ public protocol ParameterizedConnectable {
   ///   - state: The superstate provided to the view from a superview.
   ///   - parameter: A user defined parameter required to retrieve the state.
   /// - Returns: The state if possible.
-  func map(state: Superstate, with parameter: Parameter) -> State?
+  func map(state: Superstate, with parameter: Parameter) -> Props?
 
   /// The method can return nil until the state becomes available. While it is nil, the view
   /// will not be rendered.
@@ -30,7 +30,7 @@ public protocol ParameterizedConnectable {
   ///   - parameter: A user defined parameter required to retrieve the state.
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
-  func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> State?
+  func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props?
 
 }
 
@@ -44,12 +44,12 @@ extension ParameterizedConnectable {
   }
 
   /// Default implementation. Returns nil.
-  public func map(state: Superstate, with parameter: Parameter) -> State? {
+  public func map(state: Superstate, with parameter: Parameter) -> Props? {
     nil
   }
 
   /// Default implementation. Calls the other map function.
-  public func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> State? {
+  public func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props? {
     map(state: state, with: parameter)
   }
 
@@ -65,7 +65,6 @@ extension ParameterizedConnectable where Self: View {
   /// - Returns: The connected view.
   public func connect(with parameter: Parameter) -> some View {
     self.connect(
-      updateWhen: { [updateWhen] in updateWhen($0, parameter) },
       mapState: { self.map(state: $0, with: parameter, binder: $1) }
     )
   }
