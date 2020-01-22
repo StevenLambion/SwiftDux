@@ -248,7 +248,6 @@ struct LoginForm: View {
       /* ... */
     }
   }
-
 }
 
 extension LoginForm: Connectable {
@@ -265,9 +264,36 @@ extension LoginForm: Connectable {
       email: binder.bind(loginForm.email) { LoginFormAction.setEmail($0) }
     )
   }
-
-
 }
+```
+
+## Previewing Connected Views
+To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add `provideStore(_:)` after the connect method.
+
+```swift
+#if DEBUG
+public enum TodoRowContainer_Previews: PreviewProvider {
+  static var store: Store<TodoList> {
+    Store(
+      state: TodoList(
+        id: "1",
+        name: "TodoList",
+        todos: .init([
+          Todo(id: "1", text: "Get milk")
+        ])
+      ),
+      reducer: TodosReducer()
+    )
+  }
+  
+  public static var previews: some View {
+    TodoRowContainer()
+      .connect(with: "1")
+      .provideStore(store)
+  }
+  
+}
+#endif
 ```
 
 ## Action Plans
@@ -325,7 +351,6 @@ extension ActionPlans {
   var queryTodos: Action {
     ActionPlan<AppState> { store, completed in
       store.didChange
-        .filter { $0 is TodoListAction }
         .map { _ in store.state.todoList.filterBy }
         .removeDuplicates()
         .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
@@ -350,35 +375,6 @@ struct TodoListView: View {
   // ...
 
 }
-```
-
-## Previewing Connected Views
-To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add `provideStore(_:)` after the connect method.
-
-```swift
-#if DEBUG
-public enum TodoRowContainer_Previews: PreviewProvider {
-  static var store: Store<TodoList> {
-    Store(
-      state: TodoList(
-        id: "1",
-        name: "TodoList",
-        todos: .init([
-          Todo(id: "1", text: "Get milk")
-        ])
-      ),
-      reducer: TodosReducer()
-    )
-  }
-  
-  public static var previews: some View {
-    TodoRowContainer()
-      .connect(with: "1")
-      .provideStore(store)
-  }
-  
-}
-#endif
 ```
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
