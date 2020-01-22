@@ -193,12 +193,11 @@ struct LoginForm: View {
       /* ... */
     }
   }
-
 }
 
 extension LoginForm: Connectable {
 
-  struct Props {
+  struct Props: Equatable {
     var email: Binding<String>
   }
 
@@ -210,8 +209,6 @@ extension LoginForm: Connectable {
       email: binder.bind(loginForm.email) { LoginFormAction.setEmail($0) }
     )
   }
-
-
 }
 ```
 
@@ -299,7 +296,6 @@ extension ActionPlans {
   var queryTodos: Action {
     ActionPlan<AppState> { store, completed in
       store.didChange
-        .filter { $0 is TodoListAction }
         .map { _ in store.state.todoList.filterBy }
         .removeDuplicates()
         .debounce(for: .milliseconds(300), scheduler: RunLoop.main)

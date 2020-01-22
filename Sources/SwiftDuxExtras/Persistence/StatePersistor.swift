@@ -6,7 +6,7 @@ import SwiftDux
 public protocol StatePersistor {
 
   /// The type of application state to persist.
-  associatedtype State: Codable
+  associatedtype State: StateType
 
   /// The location where the state will be stored.
   var location: StatePersistentLocation { get }

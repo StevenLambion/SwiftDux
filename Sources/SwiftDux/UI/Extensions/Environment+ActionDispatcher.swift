@@ -12,7 +12,6 @@ internal struct NoopActionDispatcher: ActionDispatcher {
     print("Tried proxying an action dispatcher before providing a store object.")
     return self
   }
-
 }
 
 internal struct ActionDispatcherKey: EnvironmentKey {
@@ -32,5 +31,4 @@ extension EnvironmentValues {
       self[ActionDispatcherKey.self] = newValue
     }
   }
-
 }

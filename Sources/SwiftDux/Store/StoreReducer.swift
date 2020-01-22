@@ -33,5 +33,4 @@ internal final class StoreReducer<State, R>: Reducer where R: Reducer, R.State =
   public func reduceNext(state: State, action: Action) -> State {
     rootReducer.reduceAny(state: state, action: action)
   }
-
 }
