@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>MappedState Structure Reference</title>
+    <title>Binding Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/MappedState" class="dashAnchor"></a>
-    <a title="MappedState Structure Reference"></a>
+    <a name="//apple_ref/swift/Extension/Binding" class="dashAnchor"></a>
+    <a title="Binding Extension Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (91% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        MappedState Structure Reference
+        Binding Extension Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -184,34 +184,33 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>MappedState</h1>
+            <h1>Binding</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
-<span class="kd">@propertyWrapper</span>
-<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedState</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">DynamicProperty</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Binding</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="k">where</span> <span class="kt">Value</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                 </div>
               </div>
-            <p>Retrieves a mapping of the application state from the environment and provides it to a property in a SwiftUI view.
-Use the <code>connect(updateWhen:mapState:)</code> method to first inject the state from a parent view.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span> <span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-
-  <span class="kd">@MappedState</span> <span class="k">var</span> <span class="nv">todoList</span><span class="p">:</span> <span class="kt">TodoList</span>
-
-<span class="p">}</span>
-</code></pre>
-
+            
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Available%20where%20%60Value%60:%20%60Equatable%60"></a>
+                <a name="//apple_ref/swift/Section/Available where `Value`: `Equatable`" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Available%20where%20%60Value%60:%20%60Equatable%60"></a>
+                  <h3 class="section-name"><p>Available where <code>Value</code>: <code>Equatable</code></p>
+</h3>
+                </div>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11MappedStateV12wrappedValuexvp"></a>
-                    <a name="//apple_ref/swift/Property/wrappedValue" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11MappedStateV12wrappedValuexvp">wrappedValue</a>
+                    <a name="/s:SQ2eeoiySbx_xtFZ"></a>
+                    <a name="//apple_ref/swift/Method/==(_:_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:SQ2eeoiySbx_xtFZ">==(_:_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -219,41 +218,13 @@ Use the <code>connect(updateWhen:mapState:)</code> method to first inject the st
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
-
+                        
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">wrappedValue</span><span class="p">:</span> <span class="kt">State</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux11MappedStateVACyxGycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11MappedStateVACyxGycfc">init()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">func</span> <span class="o">==</span> <span class="p">(</span><span class="nv">lhs</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">rhs</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">Value</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span></code></pre>
 
                         </div>
                       </div>

@@ -14,7 +14,7 @@
     <a title="ActionPlan Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -123,7 +123,21 @@
             <a href="../Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -138,6 +152,12 @@
           <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -155,9 +175,6 @@
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/StateBinder.html">StateBinder</a>
               </li>
             </ul>
@@ -170,7 +187,7 @@
             <h1>ActionPlan</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CancellableAction.html">CancellableAction</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="../Protocols/CancellableAction.html">CancellableAction</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                 </div>
               </div>
@@ -178,18 +195,19 @@
 <pre class="highlight swift"><code>   <span class="kd">enum</span> <span class="kt">UserAction</span> <span class="p">{</span>
 
      <span class="kd">static</span> <span class="kd">func</span> <span class="nf">loadUser</span><span class="p">(</span><span class="n">byId</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span>
-       <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="k">in</span>
-         <span class="k">guard</span> <span class="o">!</span><span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="p">?</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="nf">hasValue</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
+       <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span><span class="p">,</span> <span class="n">completed</span> <span class="k">in</span>
+         <span class="k">guard</span> <span class="o">!</span><span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">users</span><span class="o">.</span><span class="nf">hasValue</span><span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">else</span> <span class="p">{</span> <span class="k">return</span> <span class="kc">nil</span> <span class="p">}</span>
          <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">UserAction</span><span class="o">.</span><span class="nf">setLoading</span><span class="p">(</span><span class="kc">true</span><span class="p">))</span>
          <span class="k">return</span> <span class="kt">UserService</span><span class="o">.</span><span class="nf">getUser</span><span class="p">(</span><span class="n">id</span><span class="p">)</span>
            <span class="o">.</span><span class="nf">first</span><span class="p">()</span>
            <span class="o">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">user</span> <span class="k">in</span>
-               <span class="kt">Publishers</span><span class="o">.</span><span class="kt">Sequence</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">Action</span><span class="p">],</span> <span class="kt">Never</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sequence</span><span class="p">:</span> <span class="p">[</span>
+               <span class="p">[</span>
                  <span class="kt">UserAction</span><span class="o">.</span><span class="nf">setUser</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
                  <span class="kt">UserAction</span><span class="o">.</span><span class="nf">setLoading</span><span class="p">(</span><span class="kc">false</span><span class="p">)</span>
-               <span class="p">])</span>
+               <span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
              <span class="p">}</span>
            <span class="p">}</span>
+           <span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
        <span class="p">}</span>
      <span class="p">}</span>
 
@@ -227,7 +245,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Body</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">Body</span> <span class="o">=</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -260,9 +278,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10ActionPlanVyACyxGqd__SgAA10StoreProxyVyxGcc7Combine9PublisherRd__s5NeverO7FailureRtd__AA0C0_p6OutputRtd__lufc"></a>
+                    <a name="/s:8SwiftDux10ActionPlanVyACyxG7Combine14AnyCancellableCSgAA10StoreProxyVyxG_yyctccfc"></a>
                     <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10ActionPlanVyACyxGqd__SgAA10StoreProxyVyxGcc7Combine9PublisherRd__s5NeverO7FailureRtd__AA0C0_p6OutputRtd__lufc">init(_:)</a>
+                    <a class="token" href="#/s:8SwiftDux10ActionPlanVyACyxG7Combine14AnyCancellableCSgAA10StoreProxyVyxG_yyctccfc">init(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -277,7 +295,53 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">P</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">P</span><span class="p">?)</span> <span class="k">where</span> <span class="kt">P</span> <span class="p">:</span> <span class="kt">Publisher</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Structs/ActionPlan.html#/s:8SwiftDux10ActionPlanV4Bodya">Body</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>body</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The body of the action plan.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:8SwiftDux10ActionPlanVyACyxGqd__AA10StoreProxyVyxGcc7Combine9PublisherRd__s5NeverO7FailureRtd__AA0C0_p6OutputRtd__lufc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10ActionPlanVyACyxGqd__AA10StoreProxyVyxGcc7Combine9PublisherRd__s5NeverO7FailureRtd__AA0C0_p6OutputRtd__lufc">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a new action plan that returns an optional publisher.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">init</span><span class="o">&lt;</span><span class="kt">P</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">body</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">P</span><span class="p">)</span> <span class="k">where</span> <span class="kt">P</span> <span class="p">:</span> <span class="kt">Publisher</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span><span class="p">,</span> <span class="kt">P</span><span class="o">.</span><span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                         </div>
                       </div>
@@ -352,9 +416,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10ActionPlanV3runy7Combine12AnyPublisherVyAA0C0_ps5NeverOGSgAA10StoreProxyVyxGF"></a>
-                    <a name="//apple_ref/swift/Method/run(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10ActionPlanV3runy7Combine12AnyPublisherVyAA0C0_ps5NeverOGSgAA10StoreProxyVyxGF">run(_:)</a>
+                    <a name="/s:8SwiftDux10ActionPlanV3run_9completed7Combine14AnyCancellableCSgAA10StoreProxyVyxG_yyctF"></a>
+                    <a name="//apple_ref/swift/Method/run(_:completed:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux10ActionPlanV3run_9completed7Combine14AnyCancellableCSgAA10StoreProxyVyxG_yyctF">run(_:completed:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -371,28 +435,9 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">(</span><span class="n">_</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">run</span><span class="p">(</span><span class="n">_</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">completed</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span> <span class="o">=</span> <span class="p">{})</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span><span class="p">?</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>store</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Dispatch actions or retreive the current state from the store.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                       <div>
                         <h4>Return Value</h4>
@@ -634,7 +679,7 @@ provided to the block.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

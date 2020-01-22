@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Store  Reference</title>
+    <title>Other Classes  Reference</title>
     <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Section/Store" class="dashAnchor"></a>
-    <a title="Store  Reference"></a>
+    <a name="//apple_ref/swift/Section/Other Classes" class="dashAnchor"></a>
+    <a title="Other Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="index.html"> Docs</a> (91% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="index.html"> Reference</a>
         <img id="carat" src="img/carat.png" />
-        Store  Reference
+        Other Classes  Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -184,8 +184,9 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>Store</h1>
-            
+            <h1>Other Classes</h1>
+            <p>The following classes are available globally.</p>
+
           </section>
           <section class="section task-group-section">
             <div class="task-group">
@@ -193,9 +194,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux5StoreC"></a>
-                    <a name="//apple_ref/swift/Class/Store" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux5StoreC">Store</a>
+                    <a name="/s:8SwiftDux16ActionSubscriberC"></a>
+                    <a name="//apple_ref/swift/Class/ActionSubscriber" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux16ActionSubscriberC">ActionSubscriber</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -203,19 +204,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The primary container of an application&rsquo;s state.</p>
+                        <p>Subscribes to a publisher of actions, and sends them to an action dispatcher.</p>
 
-<p>The store both contains and mutates the state through a provided reducer as it&rsquo;s sent actions.
-Use the didChange publisher to be notified of changes.</p>
-
-                        <a href="Classes/Store.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/ActionSubscriber.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Store</span><span class="p">:</span> <span class="kt"><a href="Protocols/ActionDispatcher.html">ActionDispatcher</a></span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">ActionSubscriber</span> <span class="p">:</span> <span class="kt">Subscriber</span></code></pre>
 
                         </div>
                       </div>
@@ -225,9 +222,9 @@ Use the didChange publisher to be notified of changes.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux7ReducerP"></a>
-                    <a name="//apple_ref/swift/Protocol/Reducer" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux7ReducerP">Reducer</a>
+                    <a name="/s:8SwiftDux22HandleActionMiddlewareC"></a>
+                    <a name="//apple_ref/swift/Class/HandleActionMiddleware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux22HandleActionMiddlewareC">HandleActionMiddleware</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -235,22 +232,15 @@ Use the didChange publisher to be notified of changes.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Performs an action on a given state and returns a whole new version.</p>
+                        <p>A simple middleware to perform any handling on a dispatched action.</p>
 
-<p>A store is given a single root <code>Reducer</code>. As it&rsquo;s sent actions, it runs the reducer to
-update the application&rsquo;s state. The reducer can have subreducers to separate code
-out into modular parts.</p>
-
-<p>For a reducer&rsquo;s own state and actions, implement the <code>reduce(state:action:)</code>.
-For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p>
-
-                        <a href="Protocols/Reducer.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/HandleActionMiddleware.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">Reducer</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">HandleActionMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Classes/TypedMiddleware.html">TypedMiddleware</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -260,9 +250,9 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10StoreProxyV"></a>
-                    <a name="//apple_ref/swift/Struct/StoreProxy" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV">StoreProxy</a>
+                    <a name="/s:8SwiftDux15TypedMiddlewareC"></a>
+                    <a name="//apple_ref/swift/Class/TypedMiddleware" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux15TypedMiddlewareC">TypedMiddleware</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -270,20 +260,18 @@ For subreducers, implement the <code>reduceNext(state:action:)</code> method.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Creates a proxy of the store object for use by middleware.</p>
+                        <p>An abstract class for middleware that required a known state type when initialized.</p>
 
-<p>Middleware may use the store proxy to retreive the current state, send actions,
-continue to the next middleware, or subscribe to store changes. With the proxy,
-middleware don&rsquo;t have to worry about retaining the store. Instead, the proxy provides
-a safe API to access a weak reference to it.</p>
+<p>By default, this middleware does nothing. The <code>run(store:action:)</code> method should be
+overridden to implement the middleware functionality.</p>
 
-                        <a href="Structs/StoreProxy.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/TypedMiddleware.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StoreProxy</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">TypedMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Middleware.html">Middleware</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>

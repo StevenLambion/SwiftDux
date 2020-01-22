@@ -14,7 +14,7 @@
     <a title="MappedState Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -123,7 +123,21 @@
             <a href="../Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -138,6 +152,12 @@
           <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -155,9 +175,6 @@
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Structs/StateBinder.html">StateBinder</a>
               </li>
             </ul>
@@ -172,7 +189,7 @@
                 <div class="language">
                   <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">@propertyWrapper</span>
-<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedState</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">DynamicProperty</span></code></pre>
+<span class="kd">public</span> <span class="kd">struct</span> <span class="kt">MappedState</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt">DynamicProperty</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                 </div>
               </div>
@@ -219,60 +236,6 @@ Use the <code>connect(updateWhen:mapState:)</code> method to first inject the st
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11MappedStateV14projectedValue0A2UI7BindingVyxGvp"></a>
-                    <a name="//apple_ref/swift/Property/projectedValue" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11MappedStateV14projectedValue0A2UI7BindingVyxGvp">projectedValue</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">projectedValue</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux11MappedStateV7binding0A2UI7BindingVyxGvp"></a>
-                    <a name="//apple_ref/swift/Property/binding" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11MappedStateV7binding0A2UI7BindingVyxGvp">binding</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">binding</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
                     <a name="/s:8SwiftDux11MappedStateVACyxGycfc"></a>
                     <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
                     <a class="token" href="#/s:8SwiftDux11MappedStateVACyxGycfc">init()</a>
@@ -302,7 +265,7 @@ Use the <code>connect(updateWhen:mapState:)</code> method to first inject the st
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

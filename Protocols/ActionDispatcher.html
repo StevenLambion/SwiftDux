@@ -14,7 +14,7 @@
     <a title="ActionDispatcher Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -123,7 +123,21 @@
             <a href="../Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -138,6 +152,12 @@
           <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -154,9 +174,6 @@
           <li class="nav-group-name">
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs/StateBinder.html">StateBinder</a>
               </li>
@@ -251,7 +268,7 @@ solely on changes to the state of the application to respond.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">proxy</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?,</span> <span class="nv">sentAction</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)?)</span> <span class="o">-&gt;</span> <span class="kt">ActionDispatcher</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">proxy</span><span class="p">(</span><span class="nv">modifyAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a></span><span class="p">?,</span> <span class="nv">sentAction</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">ActionDispatcher</span></code></pre>
 
                         </div>
                       </div>
@@ -264,113 +281,10 @@ solely on changes to the state of the application to respond.</p>
                 </li>
               </ul>
             </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Available%20where%20%60Self%60:%20%60Subscriber%60,%20%60Self.Input%60%20==%20%60Action%60,%20%60Self.Failure%60%20==%20%60Never%60"></a>
-                <a name="//apple_ref/swift/Section/Available where `Self`: `Subscriber`, `Self.Input` == `Action`, `Self.Failure` == `Never`" class="dashAnchor"></a>
-                <div class="section-name-container">
-                  <a class="section-name-link" href="#/Available%20where%20%60Self%60:%20%60Subscriber%60,%20%60Self.Input%60%20==%20%60Action%60,%20%60Self.Failure%60%20==%20%60Never%60"></a>
-                  <h3 class="section-name"><p>Available where <code>Self</code>: <code>Subscriber</code>, <code>Self.Input</code> == <code><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></code>, <code>Self.Failure</code> == <code>Never</code></p>
-</h3>
-                </div>
-              </div>
-              <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receiveyAD11SubscribersO6DemandVAaK_pF"></a>
-                    <a name="//apple_ref/swift/Method/receive(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receiveyAD11SubscribersO6DemandVAaK_pF">receive(_:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="n">_</span> <span class="nv">input</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Subscribers</span><span class="o">.</span><span class="kt">Demand</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receive10completionyAD11SubscribersO10CompletionOy_AGG_tF"></a>
-                    <a name="//apple_ref/swift/Method/receive(completion:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receive10completionyAD11SubscribersO10CompletionOy_AGG_tF">receive(completion:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kt">Subscribers</span><span class="o">.</span><span class="kt">Completion</span><span class="o">&lt;</span><span class="kt">Never</span><span class="o">&gt;</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receive12subscriptionyAD12Subscription_p_tF"></a>
-                    <a name="//apple_ref/swift/Method/receive(subscription:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux16ActionDispatcherPAA7Combine10SubscriberRzs5NeverO7FailureAdEPRtzAA0C0_p5InputAIRtzrlE7receive12subscriptionyAD12Subscription_p_tF">receive(subscription:)</a>
-                    </code>
-                      <span class="declaration-note">
-                        Extension method
-                      </span>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">receive</span><span class="p">(</span><span class="nv">subscription</span><span class="p">:</span> <span class="kt">Subscription</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

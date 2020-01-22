@@ -13,7 +13,7 @@
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (88% documented)</p>
+        <p><a href="index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -122,7 +122,21 @@
             <a href="Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -137,6 +151,12 @@
           <li class="nav-group-name">
             <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -153,9 +173,6 @@
           <li class="nav-group-name">
             <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
               <li class="nav-group-task">
                 <a href="Structs/StateBinder.html">StateBinder</a>
               </li>
@@ -178,34 +195,20 @@
 <a href="https://github.com/StevenLambion/SwiftDux/actions"><img src="https://github.com/StevenLambion/SwiftDux/workflows/build/badge.svg" alt="Github workflow"></a>
 <a href="https://codecov.io/gh/StevenLambion/SwiftDux"><img src="https://codecov.io/gh/StevenLambion/SwiftDux/branch/master/graph/badge.svg" alt="codecov"></a></p>
 
-<p>This is yet another redux inspired state management solution for swift. It&rsquo;s built on top of the Combine framework with hooks for SwiftUI. This library helps build applications around an <a href="https://guide.elm-lang.org/architecture/">elm-like architecture</a> using a single, centralized state container. For more information about the architecture and this library, take a look at the <a href="https://stevenlambion.github.io/SwiftDux/getting-started.html">getting started guide</a>.</p>
+<p>SwiftDux is a redux inspired state management solution built on top of Combine and SwiftUI. It presents a way to implement an elm or flux like architecture as an alternative to the MVVM-like patterns Apple has presented. It allows you to build an application around predictable state using reactive, unidirectional data flows.</p>
+<h2 id='should-i-use-this' class='heading'>Should I use this?</h2>
 
-<p>This library is designed around Combine and SwiftUI. For a more established library that doesn&rsquo;t require iOS 13, check out <a href="https://github.com/ReSwift/ReSwift">ReSwift</a>.</p>
+<p>SwiftDux relies on advance functionality of SwiftUI that may break or change between Xcode updates. Because of this, it is in constant development and should be considered a beta until SwiftUI has a more stable release. If you&rsquo;re starting a new application using SwiftUI that will be released with or after the next major OS, then it should be OK to use this library. If you need to target an older operating system or require a more established library,  check out <a href="https://github.com/ReSwift/ReSwift">ReSwift</a> instead.</p>
 <h2 id='features' class='heading'>Features</h2>
-<h3 id='redux-like-state-management' class='heading'>Redux-like State Management.</h3>
 
 <ul>
-<li>Familiar API to Redux.</li>
-<li>Middleware is support.</li>
-<li>Incapsulate action-based workflows via <code>ActionPlans</code>.</li>
-<li>Manage ordered collections of objects using  <code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code>.</li>
+<li>Familiar API to <strong>Redux</strong>.</li>
+<li>Built for <strong>SwiftUI</strong></li>
+<li><strong>Middleware</strong> support</li>
+<li><strong>Combine</strong> powered <strong>Action Plans</strong> to incapsulate async workflows.</li>
+<li><strong>OrderedState&lt;_&gt;</strong> to display sorted entities in List views.</li>
 </ul>
-<h3 id='swiftui-integration' class='heading'>SwiftUI Integration.</h3>
-
-<ul>
-<li><code>@MappedState</code> and <code>@MappedDispatch</code> injects state and dispatch actions from views.</li>
-<li><code><a href="Protocols/Connectable.html">Connectable</a></code> protocol maps the application state to the props required by a view.</li>
-<li><code>Binding&lt;_&gt;</code> support for views like <code>TextField</code>.</li>
-<li><code><a href="Structs/OrderedState.html">OrderedState&lt;_&gt;</a></code> has a compatible API for List events such as <code>onDelete</code> and <code>onMove</code>.</li>
-<li>Notable <code>View</code> methods:
-
-<ul>
-<li><code>provideStore(_:)</code> Injects the SwiftDux store.</li>
-<li><code>onAction(perform:)</code> track or modify dispatched actions from subviews.</li>
-<li><code>onAppear(dispatch:)</code> sends an action when a view appears, and cleans up any action plans that might return a publisher.</li>
-</ul></li>
-</ul>
-<h3 id='built-in-middleware-under-the-swiftduxextras-module' class='heading'>Built-in Middleware (Under the SwiftDuxExtras module)</h3>
+<h2 id='built-in-middleware' class='heading'>Built-in Middleware</h2>
 
 <ul>
 <li><code>PersistStateMiddleware</code> automatically persists and restores the application state.</li>
@@ -405,14 +408,15 @@
       <span class="cm">/* ... */</span>
     <span class="p">}</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 
 <span class="kd">extension</span> <span class="kt">LoginForm</span><span class="p">:</span> <span class="kt">Connectable</span> <span class="p">{</span>
 
-  <span class="kd">struct</span> <span class="kt">Props</span> <span class="p">{</span>
+  <span class="kd">struct</span> <span class="kt">Props</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
     <span class="k">var</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span>
   <span class="p">}</span>
+
+  <span class="c1">// Use map(state:binder:) to create bindings for the view.</span>
 
   <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt">StateBinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Props</span><span class="p">?</span> <span class="p">{</span>
     <span class="k">var</span> <span class="nv">loginForm</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">loginForm</span>
@@ -420,9 +424,34 @@
       <span class="nv">email</span><span class="p">:</span> <span class="n">binder</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">loginForm</span><span class="o">.</span><span class="n">email</span><span class="p">)</span> <span class="p">{</span> <span class="kt">LoginFormAction</span><span class="o">.</span><span class="nf">setEmail</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
     <span class="p">)</span>
   <span class="p">}</span>
+<span class="p">}</span>
+</code></pre>
+<h2 id='previewing-connected-views' class='heading'>Previewing Connected Views</h2>
 
+<p>To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add <code>provideStore(_:)</code> after the connect method.</p>
+<pre class="highlight swift"><code><span class="cp">#if DEBUG</span>
+<span class="kd">public</span> <span class="kd">enum</span> <span class="kt">TodoRowContainer_Previews</span><span class="p">:</span> <span class="kt">PreviewProvider</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="k">var</span> <span class="nv">store</span><span class="p">:</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">TodoList</span><span class="o">&gt;</span> <span class="p">{</span>
+    <span class="kt">Store</span><span class="p">(</span>
+      <span class="nv">state</span><span class="p">:</span> <span class="kt">TodoList</span><span class="p">(</span>
+        <span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span>
+        <span class="nv">name</span><span class="p">:</span> <span class="s">"TodoList"</span><span class="p">,</span>
+        <span class="nv">todos</span><span class="p">:</span> <span class="o">.</span><span class="nf">init</span><span class="p">([</span>
+          <span class="kt">Todo</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="s">"Get milk"</span><span class="p">)</span>
+        <span class="p">])</span>
+      <span class="p">),</span>
+      <span class="nv">reducer</span><span class="p">:</span> <span class="kt">TodosReducer</span><span class="p">()</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="kt">TodoRowContainer</span><span class="p">()</span>
+      <span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
+  <span class="p">}</span>
 
 <span class="p">}</span>
+<span class="cp">#endif</span>
 </code></pre>
 <h2 id='action-plans' class='heading'>Action Plans</h2>
 
@@ -447,15 +476,16 @@
 
 <span class="c1">/// Publish actions to the store:</span>
 
-<span class="k">let</span> <span class="nv">plan</span> <span class="o">=</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="o">-&gt;</span> <span class="kt">Publishers</span><span class="o">.</span><span class="kt">Sequence</span><span class="o">&lt;</span><span class="kt">Action</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="k">in</span>
-  <span class="kt">Publishers</span><span class="o">.</span><span class="kt">Sequence</span><span class="o">&lt;</span><span class="kt">Action</span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">sequence</span><span class="p">:</span> <span class="p">[</span>
+<span class="k">let</span> <span class="nv">plan</span> <span class="o">=</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span><span class="p">,</span> <span class="n">completed</span> <span class="k">in</span>
+  <span class="k">let</span> <span class="nv">actions</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">actionA</span><span class="p">,</span>
     <span class="n">actionB</span><span class="p">,</span>
     <span class="n">actionC</span>
-  <span class="p">}</span>
+  <span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
+  <span class="k">return</span> <span class="n">actions</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="c1">/// In a View, dispatch the action plan like any other action:</span>
+<span class="c1">/// In a View, dispatch the plan like any other action:</span>
 
 <span class="nf">dispatch</span><span class="p">(</span><span class="n">plan</span><span class="p">)</span>
 </code></pre>
@@ -473,15 +503,15 @@
 <span class="kd">extension</span> <span class="kt">ActionPlans</span> <span class="p">{</span>
 
   <span class="k">var</span> <span class="nv">queryTodos</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
-    <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="k">in</span>
+    <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span><span class="p">,</span> <span class="n">completed</span> <span class="k">in</span>
       <span class="n">store</span><span class="o">.</span><span class="n">didChange</span>
-        <span class="o">.</span><span class="n">filter</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt">TodoListAction</span> <span class="p">}</span>
-        <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="p">?</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">??</span> <span class="s">""</span> <span class="p">}</span>
+        <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">}</span>
         <span class="o">.</span><span class="nf">removeDuplicates</span><span class="p">()</span>
         <span class="o">.</span><span class="nf">debounce</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">milliseconds</span><span class="p">(</span><span class="mi">300</span><span class="p">),</span> <span class="nv">scheduler</span><span class="p">:</span> <span class="kt">RunLoop</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
         <span class="o">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">filter</span> <span class="k">in</span> <span class="k">self</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="n">filter</span><span class="p">)</span> <span class="p">}</span>
         <span class="o">.</span><span class="k">catch</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="kt">Just</span><span class="o">&lt;</span><span class="p">[</span><span class="kt">TodoItem</span><span class="p">]</span><span class="o">&gt;</span><span class="p">([])</span> <span class="p">}</span>
         <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">todos</span> <span class="o">-&gt;</span> <span class="kt">Action</span> <span class="k">in</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">setTodos</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">}</span>
+        <span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="p">}</span>
 
@@ -504,7 +534,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

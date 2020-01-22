@@ -14,7 +14,7 @@
     <a title="View Extension Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -123,7 +123,21 @@
             <a href="../Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -138,6 +152,12 @@
           <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -154,9 +174,6 @@
           <li class="nav-group-name">
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs/StateBinder.html">StateBinder</a>
               </li>
@@ -203,7 +220,7 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">onAppearAsync</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
@@ -254,7 +271,7 @@ allows actions to be dispatched when the view appears.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
+                          <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">deprecated</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="nf">onDisappearAsync</span><span class="p">(</span><span class="nv">perform</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
 
                         </div>
@@ -444,9 +461,9 @@ the subscription alive and reppearances of the view will not re-call the action.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7SwiftUI4ViewP0A3DuxE7connect10updateWhen8mapStateQrSbAD6Action_pc_qd_0_Sgqd___AD0I6BinderVtctr0_lF"></a>
+                    <a name="/s:7SwiftUI4ViewP0A3DuxE7connect10updateWhen8mapStateQrSbAD6Action_pcSg_qd_0_Sgqd___AD0I6BinderVtctSQRd__SQRd_0_r0_lF"></a>
                     <a name="//apple_ref/swift/Method/connect(updateWhen:mapState:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE7connect10updateWhen8mapStateQrSbAD6Action_pc_qd_0_Sgqd___AD0I6BinderVtctr0_lF">connect(updateWhen:mapState:)</a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE7connect10updateWhen8mapStateQrSbAD6Action_pcSg_qd_0_Sgqd___AD0I6BinderVtctSQRd__SQRd_0_r0_lF">connect(updateWhen:mapState:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -465,9 +482,9 @@ the subscription alive and reppearances of the view will not re-call the action.
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">connect</span><span class="o">&lt;</span><span class="kt">Superstate</span><span class="p">,</span> <span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">updateWhen</span> <span class="nv">filter</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="p">{</span> <span class="nv">$0</span> <span class="k">is</span> <span class="kt"><a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a></span> <span class="p">},</span>
+  <span class="n">updateWhen</span> <span class="nv">filter</span><span class="p">:</span> <span class="p">((</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Bool</span><span class="p">)?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">,</span>
   <span class="nv">mapState</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Superstate</span><span class="p">,</span> <span class="kt"><a href="../Structs/StateBinder.html">StateBinder</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">State</span><span class="p">?</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span></code></pre>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">Superstate</span><span class="p">:</span> <span class="kt">Equatable</span><span class="p">,</span> <span class="kt">State</span><span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -481,9 +498,9 @@ the subscription alive and reppearances of the view will not re-call the action.
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7SwiftUI4ViewP0A3DuxE12provideStoreyQrAD0F0Cyqd__GSeRd__SERd__lF"></a>
+                    <a name="/s:7SwiftUI4ViewP0A3DuxE12provideStoreyQrAD0F0Cyqd__GSeRd__SERd__SQRd__lF"></a>
                     <a name="//apple_ref/swift/Method/provideStore(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE12provideStoreyQrAD0F0Cyqd__GSeRd__SERd__lF">provideStore(_:)</a>
+                    <a class="token" href="#/s:7SwiftUI4ViewP0A3DuxE12provideStoreyQrAD0F0Cyqd__GSeRd__SERd__SQRd__lF">provideStore(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -515,7 +532,7 @@ map substates to a view.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@available</span><span class="p">(</span><span class="n">iOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="kt">OSX</span> <span class="mf">10.15</span><span class="p">,</span> <span class="n">tvOS</span> <span class="mf">13.0</span><span class="p">,</span> <span class="n">watchOS</span> <span class="mf">6.0</span><span class="p">,</span> <span class="o">*</span><span class="p">)</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">provideStore</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">provideStore</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -550,7 +567,7 @@ map substates to a view.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -14,7 +14,7 @@
     <a title="ParameterizedConnectable Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (91% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -123,7 +123,21 @@
             <a href="../Advanced.html">Advanced</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Advanced.html#/s:8SwiftDux10Middlewarea">Middleware</a>
+                <a href="../Protocols/Middleware.html">Middleware</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
               </li>
             </ul>
           </li>
@@ -138,6 +152,12 @@
           <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/Binding.html">Binding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Extensions/Publisher.html">Publisher</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/RangeReplaceableCollection.html">RangeReplaceableCollection</a>
               </li>
@@ -154,9 +174,6 @@
           <li class="nav-group-name">
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
-              <li class="nav-group-task">
-                <a href="../Other%20Structs.html#/s:8SwiftDux14NoUpdateActionV">NoUpdateAction</a>
-              </li>
               <li class="nav-group-task">
                 <a href="../Structs/StateBinder.html">StateBinder</a>
               </li>
@@ -201,7 +218,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Superstate</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Superstate</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -211,9 +228,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux24ParameterizedConnectableP5StateQa"></a>
-                    <a name="//apple_ref/swift/Alias/State" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP5StateQa">State</a>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP5PropsQa"></a>
+                    <a name="//apple_ref/swift/Alias/Props" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP5PropsQa">Props</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -228,7 +245,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">State</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">associatedtype</span> <span class="kt">Props</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -304,9 +321,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux24ParameterizedConnectableP3map5state4with5StateQzSg10SuperstateQz_9ParameterQztF"></a>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP3map5state4with5PropsQzSg10SuperstateQz_9ParameterQztF"></a>
                     <a name="//apple_ref/swift/Method/map(state:with:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP3map5state4with5StateQzSg10SuperstateQz_9ParameterQztF">map(state:with:)</a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP3map5state4with5PropsQzSg10SuperstateQz_9ParameterQztF">map(state:with:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -330,7 +347,7 @@ will not be rendered.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP5StateQa">State</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP5PropsQa">Props</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -344,9 +361,9 @@ will not be rendered.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux24ParameterizedConnectableP3map5state4with6binder5StateQzSg10SuperstateQz_9ParameterQzAA0I6BinderVtF"></a>
+                    <a name="/s:8SwiftDux24ParameterizedConnectableP3map5state4with6binder5PropsQzSg10SuperstateQz_9ParameterQzAA11StateBinderVtF"></a>
                     <a name="//apple_ref/swift/Method/map(state:with:binder:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP3map5state4with6binder5StateQzSg10SuperstateQz_9ParameterQzAA0I6BinderVtF">map(state:with:binder:)</a>
+                    <a class="token" href="#/s:8SwiftDux24ParameterizedConnectableP3map5state4with6binder5PropsQzSg10SuperstateQz_9ParameterQzAA11StateBinderVtF">map(state:with:binder:)</a>
                     </code>
                       <span class="declaration-note">
                         Default implementation
@@ -370,7 +387,7 @@ will not be rendered.</p>
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt"><a href="../Structs/StateBinder.html">StateBinder</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP5StateQa">State</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP10SuperstateQa">Superstate</a></span><span class="p">,</span> <span class="n">with</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP9ParameterQa">Parameter</a></span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt"><a href="../Structs/StateBinder.html">StateBinder</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Protocols/ParameterizedConnectable.html#/s:8SwiftDux24ParameterizedConnectableP5PropsQa">Props</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -452,7 +469,7 @@ will not be rendered.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-12)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

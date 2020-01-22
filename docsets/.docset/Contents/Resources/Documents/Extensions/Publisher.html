@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StoreProxy Structure Reference</title>
+    <title>Publisher Extension Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/StoreProxy" class="dashAnchor"></a>
-    <a title="StoreProxy Structure Reference"></a>
+    <a name="//apple_ref/swift/Extension/Publisher" class="dashAnchor"></a>
+    <a title="Publisher Extension Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html"> Docs</a> (91% documented)</p>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        StoreProxy Structure Reference
+        Publisher Extension Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -184,30 +184,33 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>StoreProxy</h1>
+            <h1>Publisher</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StoreProxy</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">Publisher</span> <span class="k">where</span> <span class="kt">Output</span> <span class="o">==</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Failure</span> <span class="o">==</span> <span class="kt">Never</span></code></pre>
 
                 </div>
               </div>
-            <p>Creates a proxy of the store object for use by middleware.</p>
-
-<p>Middleware may use the store proxy to retreive the current state, send actions,
-continue to the next middleware, or subscribe to store changes. With the proxy,
-middleware don&rsquo;t have to worry about retaining the store. Instead, the proxy provides
-a safe API to access a weak reference to it.</p>
-
+            
           </section>
           <section class="section task-group-section">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Available%20where%20%60Output%60%20==%20%60Action%60,%20%60Failure%60%20==%20%60Never%60"></a>
+                <a name="//apple_ref/swift/Section/Available where `Output` == `Action`, `Failure` == `Never`" class="dashAnchor"></a>
+                <div class="section-name-container">
+                  <a class="section-name-link" href="#/Available%20where%20%60Output%60%20==%20%60Action%60,%20%60Failure%60%20==%20%60Never%60"></a>
+                  <h3 class="section-name"><p>Available where <code>Output</code> == <code><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></code>, <code>Failure</code> == <code>Never</code></p>
+</h3>
+                </div>
+              </div>
               <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10StoreProxyV5statexvp"></a>
-                    <a name="//apple_ref/swift/Property/state" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV5statexvp">state</a>
+                    <a name="/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD0G10Dispatcher_p_yycSgtF"></a>
+                    <a name="//apple_ref/swift/Method/send(to:receivedCompletion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD0G10Dispatcher_p_yycSgtF">send(to:receivedCompletion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -215,68 +218,14 @@ a safe API to access a weak reference to it.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Retrieves the latest state from the store.</p>
+                        <p>Subscribe to a publisher of actions, and send the results to an action dispatcher.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">State</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux10StoreProxyV9didChange7Combine12AnyPublisherVyAA6Action_ps5NeverOGvp"></a>
-                    <a name="//apple_ref/swift/Property/didChange" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV9didChange7Combine12AnyPublisherVyAA6Action_ps5NeverOGvp">didChange</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Emits after the specified action was sent to the store.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">didChange</span><span class="p">:</span> <span class="kt">AnyPublisher</span><span class="o">&lt;</span><span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">,</span> <span class="kt">Never</span><span class="o">&gt;</span> <span class="p">{</span> <span class="k">get</span> <span class="p">}</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:8SwiftDux10StoreProxyV4sendyyAA6Action_pF"></a>
-                    <a name="//apple_ref/swift/Method/send(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV4sendyyAA6Action_pF">send(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Send an action to the store.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="n">_</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="n">to</span> <span class="nv">actionDispatcher</span><span class="p">:</span> <span class="kt"><a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a></span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span></code></pre>
 
                         </div>
                       </div>
@@ -287,17 +236,33 @@ a safe API to access a weak reference to it.</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>action</em>
+                                <em>actionDispatcher</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The action to send</p>
+                                  <p>The ActionDispatcher</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>receivedCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional block called when the publisher completes.</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A cancellable to unsubscribe.</p>
                       </div>
                     </section>
                   </div>
@@ -305,9 +270,9 @@ a safe API to access a weak reference to it.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10StoreProxyV4nextyyAA6Action_pF"></a>
-                    <a name="//apple_ref/swift/Method/next(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV4nextyyAA6Action_pF">next(_:)</a>
+                    <a name="/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCyAdI_pc_yycSgtF"></a>
+                    <a name="//apple_ref/swift/Method/send(to:receivedCompletion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCyAdI_pc_yycSgtF">send(to:receivedCompletion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -315,15 +280,14 @@ a safe API to access a weak reference to it.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Use this in middleware to send an action to the next
-step in the pipeline. Outside of middleware, it does nothing.</p>
+                        <p>Subscribe to a publisher of actions, and send the results to an action dispatcher.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">next</span><span class="p">(</span><span class="n">_</span> <span class="nv">action</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">send</span><span class="p">(</span><span class="n">to</span> <span class="nv">sendAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span></code></pre>
 
                         </div>
                       </div>
@@ -334,17 +298,33 @@ step in the pipeline. Outside of middleware, it does nothing.</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>action</em>
+                                <em>sendAction</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The action to send</p>
+                                  <p>A block that dispatches actions..</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>receivedCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional block called when the publisher completes.</p>
                                 </div>
                               </td>
                             </tr>
                           </tbody>
                         </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A cancellable to unsubscribe.</p>
                       </div>
                     </section>
                   </div>
@@ -352,9 +332,9 @@ step in the pipeline. Outside of middleware, it does nothing.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux10StoreProxyV4doneyyF"></a>
-                    <a name="//apple_ref/swift/Method/done()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux10StoreProxyV4doneyyF">done()</a>
+                    <a name="/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD5StoreCyqd__G_yycSgtSeRd__SERd__SQRd__lF"></a>
+                    <a name="//apple_ref/swift/Method/send(to:receivedCompletion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD5StoreCyqd__G_yycSgtSeRd__SERd__SQRd__lF">send(to:receivedCompletion:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -362,18 +342,115 @@ step in the pipeline. Outside of middleware, it does nothing.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Used by action plans to tell the store that a publisher has completed or cancelled its work.
-Only use this if the action plan is not returning a publisher or subscribing via ActionSubscriber.
-This is not needed by action plans that don&rsquo;t return a cancellable.</p>
+                        <p>Subscribe to a publisher of actions, and send the results to a store.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">done</span><span class="p">()</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">send</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span>
+<span class="k">where</span> <span class="kt">State</span><span class="p">:</span> <span class="kt"><a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a></span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>store</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A store proxy</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>receivedCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional block called when the publisher completes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A cancellable to unsubscribe.</p>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD10StoreProxyVyqd__G_yycSgtSeRd__SERd__SQRd__lF"></a>
+                    <a name="//apple_ref/swift/Method/send(to:receivedCompletion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7Combine9PublisherP8SwiftDuxs5NeverO7FailureRtzAD6Action_p6OutputRtzrlE4send2to18receivedCompletionAA14AnyCancellableCAD10StoreProxyVyqd__G_yycSgtSeRd__SERd__SQRd__lF">send(to:receivedCompletion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Subscribe to a publisher of actions, and send the results to a store.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">send</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">(</span><span class="n">to</span> <span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Structs/StoreProxy.html">StoreProxy</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="kt"><a href="../Classes/ActionSubscriber.html">ActionSubscriber</a></span><span class="o">.</span><span class="kt">ReceivedCompletion</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span>
+<span class="k">where</span> <span class="kt">State</span><span class="p">:</span> <span class="kt"><a href="../State.html#/s:8SwiftDux9StateTypea">StateType</a></span></code></pre>
+
+                        </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>store</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A store proxy</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>receivedCompletion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>An optional block called when the publisher completes.</p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
+                        <h4>Return Value</h4>
+                        <p>A cancellable to unsubscribe.</p>
                       </div>
                     </section>
                   </div>
