@@ -16,7 +16,7 @@ SwiftDux relies on advance functionality of SwiftUI that may break or change bet
 ## Features
 
 - Familiar API to __Redux__.
-- Built for __SwiftUI__
+- Built for __SwiftUI__.
 - __Middleware__ support
 - __Combine__ powered __Action Plans__ to incapsulate async workflows.
 - __OrderedState<_>__ to display sorted entities in List views.
@@ -171,15 +171,17 @@ window.rootViewController = UIHostingController(
 
 ## Connectable View
 
-In a view, use `@MappedState` and `@MappedDispatch` to inject the state and dispatch actions to the store. When the view dispatches an action, it updates itself automatically.
+Use the `ConnectableView` protocol to inject the application state into your view. It provides a `map(state:)` and body(props:) functions to retrieve and map the state to a shape needed by the view. The `@MappedDispatch` property wrapper can be used to inject a dispatcher that sends actions to the store.
 
 ```swift
-struct TodosView {
-
-  @MappedState private var todos: OrderedState<Todo>
+struct TodosView: ConnectableView {
   @MappedDispatch() private var dispatch
 
-  var body: some View {
+  func map(state: AppState) -> OrderedState<Todo>? {
+    state.todos
+  }
+
+  func body(props: OrderedState<Todo>): some View {
     List {
       ForEach(todos) { todo in
         TodoItemRow(item: todo)
@@ -188,81 +190,60 @@ struct TodosView {
       .onMove { self.dispatch(TodoAction.moveTodos(from: $0, to: $1)) }
     }
   }
-
 }
 ```
 
-The easiest way to connect the application state to the view is through the `Connectable` protocol. Adhering to this protocol allows the view to map a parent state to the required state.
-
-```swift
-extension TodosView: Connectable {
-
-  func map(state: AppState) -> OrderedState<Todo>? {
-    state.todos
-  }
-
-}
-```
-
-When placing the view, the `connect()` method must be called to inject the application state into the view.
-
+The view can be placed like another:
 ```swift
 struct RootView: View {
 
   var body: some View {
-    TodosView().connect()
+    TodosView()
   }
-
 }
 ```
 
-## Parameterized Connectable View
-In some cases, a parameter needs to be passed to a connected view. For example, the id of an object. This can be handled using the `ParameterizedConnectable` protocol. It is nearly identical to `Connectable`, but requires a parameter be passed in.
+## Passing Data to a Connectable View
+In some cases, a connected view needs external information to map the state to its props, such as an identifier. Simply add any needed variables to your view, and access them in the mapping function.
 
 ```swift
-extension TodoDetailsView: ParameterizedConnectable {
+struct TodoDetailsView: ConnectableView {
+  var id: String
 
-  func map(state: TodoList, parameter: String) -> Todo? {
-    state[parameter]
+  func map(state: TodoList) -> Todo? {
+    state[id]
   }
-
 }
 
-// Use the connect(with:) method to use the view:
+// Somewhere else in the view hierarchy:
 
-TodoDetailsView().connect(with: todoId)
+TodoDetailsView(id: "123")
 ```
 
 ## Binding<_> Support
 
-SwiftUI has a focus on two-way bindings over a unidirectional flow. To better support this, SwiftDux provides a convenient API through the `Connectable` protocol using a `StateBinder` object. Use the `map(state:binder:)` method on the protocol as shown below.
+SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using a `StateBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes.
 
 ```swift
 struct LoginForm: View {
 
-  @MappedState private var props: Props
-
-  var body: some View {
-    VStack {
-      TextField("Email", text: props.email)
-      /* ... */
-    }
-  }
-}
-
-extension LoginForm: Connectable {
-
   struct Props: Equatable {
-    var email: Binding<String>
+    @Binding var email: String
   }
-
-  // Use map(state:binder:) to create bindings for the view.
 
   func map(state: AppState, binder: StateBinder) -> Props? {
-    var loginForm = state.loginForm
-    return Props(
-      email: binder.bind(loginForm.email) { LoginFormAction.setEmail($0) }
+    Props(
+      email: binder.bind(state.loginForm.email) { 
+        LoginFormAction.setEmail($0)
+      }
     )
+  }
+
+  func body(props: Props) -> some View {
+    VStack {
+      TextField("Email", text: $props.email)
+      /* ... */
+    }
   }
 }
 ```
@@ -287,8 +268,7 @@ public enum TodoRowContainer_Previews: PreviewProvider {
   }
   
   public static var previews: some View {
-    TodoRowContainer()
-      .connect(with: "1")
+    TodoRowContainer(id: "1")
       .provideStore(store)
   }
   
@@ -360,20 +340,21 @@ extension ActionPlans {
         .send(to: store, receivedCompletion: completed)
     }
   }
-
 }
 
-struct TodoListView: View {
+struct TodoListView: ConnectableView {
   @Environment(\.actionPlans) private var actionPlans
-  @MappedState private var todos: [TodoItem]
 
-  var body: some View {
-    renderTodos(todos: todos)
+  func map(state: AppState) -> [TodoItem]? {
+    state.todoList.items
+  }
+
+  func body(props: [TodoItem]) -> some View {
+    renderTodos(todos: props)
       .onAppear(dispatch: actionPlans.queryTodos)
   }
 
   // ...
-
 }
 ```
 
