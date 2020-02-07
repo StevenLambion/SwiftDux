@@ -7,7 +7,7 @@ import Foundation
 /// continue to the next middleware, or subscribe to store changes. With the proxy,
 /// middleware don't have to worry about retaining the store. Instead, the proxy provides
 /// a safe API to access a weak reference to it.
-public struct StoreProxy<State> where State: StateType {
+public struct StoreProxy<State>: ActionDispatcher where State: StateType {
 
   /// Subscribe to state changes.
   private unowned var store: Store<State>
@@ -51,5 +51,9 @@ public struct StoreProxy<State> where State: StateType {
   /// This is not needed by action plans that don't return a cancellable.
   public func done() {
     doneBlock?()
+  }
+
+  public func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher {
+    fatalError("StoreProxy cannot create an ActionDispatcher proxy.")
   }
 }

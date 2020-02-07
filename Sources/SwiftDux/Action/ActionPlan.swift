@@ -121,7 +121,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   ///
   /// - Parameter send: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
-  public func sendAsCancellable(_ send: SendAction) -> Cancellable {
+  public func sendAsCancellable(_ send: ActionDispatcher) -> Cancellable {
     var publisherCancellable: AnyCancellable? = nil
     send(
       ActionPlan<State> { store, completed in

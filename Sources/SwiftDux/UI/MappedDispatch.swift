@@ -20,8 +20,8 @@ public struct MappedDispatch: DynamicProperty {
 
   @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher
 
-  public var wrappedValue: SendAction {
-    actionDispatcher.send
+  public var wrappedValue: ActionDispatcher {
+    actionDispatcher
   }
 
   public init() {}

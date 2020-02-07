@@ -101,30 +101,3 @@ extension Store: ActionDispatcher {
   }
 
 }
-
-extension Publisher where Output == Action, Failure == Never {
-
-  /// Subscribe to a publisher of actions, and send the results to a store.
-  /// - Parameters:
-  ///   - store: A store proxy
-  ///   - receivedCompletion: An optional block called when the publisher completes.
-  /// - Returns: A cancellable to unsubscribe.
-  public func send<State>(to store: Store<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
-  where State: StateType {
-    self.send(to: store, receivedCompletion: receivedCompletion)
-  }
-
-  /// Subscribe to a publisher of actions, and send the results to a store.
-  /// - Parameters:
-  ///   - store: A store proxy
-  ///   - receivedCompletion: An optional block called when the publisher completes.
-  /// - Returns: A cancellable to unsubscribe.
-  public func send<State>(to store: StoreProxy<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
-  where State: StateType {
-    let cancellable = self.send(to: store.send, receivedCompletion: receivedCompletion)
-    return AnyCancellable { [cancellable] in
-      cancellable.cancel()
-      store.done()
-    }
-  }
-}
