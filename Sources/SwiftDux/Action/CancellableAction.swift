@@ -38,6 +38,5 @@ public protocol CancellableAction: Action {
   ///
   /// - Parameter send: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
-  func sendAsCancellable(_ send: ActionDispatcher) -> Cancellable
-
+  func sendAsCancellable(_ send: ActionDispatcher) -> AnyCancellable
 }

@@ -33,8 +33,16 @@ public protocol ActionDispatcher {
 
 extension ActionDispatcher {
 
+  /// Sends an action to a reducer to mutate the state of the application.
+  /// - Parameter action: An action to dispatch to the store.
   public func callAsFunction(_ action: Action) {
     send(action)
   }
-
+  
+  /// Send an action that returns a cancellable object.
+  /// - Parameter action: The action
+  /// - Returns: A cancellable to cancel the action.
+  public func sendAsCancellable(_ action: CancellableAction) -> AnyCancellable {
+    action.sendAsCancellable(self)
+  }
 }
