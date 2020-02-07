@@ -19,12 +19,12 @@ public struct StateBinder {
   /// Create a binding between a given state and an action.
   ///
   /// - Parameters:
-  ///   - getState: The state to retrieve.
+  ///   - state: The state to retrieve.
   ///   - getAction: Given a new version of the state, it returns an action to dispatch.
   /// - Returns: A new Binding object.
-  public func bind<T>(_ getState: @autoclosure @escaping () -> T, dispatch getAction: @escaping (T) -> Action?) -> Binding<T> {
+  public func bind<T>(_ state: T, dispatch getAction: @escaping (T) -> Action?) -> Binding<T> {
     Binding<T>(
-      get: getState,
+      get: { state },
       set: { [actionDispatcher] in
         guard let action = getAction($0) else { return }
         actionDispatcher.send(action)
