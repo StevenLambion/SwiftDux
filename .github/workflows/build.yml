@@ -1,7 +1,7 @@
 on: 
-  - push:
+  push:
     - 'master'
-  - pull_request:
+  pull_request:
     - '**'
 name: build
 jobs:
