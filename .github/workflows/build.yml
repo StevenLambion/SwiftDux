@@ -1,8 +1,10 @@
 on: 
   push:
-    - 'master'
+    branches:
+      - 'master'
   pull_request:
-    - '**'
+    branches:
+      - '**'
 name: build
 jobs:
   validate:
