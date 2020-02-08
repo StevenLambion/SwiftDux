@@ -2,8 +2,13 @@ import Foundation
 
 /// Combines two middleware together.
 public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B: Middleware, A.State == State, B.State == State {
-  var previousMiddleware: A
-  var nextMiddleware: B
+  private var previousMiddleware: A
+  private var nextMiddleware: B
+  
+  init(previousMiddleware: A, nextMiddleware: B) {
+    self.previousMiddleware = previousMiddleware
+    self.nextMiddleware = nextMiddleware
+  }
 
   /// Unimplemented. It simply calls `store.next(_:)`.
   public func run(store: StoreProxy<State>, action: Action) {
