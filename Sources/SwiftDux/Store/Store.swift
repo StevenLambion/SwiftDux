@@ -48,22 +48,15 @@ public final class Store<State> where State: StateType {
 
 extension Store: ActionDispatcher {
 
-  // swift-format-disable: UseLetInEveryBoundCaseVariable
-
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
   public func send(_ action: Action) {
-    switch action {
-    case let action as ActionPlan<State>:
+    if let action = action as? ActionPlan<State> {
       send(actionPlan: action)
-    case let modifiedAction as ModifiedAction:
-      send(modifiedAction: modifiedAction)
-    default:
+    } else {
       reduceAction(action)
     }
   }
-
-  // swift-format-enable: UseLetInEveryBoundCaseVariable
 
   /// Handles the sending of normal action plans.
   private func send(actionPlan: ActionPlan<State>) {
@@ -81,50 +74,14 @@ extension Store: ActionDispatcher {
     didChangeSubject.send(actionPlan)
   }
 
-  private func send(modifiedAction: ModifiedAction) {
-    send(modifiedAction.action)
-    modifiedAction.previousActions.forEach { self.didChangeSubject.send($0) }
-  }
-
   /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
   /// modified or tracked.
-  /// - Parameters
-  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
-  ///   - sentAction: Called directly after an action was sent up stream.
+  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
   /// - Returns: a new action dispatcher.
-  public func proxy(modifyAction: ActionModifier? = nil, sentAction: ((Action) -> Void)? = nil) -> ActionDispatcher {
-    StoreActionDispatcher(
-      upstream: self,
-      modifyAction: modifyAction,
-      sentAction: sentAction
+  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+    StoreProxy<State>(
+      store: self,
+      modifyAction: modifyAction
     )
-  }
-
-}
-
-extension Publisher where Output == Action, Failure == Never {
-
-  /// Subscribe to a publisher of actions, and send the results to a store.
-  /// - Parameters:
-  ///   - store: A store proxy
-  ///   - receivedCompletion: An optional block called when the publisher completes.
-  /// - Returns: A cancellable to unsubscribe.
-  public func send<State>(to store: Store<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
-  where State: StateType {
-    self.send(to: store, receivedCompletion: receivedCompletion)
-  }
-
-  /// Subscribe to a publisher of actions, and send the results to a store.
-  /// - Parameters:
-  ///   - store: A store proxy
-  ///   - receivedCompletion: An optional block called when the publisher completes.
-  /// - Returns: A cancellable to unsubscribe.
-  public func send<State>(to store: StoreProxy<State>, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable
-  where State: StateType {
-    let cancellable = self.send(to: store.send, receivedCompletion: receivedCompletion)
-    return AnyCancellable { [cancellable] in
-      cancellable.cancel()
-      store.done()
-    }
   }
 }

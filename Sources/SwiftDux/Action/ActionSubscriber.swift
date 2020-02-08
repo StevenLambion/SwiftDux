@@ -6,7 +6,7 @@ final public class ActionSubscriber: Subscriber {
 
   public typealias ReceivedCompletion = () -> Void
 
-  private let sendAction: SendAction
+  private let actionDispatcher: ActionDispatcher
   private let receivedCompletion: ReceivedCompletion?
   private var subscription: Subscription? = nil {
     willSet {
@@ -15,8 +15,8 @@ final public class ActionSubscriber: Subscriber {
     }
   }
 
-  internal init(sendAction: @escaping SendAction, receivedCompletion: ReceivedCompletion?) {
-    self.sendAction = sendAction
+  internal init(actionDispatcher: ActionDispatcher, receivedCompletion: ReceivedCompletion?) {
+    self.actionDispatcher = actionDispatcher
     self.receivedCompletion = receivedCompletion
   }
 
@@ -26,7 +26,7 @@ final public class ActionSubscriber: Subscriber {
   }
 
   public func receive(_ input: Action) -> Subscribers.Demand {
-    sendAction(input)
+    actionDispatcher(input)
     return .max(1)
   }
 
@@ -49,17 +49,8 @@ extension Publisher where Output == Action, Failure == Never {
   ///   - receivedCompletion: An optional block called when the publisher completes.
   /// - Returns: A cancellable to unsubscribe.
   public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable {
-    self.send(to: actionDispatcher.send, receivedCompletion: receivedCompletion)
-  }
-
-  /// Subscribe to a publisher of actions, and send the results to an action dispatcher.
-  /// - Parameters:
-  ///   - sendAction: A block that dispatches actions..
-  ///   - receivedCompletion: An optional block called when the publisher completes.
-  /// - Returns: A cancellable to unsubscribe.
-  public func send(to sendAction: @escaping SendAction, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable {
     let subscriber = ActionSubscriber(
-      sendAction: sendAction,
+      actionDispatcher: actionDispatcher,
       receivedCompletion: receivedCompletion
     )
     self.subscribe(subscriber)

@@ -3,7 +3,7 @@ import Foundation
 
 /// A closure that dispatches an action.
 ///
-/// - Parameter action: Dispatches the given state synchronously.
+/// - Parameter action: Dispatches the given action synchronously.
 public typealias SendAction = (Action) -> Void
 
 /// A closure that can return a new action from a previous one. If no action is returned,
@@ -23,10 +23,23 @@ public protocol ActionDispatcher {
   /// Create a new `ActionDispatcher` that acts as a proxy for the current one.
   ///
   /// Actions can be modified by both the new proxy and the original dispatcher it was created from.
-  /// - Parameters
-  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
-  ///   - sentAction: Called directly after an action was sent up stream.
+  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
   /// - Returns: a new action dispatcher.
-  func proxy(modifyAction: ActionModifier?, sentAction: SendAction?) -> ActionDispatcher
+  func proxy(modifyAction: ActionModifier?) -> ActionDispatcher
+}
 
+extension ActionDispatcher {
+
+  /// Sends an action to a reducer to mutate the state of the application.
+  /// - Parameter action: An action to dispatch to the store.
+  public func callAsFunction(_ action: Action) {
+    send(action)
+  }
+
+  /// Send an action that returns a cancellable object.
+  /// - Parameter action: The action
+  /// - Returns: A cancellable to cancel the action.
+  public func sendAsCancellable(_ action: CancellableAction) -> AnyCancellable {
+    action.sendAsCancellable(self)
+  }
 }

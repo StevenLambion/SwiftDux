@@ -121,7 +121,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
   ///
   /// - Parameter send: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
-  public func sendAsCancellable(_ send: SendAction) -> Cancellable {
+  public func sendAsCancellable(_ send: ActionDispatcher) -> AnyCancellable {
     var publisherCancellable: AnyCancellable? = nil
     send(
       ActionPlan<State> { store, completed in
@@ -132,11 +132,7 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
         return publisherCancellable
       }
     )
-
-    return AnyCancellable {
-      publisherCancellable?.cancel()
-      publisherCancellable = nil
-    }
+    return AnyCancellable { [publisherCancellable] in publisherCancellable?.cancel() }
   }
 
   /// Dispatches another action plan after this one has completed. This allows
