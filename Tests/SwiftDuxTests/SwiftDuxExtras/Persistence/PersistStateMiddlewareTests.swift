@@ -23,8 +23,8 @@ class PersistStateMiddlewareTests: XCTestCase {
     // Put teardown code here. This method is called after the invocation of each test method in the class.
   }
   
-  func createStore(with middleware: Middleware) -> Store<TestState> {
-    Store(state: TestState(), reducer: TestReducer(), middleware: [middleware])
+  func createStore<M>(with middleware: M) -> Store<TestState> where M: Middleware, M.State == TestState {
+    Store(state: TestState(), reducer: TestReducer(), middleware: middleware)
   }
   
   func testSaveState() {

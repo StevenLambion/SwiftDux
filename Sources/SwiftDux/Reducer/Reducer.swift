@@ -36,6 +36,10 @@ public protocol Reducer {
 
 extension Reducer {
 
+  public func callAsFunction(state: State, action: Action) -> State {
+    reduceAny(state: state, action: action)
+  }
+
   /// Default implementation. Returns the state without modifying it.
   ///
   /// - Parameters
@@ -71,4 +75,12 @@ extension Reducer {
     return reduceNext(state: state, action: action)
   }
 
+  /// Compose two reducers together.
+  /// - Parameters:
+  ///   - previousReducer: The first reducer to be called.
+  ///   - nextReducer: The second reducer to be called.
+  /// - Returns: A combined reducer.
+  public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
+    CombinedReducer(previousReducer: previousReducer, nextReducer: nextReducer)
+  }
 }
