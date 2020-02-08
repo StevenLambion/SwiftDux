@@ -29,7 +29,7 @@ public protocol ParameterizedConnectable {
   ///   - parameter: A user defined parameter required to retrieve the state.
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
-  func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props?
+  func map(state: Superstate, with parameter: Parameter, binder: ActionBinder) -> Props?
 }
 
 extension ParameterizedConnectable {
@@ -47,7 +47,7 @@ extension ParameterizedConnectable {
   }
 
   /// Default implementation. Calls the other map function.
-  public func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props? {
+  public func map(state: Superstate, with parameter: Parameter, binder: ActionBinder) -> Props? {
     map(state: state, with: parameter)
   }
 }

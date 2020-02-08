@@ -27,9 +27,9 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
   }
 
   func map<Substate>(
-    state mapState: @escaping (State, StateBinder) -> Substate?,
+    state mapState: @escaping (State, ActionBinder) -> Substate?,
     changePublisher: AnyPublisher<Action, Never>? = nil,
-    binder: StateBinder
+    binder: ActionBinder
   ) -> StateConnection<Substate> {
     let getSubstate: () -> Substate? = { [getState] in
       guard let superstate = getState() else { return nil }
