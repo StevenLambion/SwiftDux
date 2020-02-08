@@ -26,5 +26,4 @@ class TodoListReducer: Reducer {
     }
     return state
   }
-  
 }

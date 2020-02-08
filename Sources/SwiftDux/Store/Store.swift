@@ -17,9 +17,7 @@ public final class Store<State> where State: StateType {
 
   internal let didChangeSubject = PassthroughSubject<Action, Never>()
 
-  // swift-format-disable: ValidateDocumentationComments
-
-  /// Creates a new store for the given state and reducer
+  /// Creates a new store for the given state and reducer.
   ///
   /// - Parameters
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
@@ -32,7 +30,7 @@ public final class Store<State> where State: StateType {
     self.update = middleware(
       store: StoreProxy(
         store: self,
-        next: { [weak self] action in
+        next: { [storeReducer, weak self] action in
           guard let self = self else { return }
           self.state = storeReducer(state: self.state, action: action)
           self.didChangeSubject.send(action)
@@ -42,9 +40,7 @@ public final class Store<State> where State: StateType {
     update(StoreAction<State>.prepare)
   }
 
-  // swift-format-disable: ValidateDocumentationComments
-
-  /// Creates a new store for the given state and reducer
+  /// Creates a new store for the given state and reducer.
   ///
   /// - Parameters
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
@@ -52,8 +48,6 @@ public final class Store<State> where State: StateType {
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
-
-  // swift-format-enable: ValidateDocumentationComments
 }
 
 extension Store: ActionDispatcher {

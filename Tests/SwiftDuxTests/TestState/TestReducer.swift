@@ -48,5 +48,4 @@ class TestReducer: Reducer {
     state.todoLists[id] = todoListReducer.reduceAny(state: todo, action: action)
     return state
   }
-  
 }

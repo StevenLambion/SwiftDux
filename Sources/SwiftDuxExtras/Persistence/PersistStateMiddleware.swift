@@ -26,8 +26,8 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
   private var shouldRestore: (State) -> Bool
   private var subscriptionCancellable: AnyCancellable?
 
-  // swift-format-disable: ValidateDocumentationComments
-
+  /// Initialize a new PersistStateMiddleware.
+  ///
   /// - Parameters:
   ///   - persistor: The state persistor to use.
   ///   - saveOnChange: Saves the state when it changes, else, it saves when the app enters the backgroound.
@@ -58,7 +58,7 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
         .compactMap { _ in store.state }
         .persist(with: persistor)
     } else {
-      print("Failed to initiate persistence using notifiation.")
+      print("Failed to initiate persistence using default notifiation center.")
     }
 
     if let state = persistor.restore(), shouldRestore(state) {

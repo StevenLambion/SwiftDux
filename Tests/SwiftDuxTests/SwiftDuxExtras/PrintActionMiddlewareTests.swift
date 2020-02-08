@@ -20,6 +20,9 @@ final class PrintActionMiddlewareTests: XCTestCase {
     XCTAssertEqual(log, ["prepare", "actionB"])
   }
   
+  static var allTests = [
+    ("testPrintAction", testPrintAction),
+  ]
 }
 
 extension PrintActionMiddlewareTests {
@@ -38,5 +41,4 @@ extension PrintActionMiddlewareTests {
       state
     }
   }
-  
 }

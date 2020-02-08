@@ -189,5 +189,4 @@ extension OrderedStateTests {
     var id: Double
     var name: String
   }
-  
 }

@@ -42,6 +42,10 @@ class PersistStateMiddlewareTests: XCTestCase {
     XCTAssertEqual(store.state.name, "Rose")
   }
   
+  static var allTests = [
+    ("testSaveState", testSaveState),
+    ("testRestoreState", testRestoreState),
+  ]
 }
 
 extension PersistStateMiddlewareTests {
@@ -62,7 +66,6 @@ extension PersistStateMiddlewareTests {
         return TestState(name: name)
       }
     }
-    
   }
   
   final class TestLocation: StatePersistentLocation {
@@ -84,5 +87,4 @@ extension PersistStateMiddlewareTests {
     }
     
   }
-  
 }

@@ -12,7 +12,6 @@ internal struct Connector<Props, Content>: View where Props: Equatable, Content:
 }
 
 /// A view that connects to the application state.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol ConnectableView: View, Connectable {
 
   associatedtype Content: View
@@ -21,7 +20,6 @@ public protocol ConnectableView: View, Connectable {
   /// - Parameter props: A mapping of the application to the props used by the view.
   /// - Returns: The connected view.
   func body(props: Props) -> Content
-
 }
 
 extension ConnectableView {

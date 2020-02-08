@@ -51,5 +51,4 @@ extension Publisher where Output: Codable, Failure == Never {
     self.subscribe(subscriber)
     return AnyCancellable { [subscriber] in subscriber.cancel() }
   }
-
 }

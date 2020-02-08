@@ -139,7 +139,11 @@ final class ActionPlanTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testBasicActionPlan", testBasicActionPlan)
+    ("testBasicActionPlan", testBasicActionPlan),
+    ("testBasicActionPlan", testBasicActionPlan),
+    ("testActionPlanWithMultipleSends", testActionPlanWithMultipleSends),
+    ("testPublishableActionPlan", testPublishableActionPlan),
+    ("testChainedActionPlansWithPublisher", testChainedActionPlansWithPublisher),
   ]
 }
 
@@ -157,5 +161,4 @@ extension ActionPlanTests {
       state
     }
   }
-  
 }

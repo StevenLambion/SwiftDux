@@ -16,5 +16,4 @@ class TodoListState: IdentifiableState, Hashable, Identifiable {
   static func == (lhs: TodoListState, rhs: TodoListState) -> Bool {
     lhs === rhs
   }
-  
 }
