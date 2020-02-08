@@ -148,11 +148,15 @@ final class AppReducer: Reducer {
 
   func reduceNext(state: AppState, action: TodoAction) -> AppState {
     State(
-      todos: todosReducer.reduceAny(state.todos, action)
+      todos: todosReducer(state.todos, action)
     )
   }
 
 }
+```
+Multiple reducers can be composed together if they share the same type of state by using the following syntax:
+```swift
+let AppReducer = NavigationReducer() + TodosReducer()
 ```
 
 ## Store
@@ -301,12 +305,9 @@ let plan = ActionPlan<AppState> { store in
 /// Publish actions to the store:
 
 let plan = ActionPlan<AppState> { store, completed in
-  let actions = [
-    actionA,
-    actionB,
-    actionC
-  ].publisher
-  return actions.send(to: store, receivedCompletion: completed)
+  asyncService
+    .map { MyAction($0) }
+    .send(to: store, receivedCompletion: completed)
 }
 
 /// In a View, dispatch the plan like any other action:
@@ -356,6 +357,20 @@ struct TodoListView: ConnectableView {
 
   // ...
 }
+```
+
+## Middleware
+
+Use middleware to extend the functionality of the `Store<_>`. The SwiftDuxExtras module provides example middleware plugins. One prints the latest sent action, and the other persists the application state. Middleware are composed together using the `+` operator.
+
+```swift
+let store = Store(
+  state: State(),
+  reducer: AppReducer(),
+  middleware: 
+    PrintActionMiddleware() +
+    PersistStateMiddleware(JSONStatePersistor())
+)
 ```
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg

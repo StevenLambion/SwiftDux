@@ -13,7 +13,7 @@ public final class Store<State> where State: StateType {
   /// Subscribe for state changes. It emits the latest action sent to the store.
   public let didChange: AnyPublisher<Action, Never>
 
-  private var reduceAction: SendAction = { _ in }
+  private var update: SendAction = { _ in }
 
   internal let didChangeSubject = PassthroughSubject<Action, Never>()
 
@@ -24,26 +24,36 @@ public final class Store<State> where State: StateType {
   /// - Parameters
   ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
   ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
-  ///   - middleware: One or more middleware plugins
-  public init<R>(state: State, reducer: R, middleware: [Middleware] = []) where R: Reducer, R.State == State {
-    let storeReducer = StoreReducer(reducer)
+  ///   - middleware: A middleware plugin.
+  public init<R, M>(state: State, reducer: R, middleware: M) where R: Reducer, R.State == State, M: Middleware, M.State == State {
+    let storeReducer = StoreReducer() + reducer
     self.state = state
     self.didChange = didChangeSubject.eraseToAnyPublisher()
-    self.reduceAction = middleware.reversed().reduce(
-      { [weak self] action in
-        guard let self = self else { return }
-        self.state = storeReducer.reduceAny(state: self.state, action: action)
-        self.didChangeSubject.send(action)
-      },
-      { next, middleware in
-        middleware.compile(store: StoreProxy(store: self, next: next))
-      }
+    self.update = middleware(
+      store: StoreProxy(
+        store: self,
+        next: { [weak self] action in
+          guard let self = self else { return }
+          self.state = storeReducer(state: self.state, action: action)
+          self.didChangeSubject.send(action)
+        }
+      )
     )
-    self.reduceAction(StoreAction<State>.prepare)
+    update(StoreAction<State>.prepare)
+  }
+
+  // swift-format-disable: ValidateDocumentationComments
+
+  /// Creates a new store for the given state and reducer
+  ///
+  /// - Parameters
+  ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
+  ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
+  public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
+    self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
 
   // swift-format-enable: ValidateDocumentationComments
-
 }
 
 extension Store: ActionDispatcher {
@@ -54,7 +64,7 @@ extension Store: ActionDispatcher {
     if let action = action as? ActionPlan<State> {
       send(actionPlan: action)
     } else {
-      reduceAction(action)
+      update(action)
     }
   }
 

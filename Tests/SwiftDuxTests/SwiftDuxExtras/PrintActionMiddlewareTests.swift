@@ -14,9 +14,7 @@ final class PrintActionMiddlewareTests: XCTestCase {
     let store = Store(
       state: TestState(),
       reducer: TestReducer(),
-      middleware: [
-        PrintActionMiddleware(printer: { log.append($0) })
-      ]
+      middleware: PrintActionMiddleware(printer: { log.append($0) })
     )
     store.send(TestAction.actionB)
     XCTAssertEqual(log, ["prepare", "actionB"])

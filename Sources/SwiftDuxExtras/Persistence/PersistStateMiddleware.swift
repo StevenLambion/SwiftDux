@@ -19,7 +19,7 @@ import SwiftDux
 #endif
 
 /// Hooks up state peristence to the store.
-public final class PersistStateMiddleware<State, SP>: TypedMiddleware<State> where SP: StatePersistor, SP.State == State {
+public final class PersistStateMiddleware<State, SP>: Middleware where SP: StatePersistor, SP.State == State {
   private var persistor: SP
   private var saveOnChange: Bool
   private var interval: RunLoop.SchedulerTimeType.Stride
@@ -43,10 +43,9 @@ public final class PersistStateMiddleware<State, SP>: TypedMiddleware<State> whe
     self.saveOnChange = saveOnChange
     self.interval = interval
     self.shouldRestore = shouldRestore
-    super.init()
   }
 
-  public override func run(store: StoreProxy<State>, action: Action) {
+  public func run(store: StoreProxy<State>, action: Action) {
     defer { store.next(action) }
     guard case .prepare = action as? StoreAction<State> else { return }
 

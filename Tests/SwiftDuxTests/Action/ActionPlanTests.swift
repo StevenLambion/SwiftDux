@@ -9,14 +9,14 @@ final class ActionPlanTests: XCTestCase {
   var sentActions: [TestAction] = []
   
   override func setUp() {
-    store = Store(state: TestState(), reducer: TestReducer(), middleware: [
+    store = Store(state: TestState(), reducer: TestReducer(), middleware:
       HandleActionMiddleware<TestState> { [weak self] store, action in
         if let action = action as? TestAction {
           self?.sentActions.append(action)
         }
         store.next(action)
       }
-    ])
+    )
     storeProxy = StoreProxy(store: store)
     sentActions = []
   }
