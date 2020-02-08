@@ -44,7 +44,6 @@ internal struct StateConnectionViewModifier<Superstate, State>: ViewModifier whe
     _ = filter?(noUpdateAction)
     return !noUpdateAction.unused
   }
-
 }
 
 extension View {
@@ -56,12 +55,10 @@ extension View {
   ///   - filter: Update the state when the closure returns true. If not provided, it will only update when dispatching an action.
   ///   - mapState: Maps a superstate to a substate.
   /// - Returns: The modified view.
-  @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func connect<Superstate, State>(
     updateWhen filter: ((Action) -> Bool)? = nil,
     mapState: @escaping (Superstate, StateBinder) -> State?
   ) -> some View where Superstate: Equatable, State: Equatable {
     self.modifier(StateConnectionViewModifier(filter: filter, mapState: mapState))
   }
-
 }

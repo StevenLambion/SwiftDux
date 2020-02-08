@@ -63,6 +63,12 @@ class JSONStatePersistorTests: XCTestCase {
     XCTAssertEqual(persistor.restore(), TestState(name: "Bob"))
   }
   
+  static var allTests = [
+    ("testSaveState", testSaveState),
+    ("testSaveStateWithPubisher", testSaveStateWithPubisher),
+    ("testSaveStateFromStore", testSaveStateFromStore),
+    ("testRestoreState", testRestoreState),
+  ]
 }
 
 extension JSONStatePersistorTests {
@@ -83,7 +89,6 @@ extension JSONStatePersistorTests {
         return TestState(name: name)
       }
     }
-    
   }
   
   final class TestLocation: StatePersistentLocation {
@@ -103,7 +108,5 @@ extension JSONStatePersistorTests {
     func restore() -> Data? {
       savedData
     }
-    
   }
-  
 }

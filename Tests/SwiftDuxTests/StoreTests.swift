@@ -89,6 +89,13 @@ final class StoreTests: XCTestCase {
     wait(for: [expectation], timeout: 1.0)
     XCTAssertEqual(cancellables.count, 0)
   }
+  
+  static var allTests = [
+    ("testSubscribingToActionPlans", testSubscribingToActionPlans),
+    ("testSubscribingToActionPlans", testSubscribingToActionPlans),
+    ("testSubscribingToComplexActionPlans", testSubscribingToComplexActionPlans),
+    ("testStoreCleansUpSubscriptions", testStoreCleansUpSubscriptions),
+  ]
 }
 
 extension StoreTests {
@@ -127,5 +134,4 @@ extension StoreTests {
       return state
     }
   }
-  
 }

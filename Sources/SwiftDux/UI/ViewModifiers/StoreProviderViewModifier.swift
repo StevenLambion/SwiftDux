@@ -24,7 +24,6 @@ internal struct StoreProviderViewModifier<State>: ViewModifier where State: Stat
       .environment(\.actionDispatcher, store)
       .environment(\.storeUpdated, store.didChange)
   }
-
 }
 
 extension View {
@@ -49,9 +48,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   /// - Returns: The modified view.
-  @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
     return modifier(StoreProviderViewModifier<State>(store: store))
   }
-
 }

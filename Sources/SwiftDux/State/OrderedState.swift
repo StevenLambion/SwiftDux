@@ -57,7 +57,6 @@ fileprivate class OrderedStateStorage<Substate>: Codable, Equatable where Substa
   func invalidateCache() {
     self.cachedIdsByOrder = nil
   }
-
 }
 
 /// A container state that holds an ordered collection of substates.
@@ -315,7 +314,6 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
       return isIncluded(value) ? value : nil
     }
   }
-
 }
 
 extension OrderedState: MutableCollection {
@@ -386,7 +384,6 @@ extension OrderedState: MutableCollection {
     let index = storage.index(ofId: i)
     return storage.orderOfIds[index + 1]
   }
-
 }
 
 extension OrderedState: RandomAccessCollection {
@@ -420,5 +417,4 @@ extension OrderedState {
   public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
     lhs.storage == rhs.storage
   }
-
 }

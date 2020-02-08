@@ -11,8 +11,8 @@ public final class PrintActionMiddleware<State>: Middleware where State: StateTy
   public var printer: ((String) -> Void) = defaultActionPrinter
   public var filter: (Action) -> Bool = { _ in true }
 
-  // swift-format-disable: ValidateDocumentationComments
-
+  /// Initialize a new PrinterActionMiddleware.
+  ///
   /// - Parameters:
   ///   - printer: A custom printer for the action's discription. Defaults to print().
   ///   - filter: Filter what actions get printed.

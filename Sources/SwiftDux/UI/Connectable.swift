@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// Makes a view "connectable" to the application state.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol Connectable {
 
   associatedtype Superstate: Equatable
@@ -30,7 +29,6 @@ public protocol Connectable {
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
   func map(state: Superstate, binder: StateBinder) -> Props?
-
 }
 
 extension Connectable {

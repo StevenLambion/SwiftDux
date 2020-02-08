@@ -31,7 +31,6 @@ internal struct OnAppearDispatchViewModifier: ViewModifier {
         }
       }
   }
-
 }
 
 extension View {
@@ -85,7 +84,6 @@ extension View {
   ///   - cancelOnDisappear: It will cancel any subscription from the action when the view disappears. If false, it keeps
   ///     the subscription alive and reppearances of the view will not re-call the action.
   /// - Returns: The modified view.
-  @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
   public func onAppear(dispatch action: Action, cancelOnDisappear: Bool = true) -> some View {
     modifier(OnAppearDispatchViewModifier(action: action, cancelOnDisappear: cancelOnDisappear))
   }

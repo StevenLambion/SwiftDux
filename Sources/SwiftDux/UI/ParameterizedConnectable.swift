@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// Makes a view "connectable" to the application state using a parameter value.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol ParameterizedConnectable {
   associatedtype Superstate: Equatable
   associatedtype Props: Equatable
@@ -31,7 +30,6 @@ public protocol ParameterizedConnectable {
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
   func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props?
-
 }
 
 extension ParameterizedConnectable {
@@ -52,14 +50,11 @@ extension ParameterizedConnectable {
   public func map(state: Superstate, with parameter: Parameter, binder: StateBinder) -> Props? {
     map(state: state, with: parameter)
   }
-
 }
 
 extension ParameterizedConnectable where Self: View {
 
-  // swift-format-disable: ValidateDocumentationComments
-
-  /// Connect the view to the application state via a provided parameter
+  /// Connect the view to the application state via a provided parameter.
   ///
   /// - Parameter parameter: A view specific value required to connect the appropriate state.
   /// - Returns: The connected view.
@@ -68,7 +63,4 @@ extension ParameterizedConnectable where Self: View {
       mapState: { self.map(state: $0, with: parameter, binder: $1) }
     )
   }
-
-  // swift-format-enable: ValidateDocumentationComments
-
 }
