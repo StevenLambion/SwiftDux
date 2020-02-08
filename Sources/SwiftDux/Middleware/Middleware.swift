@@ -21,6 +21,10 @@ public protocol Middleware {
   ///   - action: The latest dispatched action to process.
   func run(store: StoreProxy<State>, action: Action)
 
+  /// Compiles the middleware into a SendAction closure.
+  /// - Parameter store: A reference to the store used by the middleware.
+  /// - Returns: The SendAction that performs the middleware.
+  func compile(store: StoreProxy<State>) -> SendAction
 }
 
 extension Middleware {
@@ -29,6 +33,10 @@ extension Middleware {
   /// - Parameter store: The store proxy.
   /// - Returns: A SendAction function that performs the middleware for the provided store proxy.
   public func callAsFunction(store: StoreProxy<State>) -> SendAction {
+    self.compile(store: store)
+  }
+
+  public func compile(store: StoreProxy<State>) -> SendAction {
     { action in self.run(store: store, action: action) }
   }
 
