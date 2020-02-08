@@ -81,7 +81,7 @@ final class ActionPlanTests: XCTestCase {
       }
     }
     
-    let cancellable = actionPlan.sendAsCancellable(store)
+    let cancellable = store.sendAsCancellable(actionPlan)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         cancellable.cancel()

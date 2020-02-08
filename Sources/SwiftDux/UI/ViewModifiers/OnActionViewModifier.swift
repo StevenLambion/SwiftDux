@@ -10,8 +10,11 @@ internal struct OnActionViewModifier: ViewModifier {
   }
 
   public func body(content: Content) -> some View {
-    let proxy = actionDispatcher.proxy(modifyAction: perform, sentAction: nil)
-    return content.environment(\.actionDispatcher, proxy)
+    var nextActionDispatcher = actionDispatcher
+    if let perform = perform {
+      nextActionDispatcher = actionDispatcher.proxy(modifyAction: perform)
+    }
+    return content.environment(\.actionDispatcher, nextActionDispatcher)
   }
 }
 

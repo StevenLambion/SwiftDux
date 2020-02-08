@@ -8,7 +8,7 @@ internal struct NoopActionDispatcher: ActionDispatcher {
     print("Tried dispatching an action `\(action)` without providing a store object.")
   }
 
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher {
+  func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
     print("Tried proxying an action dispatcher before providing a store object.")
     return self
   }

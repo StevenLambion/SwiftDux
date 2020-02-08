@@ -23,12 +23,9 @@ public protocol ActionDispatcher {
   /// Create a new `ActionDispatcher` that acts as a proxy for the current one.
   ///
   /// Actions can be modified by both the new proxy and the original dispatcher it was created from.
-  /// - Parameters
-  ///   - modifyAction: An optional closure to modify the action before it continues up stream.
-  ///   - sentAction: Called directly after an action was sent up stream.
+  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
   /// - Returns: a new action dispatcher.
-  func proxy(modifyAction: ActionModifier?, sentAction: ((Action) -> Void)?) -> ActionDispatcher
-
+  func proxy(modifyAction: ActionModifier?) -> ActionDispatcher
 }
 
 extension ActionDispatcher {
@@ -38,7 +35,7 @@ extension ActionDispatcher {
   public func callAsFunction(_ action: Action) {
     send(action)
   }
-  
+
   /// Send an action that returns a cancellable object.
   /// - Parameter action: The action
   /// - Returns: A cancellable to cancel the action.
