@@ -115,12 +115,7 @@ enum NetworkSettingsAction: SettingsAction {
 
 ## Reducers
 
-A reducer consumes an action to produce a new state. There's always a root reducer that consumes all actions. From here, it can delegate out to sub-reducers. Each reducer conforms to a single type of action.
-
-The `Reducer` protocol has two primary methods to override:
-
-- `reduce(state:action:)` - For actions supported by the reducer.
-- `reduceNext(state:action:)` - Dispatches an action to any sub-reducers. This method is optional.
+A reducer consumes the previous state with an action, returning a whole new one.
 
 ```swift
 final class TodosReducer: Reducer {
@@ -138,23 +133,22 @@ final class TodosReducer: Reducer {
     }
     return state
   }
-
 }
 ```
 
+It's common to break out a reducers into multiple sub-reducers. To handle this, implement the `reduceNext(state:action:)` method.
 ```swift
 final class AppReducer: Reducer {
   let todosReducer = TodosReducer()
 
   func reduceNext(state: AppState, action: TodoAction) -> AppState {
     State(
-      todos: todosReducer(state.todos, action)
+      todos: todosReducer(state: state.todos, action: action)
     )
   }
-
 }
 ```
-Multiple reducers can be composed together if they share the same type of state by using the following syntax:
+Compose multiple reducers together if they share the same state type by using the `+` operator:
 ```swift
 let AppReducer = NavigationReducer() + TodosReducer()
 ```
@@ -170,6 +164,20 @@ let store = Store(AppState(todos: OrderedState()), AppReducer())
 
 window.rootViewController = UIHostingController(
   rootView: RootView().provideStore(store)
+)
+```
+
+## Middleware
+
+Use middleware to extend the functionality of the `Store<_>`. The SwiftDuxExtras module provides example middleware plugins. One prints the latest sent action, and the other persists the application state. Middleware are composed together using the `+` operator.
+
+```swift
+let store = Store(
+  state: State(),
+  reducer: AppReducer(),
+  middleware: 
+    PrintActionMiddleware() +
+    PersistStateMiddleware(JSONStatePersistor())
 )
 ```
 
@@ -275,7 +283,6 @@ public enum TodoRowContainer_Previews: PreviewProvider {
     TodoRowContainer(id: "1")
       .provideStore(store)
   }
-  
 }
 #endif
 ```
@@ -357,20 +364,6 @@ struct TodoListView: ConnectableView {
 
   // ...
 }
-```
-
-## Middleware
-
-Use middleware to extend the functionality of the `Store<_>`. The SwiftDuxExtras module provides example middleware plugins. One prints the latest sent action, and the other persists the application state. Middleware are composed together using the `+` operator.
-
-```swift
-let store = Store(
-  state: State(),
-  reducer: AppReducer(),
-  middleware: 
-    PrintActionMiddleware() +
-    PersistStateMiddleware(JSONStatePersistor())
-)
 ```
 
 [swift-image]: https://img.shields.io/badge/swift-5.1-orange.svg
