@@ -32,11 +32,11 @@ extension Middleware {
   /// Apply the middleware to a store proxy.
   /// - Parameter store: The store proxy.
   /// - Returns: A SendAction function that performs the middleware for the provided store proxy.
-  public func callAsFunction(store: StoreProxy<State>) -> SendAction {
+  @inlinable public func callAsFunction(store: StoreProxy<State>) -> SendAction {
     self.compile(store: store)
   }
 
-  public func compile(store: StoreProxy<State>) -> SendAction {
+  @inlinable public func compile(store: StoreProxy<State>) -> SendAction {
     { action in self.run(store: store, action: action) }
   }
 
@@ -45,14 +45,15 @@ extension Middleware {
   ///   - previousMiddleware: The  middleware to be called first.
   ///   - nextMiddleware: The next middleware to call.
   /// - Returns: The combined middleware.
-  public static func + <M>(previousMiddleware: Self, _ nextMiddleware: M) -> CombinedMiddleware<State, Self, M> where M: Middleware, M.State == State {
+  public static func + <M>(previousMiddleware: Self, _ nextMiddleware: M) -> CombinedMiddleware<State, Self, M>
+  where M: Middleware, M.State == State {
     CombinedMiddleware(previousMiddleware: previousMiddleware, nextMiddleware: nextMiddleware)
   }
 }
 
 internal final class NoopMiddleware<State>: Middleware where State: StateType {
 
-  func run(store: StoreProxy<State>, action: Action) {
+  @inlinable func run(store: StoreProxy<State>, action: Action) {
     store.next(action)
   }
 }

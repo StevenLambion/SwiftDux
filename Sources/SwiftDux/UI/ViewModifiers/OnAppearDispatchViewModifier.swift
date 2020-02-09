@@ -1,7 +1,7 @@
 import Combine
 import SwiftUI
 
-internal struct OnAppearDispatchViewModifier: ViewModifier {
+public struct OnAppearDispatchViewModifier: ViewModifier {
   @MappedDispatch() private var dispatch
 
   var action: Action
@@ -9,7 +9,7 @@ internal struct OnAppearDispatchViewModifier: ViewModifier {
 
   @State private var cancellable: Cancellable? = nil
 
-  internal init(action: Action, cancelOnDisappear: Bool) {
+  @usableFromInline internal init(action: Action, cancelOnDisappear: Bool) {
     self.action = action
     self.cancelOnDisappear = cancelOnDisappear
   }
@@ -84,7 +84,7 @@ extension View {
   ///   - cancelOnDisappear: It will cancel any subscription from the action when the view disappears. If false, it keeps
   ///     the subscription alive and reppearances of the view will not re-call the action.
   /// - Returns: The modified view.
-  public func onAppear(dispatch action: Action, cancelOnDisappear: Bool = true) -> some View {
+  @inlinable public func onAppear(dispatch action: Action, cancelOnDisappear: Bool = true) -> some View {
     modifier(OnAppearDispatchViewModifier(action: action, cancelOnDisappear: cancelOnDisappear))
   }
 }

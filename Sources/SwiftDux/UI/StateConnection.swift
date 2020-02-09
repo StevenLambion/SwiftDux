@@ -26,7 +26,7 @@ internal final class StateConnection<State>: ObservableObject, Identifiable wher
     }
   }
 
-  func map<Substate>(
+  @inlinable func map<Substate>(
     state mapState: @escaping (State, ActionBinder) -> Substate?,
     changePublisher: AnyPublisher<Action, Never>? = nil,
     binder: ActionBinder

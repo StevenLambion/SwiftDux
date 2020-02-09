@@ -31,12 +31,21 @@ public protocol Reducer {
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
   func reduceNext(state: State, action: Action) -> State
+  
+  /// Send any kind of action to a reducer. The recuder will determine what it can do with
+  /// the action.
+  ///
+  /// - Parameters
+  ///   - state: The state to reduce
+  ///   - action: Any kind of action.
+  /// - Returns: A new immutable state
+  func reduceAny(state: State, action: Action) -> State
 
 }
 
 extension Reducer {
 
-  public func callAsFunction(state: State, action: Action) -> State {
+  @inlinable public func callAsFunction(state: State, action: Action) -> State {
     reduceAny(state: state, action: action)
   }
 
@@ -46,7 +55,7 @@ extension Reducer {
   ///   - state: The state to reduce.
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
-  public func reduce(state: State, action: EmptyAction) -> State {
+  @inlinable public func reduce(state: State, action: EmptyAction) -> State {
     state
   }
 
@@ -56,7 +65,7 @@ extension Reducer {
   ///   - state: The state to reduce.
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
-  public func reduceNext(state: State, action: Action) -> State {
+  @inlinable public func reduceNext(state: State, action: Action) -> State {
     state
   }
 
@@ -67,7 +76,7 @@ extension Reducer {
   ///   - state: The state to reduce
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
-  public func reduceAny(state: State, action: Action) -> State {
+  @inlinable public func reduceAny(state: State, action: Action) -> State {
     var state = state
     if let reducerAction = action as? ReducerAction {
       state = reduce(state: state, action: reducerAction)

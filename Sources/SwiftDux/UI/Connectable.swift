@@ -41,12 +41,12 @@ extension Connectable {
   }
 
   /// Default implementation. Returns nil.
-  public func map(state: Superstate) -> Props? {
+  @inlinable public func map(state: Superstate) -> Props? {
     nil
   }
 
   /// Default implementation. Calls the other map function.
-  public func map(state: Superstate, binder: ActionBinder) -> Props? {
+  @inlinable public func map(state: Superstate, binder: ActionBinder) -> Props? {
     map(state: state)
   }
 }
@@ -56,7 +56,7 @@ extension Connectable where Self: View {
   /// Connect the view to the application state
   ///
   /// - Returns: The connected view.
-  public func connect() -> some View {
+  @inlinable public func connect() -> some View {
     self.connect(mapState: self.map)
   }
 }

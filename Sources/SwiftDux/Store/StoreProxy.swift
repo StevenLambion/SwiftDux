@@ -10,15 +10,19 @@ import Foundation
 public struct StoreProxy<State>: ActionDispatcher where State: StateType {
 
   /// Subscribe to state changes.
-  private unowned var store: Store<State>
+  @usableFromInline
+  internal unowned var store: Store<State>
 
   /// Send an action to the next middleware
-  private var modifyAction: ActionModifier?
+  @usableFromInline
+  internal var modifyAction: ActionModifier?
 
   /// Send an action to the next middleware
-  private var nextBlock: SendAction?
+  @usableFromInline
+  internal var nextBlock: SendAction?
 
-  private var doneBlock: (() -> Void)?
+  @usableFromInline
+  internal var doneBlock: (() -> Void)?
 
   /// Retrieves the latest state from the store.
   public var state: State {
@@ -30,14 +34,14 @@ public struct StoreProxy<State>: ActionDispatcher where State: StateType {
     store.didChange
   }
 
-  internal init(store: Store<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
+  @inlinable internal init(store: Store<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
     self.store = store
     self.modifyAction = modifyAction
     self.nextBlock = next
     self.doneBlock = done
   }
 
-  internal init(store: StoreProxy<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
+  @inlinable internal init(store: StoreProxy<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
     self.store = store.store
     self.modifyAction = modifyAction.flatMap { outer in
       store.modifyAction.map { inner in
@@ -52,7 +56,7 @@ public struct StoreProxy<State>: ActionDispatcher where State: StateType {
 
   /// Send an action to the store.
   /// - Parameter action: The action to send
-  public func send(_ action: Action) {
+  @inlinable public func send(_ action: Action) {
     let action = modifyAction.flatMap { $0(action) } ?? action
     store.send(action)
   }
@@ -60,18 +64,18 @@ public struct StoreProxy<State>: ActionDispatcher where State: StateType {
   /// Use this in middleware to send an action to the next
   /// step in the pipeline. Outside of middleware, it does nothing.
   /// - Parameter action: The action to send
-  public func next(_ action: Action) {
+  @inlinable public func next(_ action: Action) {
     nextBlock?(action)
   }
 
   /// Used by action plans to tell the store that a publisher has completed or cancelled its work.
   /// Only use this if the action plan is not returning a publisher or subscribing via ActionSubscriber.
   /// This is not needed by action plans that don't return a cancellable.
-  public func done() {
+  @inlinable public func done() {
     doneBlock?()
   }
 
-  public func proxy(modifyAction: ActionModifier?) -> ActionDispatcher {
+  @inlinable public func proxy(modifyAction: ActionModifier?) -> ActionDispatcher {
     StoreProxy(store: self, modifyAction: modifyAction)
   }
 }

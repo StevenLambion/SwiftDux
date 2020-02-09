@@ -5,7 +5,7 @@ public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B
   private var previousMiddleware: A
   private var nextMiddleware: B
   
-  init(previousMiddleware: A, nextMiddleware: B) {
+  internal init(previousMiddleware: A, nextMiddleware: B) {
     self.previousMiddleware = previousMiddleware
     self.nextMiddleware = nextMiddleware
   }

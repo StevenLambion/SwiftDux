@@ -23,13 +23,12 @@ final class PerformanceTests: XCTestCase {
   }
   
   func testStoreUpdatePerformance() {
-    let subsriberCount = 100
-    let sendCount = 10000
+    let subsriberCount = 1000
+    let sendCount = 1000
     var updateCounts = 0
     var sinks = [Cancellable]()
     let store = Store(state: TestState.defaultState, reducer: TestReducer())
     
-    sinks.reserveCapacity(subsriberCount)
     for _ in 1...subsriberCount {
       sinks.append(store.didChange.sink { _ in updateCounts += 1 })
     }
@@ -41,7 +40,9 @@ final class PerformanceTests: XCTestCase {
       }
       XCTAssertEqual(updateCounts, subsriberCount * sendCount)
     }
-    print("Sent \(updateCounts) updates")
+    
+    // Needed so it doesn't get optimized away.
+    XCTAssertEqual(sinks.count, subsriberCount)
   }
 
   static var allTests = [

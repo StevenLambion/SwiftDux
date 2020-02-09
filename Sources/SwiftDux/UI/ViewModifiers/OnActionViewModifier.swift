@@ -1,11 +1,11 @@
 import Combine
 import SwiftUI
 
-internal struct OnActionViewModifier: ViewModifier {
+public struct OnActionViewModifier: ViewModifier {
   @Environment(\.actionDispatcher) private var actionDispatcher
   private var perform: ActionModifier? = nil
 
-  internal init(perform: ActionModifier? = nil) {
+  @usableFromInline internal init(perform: ActionModifier? = nil) {
     self.perform = perform
   }
 
@@ -24,7 +24,7 @@ extension View {
   ///
   /// - Parameter perform: Calls the closure when an action is dispatched. An optional new action can be returned to change the action.
   /// - Returns: The modified view.
-  public func onAction(perform: @escaping ActionModifier) -> some View {
+  @inlinable public func onAction(perform: @escaping ActionModifier) -> some View {
     modifier(OnActionViewModifier(perform: perform))
   }
 }

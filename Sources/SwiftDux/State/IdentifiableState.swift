@@ -11,14 +11,14 @@ extension IdentifiableState {
   /// The hash value of the state based on the id.
   ///
   /// - Parameter hasher: The hasher to apply the hash into.
-  public var hashValue: Int {
+  @inlinable public var hashValue: Int {
     id.hashValue
   }
 
   /// Applies the hash of the id to the hasher.
   ///
   /// - Parameter hasher: The hasher to apply the id's hash into.
-  public func hash(into hasher: inout Hasher) {
+  @inlinable public func hash(into hasher: inout Hasher) {
     id.hash(into: &hasher)
   }
 }

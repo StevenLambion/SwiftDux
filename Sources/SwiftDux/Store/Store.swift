@@ -13,8 +13,10 @@ public final class Store<State> where State: StateType {
   /// Subscribe for state changes. It emits the latest action sent to the store.
   public let didChange: AnyPublisher<Action, Never>
 
-  private var update: SendAction = { _ in }
+  @usableFromInline
+  internal var update: SendAction = { _ in }
 
+  @usableFromInline
   internal let didChangeSubject = PassthroughSubject<Action, Never>()
 
   /// Creates a new store for the given state and reducer.
@@ -54,7 +56,7 @@ extension Store: ActionDispatcher {
 
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
-  public func send(_ action: Action) {
+  @inlinable public func send(_ action: Action) {
     if let action = action as? ActionPlan<State> {
       send(actionPlan: action)
     } else {
@@ -63,7 +65,7 @@ extension Store: ActionDispatcher {
   }
 
   /// Handles the sending of normal action plans.
-  private func send(actionPlan: ActionPlan<State>) {
+  @inlinable internal func send(actionPlan: ActionPlan<State>) {
     var cancellable: AnyCancellable? = nil
     let storeProxy = StoreProxy(
       store: self,
@@ -82,7 +84,7 @@ extension Store: ActionDispatcher {
   /// modified or tracked.
   /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
   /// - Returns: a new action dispatcher.
-  public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
+  @inlinable public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
     StoreProxy<State>(
       store: self,
       modifyAction: modifyAction
