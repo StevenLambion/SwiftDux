@@ -2,7 +2,7 @@ import Combine
 import Foundation
 
 /// A simple middleware to perform any handling on a dispatched action.
-public final class HandleActionMiddleware<State>: Middleware where State: StateType {
+public final class HandleActionMiddleware<State>: Middleware {
   @usableFromInline
   internal var perform: (StoreProxy<State>, Action) -> Void
 

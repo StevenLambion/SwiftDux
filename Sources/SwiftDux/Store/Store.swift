@@ -5,7 +5,7 @@ import Foundation
 ///
 /// The store both contains and mutates the state through a provided reducer as it's sent actions.
 /// Use the didChange publisher to be notified of changes.
-public final class Store<State> where State: StateType {
+public final class Store<State> {
 
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State
@@ -57,7 +57,7 @@ extension Store: ActionDispatcher {
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
   @inlinable public func send(_ action: Action) {
-    if let action = action as? ActionPlan<State> {
+    if let action = action as? AnyActionPlan {
       send(actionPlan: action)
     } else {
       update(action)
@@ -65,7 +65,7 @@ extension Store: ActionDispatcher {
   }
 
   /// Handles the sending of normal action plans.
-  @inlinable internal func send(actionPlan: ActionPlan<State>) {
+  @inlinable internal func send(actionPlan: AnyActionPlan) {
     var cancellable: AnyCancellable? = nil
     let storeProxy = StoreProxy(
       store: self,
@@ -74,7 +74,7 @@ extension Store: ActionDispatcher {
         cancellable = nil
       }
     )
-    cancellable = actionPlan.run(storeProxy) { [storeProxy] in
+    cancellable = actionPlan.runAny(storeProxy) { [storeProxy] in
       storeProxy.done()
     }
     didChangeSubject.send(actionPlan)

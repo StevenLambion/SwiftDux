@@ -1,6 +1,17 @@
 import Combine
 import Foundation
 
+/// Represents any kind of action plan that might be sent to the store.
+public protocol AnyActionPlan: Action {
+
+  /// Run the action for the provided store.
+  /// - Parameters:
+  ///   - store: The store to apply the action plan to.
+  ///   - completed: Completion block
+  /// - Returns: an optional cancellable
+  func runAny<T>(_ store: StoreProxy<T>, completed: @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable?
+}
+
 /// Encapsulates multiple actions into a packaged up "action plan"
 ///
 ///```
@@ -31,7 +42,7 @@ import Foundation
 ///     dispatch(UserAction.loadUser(byId: self.id))
 ///   }
 ///```.
-public struct ActionPlan<State>: CancellableAction where State: StateType {
+public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
 
   /// The body of a publishable action plan.
   ///
@@ -70,6 +81,14 @@ public struct ActionPlan<State>: CancellableAction where State: StateType {
       completed()
       return nil
     }
+  }
+
+  @inlinable public func runAny<T>(_ store: StoreProxy<T>, completed: @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable? {
+    guard let store = store as? StoreProxy<State> else {
+      print("Dispatched action plan named '\(type(of:self))' is not compatible with the store type: '\(T.self)'")
+      return nil
+    }
+    return run(store, completed: completed)
   }
 
   /// Manually run the action plan.

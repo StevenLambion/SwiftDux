@@ -1,14 +1,39 @@
 import Foundation
 import SwiftDux
 
-struct TestState: StateType {
+final class TodoListState: IdentifiableState {
+  var id: String
+  var name: String
+  var todos: OrderedState<TodoItemState>
+  
+  init(id: String, name: String, todos: OrderedState<TodoItemState>) {
+    self.id = id
+    self.name = name
+    self.todos = todos
+  }
+
+  static func == (lhs: TodoListState, rhs: TodoListState) -> Bool {
+    lhs.id == rhs.id
+  }
+}
+
+struct TodoItemState: IdentifiableState, Hashable, Identifiable {
+  var id: String
+  var text: String
+}
+
+protocol TodoListStateContainer {
+  var todoLists: OrderedState<TodoListState> { get set }
+}
+
+struct AppState: StateType, TodoListStateContainer {
   var todoLists: OrderedState<TodoListState>
 }
 
-extension TestState {
+extension AppState {
   
-  static var defaultState: TestState {
-    TestState(
+  static var defaultState: AppState {
+    AppState(
       todoLists: OrderedState(
         TodoListState(
           id: "123",

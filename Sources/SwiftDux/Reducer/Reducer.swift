@@ -11,7 +11,7 @@ import Foundation
 public protocol Reducer {
 
   /// The type of state that the `Reducer` is able to mutate.
-  associatedtype State: StateType
+  associatedtype State
 
   /// The supported actions of a reducer.
   associatedtype ReducerAction
@@ -31,7 +31,7 @@ public protocol Reducer {
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
   func reduceNext(state: State, action: Action) -> State
-  
+
   /// Send any kind of action to a reducer. The recuder will determine what it can do with
   /// the action.
   ///

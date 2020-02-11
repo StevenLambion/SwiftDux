@@ -5,24 +5,24 @@ import Combine
 final class TodoExampleTests: XCTestCase {
   
   func testInitialStateValue() {
-    let store = Store(state: TestState.defaultState, reducer: TestReducer())
+    let store = configureStore()
     XCTAssertEqual(store.state.todoLists.count, 1)
     XCTAssertEqual(store.state.todoLists["123"]?.todos.count, 3)
   }
   
   func testAddTodo() {
-    let store = Store(state: TestState.defaultState, reducer: TestReducer())
+    let store = configureStore()
     let name = "My new todo list"
-    store.send(TodoListAction.addTodo(toList: "123", withText: "My new todo list"))
+    store.send(TodosAction.addTodo(toList: "123", withText: "My new todo list"))
     let todoList = store.state.todoLists["123"]
     let todo = todoList?.todos.filter { $0.text == name }.first!
     XCTAssertEqual(todoList?.todos.values.first?.id, todo?.id)
   }
   
   func testRemoveTodos() {
-    let store = Store(state: TestState.defaultState, reducer: TestReducer())
+    let store = configureStore()
     let lastTodo = store.state.todoLists["123"]?.todos.values.last!
-    store.send(TodoListAction.removeTodos(fromList: "123", at: IndexSet([0, 1])))
+    store.send(TodosAction.removeTodos(fromList: "123", at: IndexSet([0, 1])))
     let todoList = store.state.todoLists["123"]
     let todo = todoList?.todos.values.first!
     XCTAssertEqual(lastTodo?.id, todo?.id)

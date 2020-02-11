@@ -12,7 +12,7 @@ import Foundation
 /// For a reducer's own state and actions, implement the `reduce(state:action:)`.
 /// For subreducers, implement the `reduceNext(state:action:)` method.
 public protocol Middleware {
-  associatedtype State: StateType
+  associatedtype State
 
   /// Perform any middleware actions within this function.
   ///
@@ -51,7 +51,7 @@ extension Middleware {
   }
 }
 
-internal final class NoopMiddleware<State>: Middleware where State: StateType {
+internal final class NoopMiddleware<State>: Middleware {
 
   @inlinable func run(store: StoreProxy<State>, action: Action) {
     store.next(action)

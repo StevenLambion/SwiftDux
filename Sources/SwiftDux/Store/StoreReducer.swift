@@ -12,7 +12,7 @@ public enum StoreAction<State>: Action {
   case reset(state: State)
 }
 
-internal final class StoreReducer<State>: Reducer where State: StateType {
+internal final class StoreReducer<State>: Reducer {
 
   @inlinable public func reduce(state: State, action: StoreAction<State>) -> State {
     switch action {

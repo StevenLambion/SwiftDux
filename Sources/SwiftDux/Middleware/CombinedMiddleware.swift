@@ -4,7 +4,7 @@ import Foundation
 public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B: Middleware, A.State == State, B.State == State {
   private var previousMiddleware: A
   private var nextMiddleware: B
-  
+
   internal init(previousMiddleware: A, nextMiddleware: B) {
     self.previousMiddleware = previousMiddleware
     self.nextMiddleware = nextMiddleware
