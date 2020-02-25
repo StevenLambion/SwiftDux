@@ -1,28 +1,40 @@
 import Combine
 import SwiftUI
 
-public struct OnAppearDispatchViewModifier: ViewModifier {
+public struct OnAppearDispatchActionViewModifier: ViewModifier {
   @MappedDispatch() private var dispatch
 
   var action: Action
+
+  @State private var cancellable: Cancellable? = nil
+
+  @usableFromInline internal init(action: Action) {
+    self.action = action
+  }
+
+  public func body(content: Content) -> some View {
+    content.onAppear { [action, dispatch] in dispatch(action) }
+  }
+}
+
+public struct OnAppearDispatchActionPlanViewModifier<T>: ViewModifier {
+  @MappedDispatch() private var dispatch
+
+  var actionPlan: ActionPlan<T>
   var cancelOnDisappear: Bool
 
   @State private var cancellable: Cancellable? = nil
 
-  @usableFromInline internal init(action: Action, cancelOnDisappear: Bool) {
-    self.action = action
+  @usableFromInline internal init(actionPlan: ActionPlan<T>, cancelOnDisappear: Bool) {
+    self.actionPlan = actionPlan
     self.cancelOnDisappear = cancelOnDisappear
   }
 
   public func body(content: Content) -> some View {
     content
-      .onAppear { [action, dispatch] in
+      .onAppear { [actionPlan, dispatch] in
         guard self.cancellable == nil else { return }
-        if let actionPlan = action as? CancellableAction {
-          self.cancellable = actionPlan.sendAsCancellable(dispatch)
-        } else {
-          dispatch(action)
-        }
+        self.cancellable = actionPlan.sendAsCancellable(dispatch)
       }
       .onDisappear { [cancelOnDisappear] in
         if cancelOnDisappear {
@@ -35,11 +47,18 @@ public struct OnAppearDispatchViewModifier: ViewModifier {
 
 extension View {
 
-  /// Sends the provided action when the view appears. If an action plan is provided, it will send it as a cancellable plan.
-  /// This let's the view modifier automatically clean up the publisher if it's connected to an external service or API when the view
-  /// disappears.
+  /// Sends the provided action when the view appears.
   ///
-  ///  In the follow example an ActionPlan is created that automatically updates a list of todos when the filter property of the TodoList state changes. All the view needs to do is dispatch the action when it appears.
+  /// - Parameter action: An action to dispatch every time the view appears.
+  /// - Returns: The modified view.
+  @inlinable public func onAppear(dispatch action: Action) -> some View {
+    modifier(OnAppearDispatchActionViewModifier(action: action))
+  }
+
+  /// Sends the provided action plan when the view appears.
+  ///
+  /// In the follow example an ActionPlan is created that automatically updates a list of todos when the filter property of
+  /// the TodoList state changes. All the view needs to do is dispatch the action when it appears.
   /// ```
   /// // In the TodoListAction file:
   ///
@@ -80,11 +99,11 @@ extension View {
   /// ```
   ///
   /// - Parameters:
-  ///   - action: An action to dispatch every time the view appears.
+  ///   - actionPlan: An action to dispatch every time the view appears.
   ///   - cancelOnDisappear: It will cancel any subscription from the action when the view disappears. If false, it keeps
   ///     the subscription alive and reppearances of the view will not re-call the action.
   /// - Returns: The modified view.
-  @inlinable public func onAppear(dispatch action: Action, cancelOnDisappear: Bool = true) -> some View {
-    modifier(OnAppearDispatchViewModifier(action: action, cancelOnDisappear: cancelOnDisappear))
+  @inlinable public func onAppear<T>(dispatch actionPlan: ActionPlan<T>, cancelOnDisappear: Bool = true) -> some View {
+    modifier(OnAppearDispatchActionPlanViewModifier(actionPlan: actionPlan, cancelOnDisappear: cancelOnDisappear))
   }
 }

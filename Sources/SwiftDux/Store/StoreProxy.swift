@@ -9,13 +9,15 @@ import Foundation
 /// a safe API to access a weak reference to it.
 public struct StoreProxy<State>: ActionDispatcher {
 
-  /// Subscribe to state changes.
   @usableFromInline
-  internal unowned var store: Store<State>
+  internal var getState: () -> State
+
+  /// Emits after the specified action was sent to the store.
+  public var didChange: AnyPublisher<Action, Never>
 
   /// Send an action to the next middleware
   @usableFromInline
-  internal var modifyAction: ActionModifier?
+  internal var dispatcher: ActionDispatcher
 
   /// Send an action to the next middleware
   @usableFromInline
@@ -26,39 +28,35 @@ public struct StoreProxy<State>: ActionDispatcher {
 
   /// Retrieves the latest state from the store.
   public var state: State {
-    store.state
+    getState()
   }
 
-  /// Emits after the specified action was sent to the store.
-  public var didChange: AnyPublisher<Action, Never> {
-    store.didChange
-  }
-
-  @inlinable internal init(store: Store<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
-    self.store = store
-    self.modifyAction = modifyAction
+  @inlinable internal init(
+    getState: @escaping () -> State,
+    didChange: AnyPublisher<Action, Never>,
+    dispatcher: ActionDispatcher,
+    next: SendAction? = nil,
+    done: (() -> Void)? = nil
+  ) {
+    self.getState = getState
+    self.didChange = didChange
+    self.dispatcher = dispatcher
     self.nextBlock = next
     self.doneBlock = done
   }
 
-  @inlinable internal init(store: StoreProxy<State>, modifyAction: ActionModifier? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
-    self.store = store.store
-    self.modifyAction = modifyAction.flatMap { outer in
-      store.modifyAction.map { inner in
-        { action in
-          inner(action).flatMap { outer($0) }
-        }
-      } ?? outer
-    }
-    self.nextBlock = next
-    self.doneBlock = done
+  @inlinable internal init(proxy: StoreProxy<State>, dispatcher: ActionDispatcher? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
+    self.getState = proxy.getState
+    self.didChange = proxy.didChange
+    self.dispatcher = dispatcher ?? proxy
+    self.nextBlock = next ?? proxy.nextBlock
+    self.doneBlock = done ?? proxy.doneBlock
   }
 
   /// Send an action to the store.
   /// - Parameter action: The action to send
   @inlinable public func send(_ action: Action) {
-    let action = modifyAction.flatMap { $0(action) } ?? action
-    store.send(action)
+    dispatcher.send(action)
   }
 
   /// Use this in middleware to send an action to the next
@@ -73,9 +71,5 @@ public struct StoreProxy<State>: ActionDispatcher {
   /// This is not needed by action plans that don't return a cancellable.
   @inlinable public func done() {
     doneBlock?()
-  }
-
-  @inlinable public func proxy(modifyAction: ActionModifier?) -> ActionDispatcher {
-    StoreProxy(store: self, modifyAction: modifyAction)
   }
 }

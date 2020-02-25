@@ -35,7 +35,7 @@ final class TodoListsReducer: Reducer {
 final class TodosReducer<State>: Reducer where State: TodoListStateContainer {
   
   func reduce(state: State, action: TodosAction) -> State {
-    var state = state
+    let state = state
     switch action {
     case .addTodo(let id, let text):
     state.todoLists[id]?.todos.prepend(TodoItemState(id: UUID().uuidString, text: text))

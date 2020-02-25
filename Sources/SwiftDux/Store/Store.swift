@@ -31,7 +31,9 @@ public final class Store<State> {
     self.didChange = didChangeSubject.eraseToAnyPublisher()
     self.update = middleware(
       store: StoreProxy(
-        store: self,
+        getState: { [unowned self] in self.state },
+        didChange: didChange,
+        dispatcher: self,
         next: { [storeReducer, weak self] action in
           guard let self = self else { return }
           self.state = storeReducer(state: self.state, action: action)
@@ -50,6 +52,21 @@ public final class Store<State> {
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
+
+  /// Create a proxy of the store for a given type that it adheres to.
+  /// - Parameters:
+  ///   - stateType: The type of state for the proxy. This must be a type that the store adheres to.
+  ///   - done: A closure called with an async action has completed.
+  /// - Returns: A proxy object if the state type matches, otherwise nil.
+  @inlinable public func proxy<T>(for stateType: T.Type, done: (() -> Void)? = nil) -> StoreProxy<T>? {
+    guard State.self is T.Type else { return nil }
+    return StoreProxy<T>(
+      getState: { [unowned self] in self.state as! T },
+      didChange: didChange,
+      dispatcher: self,
+      done: done
+    )
+  }
 }
 
 extension Store: ActionDispatcher {
@@ -57,37 +74,10 @@ extension Store: ActionDispatcher {
   /// Sends an action to the store to mutate its state.
   /// - Parameter action: The  action to mutate the state.
   @inlinable public func send(_ action: Action) {
-    if let action = action as? AnyActionPlan {
-      send(actionPlan: action)
+    if let action = action as? RunnableAction {
+      _ = action.run(store: self)
     } else {
       update(action)
     }
-  }
-
-  /// Handles the sending of normal action plans.
-  @inlinable internal func send(actionPlan: AnyActionPlan) {
-    var cancellable: AnyCancellable? = nil
-    let storeProxy = StoreProxy(
-      store: self,
-      done: {
-        cancellable?.cancel()
-        cancellable = nil
-      }
-    )
-    cancellable = actionPlan.runAny(storeProxy) { [storeProxy] in
-      storeProxy.done()
-    }
-    didChangeSubject.send(actionPlan)
-  }
-
-  /// Create a new `ActionDispatcher` that acts as a proxy between the action sender and the store. It optionally allows actions to be
-  /// modified or tracked.
-  /// - Parameter modifyAction: An optional closure to modify the action before it continues up stream.
-  /// - Returns: a new action dispatcher.
-  @inlinable public func proxy(modifyAction: ActionModifier? = nil) -> ActionDispatcher {
-    StoreProxy<State>(
-      store: self,
-      modifyAction: modifyAction
-    )
   }
 }

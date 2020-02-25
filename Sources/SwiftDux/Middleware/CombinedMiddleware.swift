@@ -19,6 +19,6 @@ public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B
   /// - Parameter store: The store proxy.
   /// - Returns: A SendAction function that performs the middleware for the provided store proxy.
   public func compile(store: StoreProxy<State>) -> SendAction {
-    previousMiddleware(store: StoreProxy(store: store, next: nextMiddleware(store: store)))
+    previousMiddleware(store: StoreProxy(proxy: store, next: nextMiddleware(store: store)))
   }
 }

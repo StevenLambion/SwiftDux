@@ -1,17 +1,6 @@
 import Combine
 import Foundation
 
-/// Represents any kind of action plan that might be sent to the store.
-public protocol AnyActionPlan: Action {
-
-  /// Run the action for the provided store.
-  /// - Parameters:
-  ///   - store: The store to apply the action plan to.
-  ///   - completed: Completion block
-  /// - Returns: an optional cancellable
-  func runAny<T>(_ store: StoreProxy<T>, completed: @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable?
-}
-
 /// Encapsulates multiple actions into a packaged up "action plan"
 ///
 ///```
@@ -42,7 +31,7 @@ public protocol AnyActionPlan: Action {
 ///     dispatch(UserAction.loadUser(byId: self.id))
 ///   }
 ///```.
-public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
+public struct ActionPlan<State>: RunnableAction {
 
   /// The body of a publishable action plan.
   ///
@@ -54,7 +43,7 @@ public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
   internal var body: Body
 
   @usableFromInline
-  internal var nextActions: [Action] = []
+  internal var nextActions: [ActionPlan<State>] = []
 
   /// Create a new action plan that returns an optional publisher.
   ///
@@ -83,12 +72,17 @@ public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
     }
   }
 
-  @inlinable public func runAny<T>(_ store: StoreProxy<T>, completed: @escaping ActionSubscriber.ReceivedCompletion) -> AnyCancellable? {
-    guard let store = store as? StoreProxy<State> else {
-      print("Dispatched action plan named '\(type(of:self))' is not compatible with the store type: '\(T.self)'")
-      return nil
+  public func run<T>(store: Store<T>) -> AnyCancellable? {
+    var cancellable: AnyCancellable? = nil
+    let done = {
+      cancellable?.cancel()
+      cancellable = nil
     }
-    return run(store, completed: completed)
+    guard let proxy = store.proxy(for: State.self, done: done) else { return nil }
+    cancellable = run(proxy) { [proxy] in
+      proxy.done()
+    }
+    return cancellable
   }
 
   /// Manually run the action plan.
@@ -99,7 +93,7 @@ public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
   ///   - completed: A block that's called when the plan has completed.
   /// - Returns: A publisher that can send actions to the store.
   @inlinable public func run(_ store: StoreProxy<State>, completed: @escaping ActionSubscriber.ReceivedCompletion = {}) -> AnyCancellable? {
-    guard var nextAction = nextActions.first as? ActionPlan<State> else {
+    guard var nextAction = nextActions.first else {
       return body(store, completed)
     }
 
@@ -141,11 +135,11 @@ public struct ActionPlan<State>: AnyActionPlan, CancellableAction {
   /// }
   /// ```
   ///
-  /// - Parameter send: The send function that dispatches an action.
+  /// - Parameter dispatcher: The send function that dispatches an action.
   /// - Returns: AnyCancellable to cancel the action plan.
-  @inlinable public func sendAsCancellable(_ send: ActionDispatcher) -> AnyCancellable {
+  @inlinable public func sendAsCancellable(_ dispatcher: ActionDispatcher) -> AnyCancellable {
     var publisherCancellable: AnyCancellable? = nil
-    send(
+    dispatcher(
       ActionPlan<State> { store, completed in
         publisherCancellable = self.run(store) {
           publisherCancellable = nil
