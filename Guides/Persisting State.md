@@ -32,7 +32,7 @@ import SwiftDuxExtras
 let store = Store(
   state: AppState(),
   reducer: AppReducer(),
-  middleware: [PersistStateMiddleware(JSONStatePersistor())]
+  middleware: PersistStateMiddleware(JSONStatePersistor())
 )
 
 ```

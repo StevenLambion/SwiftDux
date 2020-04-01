@@ -53,7 +53,7 @@ class AppReducer : Reducer {
 }
 ```
 
-Here, the author reducer accept only its own slice of the overall state.
+Here, the author's reducer accepts only its own slice of the overall state.
 
 ```swift
 class AuthorReducer : Reducer {
