@@ -6,31 +6,29 @@ final class PerformanceTests: XCTestCase {
   
   func testOrderedStatePerformance() {
     measure {
-      let store = Store(state: TestState.defaultState, reducer: TestReducer())
+      let store = configureStore()
       for i in 0...10000 {
-        store.send(TodoListAction.addTodo(toList: "123", withText: "Todo item \(i)"))
+        store.send(TodosAction.addTodo(toList: "123", withText: "Todo item \(i)"))
       }
       XCTAssertEqual(10004, store.state.todoLists["123"]?.todos.count)
       
       let firstMoveItem = store.state.todoLists["123"]?.todos.values[300]
-      store.send(TodoListAction.moveTodos(inList: "123", from: IndexSet(300...5000), to: 8000))
+      store.send(TodosAction.moveTodos(inList: "123", from: IndexSet(300...5000), to: 8000))
       XCTAssertEqual(firstMoveItem?.id, store.state.todoLists["123"]?.todos.values[3299].id)
       
       let firstUndeletedItem = store.state.todoLists["123"]?.todos.values[3001]
-      store.send(TodoListAction.removeTodos(fromList: "123", at: IndexSet(100...3000)))
+      store.send(TodosAction.removeTodos(fromList: "123", at: IndexSet(100...3000)))
       XCTAssertEqual(firstUndeletedItem?.id, store.state.todoLists["123"]?.todos.values[100].id)
-      
     }
   }
   
   func testStoreUpdatePerformance() {
-    let subsriberCount = 100
-    let sendCount = 10000
+    let subsriberCount = 1000
+    let sendCount = 1000
     var updateCounts = 0
     var sinks = [Cancellable]()
-    let store = Store(state: TestState.defaultState, reducer: TestReducer())
+    let store = configureStore()
     
-    sinks.reserveCapacity(subsriberCount)
     for _ in 1...subsriberCount {
       sinks.append(store.didChange.sink { _ in updateCounts += 1 })
     }
@@ -38,11 +36,13 @@ final class PerformanceTests: XCTestCase {
     measure {
       updateCounts = 0
       for _ in 1...sendCount {
-        store.send(TodoListAction.doNothing)
+        store.send(TodosAction.doNothing)
       }
       XCTAssertEqual(updateCounts, subsriberCount * sendCount)
     }
-    print("Sent \(updateCounts) updates")
+    
+    // Needed so it doesn't get optimized away.
+    XCTAssertEqual(sinks.count, subsriberCount)
   }
 
   static var allTests = [

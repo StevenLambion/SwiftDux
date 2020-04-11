@@ -12,25 +12,14 @@ public enum StoreAction<State>: Action {
   case reset(state: State)
 }
 
-internal final class StoreReducer<State, R>: Reducer where R: Reducer, R.State == State {
+internal final class StoreReducer<State>: Reducer {
 
-  private let rootReducer: R
-
-  /// Initiate the reducer as a wrapper over a root reducer.
-  public init(_ rootReducer: R) {
-    self.rootReducer = rootReducer
-  }
-
-  public func reduce(state: State, action: StoreAction<State>) -> State {
+  @inlinable public func reduce(state: State, action: StoreAction<State>) -> State {
     switch action {
     case .reset(let newState):
       return newState
     default:
       return state
     }
-  }
-
-  public func reduceNext(state: State, action: Action) -> State {
-    rootReducer.reduceAny(state: state, action: action)
   }
 }

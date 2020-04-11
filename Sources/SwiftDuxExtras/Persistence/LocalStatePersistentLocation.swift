@@ -2,10 +2,21 @@ import Foundation
 import SwiftDux
 
 fileprivate func getDefaultFileUrl() -> URL {
-  if let directoryURL = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) {
-    return directoryURL.appendingPathComponent("appData.json")
+  guard var directoryURL = try? FileManager.default.url(for: .applicationSupportDirectory, in: .userDomainMask, appropriateFor: nil, create: true) else {
+    fatalError("Unable to create default file url for StatePersistor")
   }
-  fatalError("Unable to create default file url for StatePersistor")
+  /// Add project identifier if it exists.
+  if let identifier = Bundle.main.bundleIdentifier {
+    directoryURL = directoryURL.appendingPathComponent(identifier)
+  }
+  do {
+    if !FileManager.default.fileExists(atPath: directoryURL.path) {
+      try FileManager.default.createDirectory(at: directoryURL, withIntermediateDirectories: true)
+    }
+  } catch {
+    fatalError("Unable to create directory at \(directoryURL.path)")
+  }
+  return directoryURL.appendingPathComponent("state")
 }
 
 /// The location of application state within the local filesystem.
@@ -40,5 +51,4 @@ public struct LocalStatePersistentLocation: StatePersistentLocation {
   public func restore() -> Data? {
     try? Data(contentsOf: fileUrl)
   }
-
 }

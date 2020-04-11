@@ -40,5 +40,4 @@ public final class JSONStatePersistor<State>: StatePersistor where State: StateT
   public func decode(data: Data) throws -> State {
     try decoder.decode(State.self, from: data)
   }
-
 }

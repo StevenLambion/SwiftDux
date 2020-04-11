@@ -12,19 +12,48 @@ import Foundation
 /// For a reducer's own state and actions, implement the `reduce(state:action:)`.
 /// For subreducers, implement the `reduceNext(state:action:)` method.
 public protocol Middleware {
+  associatedtype State
 
   /// Perform any middleware actions within this function.
   ///
   /// - Parameters:
   ///   - store: The store object. Use `store.next` when the middleware is complete.
   ///   - action: The latest dispatched action to process.
-  func run<State>(store: StoreProxy<State>, action: Action) where State: StateType
+  func run(store: StoreProxy<State>, action: Action)
 
+  /// Compiles the middleware into a SendAction closure.
+  /// - Parameter store: A reference to the store used by the middleware.
+  /// - Returns: The SendAction that performs the middleware.
+  func compile(store: StoreProxy<State>) -> SendAction
 }
 
 extension Middleware {
 
-  internal func compile<State>(store: (StoreProxy<State>)) -> SendAction {
+  /// Apply the middleware to a store proxy.
+  /// - Parameter store: The store proxy.
+  /// - Returns: A SendAction function that performs the middleware for the provided store proxy.
+  @inlinable public func callAsFunction(store: StoreProxy<State>) -> SendAction {
+    self.compile(store: store)
+  }
+
+  @inlinable public func compile(store: StoreProxy<State>) -> SendAction {
     { action in self.run(store: store, action: action) }
+  }
+
+  /// Compose two middleware together.
+  /// - Parameters:
+  ///   - previousMiddleware: The  middleware to be called first.
+  ///   - nextMiddleware: The next middleware to call.
+  /// - Returns: The combined middleware.
+  public static func + <M>(previousMiddleware: Self, _ nextMiddleware: M) -> CombinedMiddleware<State, Self, M>
+  where M: Middleware, M.State == State {
+    CombinedMiddleware(previousMiddleware: previousMiddleware, nextMiddleware: nextMiddleware)
+  }
+}
+
+internal final class NoopMiddleware<State>: Middleware {
+
+  @inlinable func run(store: StoreProxy<State>, action: Action) {
+    store.next(action)
   }
 }

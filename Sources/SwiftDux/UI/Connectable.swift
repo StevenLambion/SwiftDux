@@ -1,7 +1,6 @@
 import SwiftUI
 
 /// Makes a view "connectable" to the application state.
-@available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
 public protocol Connectable {
 
   associatedtype Superstate: Equatable
@@ -29,8 +28,7 @@ public protocol Connectable {
   ///   - state: The superstate provided to the view from a superview.
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
-  func map(state: Superstate, binder: StateBinder) -> Props?
-
+  func map(state: Superstate, binder: ActionBinder) -> Props?
 }
 
 extension Connectable {
@@ -43,12 +41,12 @@ extension Connectable {
   }
 
   /// Default implementation. Returns nil.
-  public func map(state: Superstate) -> Props? {
+  @inlinable public func map(state: Superstate) -> Props? {
     nil
   }
 
   /// Default implementation. Calls the other map function.
-  public func map(state: Superstate, binder: StateBinder) -> Props? {
+  @inlinable public func map(state: Superstate, binder: ActionBinder) -> Props? {
     map(state: state)
   }
 }
@@ -58,7 +56,7 @@ extension Connectable where Self: View {
   /// Connect the view to the application state
   ///
   /// - Returns: The connected view.
-  public func connect() -> some View {
+  @inlinable public func connect() -> some View {
     self.connect(mapState: self.map)
   }
 }

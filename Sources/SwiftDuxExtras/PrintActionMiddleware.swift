@@ -7,12 +7,12 @@ fileprivate func defaultActionPrinter(_ actionDescription: String) {
 }
 
 /// A simple middlware that prints the description of the latest action.
-public final class PrintActionMiddleware: Middleware {
+public final class PrintActionMiddleware<State>: Middleware where State: StateType {
   public var printer: ((String) -> Void) = defaultActionPrinter
   public var filter: (Action) -> Bool = { _ in true }
 
-  // swift-format-disable: ValidateDocumentationComments
-
+  /// Initialize a new PrinterActionMiddleware.
+  ///
   /// - Parameters:
   ///   - printer: A custom printer for the action's discription. Defaults to print().
   ///   - filter: Filter what actions get printed.

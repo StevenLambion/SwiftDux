@@ -5,19 +5,17 @@ import Dispatch
 
 final class ActionPlanTests: XCTestCase {
   var store: Store<TestState>!
-  var storeProxy: StoreProxy<TestState>!
   var sentActions: [TestAction] = []
   
   override func setUp() {
-    store = Store(state: TestState(), reducer: TestReducer(), middleware: [
+    store = Store(state: TestState(), reducer: TestReducer(), middleware:
       HandleActionMiddleware<TestState> { [weak self] store, action in
         if let action = action as? TestAction {
           self?.sentActions.append(action)
         }
         store.next(action)
       }
-    ])
-    storeProxy = StoreProxy(store: store)
+    )
     sentActions = []
   }
   
@@ -27,7 +25,7 @@ final class ActionPlanTests: XCTestCase {
   
   func testEmptyActionPlan() {
     let actionPlan = ActionPlan<TestState> { _ in }
-    _ = actionPlan.run(storeProxy)
+    store.send(actionPlan)
     assertActionsWereSent([])
   }
   
@@ -35,7 +33,7 @@ final class ActionPlanTests: XCTestCase {
     let actionPlan = ActionPlan<TestState> {
       $0.send(TestAction.actionA)
     }
-    _ = actionPlan.run(storeProxy)
+    store.send(actionPlan)
     assertActionsWereSent([TestAction.actionA])
   }
   
@@ -45,7 +43,7 @@ final class ActionPlanTests: XCTestCase {
       $0.send(TestAction.actionB)
       $0.send(TestAction.actionA)
     }
-    _ = actionPlan.run(storeProxy)
+    store.send(actionPlan)
     assertActionsWereSent([
       TestAction.actionA,
       TestAction.actionB,
@@ -57,14 +55,14 @@ final class ActionPlanTests: XCTestCase {
     let actionPlan = ActionPlan<TestState> { _ in
       [TestAction.actionB, TestAction.actionA].publisher
     }
-    let cancellable = actionPlan.run(storeProxy)
+    let cancellable = store.sendAsCancellable(actionPlan)
 
     assertActionsWereSent([
       TestAction.actionB,
       TestAction.actionA
     ])
     
-    cancellable?.cancel()
+    cancellable.cancel()
   }
   
   func testCancellableActionPlan() {
@@ -81,7 +79,7 @@ final class ActionPlanTests: XCTestCase {
       }
     }
     
-    let cancellable = actionPlan.sendAsCancellable(store.send)
+    let cancellable = store.sendAsCancellable(actionPlan)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         cancellable.cancel()
@@ -103,7 +101,7 @@ final class ActionPlanTests: XCTestCase {
     }
     let chainedActionPlan = actionPlanA.then(actionPlanB).then(actionPlanC)
     
-    _ = chainedActionPlan.run(storeProxy)
+    _ = store.sendAsCancellable(chainedActionPlan)
     
     assertActionsWereSent([
       TestAction.actionB,
@@ -139,7 +137,11 @@ final class ActionPlanTests: XCTestCase {
   }
 
   static var allTests = [
-    ("testBasicActionPlan", testBasicActionPlan)
+    ("testBasicActionPlan", testBasicActionPlan),
+    ("testBasicActionPlan", testBasicActionPlan),
+    ("testActionPlanWithMultipleSends", testActionPlanWithMultipleSends),
+    ("testPublishableActionPlan", testPublishableActionPlan),
+    ("testChainedActionPlansWithPublisher", testChainedActionPlansWithPublisher),
   ]
 }
 
@@ -157,5 +159,4 @@ extension ActionPlanTests {
       state
     }
   }
-  
 }

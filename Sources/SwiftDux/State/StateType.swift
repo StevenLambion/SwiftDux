@@ -1,4 +1,4 @@
 import Foundation
 
-/// Represents some kind of state in the application.
+/// A convienence type for the application state to adhere to.
 public typealias StateType = Codable & Equatable

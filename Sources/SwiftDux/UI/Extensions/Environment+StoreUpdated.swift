@@ -18,5 +18,4 @@ extension EnvironmentValues {
       self[StoreUpdatedKey.self] = newValue
     }
   }
-
 }

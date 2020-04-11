@@ -2,12 +2,11 @@ import Combine
 import SwiftUI
 
 /// A view modifier that injects a store into the environment.
-internal struct StoreProviderViewModifier<State>: ViewModifier where State: StateType {
+public struct StoreProviderViewModifier<State>: ViewModifier where State: StateType {
   private var store: Store<State>
   private var connection: StateConnection<State>
-  private var actionDispatcher: ActionDispatcher
 
-  internal init(store: Store<State>) {
+  @usableFromInline internal init(store: Store<State>) {
     self.store = store
     self.connection = StateConnection<State>(
       getState: { [weak store] in
@@ -17,16 +16,14 @@ internal struct StoreProviderViewModifier<State>: ViewModifier where State: Stat
       changePublisher: store.didChange,
       emitChanges: false
     )
-    self.actionDispatcher = store.proxy()
   }
 
   public func body(content: Content) -> some View {
     content
       .environmentObject(connection)
-      .environment(\.actionDispatcher, actionDispatcher)
+      .environment(\.actionDispatcher, store)
       .environment(\.storeUpdated, store.didChange)
   }
-
 }
 
 extension View {
@@ -51,9 +48,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   /// - Returns: The modified view.
-  @available(iOS 13.0, OSX 10.15, tvOS 13.0, watchOS 6.0, *)
-  public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
+  @inlinable public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
     return modifier(StoreProviderViewModifier<State>(store: store))
   }
-
 }

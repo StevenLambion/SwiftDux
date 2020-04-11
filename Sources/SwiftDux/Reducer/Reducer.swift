@@ -11,7 +11,7 @@ import Foundation
 public protocol Reducer {
 
   /// The type of state that the `Reducer` is able to mutate.
-  associatedtype State: StateType
+  associatedtype State
 
   /// The supported actions of a reducer.
   associatedtype ReducerAction
@@ -32,9 +32,22 @@ public protocol Reducer {
   /// - Returns: A new immutable state.
   func reduceNext(state: State, action: Action) -> State
 
+  /// Send any kind of action to a reducer. The recuder will determine what it can do with
+  /// the action.
+  ///
+  /// - Parameters
+  ///   - state: The state to reduce
+  ///   - action: Any kind of action.
+  /// - Returns: A new immutable state
+  func reduceAny(state: State, action: Action) -> State
+
 }
 
 extension Reducer {
+
+  @inlinable public func callAsFunction(state: State, action: Action) -> State {
+    reduceAny(state: state, action: action)
+  }
 
   /// Default implementation. Returns the state without modifying it.
   ///
@@ -42,7 +55,7 @@ extension Reducer {
   ///   - state: The state to reduce.
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
-  public func reduce(state: State, action: EmptyAction) -> State {
+  @inlinable public func reduce(state: State, action: EmptyAction) -> State {
     state
   }
 
@@ -52,7 +65,7 @@ extension Reducer {
   ///   - state: The state to reduce.
   ///   - action: An unknown action that a subreducer may support.
   /// - Returns: A new immutable state.
-  public func reduceNext(state: State, action: Action) -> State {
+  @inlinable public func reduceNext(state: State, action: Action) -> State {
     state
   }
 
@@ -63,7 +76,7 @@ extension Reducer {
   ///   - state: The state to reduce
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
-  public func reduceAny(state: State, action: Action) -> State {
+  @inlinable public func reduceAny(state: State, action: Action) -> State {
     var state = state
     if let reducerAction = action as? ReducerAction {
       state = reduce(state: state, action: reducerAction)
@@ -71,4 +84,12 @@ extension Reducer {
     return reduceNext(state: state, action: action)
   }
 
+  /// Compose two reducers together.
+  /// - Parameters:
+  ///   - previousReducer: The first reducer to be called.
+  ///   - nextReducer: The second reducer to be called.
+  /// - Returns: A combined reducer.
+  public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
+    CombinedReducer(previousReducer: previousReducer, nextReducer: nextReducer)
+  }
 }

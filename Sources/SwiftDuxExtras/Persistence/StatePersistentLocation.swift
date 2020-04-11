@@ -14,5 +14,4 @@ public protocol StatePersistentLocation {
   /// Retreive the state from storage.
   /// - Returns: Data if successful.
   func restore() -> Data?
-
 }

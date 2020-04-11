@@ -1,4 +1,10 @@
-on: [push, pull_request]
+on: 
+  push:
+    branches:
+      - 'master'
+  pull_request:
+    branches:
+      - '**'
 name: build
 jobs:
   validate:
@@ -7,7 +13,7 @@ jobs:
     strategy:
       matrix:
         destination: 
-          - "platform=iOS Simulator,OS=13.3,name=iPhone 11"
+          - "platform=iOS Simulator,OS=13.4,name=iPhone 11"
           - "platform=OS X"
     steps:
       - name: Checkout
@@ -16,9 +22,9 @@ jobs:
         run: cd $GITHUB_WORKSPACE
       - name: Install tooling
         run: |
-          sudo xcode-select -s /Applications/Xcode_11.3.app
+          sudo xcode-select -s /Applications/Xcode_11.4.app
           brew install mint
-          mint install apple/swift-format@swift-5.1-branch
+          mint install apple/swift-format@swift-5.2-branch
       - name: Check code formatting
         run: |
           swift-format -r -m lint Sources
