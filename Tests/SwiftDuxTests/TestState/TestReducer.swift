@@ -32,7 +32,7 @@ final class TodoListsReducer: Reducer {
   }
 }
 
-final class TodosReducer<State>: Reducer where State: TodoListStateContainer {
+final class TodosReducer<State>: Reducer where State: TodoListStateRoot {
   
   func reduce(state: State, action: TodosAction) -> State {
     let state = state

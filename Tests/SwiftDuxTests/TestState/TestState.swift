@@ -22,11 +22,11 @@ struct TodoItemState: IdentifiableState, Hashable, Identifiable {
   var text: String
 }
 
-protocol TodoListStateContainer {
+protocol TodoListStateRoot {
   var todoLists: OrderedState<TodoListState> { get set }
 }
 
-struct AppState: StateType, TodoListStateContainer {
+struct AppState: StateType, TodoListStateRoot {
   var todoLists: OrderedState<TodoListState>
 }
 
