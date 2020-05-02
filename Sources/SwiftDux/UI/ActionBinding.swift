@@ -10,7 +10,8 @@ public struct ActionBinding<Value> {
 
   /// The current value of the binding.
   @inlinable public var wrappedValue: Value {
-    projectedValue.wrappedValue
+    get { projectedValue.wrappedValue }
+    set { projectedValue.wrappedValue = newValue }
   }
 
   @inlinable internal init(value: Value, set: @escaping (Value) -> Void) {
