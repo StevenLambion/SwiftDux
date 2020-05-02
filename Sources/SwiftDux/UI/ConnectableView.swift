@@ -1,19 +1,7 @@
 import SwiftUI
 
-/// Provides the mapped props for ConnectableView.
-internal struct Connector<Props, Content>: View where Props: Equatable, Content: View {
-  @MappedState var props: Props
-
-  var content: (Props) -> Content
-
-  var body: some View {
-    content(props)
-  }
-}
-
 /// A view that connects to the application state.
 public protocol ConnectableView: View, Connectable {
-
   associatedtype Content: View
 
   /// Return the body of the view using the provided props object.
@@ -25,8 +13,12 @@ public protocol ConnectableView: View, Connectable {
 extension ConnectableView {
 
   public var body: some View {
-    Connector<Props, Content> { props in
-      self.body(props: props)
-    }.connect(updateWhen: self.updateWhen, mapState: self.map)
+    Connector<Content, Superstate, Props>(
+      content: { props in
+        self.body(props: props)
+      },
+      filter: updateWhen,
+      mapProps: map
+    )
   }
 }
