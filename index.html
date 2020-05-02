@@ -13,7 +13,7 @@
     <a title="  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (91% documented)</p>
+        <p><a href="index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -74,13 +74,7 @@
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+                <a href="Structs/EmptyAction.html">EmptyAction</a>
               </li>
             </ul>
           </li>
@@ -111,15 +105,12 @@
                 <a href="Structs/MappedDispatch.html">MappedDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/Connectable.html">Connectable</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a>
+                <a href="Protocols/ConnectableView.html">ConnectableView</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Advanced.html">Advanced</a>
+            <a href="Middleware.html">Middleware</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Middleware.html">Middleware</a>
@@ -133,10 +124,10 @@
                 <a href="Classes/ActionSubscriber.html">ActionSubscriber</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+                <a href="Classes/CombinedReducer.html">CombinedReducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/TypedMiddleware.html">TypedMiddleware</a>
+                <a href="Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
               </li>
             </ul>
           </li>
@@ -152,9 +143,6 @@
             <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Extensions/Binding.html">Binding</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Extensions/Publisher.html">Publisher</a>
               </li>
               <li class="nav-group-task">
@@ -166,7 +154,10 @@
             <a href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Protocols/CancellableAction.html">CancellableAction</a>
+                <a href="Protocols/Connectable.html">Connectable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/RunnableAction.html">RunnableAction</a>
               </li>
             </ul>
           </li>
@@ -174,7 +165,39 @@
             <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/StateBinder.html">StateBinder</a>
+                <a href="Structs/ActionBinder.html">ActionBinder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ActionBinding.html">ActionBinding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/CombinedMiddleware.html">CombinedMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnActionViewModifier.html">OnActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnActionViewModifier.html#/s:8SwiftDux20OnActionViewModifierV0cD10DispatcherV">– OnActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnAppearDispatchActionPlanViewModifier.html">OnAppearDispatchActionPlanViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnAppearDispatchActionViewModifier.html">OnAppearDispatchActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StoreProviderViewModifier.html">StoreProviderViewModifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8SwiftDux11StateBindera">StateBinder</a>
               </li>
             </ul>
           </li>
@@ -190,7 +213,7 @@
 <p>Predictable state management for SwiftUI applications.</p>
 </blockquote>
 
-<p><a href="https://swift.org/"><img src="https://img.shields.io/badge/swift-5.1-orange.svg" alt="Swift Version"></a>
+<p><a href="https://swift.org/"><img src="https://img.shields.io/badge/swift-5.2-orange.svg" alt="Swift Version"></a>
 <img src="https://img.shields.io/badge/platforms-iOS%2013%20%7C%20macOS%2010.15%20%7C%20tvOS%2013%20%7C%20watchOS%206-222.svg" alt="Platform Versions">
 <a href="https://github.com/StevenLambion/SwiftDux/actions"><img src="https://github.com/StevenLambion/SwiftDux/workflows/build/badge.svg" alt="Github workflow"></a>
 <a href="https://codecov.io/gh/StevenLambion/SwiftDux"><img src="https://codecov.io/gh/StevenLambion/SwiftDux/branch/master/graph/badge.svg" alt="codecov"></a></p>
@@ -203,9 +226,9 @@
 
 <ul>
 <li>Familiar API to <strong>Redux</strong>.</li>
-<li>Built for <strong>SwiftUI</strong></li>
+<li>Built for <strong>SwiftUI</strong>.</li>
 <li><strong>Middleware</strong> support</li>
-<li><strong>Combine</strong> powered <strong>Action Plans</strong> to incapsulate async workflows.</li>
+<li><strong>Combine</strong> powered <strong>Action Plans</strong> to perform asynchronous workflows.</li>
 <li><strong>OrderedState&lt;_&gt;</strong> to display sorted entities in List views.</li>
 </ul>
 <h2 id='built-in-middleware' class='heading'>Built-in Middleware</h2>
@@ -255,7 +278,7 @@
 
 <p>The state is a single, immutable structure acting as the single source of truth within the application.</p>
 
-<p>Below is an example of a todo app&rsquo;s state. It has a root <code>AppState</code> as well as an ordered list of <code>TodoState</code> objects. When storing entities in state, the <code><a href="Protocols/IdentifiableState.html">IdentifiableState</a></code> protocol should be used to display them in a list.</p>
+<p>Below is an example of a todo app&rsquo;s state. It has a root <code>AppState</code> as well as an ordered list of <code>TodoState</code> objects.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
 <span class="kd">struct</span> <span class="kt">AppState</span><span class="p">:</span> <span class="kt">StateTyoe</span> <span class="p">{</span>
@@ -269,7 +292,7 @@
 </code></pre>
 <h2 id='actions' class='heading'>Actions</h2>
 
-<p>An action is a description of how the state will change. They&rsquo;re typically dispatched from events in the application, such as a user clicking a button. Swift&rsquo;s enum type is ideal for actions, but structs and classes could be used if required.</p>
+<p>An action is a description of how the state will change. They&rsquo;re typically dispatched from events in the application. This could be a user interacting with the application or a service API receiving updates. Swift&rsquo;s enum type is ideal for actions, but structs and classes could be used as well.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
 <span class="kd">enum</span> <span class="kt">TodoAction</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
@@ -278,23 +301,9 @@
   <span class="k">case</span> <span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="kt">IndexSet</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span>
 <span class="p">}</span>
 </code></pre>
-
-<p>It can be useful to categorize actions through a shared protocol:</p>
-<pre class="highlight swift"><code><span class="kd">protocol</span> <span class="kt">SettingsAction</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{}</span>
-
-<span class="kd">enum</span> <span class="kt">GeneralSettingsAction</span><span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
-  <span class="o">...</span>
-<span class="p">}</span>
-
-<span class="kd">enum</span> <span class="kt">NetworkSettingsAction</span><span class="p">:</span> <span class="kt">SettingsAction</span> <span class="p">{</span>
-  <span class="o">...</span>
-<span class="p">}</span>
-</code></pre>
 <h2 id='reducers' class='heading'>Reducers</h2>
 
-<p>A reducer consumes an action to produce a new state. There&rsquo;s always a root reducer that consumes all actions. From here, it can delegate out to sub-reducers. Each reducer conforms to a single type of action.</p>
-
-<p>The <code><a href="Protocols/Reducer.html">Reducer</a></code> protocol has two primary methods to override:</p>
+<p>A reducer consumes an action to produce a new state. The <code><a href="Protocols/Reducer.html">Reducer</a></code> protocol has two primary methods to override:</p>
 
 <ul>
 <li><code>reduce(state:action:)</code> - For actions supported by the reducer.</li>
@@ -318,6 +327,8 @@
 
 <span class="p">}</span>
 </code></pre>
+
+<p>Here&rsquo;s an example of a root reducer dispatching to a subreducer.</p>
 <pre class="highlight swift"><code><span class="kd">final</span> <span class="kd">class</span> <span class="kt">AppReducer</span><span class="p">:</span> <span class="kt">Reducer</span> <span class="p">{</span>
   <span class="k">let</span> <span class="nv">todosReducer</span> <span class="o">=</span> <span class="kt">TodosReducer</span><span class="p">()</span>
 
@@ -329,9 +340,13 @@
 
 <span class="p">}</span>
 </code></pre>
+
+<p>Reducers can also be combined together. This is useful when multiple root reducers are needed, such as two reducers from separate modules.</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">combinedReducer</span> <span class="o">=</span> <span class="kt">AppReducer</span> <span class="o">+</span> <span class="kt">NavigationReducer</span>
+</code></pre>
 <h2 id='store' class='heading'>Store</h2>
 
-<p>The store acts as the container of the state. Initialize the store with a default state and the root reducer. Then use the <code>provideStore(_:)</code> view modifier at the root of the application to inject the store into the environment.</p>
+<p>The store acts as the container of the state. It needs to be initialized with a default state and a root reducer. Then inject it into the application using the <code>provideStore(_:)</code> view modifier.</p>
 <pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftDux</span>
 
 <span class="k">let</span> <span class="nv">store</span> <span class="o">=</span> <span class="kt">Store</span><span class="p">(</span><span class="kt">AppState</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="p">()),</span> <span class="kt">AppReducer</span><span class="p">())</span>
@@ -342,13 +357,15 @@
 </code></pre>
 <h2 id='connectable-view' class='heading'>Connectable View</h2>
 
-<p>In a view, use <code>@MappedState</code> and <code>@MappedDispatch</code> to inject the state and dispatch actions to the store. When the view dispatches an action, it updates itself automatically.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">TodosView</span> <span class="p">{</span>
-
-  <span class="kd">@MappedState</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Todo</span><span class="o">&gt;</span>
+<p>The <code><a href="Protocols/ConnectableView.html">ConnectableView</a></code> protocol provides a slice of the application state to your views using the functions <code>map(state:)</code> and <code>body(props:)</code>. The <code>@MappedDispatch</code> property wrapper injects an <code><a href="Protocols/ActionDispatcher.html">ActionDispatcher</a></code> to send actions to the store.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">TodosView</span><span class="p">:</span> <span class="kt">ConnectableView</span> <span class="p">{</span>
   <span class="kd">@MappedDispatch</span><span class="p">()</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">dispatch</span>
 
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Todo</span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">todos</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">body</span><span class="p">(</span><span class="nv">props</span><span class="p">:</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Todo</span><span class="o">&gt;</span><span class="p">):</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
     <span class="kt">List</span> <span class="p">{</span>
       <span class="kt">ForEach</span><span class="p">(</span><span class="n">todos</span><span class="p">)</span> <span class="p">{</span> <span class="n">todo</span> <span class="k">in</span>
         <span class="kt">TodoItemRow</span><span class="p">(</span><span class="nv">item</span><span class="p">:</span> <span class="n">todo</span><span class="p">)</span>
@@ -357,72 +374,54 @@
       <span class="o">.</span><span class="n">onMove</span> <span class="p">{</span> <span class="k">self</span><span class="o">.</span><span class="nf">dispatch</span><span class="p">(</span><span class="kt">TodoAction</span><span class="o">.</span><span class="nf">moveTodos</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="nv">$0</span><span class="p">,</span> <span class="nv">to</span><span class="p">:</span> <span class="nv">$1</span><span class="p">))</span> <span class="p">}</span>
     <span class="p">}</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 </code></pre>
 
-<p>The easiest way to connect the application state to the view is through the <code><a href="Protocols/Connectable.html">Connectable</a></code> protocol. Adhering to this protocol allows the view to map a parent state to the required state.</p>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TodosView</span><span class="p">:</span> <span class="kt">Connectable</span> <span class="p">{</span>
-
-  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">OrderedState</span><span class="o">&lt;</span><span class="kt">Todo</span><span class="o">&gt;</span><span class="p">?</span> <span class="p">{</span>
-    <span class="n">state</span><span class="o">.</span><span class="n">todos</span>
-  <span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre>
-
-<p>When placing the view, the <code>connect()</code> method must be called to inject the application state into the view.</p>
+<p>The view can later be placed like any other.</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">RootView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
 
   <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">TodosView</span><span class="p">()</span><span class="o">.</span><span class="nf">connect</span><span class="p">()</span>
+    <span class="kt">TodosView</span><span class="p">()</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 </code></pre>
-<h2 id='parameterized-connectable-view' class='heading'>Parameterized Connectable View</h2>
+<h2 id='passing-data-to-a-connectable-view' class='heading'>Passing Data to a Connectable View</h2>
 
-<p>In some cases, a parameter needs to be passed to a connected view. For example, the id of an object. This can be handled using the <code><a href="Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a></code> protocol. It is nearly identical to <code><a href="Protocols/Connectable.html">Connectable</a></code>, but requires a parameter be passed in.</p>
-<pre class="highlight swift"><code><span class="kd">extension</span> <span class="kt">TodoDetailsView</span><span class="p">:</span> <span class="kt">ParameterizedConnectable</span> <span class="p">{</span>
+<p>In some cases, a connected view needs external information to map the state to its props, such as an identifier. Simply add any needed variables to your view, and access them in the mapping function.</p>
+<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">TodoDetailsView</span><span class="p">:</span> <span class="kt">ConnectableView</span> <span class="p">{</span>
+  <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span>
 
-  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">TodoList</span><span class="p">,</span> <span class="nv">parameter</span><span class="p">:</span> <span class="kt">String</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Todo</span><span class="p">?</span> <span class="p">{</span>
-    <span class="n">state</span><span class="p">[</span><span class="n">parameter</span><span class="p">]</span>
+  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">TodoList</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Todo</span><span class="p">?</span> <span class="p">{</span>
+    <span class="n">state</span><span class="p">[</span><span class="n">id</span><span class="p">]</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 
-<span class="c1">// Use the connect(with:) method to use the view:</span>
+<span class="c1">// Somewhere else in the view hierarchy:</span>
 
-<span class="kt">TodoDetailsView</span><span class="p">()</span><span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">todoId</span><span class="p">)</span>
+<span class="kt">TodoDetailsView</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"123"</span><span class="p">)</span>
 </code></pre>
-<h2 id='binding-lt-_-gt-support' class='heading'>Binding&lt;_&gt; Support</h2>
+<h2 id='actionbinding-lt-_-gt' class='heading'>ActionBinding&lt;_&gt;</h2>
 
-<p>SwiftUI has a focus on two-way bindings over a unidirectional flow. To better support this, SwiftDux provides a convenient API through the <code><a href="Protocols/Connectable.html">Connectable</a></code> protocol using a <code><a href="Structs/StateBinder.html">StateBinder</a></code> object. Use the <code>map(state:binder:)</code> method on the protocol as shown below.</p>
+<p>SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the <code><a href="Protocols/ConnectableView.html">ConnectableView</a></code> protocol using an <code><a href="Structs/ActionBinder.html">ActionBinder</a></code> object. Use the <code>map(state:binder:)</code> method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes.</p>
 <pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">LoginForm</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
 
-  <span class="kd">@MappedState</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">props</span><span class="p">:</span> <span class="kt">Props</span>
+  <span class="kd">struct</span> <span class="kt">Props</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
+    <span class="kd">@ActionBinding</span> <span class="k">var</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">String</span>
+  <span class="p">}</span>
 
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt">ActionBinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Props</span><span class="p">?</span> <span class="p">{</span>
+    <span class="kt">Props</span><span class="p">(</span>
+      <span class="nv">email</span><span class="p">:</span> <span class="n">binder</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">loginForm</span><span class="o">.</span><span class="n">email</span><span class="p">)</span> <span class="p">{</span> 
+        <span class="kt">LoginFormAction</span><span class="o">.</span><span class="nf">setEmail</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">body</span><span class="p">(</span><span class="nv">props</span><span class="p">:</span> <span class="kt">Props</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
     <span class="kt">VStack</span> <span class="p">{</span>
-      <span class="kt">TextField</span><span class="p">(</span><span class="s">"Email"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="n">props</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
+      <span class="kt">TextField</span><span class="p">(</span><span class="s">"Email"</span><span class="p">,</span> <span class="nv">text</span><span class="p">:</span> <span class="err">$</span><span class="n">props</span><span class="o">.</span><span class="n">email</span><span class="p">)</span>
       <span class="cm">/* ... */</span>
     <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="kd">extension</span> <span class="kt">LoginForm</span><span class="p">:</span> <span class="kt">Connectable</span> <span class="p">{</span>
-
-  <span class="kd">struct</span> <span class="kt">Props</span><span class="p">:</span> <span class="kt">Equatable</span> <span class="p">{</span>
-    <span class="k">var</span> <span class="nv">email</span><span class="p">:</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">String</span><span class="o">&gt;</span>
-  <span class="p">}</span>
-
-  <span class="c1">// Use map(state:binder:) to create bindings for the view.</span>
-
-  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt">StateBinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Props</span><span class="p">?</span> <span class="p">{</span>
-    <span class="k">var</span> <span class="nv">loginForm</span> <span class="o">=</span> <span class="n">state</span><span class="o">.</span><span class="n">loginForm</span>
-    <span class="k">return</span> <span class="kt">Props</span><span class="p">(</span>
-      <span class="nv">email</span><span class="p">:</span> <span class="n">binder</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">loginForm</span><span class="o">.</span><span class="n">email</span><span class="p">)</span> <span class="p">{</span> <span class="kt">LoginFormAction</span><span class="o">.</span><span class="nf">setEmail</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
-    <span class="p">)</span>
   <span class="p">}</span>
 <span class="p">}</span>
 </code></pre>
@@ -445,8 +444,7 @@
   <span class="p">}</span>
 
   <span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">previews</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">TodoRowContainer</span><span class="p">()</span>
-      <span class="o">.</span><span class="nf">connect</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
+    <span class="kt">TodoRowContainer</span><span class="p">(</span><span class="nv">id</span><span class="p">:</span> <span class="s">"1"</span><span class="p">)</span>
       <span class="o">.</span><span class="nf">provideStore</span><span class="p">(</span><span class="n">store</span><span class="p">)</span>
   <span class="p">}</span>
 
@@ -456,33 +454,29 @@
 <h2 id='action-plans' class='heading'>Action Plans</h2>
 
 <p>An <code><a href="Structs/ActionPlan.html">ActionPlan</a></code> is a special kind of action that can be used to group other actions together or perform any kind of async logic.</p>
-<pre class="highlight swift"><code><span class="c1">/// Dispatch multiple actions together:</span>
+<pre class="highlight swift"><code><span class="c1">/// Dispatch multiple actions together synchronously:</span>
 
 <span class="k">let</span> <span class="nv">plan</span> <span class="o">=</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="k">in</span>
   <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionA</span><span class="p">)</span>
   <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionB</span><span class="p">)</span>
-  <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionC</span><span class="p">)</span>
+  <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionB</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="c1">/// Perform async operations:</span>
 
 <span class="k">let</span> <span class="nv">plan</span> <span class="o">=</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span> <span class="k">in</span>
-  <span class="kt">DispatchQueue</span><span class="o">.</span><span class="nf">global</span><span class="p">()</span><span class="o">.</span><span class="n">async</span> <span class="p">{</span>
-    <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionA</span><span class="p">)</span>
-    <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionB</span><span class="p">)</span>
-    <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="n">actionC</span><span class="p">)</span>
+  <span class="n">userLocationService</span><span class="o">.</span><span class="n">getLocation</span> <span class="p">{</span> <span class="n">location</span>
+    <span class="n">store</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="kt">LocationAction</span><span class="o">.</span><span class="nf">updateLocation</span><span class="p">(</span><span class="n">location</span><span class="p">))</span>
   <span class="p">}</span>
 <span class="p">}</span>
 
-<span class="c1">/// Publish actions to the store:</span>
+<span class="c1">/// Subscribe to services and publish new actions to the store.</span>
 
 <span class="k">let</span> <span class="nv">plan</span> <span class="o">=</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span><span class="p">,</span> <span class="n">completed</span> <span class="k">in</span>
-  <span class="k">let</span> <span class="nv">actions</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">actionA</span><span class="p">,</span>
-    <span class="n">actionB</span><span class="p">,</span>
-    <span class="n">actionC</span>
-  <span class="p">]</span><span class="o">.</span><span class="n">publisher</span>
-  <span class="k">return</span> <span class="n">actions</span><span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
+  <span class="n">userLocationService</span>
+    <span class="o">.</span><span class="nf">subscribeToUpdates</span><span class="p">()</span>
+    <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="kt">LocationAction</span><span class="o">.</span><span class="nf">updateLocation</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
+    <span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
 <span class="p">}</span>
 
 <span class="c1">/// In a View, dispatch the plan like any other action:</span>
@@ -493,19 +487,23 @@
 
 <p>Action plans can be used in conjunction with the <code>onAppear(dispatch:)</code> view modifier to connect to external data sources when a view appears. If the action plan returns a publisher, it will automatically cancel when the view disappears. Optionally, use <code>onAppear(dispatch:cancelOnDisappear:)</code> if the publisher should continue.</p>
 
-<p>Action plans can also subscribe to the store. This is useful when the query needs to be refreshed if the application state changes. Rather than imperatively handling this by re-sending the action plan, it can be done more declaratively within it. The store&rsquo;s <code>didChange</code> subject will emit at least once after the action plan returns a publisher.</p>
+<p>Action plans can also subscribe to the store. This is useful when the query needs to be refreshed if the application state changes. Rather than imperatively handling this by re-sending the action plan, it can be done more declaratively within it.</p>
 
 <p>Here&rsquo;s an example of an action plan that queries for todos. It updates whenever the filter changes. It also debounces to reduce the amount of queries sent to the external services.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">ActionPlans</span> <span class="p">{</span>
-  <span class="k">var</span> <span class="nv">services</span><span class="p">:</span> <span class="kt">Services</span>
+<pre class="highlight swift"><code><span class="kd">enum</span> <span class="kt">TodoListAction</span> <span class="p">{</span>
+  <span class="o">...</span>
 <span class="p">}</span>
 
-<span class="kd">extension</span> <span class="kt">ActionPlans</span> <span class="p">{</span>
+<span class="kd">extension</span> <span class="kt">TodoListAction</span> <span class="p">{</span>
 
-  <span class="k">var</span> <span class="nv">queryTodos</span><span class="p">:</span> <span class="kt">Action</span> <span class="p">{</span>
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">getState</span><span class="p">(</span><span class="n">from</span> <span class="nv">store</span><span class="p">:</span> <span class="kt">Store</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">Publisher</span> <span class="p">{</span>
+    <span class="kt">Just</span><span class="p">(</span><span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="p">)</span><span class="o">.</span><span class="nf">merge</span><span class="p">(</span><span class="nv">with</span><span class="p">:</span> <span class="n">store</span><span class="o">.</span><span class="n">didChange</span><span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span> <span class="p">})</span>
+  <span class="p">}</span>
+
+  <span class="kd">static</span> <span class="kd">func</span> <span class="nf">queryTodos</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span>
     <span class="kt">ActionPlan</span><span class="o">&lt;</span><span class="kt">AppState</span><span class="o">&gt;</span> <span class="p">{</span> <span class="n">store</span><span class="p">,</span> <span class="n">completed</span> <span class="k">in</span>
-      <span class="n">store</span><span class="o">.</span><span class="n">didChange</span>
-        <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="n">_</span> <span class="k">in</span> <span class="n">store</span><span class="o">.</span><span class="n">state</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">}</span>
+      <span class="nf">getState</span><span class="p">(</span><span class="nv">from</span><span class="p">:</span> <span class="n">store</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">map</span> <span class="p">{</span> <span class="nv">$0</span><span class="o">.</span><span class="n">filterBy</span> <span class="p">}</span>
         <span class="o">.</span><span class="nf">removeDuplicates</span><span class="p">()</span>
         <span class="o">.</span><span class="nf">debounce</span><span class="p">(</span><span class="nv">for</span><span class="p">:</span> <span class="o">.</span><span class="nf">milliseconds</span><span class="p">(</span><span class="mi">300</span><span class="p">),</span> <span class="nv">scheduler</span><span class="p">:</span> <span class="kt">RunLoop</span><span class="o">.</span><span class="n">main</span><span class="p">)</span>
         <span class="o">.</span><span class="n">flatMap</span> <span class="p">{</span> <span class="n">filter</span> <span class="k">in</span> <span class="k">self</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">(</span><span class="nv">filter</span><span class="p">:</span> <span class="n">filter</span><span class="p">)</span> <span class="p">}</span>
@@ -514,27 +512,27 @@
         <span class="o">.</span><span class="nf">send</span><span class="p">(</span><span class="nv">to</span><span class="p">:</span> <span class="n">store</span><span class="p">,</span> <span class="nv">receivedCompletion</span><span class="p">:</span> <span class="n">completed</span><span class="p">)</span>
     <span class="p">}</span>
   <span class="p">}</span>
-
 <span class="p">}</span>
 
-<span class="kd">struct</span> <span class="kt">TodoListView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-  <span class="kd">@Environment</span><span class="p">(\</span><span class="o">.</span><span class="n">actionPlans</span><span class="p">)</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">actionPlans</span>
-  <span class="kd">@MappedState</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">todos</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItem</span><span class="p">]</span>
+<span class="kd">struct</span> <span class="kt">TodoListView</span><span class="p">:</span> <span class="kt">ConnectableView</span> <span class="p">{</span>
 
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="nf">renderTodos</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="n">todos</span><span class="p">)</span>
-      <span class="o">.</span><span class="nf">onAppear</span><span class="p">(</span><span class="nv">dispatch</span><span class="p">:</span> <span class="n">actionPlans</span><span class="o">.</span><span class="n">queryTodos</span><span class="p">)</span>
+  <span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="kt">TodoItem</span><span class="p">]?</span> <span class="p">{</span>
+    <span class="n">state</span><span class="o">.</span><span class="n">todoList</span><span class="o">.</span><span class="n">items</span>
+  <span class="p">}</span>
+
+  <span class="kd">func</span> <span class="nf">body</span><span class="p">(</span><span class="nv">props</span><span class="p">:</span> <span class="p">[</span><span class="kt">TodoItem</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
+    <span class="nf">renderTodos</span><span class="p">(</span><span class="nv">todos</span><span class="p">:</span> <span class="n">props</span><span class="p">)</span>
+      <span class="o">.</span><span class="nf">onAppear</span><span class="p">(</span><span class="nv">dispatch</span><span class="p">:</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">queryTodos</span><span class="p">())</span>
   <span class="p">}</span>
 
   <span class="c1">// ...</span>
-
 <span class="p">}</span>
 </code></pre>
 
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

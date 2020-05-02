@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>CancellableAction Protocol Reference</title>
+    <title>EmptyAction Structure Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,11 +10,11 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/CancellableAction" class="dashAnchor"></a>
-    <a title="CancellableAction Protocol Reference"></a>
+    <a name="//apple_ref/swift/Struct/EmptyAction" class="dashAnchor"></a>
+    <a title="EmptyAction Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (91% documented)</p>
+        <p><a href="../index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        CancellableAction Protocol Reference
+        EmptyAction Structure Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -75,13 +75,7 @@
                 <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+                <a href="../Structs/EmptyAction.html">EmptyAction</a>
               </li>
             </ul>
           </li>
@@ -112,15 +106,12 @@
                 <a href="../Structs/MappedDispatch.html">MappedDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Connectable.html">Connectable</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a>
+                <a href="../Protocols/ConnectableView.html">ConnectableView</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Advanced.html">Advanced</a>
+            <a href="../Middleware.html">Middleware</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Middleware.html">Middleware</a>
@@ -134,10 +125,10 @@
                 <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+                <a href="../Classes/CombinedReducer.html">CombinedReducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
               </li>
             </ul>
           </li>
@@ -153,9 +144,6 @@
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Extensions/Binding.html">Binding</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/Publisher.html">Publisher</a>
               </li>
               <li class="nav-group-task">
@@ -167,7 +155,10 @@
             <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Protocols/CancellableAction.html">CancellableAction</a>
+                <a href="../Protocols/Connectable.html">Connectable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RunnableAction.html">RunnableAction</a>
               </li>
             </ul>
           </li>
@@ -175,7 +166,39 @@
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Structs/StateBinder.html">StateBinder</a>
+                <a href="../Structs/ActionBinder.html">ActionBinder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActionBinding.html">ActionBinding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CombinedMiddleware.html">CombinedMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnActionViewModifier.html">OnActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnActionViewModifier.html#/s:8SwiftDux20OnActionViewModifierV0cD10DispatcherV">– OnActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnAppearDispatchActionPlanViewModifier.html">OnAppearDispatchActionPlanViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnAppearDispatchActionViewModifier.html">OnAppearDispatchActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StoreProviderViewModifier.html">StoreProviderViewModifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8SwiftDux11StateBindera">StateBinder</a>
               </li>
             </ul>
           </li>
@@ -184,16 +207,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>CancellableAction</h1>
+            <h1>EmptyAction</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">CancellableAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">EmptyAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                 </div>
               </div>
-            <p>An action that can return a cancellable object. Don&rsquo;t use this protocol directly.
-Instead, use an ActionPlan. This allows action plans with a publisher to be explicitly cancelled by
-their source dispatcher rather than internally or by the store.</p>
+            <p>A noop action used by reducers that may not have their own actions.</p>
 
           </section>
           <section class="section task-group-section">
@@ -202,9 +223,9 @@ their source dispatcher rather than internally or by the store.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux17CancellableActionP06sendAsC0y7Combine0C0_pyAA0D0_pXEF"></a>
-                    <a name="//apple_ref/swift/Method/sendAsCancellable(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux17CancellableActionP06sendAsC0y7Combine0C0_pyAA0D0_pXEF">sendAsCancellable(_:)</a>
+                    <a name="/s:8SwiftDux11EmptyActionVACycfc"></a>
+                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux11EmptyActionVACycfc">init()</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -212,65 +233,16 @@ their source dispatcher rather than internally or by the store.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Send an action that returns a cancellabe object.</p>
-
-<p>This is useful for action plans that return a publisher that require a cancellable step. For example, a web request
-that should be cancelled if the user navigates away from the relevant view.</p>
-<pre class="highlight swift"><code><span class="kd">struct</span> <span class="kt">MyView</span><span class="p">:</span> <span class="kt">View</span> <span class="p">{</span>
-
-  <span class="kd">@MappedDispatch</span><span class="p">()</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">dispatch</span>
-
-  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">username</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
-  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">password</span><span class="p">:</span> <span class="kt">String</span> <span class="o">=</span> <span class="s">""</span>
-
-  <span class="kd">@State</span> <span class="kd">private</span> <span class="k">var</span> <span class="nv">signUpCancellable</span><span class="p">:</span> <span class="kt">AnyCancellable</span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span>
-
-  <span class="k">var</span> <span class="nv">body</span><span class="p">:</span> <span class="n">some</span> <span class="kt">View</span> <span class="p">{</span>
-    <span class="kt">Group</span> <span class="p">{</span>
-      <span class="c1">/// ...signup form</span>
-      <span class="kt">Button</span><span class="p">(</span><span class="nv">action</span><span class="p">:</span> <span class="k">self</span><span class="o">.</span><span class="n">signUp</span><span class="p">)</span> <span class="p">{</span> <span class="kt">Text</span><span class="p">(</span><span class="s">"Sign Up"</span><span class="p">)</span> <span class="p">}</span>
-    <span class="p">}</span>
-    <span class="o">.</span><span class="n">onDisappear</span> <span class="p">{</span> <span class="k">self</span><span class="o">.</span><span class="n">signUpCancellable</span><span class="p">?</span><span class="o">.</span><span class="nf">cancel</span><span class="p">()</span> <span class="p">}</span>
-  <span class="p">}</span>
-
-  <span class="kd">func</span> <span class="nf">signUp</span><span class="p">()</span> <span class="p">{</span>
-    <span class="n">signUpCancellable</span> <span class="o">=</span> <span class="nf">signUpActionPlan</span><span class="p">(</span><span class="nv">username</span><span class="p">:</span> <span class="n">username</span><span class="p">,</span> <span class="nv">password</span><span class="p">:</span> <span class="n">password</span><span class="p">)</span><span class="o">.</span><span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">dispatch</span><span class="p">)</span>
-  <span class="p">}</span>
-
-<span class="p">}</span>
-</code></pre>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">sendAsCancellable</span><span class="p">(</span><span class="n">_</span> <span class="nv">send</span><span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Cancellable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>send</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>The send function that dispatches an action.</p>
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>AnyCancellable to cancel the action plan.</p>
                       </div>
                     </section>
                   </div>
@@ -280,7 +252,7 @@ that should be cancelled if the user navigates away from the relevant view.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

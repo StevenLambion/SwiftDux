@@ -14,7 +14,7 @@
     <a title="Other Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html"> Docs</a> (91% documented)</p>
+        <p><a href="index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -75,13 +75,7 @@
                 <a href="Protocols/ActionDispatcher.html">ActionDispatcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+                <a href="Structs/EmptyAction.html">EmptyAction</a>
               </li>
             </ul>
           </li>
@@ -112,15 +106,12 @@
                 <a href="Structs/MappedDispatch.html">MappedDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="Protocols/Connectable.html">Connectable</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a>
+                <a href="Protocols/ConnectableView.html">ConnectableView</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="Advanced.html">Advanced</a>
+            <a href="Middleware.html">Middleware</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="Protocols/Middleware.html">Middleware</a>
@@ -134,10 +125,10 @@
                 <a href="Classes/ActionSubscriber.html">ActionSubscriber</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+                <a href="Classes/CombinedReducer.html">CombinedReducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/TypedMiddleware.html">TypedMiddleware</a>
+                <a href="Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
               </li>
             </ul>
           </li>
@@ -153,9 +144,6 @@
             <a href="Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Extensions/Binding.html">Binding</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="Extensions/Publisher.html">Publisher</a>
               </li>
               <li class="nav-group-task">
@@ -167,7 +155,10 @@
             <a href="Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Protocols/CancellableAction.html">CancellableAction</a>
+                <a href="Protocols/Connectable.html">Connectable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Protocols/RunnableAction.html">RunnableAction</a>
               </li>
             </ul>
           </li>
@@ -175,7 +166,39 @@
             <a href="Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Structs/StateBinder.html">StateBinder</a>
+                <a href="Structs/ActionBinder.html">ActionBinder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/ActionBinding.html">ActionBinding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/CombinedMiddleware.html">CombinedMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnActionViewModifier.html">OnActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnActionViewModifier.html#/s:8SwiftDux20OnActionViewModifierV0cD10DispatcherV">– OnActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnAppearDispatchActionPlanViewModifier.html">OnAppearDispatchActionPlanViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/OnAppearDispatchActionViewModifier.html">OnAppearDispatchActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Structs/StoreProviderViewModifier.html">StoreProviderViewModifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Other%20Typealiases.html#/s:8SwiftDux11StateBindera">StateBinder</a>
               </li>
             </ul>
           </li>
@@ -240,7 +263,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">HandleActionMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Classes/TypedMiddleware.html">TypedMiddleware</a></span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">HandleActionMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Middleware.html">Middleware</a></span></code></pre>
 
                         </div>
                       </div>
@@ -250,9 +273,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux15TypedMiddlewareC"></a>
-                    <a name="//apple_ref/swift/Class/TypedMiddleware" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux15TypedMiddlewareC">TypedMiddleware</a>
+                    <a name="/s:8SwiftDux15CombinedReducerC"></a>
+                    <a name="//apple_ref/swift/Class/CombinedReducer" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux15CombinedReducerC">CombinedReducer</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -260,18 +283,15 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>An abstract class for middleware that required a known state type when initialized.</p>
+                        <p>Combines two reducers together. Use the <code>+</code> operator to create a combned reducer.</p>
 
-<p>By default, this middleware does nothing. The <code>run(store:action:)</code> method should be
-overridden to implement the middleware functionality.</p>
-
-                        <a href="Classes/TypedMiddleware.html" class="slightly-smaller">See more</a>
+                        <a href="Classes/CombinedReducer.html" class="slightly-smaller">See more</a>
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">open</span> <span class="kd">class</span> <span class="kt">TypedMiddleware</span><span class="o">&lt;</span><span class="kt">State</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Middleware.html">Middleware</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Decodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Encodable</span><span class="p">,</span> <span class="kt">State</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="kt">CombinedReducer</span><span class="o">&lt;</span><span class="kt">State</span><span class="p">,</span> <span class="kt">A</span><span class="p">,</span> <span class="kt">B</span><span class="o">&gt;</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Reducer.html">Reducer</a></span> <span class="k">where</span> <span class="kt">State</span> <span class="o">==</span> <span class="kt">A</span><span class="o">.</span><span class="kt">State</span><span class="p">,</span> <span class="kt">A</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Reducer.html">Reducer</a></span><span class="p">,</span> <span class="kt">B</span> <span class="p">:</span> <span class="kt"><a href="Protocols/Reducer.html">Reducer</a></span><span class="p">,</span> <span class="kt">A</span><span class="o">.</span><span class="kt">State</span> <span class="o">==</span> <span class="kt">B</span><span class="o">.</span><span class="kt">State</span></code></pre>
 
                         </div>
                       </div>
@@ -283,7 +303,7 @@ overridden to implement the middleware functionality.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

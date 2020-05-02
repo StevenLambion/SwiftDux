@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StateBinder Structure Reference</title>
+    <title>RunnableAction Protocol Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,11 +10,11 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Struct/StateBinder" class="dashAnchor"></a>
-    <a title="StateBinder Structure Reference"></a>
+    <a name="//apple_ref/swift/Protocol/RunnableAction" class="dashAnchor"></a>
+    <a title="RunnableAction Protocol Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (91% documented)</p>
+        <p><a href="../index.html"> Docs</a> (87% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -22,7 +22,7 @@
       <p id="breadcrumbs">
         <a href="../index.html"> Reference</a>
         <img id="carat" src="../img/carat.png" />
-        StateBinder Structure Reference
+        RunnableAction Protocol Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -75,13 +75,7 @@
                 <a href="../Protocols/ActionDispatcher.html">ActionDispatcher</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux10SendActiona">SendAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux11EmptyActionV">EmptyAction</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Actions.html#/s:8SwiftDux14ActionModifiera">ActionModifier</a>
+                <a href="../Structs/EmptyAction.html">EmptyAction</a>
               </li>
             </ul>
           </li>
@@ -112,15 +106,12 @@
                 <a href="../Structs/MappedDispatch.html">MappedDispatch</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Protocols/Connectable.html">Connectable</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Protocols/ParameterizedConnectable.html">ParameterizedConnectable</a>
+                <a href="../Protocols/ConnectableView.html">ConnectableView</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
-            <a href="../Advanced.html">Advanced</a>
+            <a href="../Middleware.html">Middleware</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Protocols/Middleware.html">Middleware</a>
@@ -134,10 +125,10 @@
                 <a href="../Classes/ActionSubscriber.html">ActionSubscriber</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
+                <a href="../Classes/CombinedReducer.html">CombinedReducer</a>
               </li>
               <li class="nav-group-task">
-                <a href="../Classes/TypedMiddleware.html">TypedMiddleware</a>
+                <a href="../Classes/HandleActionMiddleware.html">HandleActionMiddleware</a>
               </li>
             </ul>
           </li>
@@ -153,9 +144,6 @@
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Extensions/Binding.html">Binding</a>
-              </li>
-              <li class="nav-group-task">
                 <a href="../Extensions/Publisher.html">Publisher</a>
               </li>
               <li class="nav-group-task">
@@ -167,7 +155,10 @@
             <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Protocols/CancellableAction.html">CancellableAction</a>
+                <a href="../Protocols/Connectable.html">Connectable</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Protocols/RunnableAction.html">RunnableAction</a>
               </li>
             </ul>
           </li>
@@ -175,7 +166,39 @@
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Structs/StateBinder.html">StateBinder</a>
+                <a href="../Structs/ActionBinder.html">ActionBinder</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/ActionBinding.html">ActionBinding</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/CombinedMiddleware.html">CombinedMiddleware</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnActionViewModifier.html">OnActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnActionViewModifier.html#/s:8SwiftDux20OnActionViewModifierV0cD10DispatcherV">– OnActionDispatcher</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnAppearDispatchActionPlanViewModifier.html">OnAppearDispatchActionPlanViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/OnAppearDispatchActionViewModifier.html">OnAppearDispatchActionViewModifier</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Structs/StoreProviderViewModifier.html">StoreProviderViewModifier</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="../Other%20Typealiases.html">Other Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8SwiftDux10SendActiona">SendAction</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Other%20Typealiases.html#/s:8SwiftDux11StateBindera">StateBinder</a>
               </li>
             </ul>
           </li>
@@ -184,23 +207,17 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>StateBinder</h1>
+            <h1>RunnableAction</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">StateBinder</span></code></pre>
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">RunnableAction</span> <span class="p">:</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span></code></pre>
 
                 </div>
               </div>
-            <p>Binds a state to a setter based action for use by controls that expect a two-way binding value such as TextFields.
-This is useful for simple actions that are expected to be dispatched many times a second. It should be avoided by any
-complicated or asynchronous actions.</p>
-<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">map</span><span class="p">(</span><span class="nv">state</span><span class="p">:</span> <span class="kt">AppState</span><span class="p">,</span> <span class="nv">binder</span><span class="p">:</span> <span class="kt">StateBinder</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Props</span><span class="p">?</span> <span class="p">{</span>
-  <span class="kt">Props</span><span class="p">(</span>
-    <span class="nv">todos</span><span class="p">:</span> <span class="n">state</span><span class="o">.</span><span class="n">todos</span><span class="p">,</span>
-    <span class="nv">orderBy</span><span class="p">:</span> <span class="n">binder</span><span class="o">.</span><span class="nf">bind</span><span class="p">(</span><span class="n">state</span><span class="o">.</span><span class="n">orderBy</span><span class="p">)</span> <span class="p">{</span> <span class="kt">TodoListAction</span><span class="o">.</span><span class="nf">setOrderBy</span><span class="p">(</span><span class="nv">$0</span><span class="p">)</span> <span class="p">}</span>
-  <span class="p">)</span>
-<span class="p">}</span>
-</code></pre>
+            <p>A special kind of action that performs internal logic outside of a reducer.</p>
+
+<p>An ActionPlan&lt;_&gt; is a concrete type of RunnbableAction, and is good enough
+for most cases.</p>
 
           </section>
           <section class="section task-group-section">
@@ -209,9 +226,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux11StateBinderV4bind_8dispatch0A2UI7BindingVyxGxyXA_AA6Action_pSgxctlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(_:dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux11StateBinderV4bind_8dispatch0A2UI7BindingVyxGxyXA_AA6Action_pSgxctlF">bind(_:dispatch:)</a>
+                    <a name="/s:8SwiftDux14RunnableActionP3run5store7Combine14AnyCancellableCSgAA5StoreCyqd__G_tlF"></a>
+                    <a name="//apple_ref/swift/Method/run(store:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux14RunnableActionP3run5store7Combine14AnyCancellableCSgAA5StoreCyqd__G_tlF">run(store:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -219,14 +236,15 @@ complicated or asynchronous actions.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Create a binding between a given state and an action.</p>
+                        <p>When the action is dispatched to a store, this method will be called to handle
+any logic by the action.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">getState</span><span class="p">:</span> <span class="kd">@autoclosure</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">T</span><span class="p">,</span> <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Binding</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+                          <pre class="highlight swift"><code><span class="kd">func</span> <span class="n">run</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="nv">store</span><span class="p">:</span> <span class="kt"><a href="../Classes/Store.html">Store</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">AnyCancellable</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -237,24 +255,12 @@ complicated or asynchronous actions.</p>
                             <tr>
                               <td>
                                 <code>
-                                <em>getState</em>
+                                <em>store</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>The state to retrieve.</p>
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>getAction</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>Given a new version of the state, it returns an action to dispatch.</p>
+                                  <p>The store that the action has been dispatched to.</p>
                                 </div>
                               </td>
                             </tr>
@@ -263,7 +269,7 @@ complicated or asynchronous actions.</p>
                       </div>
                       <div>
                         <h4>Return Value</h4>
-                        <p>A new Binding object.</p>
+                        <p>An optional cancellable.</p>
                       </div>
                     </section>
                   </div>
@@ -273,7 +279,7 @@ complicated or asynchronous actions.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-01-22)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-02)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
