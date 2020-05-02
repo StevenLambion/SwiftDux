@@ -127,13 +127,6 @@
       "warning": "undocumented"
     },
     {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnActionViewModifier.swift",
-      "line": 27,
-      "symbol": "OnActionViewModifier.OnActionDispatcher",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnAppearDispatchViewModifier.swift",
       "line": 4,
       "symbol": "OnAppearDispatchActionViewModifier",
