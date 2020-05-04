@@ -19,22 +19,27 @@ custom_categories:
       - Action
       - ActionPlan
       - ActionDispatcher
-      - SendAction
+      - ActionSubscriber
+      - RunnableAction
       - EmptyAction
-      - ActionModifier
+      - SendAction
   - name: Store
     children:
       - Store
       - Reducer
       - StoreProxy
+      - CombinedReducer
+      - StoreAction
   - name: SwiftUI
     children:
       - View
       - MappedState
       - MappedDispatch
-      - Connectable
-      - ParameterizedConnectable
-  - name: Advanced
+      - ConnectableView
+      - ActionBinder
+      - ActionBinding
+  - name: Middleware
     children:
       - Middleware
-      - PrintActionMiddleware(printer:)
+      - CombinedMiddleware
+      - HandleActionMiddleware

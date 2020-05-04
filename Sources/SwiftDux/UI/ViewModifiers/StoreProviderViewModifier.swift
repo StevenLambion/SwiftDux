@@ -3,26 +3,16 @@ import SwiftUI
 
 /// A view modifier that injects a store into the environment.
 public struct StoreProviderViewModifier<State>: ViewModifier where State: StateType {
-  private var store: Store<State>
-  private var connection: StateConnection<State>
+  private var storeWrapper: StoreWrapper<State>
 
   @usableFromInline internal init(store: Store<State>) {
-    self.store = store
-    self.connection = StateConnection<State>(
-      getState: { [weak store] in
-        guard let store = store else { return nil }
-        return store.state
-      },
-      changePublisher: store.didChange,
-      emitChanges: false
-    )
+    self.storeWrapper = StoreWrapper(store: store)
   }
 
   public func body(content: Content) -> some View {
     content
-      .environmentObject(connection)
-      .environment(\.actionDispatcher, store)
-      .environment(\.storeUpdated, store.didChange)
+      .environmentObject(storeWrapper)
+      .environment(\.actionDispatcher, storeWrapper.store)
   }
 }
 

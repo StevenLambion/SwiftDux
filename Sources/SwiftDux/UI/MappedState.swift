@@ -12,13 +12,10 @@ import SwiftUI
 /// ```
 @propertyWrapper
 public struct MappedState<State>: DynamicProperty where State: Equatable {
-  @EnvironmentObject private var connection: StateConnection<State>
+  @EnvironmentObject private var storeWrapper: StoreWrapper<State>
 
   public var wrappedValue: State {
-    guard let state = connection.state else {
-      fatalError("State was not connected before using @MappedState")
-    }
-    return state
+    storeWrapper.store.state
   }
 
   public init() {}

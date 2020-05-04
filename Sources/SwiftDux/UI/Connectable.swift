@@ -1,6 +1,9 @@
 import SwiftUI
 
 /// Makes a view "connectable" to the application state.
+///
+/// This should not be used directly. Instead, use ConnectableView. This protocol isn't combined into ConnectableView due
+/// to a possible bug in Swift that throws an invalid assocated type if Props isn't explicitly typealiased.
 public protocol Connectable {
 
   associatedtype Superstate: Equatable
@@ -48,15 +51,5 @@ extension Connectable {
   /// Default implementation. Calls the other map function.
   @inlinable public func map(state: Superstate, binder: ActionBinder) -> Props? {
     map(state: state)
-  }
-}
-
-extension Connectable where Self: View {
-
-  /// Connect the view to the application state
-  ///
-  /// - Returns: The connected view.
-  @inlinable public func connect() -> some View {
-    self.connect(mapState: self.map)
   }
 }

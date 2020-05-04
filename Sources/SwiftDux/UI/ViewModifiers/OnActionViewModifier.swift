@@ -24,7 +24,7 @@ extension OnActionViewModifier {
   /// the original action is not sent.
   public typealias ActionModifier = (Action) -> Action?
 
-  struct OnActionDispatcher: ActionDispatcher {
+  private struct OnActionDispatcher: ActionDispatcher {
     var actionModifier: ActionModifier
     var nextDispatcher: ActionDispatcher
 
