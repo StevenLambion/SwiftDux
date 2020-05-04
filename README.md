@@ -215,20 +215,22 @@ TodoDetailsView(id: "123")
 
 ## ActionBinding<_>
 
-SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using an `ActionBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes.
+SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using an `ActionBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes. It also binds a function to a dispatchable action.
 
 ```swift
 struct LoginForm: View {
 
   struct Props: Equatable {
     @ActionBinding var email: String
+    @ActionBinding var onSubmit: ()->()
   }
 
   func map(state: AppState, binder: ActionBinder) -> Props? {
     Props(
       email: binder.bind(state.loginForm.email) { 
         LoginFormAction.setEmail($0)
-      }
+      },
+      onSubmit: binder.bind(LoginFormAction.submit)
     )
   }
 
@@ -236,6 +238,9 @@ struct LoginForm: View {
     VStack {
       TextField("Email", text: $props.email)
       /* ... */
+      Button(action: props.onSubmit) {
+        Text("Submit")
+      }
     }
   }
 }

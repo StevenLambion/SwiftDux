@@ -37,7 +37,7 @@ public struct ActionBinder {
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind(dispatch getAction: @escaping () -> Action?) -> ActionBinding<() -> Void> {
+  @inlinable public func bind(_ getAction: @escaping () -> Action?) -> ActionBinding<() -> Void> {
     .constant { self.dispatch(getAction()) }
   }
 
@@ -45,7 +45,7 @@ public struct ActionBinder {
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind<P0>(dispatch getAction: @escaping (P0) -> Action?) -> ActionBinding<(P0) -> Void> {
+  @inlinable public func bind<P0>(_ getAction: @escaping (P0) -> Action?) -> ActionBinding<(P0) -> Void> {
     .constant { self.dispatch(getAction($0)) }
   }
 
@@ -53,7 +53,7 @@ public struct ActionBinder {
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind<P0, P1>(dispatch getAction: @escaping (P0, P1) -> Action?) -> ActionBinding<(P0, P1) -> Void> {
+  @inlinable public func bind<P0, P1>(_ getAction: @escaping (P0, P1) -> Action?) -> ActionBinding<(P0, P1) -> Void> {
     .constant { self.dispatch(getAction($0, $1)) }
   }
 
@@ -62,7 +62,7 @@ public struct ActionBinder {
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2>(
-    dispatch getAction: @escaping (P0, P1, P2) -> Action?
+    _ getAction: @escaping (P0, P1, P2) -> Action?
   ) -> ActionBinding<(P0, P1, P2) -> Void> {
     .constant { self.dispatch(getAction($0, $1, $2)) }
   }
@@ -72,7 +72,7 @@ public struct ActionBinder {
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3>(
-    dispatch getAction: @escaping (P0, P1, P2, P3) -> Action?
+    _ getAction: @escaping (P0, P1, P2, P3) -> Action?
   ) -> ActionBinding<(P0, P1, P2, P3) -> Void> {
     .constant { self.dispatch(getAction($0, $1, $2, $3)) }
   }
@@ -82,7 +82,7 @@ public struct ActionBinder {
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3, P4>(
-    dispatch getAction: @escaping (P0, P1, P2, P3, P4) -> Action?
+    _ getAction: @escaping (P0, P1, P2, P3, P4) -> Action?
   ) -> ActionBinding<(P0, P1, P2, P3, P4) -> Void> {
     .constant { self.dispatch(getAction($0, $1, $2, $3, $4)) }
   }
@@ -92,7 +92,7 @@ public struct ActionBinder {
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3, P4, P5>(
-    dispatch getAction: @escaping (P0, P1, P2, P3, P4, P5) -> Action?
+    _ getAction: @escaping (P0, P1, P2, P3, P4, P5) -> Action?
   ) -> ActionBinding<(P0, P1, P2, P3, P4, P5) -> Void> {
     .constant { self.dispatch(getAction($0, $1, $2, $3, $4, $5)) }
   }
