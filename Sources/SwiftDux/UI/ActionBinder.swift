@@ -23,9 +23,10 @@ public struct ActionBinder {
   ///   - state: The state to retrieve.
   ///   - getAction: Given a new version of the state, it returns an action to dispatch.
   /// - Returns: A new Binding object.
-  @inlinable public func bind<T>(_ state: T, dispatch getAction: @escaping (T) -> Action?) -> ActionBinding<T> {
+  @inlinable public func bind<T>(_ state: T, dispatch getAction: @escaping (T) -> Action?) -> ActionBinding<T> where T: Equatable {
     ActionBinding(
       value: state,
+      isEqual: { state == $0 },
       set: {
         self.dispatch(getAction($0))
       }
@@ -36,24 +37,24 @@ public struct ActionBinder {
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind(dispatch getAction: @escaping () -> Action?) -> () -> Void {
-    { self.dispatch(getAction()) }
+  @inlinable public func bind(dispatch getAction: @escaping () -> Action?) -> ActionBinding<() -> Void> {
+    .constant { self.dispatch(getAction()) }
   }
 
   /// Create a function binding that dispatches an action.
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind<P0>(dispatch getAction: @escaping (P0) -> Action?) -> (P0) -> Void {
-    { self.dispatch(getAction($0)) }
+  @inlinable public func bind<P0>(dispatch getAction: @escaping (P0) -> Action?) -> ActionBinding<(P0) -> Void> {
+    .constant { self.dispatch(getAction($0)) }
   }
 
   /// Create a function binding that dispatches an action.
   ///
   /// - Parameter getAction: A closure that returns an action to dispatch.
   /// - Returns: a function that dispatches the action.
-  @inlinable public func bind<P0, P1>(dispatch getAction: @escaping (P0, P1) -> Action?) -> (P0, P1) -> Void {
-    { self.dispatch(getAction($0, $1)) }
+  @inlinable public func bind<P0, P1>(dispatch getAction: @escaping (P0, P1) -> Action?) -> ActionBinding<(P0, P1) -> Void> {
+    .constant { self.dispatch(getAction($0, $1)) }
   }
 
   /// Create a function binding that dispatches an action.
@@ -62,8 +63,8 @@ public struct ActionBinder {
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2>(
     dispatch getAction: @escaping (P0, P1, P2) -> Action?
-  ) -> (P0, P1, P2) -> Void {
-    { self.dispatch(getAction($0, $1, $2)) }
+  ) -> ActionBinding<(P0, P1, P2) -> Void> {
+    .constant { self.dispatch(getAction($0, $1, $2)) }
   }
 
   /// Create a function binding that dispatches an action.
@@ -72,8 +73,8 @@ public struct ActionBinder {
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3>(
     dispatch getAction: @escaping (P0, P1, P2, P3) -> Action?
-  ) -> (P0, P1, P2, P3) -> Void {
-    { self.dispatch(getAction($0, $1, $2, $3)) }
+  ) -> ActionBinding<(P0, P1, P2, P3) -> Void> {
+    .constant { self.dispatch(getAction($0, $1, $2, $3)) }
   }
 
   /// Create a function binding that dispatches an action.
@@ -82,8 +83,8 @@ public struct ActionBinder {
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3, P4>(
     dispatch getAction: @escaping (P0, P1, P2, P3, P4) -> Action?
-  ) -> (P0, P1, P2, P3, P4) -> Void {
-    { self.dispatch(getAction($0, $1, $2, $3, $4)) }
+  ) -> ActionBinding<(P0, P1, P2, P3, P4) -> Void> {
+    .constant { self.dispatch(getAction($0, $1, $2, $3, $4)) }
   }
 
   /// Create a function binding that dispatches an action.
@@ -92,8 +93,8 @@ public struct ActionBinder {
   /// - Returns: a function that dispatches the action.
   @inlinable public func bind<P0, P1, P2, P3, P4, P5>(
     dispatch getAction: @escaping (P0, P1, P2, P3, P4, P5) -> Action?
-  ) -> (P0, P1, P2, P3, P4, P5) -> Void {
-    { self.dispatch(getAction($0, $1, $2, $3, $4, $5)) }
+  ) -> ActionBinding<(P0, P1, P2, P3, P4, P5) -> Void> {
+    .constant { self.dispatch(getAction($0, $1, $2, $3, $4, $5)) }
   }
 
   @usableFromInline internal func dispatch(_ action: Action?) {
