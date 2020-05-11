@@ -9,7 +9,7 @@ internal final class NoUpdateAction: Action {
 
 fileprivate let noUpdateAction = NoUpdateAction()
 
-internal struct Connector<Content, Superstate, Props>: View where Superstate: Equatable, Props: Equatable, Content: View {
+public struct Connector<Content, Superstate, Props>: View where Props: Equatable, Content: View {
   @EnvironmentObject private var storeWrapper: StoreWrapper<Superstate>
   @Environment(\.actionDispatcher) private var actionDispatcher
 
@@ -17,11 +17,11 @@ internal struct Connector<Content, Superstate, Props>: View where Superstate: Eq
   private var filter: ((Action) -> Bool)?
   private var mapProps: (Superstate, ActionBinder) -> Props?
 
-  private var store: Store<Superstate> {
+  private var store: StoreProxy<Superstate> {
     storeWrapper.store
   }
 
-  @usableFromInline internal init(
+  public init(
     content: @escaping (Props) -> Content,
     filter: ((Action) -> Bool)?,
     mapProps: @escaping (Superstate, ActionBinder) -> Props?
@@ -31,7 +31,7 @@ internal struct Connector<Content, Superstate, Props>: View where Superstate: Eq
     self.mapProps = mapProps
   }
 
-  var body: some View {
+  public var body: some View {
     ConnectorInner(content: content, initialProps: getProps(), propsPublisher: createPropsPublisher())
   }
 
@@ -63,7 +63,6 @@ internal struct Connector<Content, Superstate, Props>: View where Superstate: Eq
 internal struct ConnectorInner<Content, Props>: View where Props: Equatable, Content: View {
   private var content: (Props) -> Content
   private var propsPublisher: AnyPublisher<Props, Never>
-
   @State private var props: Props?
 
   internal init(content: @escaping (Props) -> Content, initialProps: Props?, propsPublisher: AnyPublisher<Props, Never>) {

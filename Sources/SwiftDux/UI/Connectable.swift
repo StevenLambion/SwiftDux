@@ -6,7 +6,7 @@ import SwiftUI
 /// to a possible bug in Swift that throws an invalid assocated type if Props isn't explicitly typealiased.
 public protocol Connectable {
 
-  associatedtype Superstate: Equatable
+  associatedtype Superstate
   associatedtype Props: Equatable
 
   /// Causes the view to be updated based on a dispatched action.
