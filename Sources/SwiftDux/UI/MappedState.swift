@@ -11,7 +11,7 @@ import SwiftUI
 /// }
 /// ```
 @propertyWrapper
-public struct MappedState<State>: DynamicProperty where State: Equatable {
+public struct MappedState<State>: DynamicProperty {
   @EnvironmentObject private var storeWrapper: StoreWrapper<State>
 
   public var wrappedValue: State {

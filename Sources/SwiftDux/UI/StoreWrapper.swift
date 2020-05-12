@@ -2,9 +2,9 @@ import Combine
 import SwiftUI
 
 internal final class StoreWrapper<State>: ObservableObject {
-  let store: Store<State>
+  let store: StoreProxy<State>
 
-  init(store: Store<State>) {
+  init(store: StoreProxy<State>) {
     self.store = store
   }
 }
