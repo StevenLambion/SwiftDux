@@ -26,6 +26,10 @@ SwiftDux relies on advance functionality of SwiftUI that may break or change bet
 - `PersistStateMiddleware` automatically persists and restores the application state.
 - `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
 
+## Libraries
+- [SwiftDuxNavigation](https://github.com/StevenLambion/SwiftDuxNavigation) is an experimental application routing library.
+
+
 # Installation
 
 ## Prerequisites
@@ -362,8 +366,6 @@ struct TodoListView: ConnectableView {
 [swift-url]: https://swift.org/
 [license-image]: https://img.shields.io/badge/License-MIT-blue.svg
 [license-url]: LICENSE
-[travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg
-[travis-url]: https://travis-ci.org/dbader/node-datadog-metrics
 [codebeat-image]: https://codebeat.co/badges/c19b47ea-2f9d-45df-8458-b2d952fe9dad
 [codebeat-url]: https://codebeat.co/projects/github-com-vsouza-awesomeios-com
 [github-workflow-image]: https://github.com/StevenLambion/SwiftDux/workflows/build/badge.svg
