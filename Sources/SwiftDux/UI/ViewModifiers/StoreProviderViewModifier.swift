@@ -37,7 +37,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   /// - Returns: The modified view.
-  @inlinable public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
+  public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
     return modifier(StoreProviderViewModifier<State>(store: store.proxy(for: State.self)!))
   }
 
@@ -61,7 +61,9 @@ extension View {
   ///   - store: The store object to inject.
   ///   - type: A type that the store adheres to.
   /// - Returns: The modified view.
-  @inlinable public func provideStore<State, Substate>(_ store: Store<State>, as type: Substate.Type) -> some View where State: StateType {
+  public func provideStore<State, Substate>(_ store: Store<State>, as type: Substate.Type) -> ModifiedContent<Self, StoreProviderViewModifier<Substate>>
+  where State: StateType {
+    // FIXME - Added concrete return type due to a bug that causes segment faults in release builds.
     return modifier(StoreProviderViewModifier<Substate>(store: store.proxy(for: type.self)!))
   }
 }
