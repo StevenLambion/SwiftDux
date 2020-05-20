@@ -12,20 +12,20 @@ import SwiftUI
 /// ```
 @propertyWrapper
 public struct MappedState<State>: DynamicProperty {
-  @Environment(\.storeWrapper) private var storeWrapper
+  @Environment(\.store) private var anyStore
 
-  private var storeProxy: StoreProxy<State>?
+  private var store: StoreProxy<State>?
 
   public var wrappedValue: State {
-    guard let storeProxy = storeProxy else {
+    guard let store = store else {
       fatalError("SwiftDux Store<_> does not conform to type: \(State.self)")
     }
-    return storeProxy.state
+    return store.state
   }
 
   public mutating func update() {
-    guard storeProxy == nil else { return }
-    self.storeProxy = storeWrapper.proxy(type: State.self)
+    guard store == nil else { return }
+    self.store = anyStore.unwrap(as: State.self)
   }
 
   public init() {}

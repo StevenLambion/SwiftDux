@@ -10,7 +10,7 @@ internal final class NoUpdateAction: Action {
 fileprivate let noUpdateAction = NoUpdateAction()
 
 public struct Connector<Content, Superstate, Props>: View where Props: Equatable, Content: View {
-  @Environment(\.storeWrapper) private var storeWrapper
+  @Environment(\.store) private var anyStore
   @Environment(\.actionDispatcher) private var actionDispatcher
 
   private var content: (Props) -> Content
@@ -18,10 +18,10 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
   private var mapProps: (Superstate, ActionBinder) -> Props?
 
   private var store: StoreProxy<Superstate> {
-    guard let storeProxy = storeWrapper.proxy(type: Superstate.self) else {
+    guard let store = anyStore.unwrap(as: Superstate.self) else {
       fatalError("SwiftDux Store<_> does not conform to type: \(Superstate.self)")
     }
-    return storeProxy
+    return store
   }
 
   public init(
