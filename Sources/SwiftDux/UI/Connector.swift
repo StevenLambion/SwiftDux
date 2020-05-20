@@ -10,15 +10,15 @@ internal final class NoUpdateAction: Action {
 fileprivate let noUpdateAction = NoUpdateAction()
 
 public struct Connector<Content, Superstate, Props>: View where Props: Equatable, Content: View {
-  @EnvironmentObject private var storeWrapper: StoreWrapper<Superstate>
+  @Environment(\.store) private var anyStore
   @Environment(\.actionDispatcher) private var actionDispatcher
 
   private var content: (Props) -> Content
   private var filter: ((Action) -> Bool)?
   private var mapProps: (Superstate, ActionBinder) -> Props?
 
-  private var store: StoreProxy<Superstate> {
-    storeWrapper.store
+  private var store: StoreProxy<Superstate>? {
+    anyStore.unwrap(as: Superstate.self)
   }
 
   public init(
@@ -32,26 +32,24 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
   }
 
   public var body: some View {
-    ConnectorInner(content: content, initialProps: getProps(), propsPublisher: createPropsPublisher())
+    createPropsPublisher().map { ConnectorInner(content: content, initialProps: getProps(), propsPublisher: $0) }
   }
 
-  private func createPropsPublisher() -> AnyPublisher<Props, Never> {
-    createFilteredPublisher().compactMap { [store] _ in
-      self.mapProps(store.state, ActionBinder(actionDispatcher: self.actionDispatcher))
-    }
-    .removeDuplicates()
-    .eraseToAnyPublisher()
+  private func createPropsPublisher() -> AnyPublisher<Props, Never>? {
+    createFilteredPublisher()?.compactMap { _ in self.getProps() }
+      .removeDuplicates()
+      .eraseToAnyPublisher()
   }
 
-  private func createFilteredPublisher() -> AnyPublisher<Action, Never> {
+  private func createFilteredPublisher() -> AnyPublisher<Action, Never>? {
     guard let filter = filter, hasUpdateFilter() else {
-      return store.didChange
+      return store?.didChange
     }
-    return store.didChange.filter(filter).eraseToAnyPublisher()
+    return store?.didChange.filter(filter).eraseToAnyPublisher()
   }
 
   private func getProps() -> Props? {
-    mapProps(store.state, ActionBinder(actionDispatcher: self.actionDispatcher))
+    store.flatMap { self.mapProps($0.state, ActionBinder(actionDispatcher: self.actionDispatcher)) }
   }
 
   private func hasUpdateFilter() -> Bool {
