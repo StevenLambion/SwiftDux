@@ -37,8 +37,8 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
 
   private func createPropsPublisher() -> AnyPublisher<Props, Never>? {
     createFilteredPublisher()?.compactMap { _ in self.getProps() }
-    .removeDuplicates()
-    .eraseToAnyPublisher()
+      .removeDuplicates()
+      .eraseToAnyPublisher()
   }
 
   private func createFilteredPublisher() -> AnyPublisher<Action, Never>? {

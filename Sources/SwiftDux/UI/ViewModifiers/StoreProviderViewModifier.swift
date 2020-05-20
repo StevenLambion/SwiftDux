@@ -36,7 +36,7 @@ extension View {
   public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
     return modifier(StoreProviderViewModifier(anyStore: AnyStoreWrapper(store: store)))
   }
-  
+
   public func provideStore(_ store: AnyStore) -> some View {
     return modifier(StoreProviderViewModifier(anyStore: store))
   }
