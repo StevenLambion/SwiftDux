@@ -1,7 +1,7 @@
 import Foundation
 import SwiftDux
 
-final class TodoListState: IdentifiableState {
+final class TodoListState: Identifiable {
   var id: String
   var name: String
   var todos: OrderedState<TodoItemState>
@@ -17,7 +17,7 @@ final class TodoListState: IdentifiableState {
   }
 }
 
-struct TodoItemState: IdentifiableState, Hashable, Identifiable {
+struct TodoItemState: Identifiable {
   var id: String
   var text: String
 }
@@ -26,7 +26,7 @@ protocol TodoListStateRoot {
   var todoLists: OrderedState<TodoListState> { get set }
 }
 
-struct AppState: StateType, TodoListStateRoot {
+struct AppState: TodoListStateRoot {
   var todoLists: OrderedState<TodoListState>
 }
 

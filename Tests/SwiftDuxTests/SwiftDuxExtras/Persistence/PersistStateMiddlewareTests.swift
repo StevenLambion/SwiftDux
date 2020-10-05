@@ -54,7 +54,7 @@ extension PersistStateMiddlewareTests {
     case setName(String)
   }
   
-  struct TestState: StateType {
+  struct TestState: Equatable & Codable {
     var name: String = ""
   }
   

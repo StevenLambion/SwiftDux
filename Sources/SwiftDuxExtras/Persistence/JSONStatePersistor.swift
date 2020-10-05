@@ -3,7 +3,7 @@ import Foundation
 import SwiftDux
 
 /// Persist the application state as JSON.
-public final class JSONStatePersistor<State>: StatePersistor where State: StateType {
+public final class JSONStatePersistor<State>: StatePersistor where State: Codable {
 
   /// The storage location of the JSON data.
   public let location: StatePersistentLocation

@@ -152,7 +152,7 @@ extension ActionPlanTests {
     case actionB
   }
   
-  struct TestState: StateType {}
+  struct TestState: Equatable {}
   
   class TestReducer: Reducer {
     func reduce(state: TestState, action: TestAction) -> TestState {

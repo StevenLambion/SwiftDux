@@ -4,7 +4,7 @@ fileprivate struct IgnoredDecodedState: Codable {}
 
 /// Storage for the ordered state to decrease the copying of the internal data structures.
 @usableFromInline
-internal class OrderedStateStorage<Substate>: Codable, Equatable where Substate: IdentifiableState {
+internal class OrderedStateStorage<Substate> where Substate: Identifiable {
   enum CodingKeys: String, CodingKey {
     case orderOfIds
     case values
@@ -34,10 +34,6 @@ internal class OrderedStateStorage<Substate>: Codable, Equatable where Substate:
     self.cachedIdsByOrder = nil
   }
 
-  @inlinable static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
-    lhs.orderOfIds == rhs.orderOfIds && lhs.values == rhs.values
-  }
-
   /// Returns the ordered index position of a key.
   ///
   /// This method assumes it will be called multiple times in succession, so it internally caches
@@ -58,6 +54,14 @@ internal class OrderedStateStorage<Substate>: Codable, Equatable where Substate:
   @inlinable func invalidateCache() {
     self.cachedIdsByOrder = nil
   }
+}
+
+extension OrderedStateStorage: Equatable where Substate: Equatable {
+
+  @inlinable static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
+    lhs.orderOfIds == rhs.orderOfIds && lhs.values == rhs.values
+  }
+
 }
 
 /// A container state that holds an ordered collection of substates.
@@ -87,7 +91,7 @@ internal class OrderedStateStorage<Substate>: Codable, Equatable where Substate:
 /// }
 ///
 /// ```
-public struct OrderedState<Substate>: StateType where Substate: IdentifiableState {
+public struct OrderedState<Substate> where Substate: Identifiable {
 
   public typealias Id = Substate.ID
   public typealias Index = Int
@@ -133,34 +137,6 @@ public struct OrderedState<Substate>: StateType where Substate: IdentifiableStat
   /// - Parameter value: A variadic list of substates. The position of each substate will be used as the initial order.
   @inlinable public init(_ value: Substate...) {
     self.init(value)
-  }
-
-  ///Decodes the `OrderState<_>` from an unkeyed container.
-  ///
-  /// This allows the `OrderedState<_>` to be decoded from a simple array.
-  ///
-  /// - Parameter decoder: The decoder.
-  public init(from decoder: Decoder) throws {
-    var container = try decoder.unkeyedContainer()
-    var values = [Substate]()
-    while !container.isAtEnd {
-      do {
-        values.append(try container.decode(Substate.self))
-      } catch {
-        _ = try container.decode(IgnoredDecodedState.self)
-      }
-    }
-    self.init(values)
-  }
-
-  /// Encodes the `OrderState<_>` as an unkeyed container of values.
-  ///
-  /// This allows the `OrderedState<_>` to be encoded as simple array.
-  ///
-  /// - Parameter encoder: The encoder.
-  @inlinable public func encode(to encoder: Encoder) throws {
-    var container = encoder.unkeyedContainer()
-    try container.encode(contentsOf: values)
   }
 
   /// Used internally to copy the storage for mutating operations.
@@ -413,9 +389,45 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
   }
 }
 
-extension OrderedState {
+extension OrderedState: Equatable where Substate: Equatable {
 
   @inlinable public static func == (lhs: OrderedState<Substate>, rhs: OrderedState<Substate>) -> Bool {
     lhs.storage == rhs.storage
   }
+}
+
+extension OrderedState: Decodable where Substate: Decodable {
+
+  ///Decodes the `OrderState<_>` from an unkeyed container.
+  ///
+  /// This allows the `OrderedState<_>` to be decoded from a simple array.
+  ///
+  /// - Parameter decoder: The decoder.
+  public init(from decoder: Decoder) throws {
+    var container = try decoder.unkeyedContainer()
+    var values = [Substate]()
+    while !container.isAtEnd {
+      do {
+        values.append(try container.decode(Substate.self))
+      } catch {
+        _ = try container.decode(IgnoredDecodedState.self)
+      }
+    }
+    self.init(values)
+  }
+
+}
+
+extension OrderedState: Encodable where Substate: Encodable {
+
+  /// Encodes the `OrderState<_>` as an unkeyed container of values.
+  ///
+  /// This allows the `OrderedState<_>` to be encoded as simple array.
+  ///
+  /// - Parameter encoder: The encoder.
+  @inlinable public func encode(to encoder: Encoder) throws {
+    var container = encoder.unkeyedContainer()
+    try container.encode(contentsOf: values)
+  }
+
 }

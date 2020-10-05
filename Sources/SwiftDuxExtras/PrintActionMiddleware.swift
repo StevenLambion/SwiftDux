@@ -7,7 +7,7 @@ fileprivate func defaultActionPrinter(_ actionDescription: String) {
 }
 
 /// A simple middlware that prints the description of the latest action.
-public final class PrintActionMiddleware<State>: Middleware where State: StateType {
+public final class PrintActionMiddleware<State>: Middleware {
   public var printer: ((String) -> Void) = defaultActionPrinter
   public var filter: (Action) -> Bool = { _ in true }
 
@@ -21,7 +21,7 @@ public final class PrintActionMiddleware<State>: Middleware where State: StateTy
     self.filter = filter
   }
 
-  public func run<State>(store: StoreProxy<State>, action: Action) where State: StateType {
+  public func run<State>(store: StoreProxy<State>, action: Action) {
     defer { store.next(action) }
     guard filter(action) else { return }
     printer(String(describing: action))
