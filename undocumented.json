@@ -44,14 +44,14 @@
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 92,
+      "line": 96,
       "symbol": "OrderedState.Id",
       "symbol_kind": "source.lang.swift.decl.typealias",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ActionBinder.swift",
-      "line": 106,
+      "line": 107,
       "symbol": "StateBinder",
       "symbol_kind": "source.lang.swift.decl.typealias",
       "warning": "undocumented"
@@ -79,9 +79,37 @@
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ConnectableView.swift",
-      "line": 15,
-      "symbol": "ConnectableView.body",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "line": 6,
+      "symbol": "ConnectableView.Body",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 12,
+      "symbol": "Connector",
+      "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
+      "line": 24,
+      "symbol": "Connector.init(content:filter:mapProps:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Extensions/Environment+AnyStore.swift",
+      "line": 39,
+      "symbol": "StoreWrapperEnvironmentKey",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Extensions/Environment+AnyStore.swift",
+      "line": 40,
+      "symbol": "StoreWrapperEnvironmentKey.defaultValue",
+      "symbol_kind": "source.lang.swift.decl.var.static",
       "warning": "undocumented"
     },
     {
@@ -100,14 +128,14 @@
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 17,
+      "line": 19,
       "symbol": "MappedState.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 21,
+      "line": 31,
       "symbol": "MappedState.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
@@ -138,6 +166,13 @@
       "line": 20,
       "symbol": "OnAppearDispatchActionPlanViewModifier",
       "symbol_kind": "source.lang.swift.decl.struct",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/StoreProviderViewModifier.swift",
+      "line": 40,
+      "symbol": "View.provideStore(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }
   ],

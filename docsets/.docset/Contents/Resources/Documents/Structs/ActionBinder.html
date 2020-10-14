@@ -14,7 +14,7 @@
     <a title="ActionBinder Structure Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html"> Docs</a> (88% documented)</p>
+        <p><a href="../index.html"> Docs</a> (86% documented)</p>
         <p class="header-right"><a href="https://github.com/StevenLambion/SwiftDux"><img src="../img/gh.png"/>View on GitHub</a></p>
       </div>
     </header>
@@ -39,9 +39,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../composing-reducers.html">Composing Reducers</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../swiftui-list-support.html">SwiftUI List Support</a>
               </li>
               <li class="nav-group-task">
                 <a href="../persisting-state.html">Persisting State</a>
@@ -146,8 +143,19 @@
             </ul>
           </li>
           <li class="nav-group-name">
+            <a href="../Other%20Classes.html">Other Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Classes/StoreWrapperEnvironmentKey.html">StoreWrapperEnvironmentKey</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
             <a href="../Other%20Extensions.html">Other Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/EnvironmentValues.html">EnvironmentValues</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/Publisher.html">Publisher</a>
               </li>
@@ -160,6 +168,9 @@
             <a href="../Other%20Protocols.html">Other Protocols</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Protocols/AnyStore.html">AnyStore</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Protocols/Connectable.html">Connectable</a>
               </li>
             </ul>
@@ -168,6 +179,9 @@
             <a href="../Other%20Structs.html">Other Structures</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Structs/Connector.html">Connector</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Structs/OnActionViewModifier.html">OnActionViewModifier</a>
               </li>
               <li class="nav-group-task">
@@ -175,9 +189,6 @@
               </li>
               <li class="nav-group-task">
                 <a href="../Structs/OnAppearDispatchActionViewModifier.html">OnAppearDispatchActionViewModifier</a>
-              </li>
-              <li class="nav-group-task">
-                <a href="../Structs/StoreProviderViewModifier.html">StoreProviderViewModifier</a>
               </li>
             </ul>
           </li>
@@ -219,9 +230,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind_8dispatchAA0C7BindingVyxGx_AA0C0_pSgxctlF"></a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bind_8dispatchAA0C7BindingVyxGx_AA0C0_pSgxctSQRzlF"></a>
                     <a name="//apple_ref/swift/Method/bind(_:dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind_8dispatchAA0C7BindingVyxGx_AA0C0_pSgxctlF">bind(_:dispatch:)</a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind_8dispatchAA0C7BindingVyxGx_AA0C0_pSgxctSQRzlF">bind(_:dispatch:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -237,7 +248,7 @@ complicated or asynchronous actions.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">state</span><span class="p">:</span> <span class="kt">T</span><span class="p">,</span> <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="kt">T</span><span class="o">&gt;</span> <span class="k">where</span> <span class="kt">T</span> <span class="p">:</span> <span class="kt">Equatable</span></code></pre>
 
                         </div>
                       </div>
@@ -282,9 +293,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyycAA0C0_pSgyc_tF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyycAA0C0_pSgyc_tF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyycGAA0C0_pSgycF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyycGAA0C0_pSgycF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -300,7 +311,7 @@ complicated or asynchronous actions.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="nf">bind</span><span class="p">(</span><span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">()</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -333,9 +344,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyxcAA0C0_pSgxc_tlF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyxcAA0C0_pSgxc_tlF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyxcGAA0C0_pSgxclF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyxcGAA0C0_pSgxclF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -351,7 +362,7 @@ complicated or asynchronous actions.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -384,9 +395,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_tcAA0C0_pSgx_q_tc_tr0_lF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_tcAA0C0_pSgx_q_tc_tr0_lF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_tcGAA0C0_pSgx_q_tcr0_lF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_tcGAA0C0_pSgx_q_tcr0_lF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -402,7 +413,7 @@ complicated or asynchronous actions.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
-<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+<span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="o">&gt;</span><span class="p">(</span><span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -435,9 +446,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_tcAA0C0_pSgx_q_q0_tc_tr1_lF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_tcAA0C0_pSgx_q_q0_tc_tr1_lF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_tcGAA0C0_pSgx_q_q0_tcr1_lF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_tcGAA0C0_pSgx_q_q0_tcr1_lF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -454,8 +465,8 @@ complicated or asynchronous actions.</p>
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+  <span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -488,9 +499,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_tcAA0C0_pSgx_q_q0_q1_tc_tr2_lF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_tcAA0C0_pSgx_q_q0_q1_tc_tr2_lF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_tcGAA0C0_pSgx_q_q0_q1_tcr2_lF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_tcGAA0C0_pSgx_q_q0_q1_tcr2_lF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -507,8 +518,8 @@ complicated or asynchronous actions.</p>
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+  <span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -541,9 +552,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_q2_tcAA0C0_pSgx_q_q0_q1_q2_tc_tr3_lF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_q2_tcAA0C0_pSgx_q_q0_q1_q2_tc_tr3_lF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_q2_tcGAA0C0_pSgx_q_q0_q1_q2_tcr3_lF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_q2_tcGAA0C0_pSgx_q_q0_q1_q2_tcr3_lF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -560,8 +571,8 @@ complicated or asynchronous actions.</p>
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+  <span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -594,9 +605,9 @@ complicated or asynchronous actions.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_q2_q3_tcAA0C0_pSgx_q_q0_q1_q2_q3_tc_tr4_lF"></a>
-                    <a name="//apple_ref/swift/Method/bind(dispatch:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bind8dispatchyx_q_q0_q1_q2_q3_tcAA0C0_pSgx_q_q0_q1_q2_q3_tc_tr4_lF">bind(dispatch:)</a>
+                    <a name="/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_q2_q3_tcGAA0C0_pSgx_q_q0_q1_q2_q3_tcr4_lF"></a>
+                    <a name="//apple_ref/swift/Method/bind(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:8SwiftDux12ActionBinderV4bindyAA0C7BindingVyyx_q_q0_q1_q2_q3_tcGAA0C0_pSgx_q_q0_q1_q2_q3_tcr4_lF">bind(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -613,8 +624,8 @@ complicated or asynchronous actions.</p>
                           <p class="aside-title">Swift</p>
                           <pre class="highlight swift"><code><span class="kd">@inlinable</span>
 <span class="kd">public</span> <span class="kd">func</span> <span class="n">bind</span><span class="o">&lt;</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">,</span> <span class="kt">P5</span><span class="o">&gt;</span><span class="p">(</span>
-  <span class="n">dispatch</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">,</span> <span class="kt">P5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">,</span> <span class="kt">P5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span></code></pre>
+  <span class="n">_</span> <span class="nv">getAction</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">,</span> <span class="kt">P5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Actions.html#/s:8SwiftDux6ActionP">Action</a></span><span class="p">?</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kt"><a href="../Structs/ActionBinding.html">ActionBinding</a></span><span class="o">&lt;</span><span class="p">(</span><span class="kt">P0</span><span class="p">,</span> <span class="kt">P1</span><span class="p">,</span> <span class="kt">P2</span><span class="p">,</span> <span class="kt">P3</span><span class="p">,</span> <span class="kt">P4</span><span class="p">,</span> <span class="kt">P5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="o">&gt;</span></code></pre>
 
                         </div>
                       </div>
@@ -649,7 +660,7 @@ complicated or asynchronous actions.</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-05-02)</p>
+          <p>&copy; 2020 <a class="link" href="" target="_blank" rel="external"></a>. All rights reserved. (Last updated: 2020-10-14)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.13.1</a>, a <a class="link" href="https://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
