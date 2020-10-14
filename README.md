@@ -9,17 +9,13 @@
 
 SwiftDux is a redux inspired state management solution built on top of Combine and SwiftUI. It presents a way to implement an elm or flux like architecture as an alternative to the MVVM-like patterns Apple has presented. It allows you to build an application around predictable state using reactive, unidirectional data flows.
 
-## Should I use this?
-
-SwiftDux relies on advance functionality of SwiftUI that may break or change between Xcode updates. Because of this, it is in constant development and should be considered a beta until SwiftUI has a more stable release. If you're starting a new application using SwiftUI that will be released with or after the next major OS, then it should be OK to use this library. If you need to target an older operating system or require a more established library,  check out [ReSwift](https://github.com/ReSwift/ReSwift) instead.
-
 ## Features
 
-- Familiar API to __Redux__.
-- Built for __SwiftUI__.
+- __Redux__ inspired state management
+- __SwiftUI__ Integration
 - __Middleware__ support
-- __Combine__ powered __Action Plans__ to perform asynchronous workflows.
-- __OrderedState<_>__ to display sorted entities in List views.
+- __Combine__ powered __Action Plans__ to perform asynchronous workflows
+- __OrderedState<_>__ to display sorted entities in List views
 
 ## Built-in Middleware
 
@@ -29,7 +25,6 @@ SwiftDux relies on advance functionality of SwiftUI that may break or change bet
 ## Libraries
 - [SwiftDuxNavigation](https://github.com/StevenLambion/SwiftDuxNavigation) is an experimental application routing library.
 
-
 # Installation
 
 ## Prerequisites
@@ -37,7 +32,7 @@ SwiftDux relies on advance functionality of SwiftUI that may break or change bet
 - Swift 5.1+
 - iOS 13+, macOS 10.15+, tvOS 13+, or watchOS 6+
 
-## Install via Xcode 11:
+## Install via Xcode:
 
 Search for SwiftDux in Xcode's Swift Package Manager integration.
 
@@ -59,7 +54,7 @@ Take a look at the [Todo Example App](https://github.com/StevenLambion/SwiftUI-T
 
 # Getting Started
 
-SwiftDux helps build SwiftUI-based applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. It has 4 basic principles:
+SwiftDux helps build SwiftUI-based applications around an [elm-like architecture](https://guide.elm-lang.org/architecture/) using a single, centralized state container. It has 4 basic constructs:
 
 - **State** - An immutable, single source of truth within the application.
 - **Action** - Describes a single change of the state.
