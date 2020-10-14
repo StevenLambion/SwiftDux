@@ -43,7 +43,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 1, minor: 2)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 1, minor: 3)
   ]
 )
 ```
