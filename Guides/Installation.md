@@ -1,6 +1,6 @@
 # Installation
 
-## Xcode 11
+## Xcode
 
 Use the new swift package manager integration to include the library.
 

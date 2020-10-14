@@ -32,7 +32,7 @@ extension PrintActionMiddlewareTests {
     case actionB
   }
   
-  struct TestState: StateType {
+  struct TestState: Equatable {
     var test: String = ""
   }
   

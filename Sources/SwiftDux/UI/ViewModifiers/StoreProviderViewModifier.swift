@@ -33,7 +33,7 @@ extension View {
   /// ```
   /// - Parameter store: The store object to inject.
   /// - Returns: The modified view.
-  public func provideStore<State>(_ store: Store<State>) -> some View where State: StateType {
+  public func provideStore<State>(_ store: Store<State>) -> some View where State: Equatable {
     return modifier(StoreProviderViewModifier(anyStore: AnyStoreWrapper(store: store)))
   }
 

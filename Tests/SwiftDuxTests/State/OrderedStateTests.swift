@@ -180,12 +180,12 @@ final class OrderedStateTests: XCTestCase {
 
 extension OrderedStateTests {
   
-  struct User: IdentifiableState, Equatable {
+  struct User: Identifiable, Codable, Equatable {
     var id: String
     var name: String
   }
   
-  struct Fruit: IdentifiableState {
+  struct Fruit: Identifiable, Codable, Equatable {
     var id: Double
     var name: String
   }

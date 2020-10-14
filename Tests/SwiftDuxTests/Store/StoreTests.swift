@@ -109,7 +109,7 @@ extension StoreTests {
     case setText(String)
   }
   
-  struct TestSendingState: StateType {
+  struct TestSendingState: Equatable {
     var text: String
     var value: Int = 0
   }
