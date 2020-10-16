@@ -17,6 +17,12 @@ final class StoreProxyTests: XCTestCase {
     XCTAssertEqual(proxy?.state.todoLists[1].name, "test")
   }
   
+  func testProxyWithProtocol() {
+    let store = configureStore()
+    let proxy = store.proxy(for: TodoListStateRoot.self)
+    XCTAssertNotNil(proxy)
+  }
+  
   static var allTests = [
     ("testAccessingState", testAccessingState),
     ("testSendingAction", testSendingAction),

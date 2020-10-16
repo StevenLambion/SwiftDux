@@ -18,7 +18,7 @@ public struct MappedState<State>: DynamicProperty {
 
   public var wrappedValue: State {
     guard let store = store else {
-      fatalError("SwiftDux Store<_> does not conform to type: \(State.self)")
+      fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(State.self)'")
     }
     return store.state
   }
