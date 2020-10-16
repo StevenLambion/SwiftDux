@@ -17,8 +17,11 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
   private var filter: ((Action) -> Bool)?
   private var mapProps: (Superstate, ActionBinder) -> Props?
 
-  private var store: StoreProxy<Superstate>? {
-    anyStore.unwrap(as: Superstate.self)
+  private var store: StoreProxy<Superstate> {
+    guard let store = anyStore.unwrap(as: Superstate.self) else {
+      fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(Superstate.self)'")
+    }
+    return store
   }
 
   public init(
@@ -43,13 +46,13 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
 
   private func createFilteredPublisher() -> AnyPublisher<Action, Never>? {
     guard let filter = filter, hasUpdateFilter() else {
-      return store?.didChange
+      return store.didChange
     }
-    return store?.didChange.filter(filter).eraseToAnyPublisher()
+    return store.didChange.filter(filter).eraseToAnyPublisher()
   }
 
   private func getProps() -> Props? {
-    store.flatMap { self.mapProps($0.state, ActionBinder(actionDispatcher: self.actionDispatcher)) }
+    mapProps(store.state, ActionBinder(actionDispatcher: self.actionDispatcher))
   }
 
   private func hasUpdateFilter() -> Bool {

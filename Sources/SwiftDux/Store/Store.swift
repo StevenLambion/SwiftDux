@@ -59,7 +59,7 @@ public final class Store<State> {
   ///   - done: A closure called with an async action has completed.
   /// - Returns: A proxy object if the state type matches, otherwise nil.
   @inlinable public func proxy<T>(for stateType: T.Type, done: (() -> Void)? = nil) -> StoreProxy<T>? {
-    guard State.self is T.Type else { return nil }
+    guard state is T else { return nil }
     return StoreProxy<T>(
       getState: { [unowned self] in self.state as! T },
       didChange: didChange,
