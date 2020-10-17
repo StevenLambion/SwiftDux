@@ -17,11 +17,13 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
   private var filter: ((Action) -> Bool)?
   private var mapProps: (Superstate, ActionBinder) -> Props?
 
-  private var store: StoreProxy<Superstate> {
-    guard let store = anyStore.unwrap(as: Superstate.self) else {
-      fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(Superstate.self)'")
+  private var store: StoreProxy<Superstate>? {
+    if anyStore is NoopAnyStore {
+      return nil
+    } else if let store = anyStore.unwrap(as: Superstate.self) {
+      return store
     }
-    return store
+    fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(Superstate.self)'")
   }
 
   public init(
@@ -46,13 +48,13 @@ public struct Connector<Content, Superstate, Props>: View where Props: Equatable
 
   private func createFilteredPublisher() -> AnyPublisher<Action, Never>? {
     guard let filter = filter, hasUpdateFilter() else {
-      return store.didChange
+      return store?.didChange
     }
-    return store.didChange.filter(filter).eraseToAnyPublisher()
+    return store?.didChange.filter(filter).eraseToAnyPublisher()
   }
 
   private func getProps() -> Props? {
-    mapProps(store.state, ActionBinder(actionDispatcher: self.actionDispatcher))
+    store.flatMap { mapProps($0.state, ActionBinder(actionDispatcher: self.actionDispatcher)) }
   }
 
   private func hasUpdateFilter() -> Bool {
@@ -73,8 +75,6 @@ internal struct ConnectorInner<Content, Props>: View where Props: Equatable, Con
   }
 
   var body: some View {
-    return props.map { [content] in
-      content($0).onReceive(propsPublisher) { self.props = $0 }
-    }
+    return props.map { content($0).onReceive(propsPublisher) { self.props = $0 } }
   }
 }
