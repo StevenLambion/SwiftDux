@@ -16,7 +16,7 @@ public final class Store<State> {
   public let didChange = StorePublisher()
 
   @usableFromInline
-  internal var update: SendAction = { _ in }
+  internal var reduce: SendAction = { _ in }
 
   /// Creates a new store for the given state and reducer.
   ///
@@ -25,20 +25,20 @@ public final class Store<State> {
   ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
   ///   - middleware: A middleware plugin.
   public init<R, M>(state: State, reducer: R, middleware: M) where R: Reducer, R.State == State, M: Middleware, M.State == State {
-    let storeReducer = StoreReducer() + reducer
+    let storeReducer = StoreReducer(rootReducer: reducer)
     self.state = state
-    self.update = middleware(
+    self.reduce = middleware(
       store: StoreProxy(
         getState: { [unowned self] in self.state },
         didChange: didChange,
         dispatcher: self,
-        next: { [storeReducer, weak self] action in
+        next: { [weak self] action in
           guard let self = self else { return }
           self.state = storeReducer(state: self.state, action: action)
         }
       )
     )
-    update(StoreAction<State>.prepare)
+    send(StoreAction<State>.prepare)
   }
 
   /// Creates a new store for the given state and reducer.
@@ -74,7 +74,7 @@ extension Store: ActionDispatcher {
     if let action = action as? RunnableAction {
       _ = action.run(store: self)
     } else {
-      update(action)
+      reduce(action)
     }
   }
 }
