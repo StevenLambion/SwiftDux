@@ -33,7 +33,6 @@ extension OnActionViewModifier {
       nextDispatcher.send(action)
     }
   }
-
 }
 
 extension View {

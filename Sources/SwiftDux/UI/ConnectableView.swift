@@ -19,7 +19,6 @@ extension ConnectableView {
       content: { props in
         self.body(props: props)
       },
-      filter: updateWhen,
       mapProps: map
     )
   }

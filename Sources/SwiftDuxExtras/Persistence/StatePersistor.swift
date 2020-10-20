@@ -76,9 +76,8 @@ extension StatePersistor {
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .filter { !($0 is StoreAction<State>) }
       .debounce(for: interval, scheduler: RunLoop.main)
-      .compactMap { [weak store] (action: Action) in store?.state }
+      .compactMap { [weak store] in store?.state }
       .persist(with: self)
   }
 
@@ -93,7 +92,6 @@ extension StatePersistor {
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .filter { !($0 is StoreAction<State>) }
       .debounce(for: interval, scheduler: RunLoop.main)
       .compactMap { _ in store.state }
       .persist(with: self)
