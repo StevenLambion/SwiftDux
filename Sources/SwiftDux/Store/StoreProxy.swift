@@ -13,7 +13,7 @@ public struct StoreProxy<State>: ActionDispatcher {
   internal var getState: () -> State
 
   /// Emits after the specified action was sent to the store.
-  public var didChange: AnyPublisher<Action, Never>
+  public var didChange: StorePublisher
 
   /// Send an action to the next middleware
   @usableFromInline
@@ -33,7 +33,7 @@ public struct StoreProxy<State>: ActionDispatcher {
 
   @inlinable internal init(
     getState: @escaping () -> State,
-    didChange: AnyPublisher<Action, Never>,
+    didChange: StorePublisher,
     dispatcher: ActionDispatcher,
     next: SendAction? = nil,
     done: (() -> Void)? = nil

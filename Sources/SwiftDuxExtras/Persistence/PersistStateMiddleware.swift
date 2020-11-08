@@ -49,6 +49,10 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
     defer { store.next(action) }
     guard case .prepare = action as? StoreAction<State> else { return }
 
+    if let state = persistor.restore(), shouldRestore(state) {
+      store.send(StoreAction<State>.reset(state: state))
+    }
+
     if saveOnChange {
       subscriptionCancellable = persistor.save(from: store, debounceFor: interval)
     } else if let notification = notification {
@@ -59,10 +63,6 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
         .persist(with: persistor)
     } else {
       print("Failed to initiate persistence using default notifiation center.")
-    }
-
-    if let state = persistor.restore(), shouldRestore(state) {
-      store.send(StoreAction<State>.reset(state: state))
     }
   }
 }

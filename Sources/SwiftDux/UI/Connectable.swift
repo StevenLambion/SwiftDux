@@ -9,12 +9,6 @@ public protocol Connectable {
   associatedtype Superstate
   associatedtype Props: Equatable
 
-  /// Causes the view to be updated based on a dispatched action.
-  ///
-  /// - Parameter action: The dispatched action
-  /// - Returns: True if the view should update.
-  func updateWhen(action: Action) -> Bool
-
   /// Map a superstate to the state needed by the view using the provided parameter.
   ///
   /// The method can return nil until the state becomes available. While it is nil, the view
@@ -35,13 +29,6 @@ public protocol Connectable {
 }
 
 extension Connectable {
-
-  /// Default implementation disables updates by action.
-  public func updateWhen(action: Action) -> Bool {
-    guard let action = action as? NoUpdateAction else { return false }
-    action.unused = true
-    return true
-  }
 
   /// Default implementation. Returns nil.
   @inlinable public func map(state: Superstate) -> Props? {
