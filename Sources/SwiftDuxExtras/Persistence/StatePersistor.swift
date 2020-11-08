@@ -18,14 +18,16 @@ public protocol StatePersistor {
 
   /// Encodes the state into a raw data object.
   ///
-  ///  - Parameter state: The state to encode
+  /// - Parameter state: The state to encode
   /// - Returns: The encoded state.
+  /// - Throws: This function throws an error if the state could not be encoded.
   func encode(state: State) throws -> Data
 
   /// Decode raw data into a new state object.
   ///
   /// - Parameter data: The data to decode.
   /// - Returns: The decoded state
+  /// - Throws: This function throws an error if the state could not be decoded.
   func decode(data: Data) throws -> State
 
 }
