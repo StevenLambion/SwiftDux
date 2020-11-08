@@ -141,26 +141,9 @@ struct RootView: View {
 }
 ```
 
-## Passing Data to a Connectable View
-In some cases, a connected view needs external information to map the state to its props, such as an identifier. Simply add any needed variables to your view, and access them in the mapping function.
-
-```swift
-struct TodoDetailsView: ConnectableView {
-  var id: String
-
-  func map(state: TodoList) -> Todo? {
-    state[id]
-  }
-}
-
-// Somewhere else in the view hierarchy:
-
-TodoDetailsView(id: "123")
-```
-
 ## ActionBinding<_>
 
-SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using an `ActionBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes. It also binds a function to a dispatchable action.
+SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using an `ActionBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field and dispatches an action when the text value changes. It also binds a function to a dispatchable action.
 
 ```swift
 struct LoginForm: View {
@@ -189,6 +172,23 @@ struct LoginForm: View {
     }
   }
 }
+```
+
+## Passing Data to a Connectable View
+In some cases, a connected view needs external information to map the state to its props, such as an identifier. Simply add any needed variables to your view and access them in the mapping function.
+
+```swift
+struct TodoDetailsView: ConnectableView {
+  var id: String
+
+  func map(state: TodoList) -> Todo? {
+    state[id]
+  }
+}
+
+// Somewhere else in the view hierarchy:
+
+TodoDetailsView(id: "123")
 ```
 
 ## Previewing Connected Views
@@ -270,7 +270,7 @@ enum TodoListAction {
 extension TodoListAction {
 
   static func getState(from store: Store<AppState>) -> some Publisher {
-    Just(store.state).merge(with: store.didChange.map { _ in store.state })
+    Just(store.state).merge(with: store.didChange.map { store.state })
   }
 
   static func queryTodos() -> ActionPlan<AppState> {
