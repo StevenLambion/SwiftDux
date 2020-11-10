@@ -19,7 +19,7 @@ public struct ActionBinding<Value> {
 
   @inlinable internal init(value: Value, isEqual: @escaping (Value) -> Bool, set: @escaping (Value) -> Void) {
     self.isEqual = isEqual
-    projectedValue = Binding(get: { value }, set: set)
+    self.projectedValue = Binding(get: { value }, set: set)
   }
 
   @inlinable static internal func constant<T>(value: T) -> ActionBinding<T> {
