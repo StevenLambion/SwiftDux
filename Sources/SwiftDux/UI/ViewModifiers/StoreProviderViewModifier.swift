@@ -3,12 +3,16 @@ import SwiftUI
 
 /// A view modifier that injects a store into the environment.
 internal struct StoreProviderViewModifier: ViewModifier {
-  var anyStore: AnyStore
+  private var store: AnyStore
 
-  func body(content: Content) -> some View {
+  init(store: AnyStore) {
+    self.store = store
+  }
+
+  public func body(content: Content) -> some View {
     content
-      .environment(\.store, anyStore)
-      .environment(\.actionDispatcher, anyStore)
+      .environment(\.store, store)
+      .environment(\.actionDispatcher, store)
   }
 }
 
@@ -34,10 +38,10 @@ extension View {
   /// - Parameter store: The store object to inject.
   /// - Returns: The modified view.
   public func provideStore<State>(_ store: Store<State>) -> some View where State: Equatable {
-    return modifier(StoreProviderViewModifier(anyStore: AnyStoreWrapper(store: store)))
+    modifier(StoreProviderViewModifier(store: AnyStoreWrapper(store: store)))
   }
 
   public func provideStore(_ store: AnyStore) -> some View {
-    return modifier(StoreProviderViewModifier(anyStore: store))
+    modifier(StoreProviderViewModifier(store: store))
   }
 }
