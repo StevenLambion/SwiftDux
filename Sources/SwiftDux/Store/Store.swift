@@ -5,7 +5,7 @@ import Foundation
 ///
 /// The store both contains and mutates the state through a provided reducer as it's sent actions.
 /// Use the didChange publisher to be notified of changes.
-public final class Store<State> {
+public final class Store<State>: StateStorable {
 
   /// The current state of the store. Use actions to mutate it.
   public private(set) var state: State {

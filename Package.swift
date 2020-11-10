@@ -6,12 +6,15 @@ let package = Package(
   name: "SwiftDux",
   platforms: [
     .iOS(.v14),
-    .macOS(.v10_15),
+    .macOS(.v11),
   ],
   products: [
     .library(
       name: "SwiftDux",
       targets: ["SwiftDux", "SwiftDuxExtras"]),
+  ],
+  dependencies: [
+    .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2")
   ],
   targets: [
     .target(
@@ -22,6 +25,9 @@ let package = Package(
       dependencies: ["SwiftDux"]),
     .testTarget(
       name: "SwiftDuxTests",
-      dependencies: ["SwiftDux", "SwiftDuxExtras"]),
+      dependencies: [
+        "SwiftDux",
+        "SwiftDuxExtras",
+        "SnapshotTesting"]),
   ]
 )

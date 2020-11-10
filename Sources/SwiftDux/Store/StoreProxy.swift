@@ -7,7 +7,7 @@ import Foundation
 /// continue to the next middleware, or subscribe to store changes. With the proxy,
 /// middleware don't have to worry about retaining the store. Instead, the proxy provides
 /// a safe API to access a weak reference to it.
-public struct StoreProxy<State>: ActionDispatcher {
+public struct StoreProxy<State>: StateStorable, ActionDispatcher {
 
   @usableFromInline
   internal var getState: () -> State
