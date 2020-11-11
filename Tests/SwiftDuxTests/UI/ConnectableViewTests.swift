@@ -4,6 +4,7 @@ import SwiftUI
 import SnapshotTesting
 @testable import SwiftDux
 
+#if os(iOS)
 final class ConnectableViewTests: XCTestCase {
   var store: Store<TestState>!
   
@@ -50,3 +51,4 @@ extension ConnectableViewTests {
     }
   }
 }
+#endif
