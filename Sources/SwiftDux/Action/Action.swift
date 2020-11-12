@@ -33,10 +33,16 @@ public protocol RunnableAction: Action {
 
   /// When the action is dispatched to a store, this method will be called to handle
   /// any logic by the action.
+  ///
   /// - Parameter store: The store that the action has been dispatched to.
   /// - Returns: An optional cancellable.
   func run<T>(store: Store<T>) -> AnyCancellable?
 
+  /// Send an action that can be cancelled.
+  ///
+  /// - Parameter dispatcher: The send function that dispatches an action.
+  /// - Returns: AnyCancellable to cancel the action plan.
+  func sendAsCancellable(_ dispatcher: ActionDispatcher) -> AnyCancellable
 }
 
 /// A noop action used by reducers that may not have their own actions.

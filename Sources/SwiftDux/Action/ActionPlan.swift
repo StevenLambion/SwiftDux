@@ -131,7 +131,6 @@ public struct ActionPlan<State>: RunnableAction {
   ///   func signUp() {
   ///     signUpCancellable = signUpActionPlan(username: username, password: password).sendAsCancellable(dispatch)
   ///   }
-  ///
   /// }
   /// ```
   ///
