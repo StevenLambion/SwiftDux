@@ -9,11 +9,11 @@ name: build
 jobs:
   validate:
     name: Validate
-    runs-on: macOS-latest
+    runs-on: macos-11.0
     strategy:
       matrix:
         destination: 
-          - "platform=iOS Simulator,OS=14.0,name=iPhone 11"
+          - "platform=iOS Simulator,OS=14.2,name=iPhone 12"
           - "platform=OS X"
     steps:
       - name: Checkout
@@ -22,7 +22,7 @@ jobs:
         run: cd $GITHUB_WORKSPACE
       - name: Install tooling
         run: |
-          sudo xcode-select -s /Applications/Xcode_12.app
+          sudo xcode-select -s /Applications/Xcode_12.2.app
           brew install mint
           mint install apple/swift-format@0.50300.0
       - name: Check code formatting
