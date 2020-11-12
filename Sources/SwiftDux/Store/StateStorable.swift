@@ -3,14 +3,15 @@ import Foundation
 
 /// Represents  a storable container for a state object.
 ///
-/// Extend this protocol to implement new methods for the Store<_> and StoreProxy<_>.
+/// Extend this protocol to implement new methods for the Store<_> and StoreProxy<_> types.
 public protocol StateStorable {
+  /// The type of the stored state object.
   associatedtype State
 
-  /// Retrieves the latest state from the store.
+  /// The latest state of the store.
   var state: State { get }
 
-  /// Emits after the specified action was sent to the store.
+  /// Emits after the state has been changed.
   var didChange: StorePublisher { get }
 }
 

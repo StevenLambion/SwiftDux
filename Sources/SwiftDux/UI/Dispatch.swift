@@ -2,7 +2,7 @@ import Combine
 import Foundation
 import SwiftUI
 
-/// Injects a function as a property in a view to dispatch actions to the provided store.
+/// Injects an ActionDispatcher as a property in a view to dispatch actions.
 /// ```
 /// struct MyView : View {
 ///   @Dispatch var dispatch

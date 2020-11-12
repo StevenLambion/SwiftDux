@@ -35,14 +35,14 @@ public struct Connect<State, Props>: DynamicProperty where Props: Equatable {
   /// Connect the application state to the view with a mapping function.
   ///
   /// - Parameter mapState: Map the state to a view-specific props object.
-  init(_ mapState: @escaping (State) -> Props?) {
+  public init(_ mapState: @escaping (State) -> Props?) {
     self.mapState = { state, _ in mapState(state) }
   }
 
   /// Connect the application state to the view with a mapping function.
   ///
   /// - Parameter mapState: Map the state to a view-specific props object.
-  init(_ mapState: @escaping (State, ActionBinder) -> Props?) {
+  public init(_ mapState: @escaping (State, ActionBinder) -> Props?) {
     self.mapState = mapState
   }
 

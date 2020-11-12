@@ -11,7 +11,7 @@ public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B
   }
 
   /// Unimplemented. It simply calls `store.next(_:)`.
-  public func run(store: StoreProxy<State>, action: Action) {
+  @inlinable public func run(store: StoreProxy<State>, action: Action) {
     store.next(action)
   }
 
