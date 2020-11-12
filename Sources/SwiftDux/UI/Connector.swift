@@ -1,61 +1,40 @@
 import Combine
 import SwiftUI
 
-public struct Connector<Content, Superstate, Props>: View where Props: Equatable, Content: View {
+public struct Connector<Content, State, Props>: View where Props: Equatable, Content: View {
   @Environment(\.store) private var anyStore
-  @Environment(\.actionDispatcher) private var actionDispatcher
+  @Environment(\.actionDispatcher) private var dispatch
 
+  private var mapState: (State, ActionBinder) -> Props?
   private var content: (Props) -> Content
-  private var mapProps: (Superstate, ActionBinder) -> Props?
+  @SwiftUI.State private var props: Props?
 
-  private var store: StoreProxy<Superstate>? {
+  private var store: StoreProxy<State>? {
     if anyStore is NoopAnyStore {
       return nil
-    } else if let store = anyStore.unwrap(as: Superstate.self) {
+    } else if let store = anyStore.unwrap(as: State.self) {
       return store
     }
-    fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(Superstate.self)'")
+    fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(State.self)'")
   }
 
   public init(
-    content: @escaping (Props) -> Content,
-    mapProps: @escaping (Superstate, ActionBinder) -> Props?
+    mapState: @escaping (State, ActionBinder) -> Props?,
+    @ViewBuilder content: @escaping (Props) -> Content
   ) {
     self.content = content
-    self.mapProps = mapProps
+    self.mapState = mapState
   }
 
   public var body: some View {
     store.map { store in
-      ConnectorInner(
-        content: content,
-        initialProps: getProps(),
-        propsPublisher: store.didChange
-          .compactMap { _ in getProps() }
-          .removeDuplicates()
-      )
+      Group {
+        props.map { content($0) }
+      }.onReceive(store.publish(mapState)) { self.props = $0 }
     }
   }
 
-  private func getProps() -> Props? {
-    guard let store = store else { return nil }
-    return mapProps(store.state, ActionBinder(actionDispatcher: self.actionDispatcher))
-  }
-}
-
-internal struct ConnectorInner<Props, PropsPublisher, Content>: View
-where Props: Equatable, PropsPublisher: Publisher, PropsPublisher.Output == Props, PropsPublisher.Failure == Never, Content: View {
-  private var content: (Props) -> Content
-  private var propsPublisher: PropsPublisher
-  @State private var props: Props?
-
-  internal init(content: @escaping (Props) -> Content, initialProps: Props?, propsPublisher: PropsPublisher) {
-    self.content = content
-    self.propsPublisher = propsPublisher
-    self._props = State(initialValue: initialProps)
-  }
-
-  var body: some View {
-    return props.map { content($0).onReceive(propsPublisher) { self.props = $0 } }
+  private func mapState(state: State) -> Props? {
+    mapState(state, ActionBinder(actionDispatcher: dispatch))
   }
 }
