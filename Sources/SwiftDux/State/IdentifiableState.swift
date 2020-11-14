@@ -4,8 +4,10 @@ import Foundation
 ///
 /// This is typically used for entities stored in your state that might be accessed by id
 /// or displayed in a `List` view.
+@available(*, deprecated, message: "Use Identifiable instead.")
 public protocol IdentifiableState: StateType, Identifiable where ID: Codable {}
 
+@available(*, deprecated, message: "Use Identifiable instead.")
 extension IdentifiableState {
 
   /// The hash value of the state based on the id.

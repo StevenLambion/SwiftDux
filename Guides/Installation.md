@@ -2,7 +2,7 @@
 
 ## Xcode
 
-Use the new swift package manager integration to include the library.
+Search for SwiftDux in Xcode's Swift Package Manager integration.
 
 ## Package.swift
 
@@ -13,7 +13,7 @@ import PackageDescription
 
 let package = Package(
   dependencies: [
-    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", majorVersion: 1, minor: 3)
+    .Package(url: "https://github.com/StevenLambion/SwiftDux.git", from: "2.0.0")
   ]
 )
 ```

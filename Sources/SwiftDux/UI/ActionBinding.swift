@@ -19,7 +19,7 @@ public struct ActionBinding<Value> {
 
   @inlinable internal init(value: Value, isEqual: @escaping (Value) -> Bool, set: @escaping (Value) -> Void) {
     self.isEqual = isEqual
-    projectedValue = Binding(get: { value }, set: set)
+    self.projectedValue = Binding(get: { value }, set: set)
   }
 
   @inlinable static internal func constant<T>(value: T) -> ActionBinding<T> {
@@ -32,14 +32,14 @@ public struct ActionBinding<Value> {
 
   /// Returns a regular binding.
   /// - Returns: The binding.
-  public func toBinding() -> Binding<Value> {
+  @inlinable public func toBinding() -> Binding<Value> {
     projectedValue
   }
 }
 
 extension ActionBinding: Equatable {
 
-  public static func == (lhs: ActionBinding<Value>, rhs: ActionBinding<Value>) -> Bool {
+  @inlinable public static func == (lhs: ActionBinding<Value>, rhs: ActionBinding<Value>) -> Bool {
     lhs.isEqual(rhs.wrappedValue) && rhs.isEqual(lhs.wrappedValue)
   }
 }

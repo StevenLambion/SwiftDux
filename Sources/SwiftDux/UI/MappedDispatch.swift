@@ -14,6 +14,7 @@ import SwiftUI
 ///
 /// }
 /// ```
+@available(*, deprecated, message: "Use @Environment(.\\actionDispatcher) instead")
 @propertyWrapper
 public struct MappedDispatch: DynamicProperty {
   @Environment(\.actionDispatcher) private var actionDispatcher: ActionDispatcher

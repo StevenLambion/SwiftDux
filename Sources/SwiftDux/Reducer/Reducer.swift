@@ -40,7 +40,6 @@ public protocol Reducer {
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
   func reduceAny(state: State, action: Action) -> State
-
 }
 
 extension Reducer {
@@ -85,11 +84,12 @@ extension Reducer {
   }
 
   /// Compose two reducers together.
+  ///
   /// - Parameters:
   ///   - previousReducer: The first reducer to be called.
   ///   - nextReducer: The second reducer to be called.
   /// - Returns: A combined reducer.
-  public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
+  @inlinable public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
     CombinedReducer(previousReducer: previousReducer, nextReducer: nextReducer)
   }
 }

@@ -61,7 +61,6 @@ extension OrderedStateStorage: Equatable where Substate: Equatable {
   @inlinable static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
     lhs.orderOfIds == rhs.orderOfIds && lhs.values == rhs.values
   }
-
 }
 
 /// A container state that holds an ordered collection of substates.

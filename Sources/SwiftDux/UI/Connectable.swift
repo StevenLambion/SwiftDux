@@ -6,7 +6,7 @@ import SwiftUI
 /// to a possible bug in Swift that throws an invalid assocated type if Props isn't explicitly typealiased.
 public protocol Connectable {
 
-  associatedtype Superstate
+  associatedtype State
   associatedtype Props: Equatable
 
   /// Map a superstate to the state needed by the view using the provided parameter.
@@ -15,7 +15,7 @@ public protocol Connectable {
   /// will not be rendered.
   /// - Parameter state: The superstate provided to the view from a superview.
   /// - Returns: The state if possible.
-  func map(state: Superstate) -> Props?
+  func map(state: State) -> Props?
 
   /// Map a superstate to the state needed by the view using the provided parameter.
   ///
@@ -25,18 +25,18 @@ public protocol Connectable {
   ///   - state: The superstate provided to the view from a superview.
   ///   - binder: Helper that creates Binding types beteen the state and a dispatcable action
   /// - Returns: The state if possible.
-  func map(state: Superstate, binder: ActionBinder) -> Props?
+  func map(state: State, binder: ActionBinder) -> Props?
 }
 
 extension Connectable {
 
   /// Default implementation. Returns nil.
-  @inlinable public func map(state: Superstate) -> Props? {
+  @inlinable public func map(state: State) -> Props? {
     nil
   }
 
   /// Default implementation. Calls the other map function.
-  @inlinable public func map(state: Superstate, binder: ActionBinder) -> Props? {
+  @inlinable public func map(state: State, binder: ActionBinder) -> Props? {
     map(state: state)
   }
 }

@@ -1,28 +1,25 @@
 import Combine
 import Foundation
 
-/// The primary container of an application's state.
-///
-/// The store both contains and mutates the state through a provided reducer as it's sent actions.
-/// Use the didChange publisher to be notified of changes.
-public final class Store<State> {
+/// Stores and mutates the state of an application.
+public final class Store<State>: StateStorable {
 
-  /// The current state of the store. Use actions to mutate it.
+  /// The current state of the store.
   public private(set) var state: State {
     didSet { didChange.send() }
   }
 
-  /// Subscribe for state changes. It emits the latest action sent to the store.
+  /// Publishes when the state has changed.
   public let didChange = StorePublisher()
 
   @usableFromInline
   internal var reduce: SendAction = { _ in }
 
-  /// Creates a new store for the given state and reducer.
+  /// Initiates a new store for the given state and reducer.
   ///
   /// - Parameters
-  ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
-  ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
+  ///   - state: The initial state of the store.
+  ///   - reducer: A reducer that mutates the state as actions are dispatched to it.
   ///   - middleware: A middleware plugin.
   public init<R, M>(state: State, reducer: R, middleware: M) where R: Reducer, R.State == State, M: Middleware, M.State == State {
     let storeReducer = StoreReducer(rootReducer: reducer)
@@ -41,16 +38,17 @@ public final class Store<State> {
     send(StoreAction<State>.prepare)
   }
 
-  /// Creates a new store for the given state and reducer.
+  /// Initiates a new store for the given state and reducer.
   ///
   /// - Parameters
-  ///   - state: The initial state of the store. A typically use case is to restore a previous application session with a persisted state object.
-  ///   - reducer: A reducer that will mutate the store's state as actions are dispatched to it.
+  ///   - state: The initial state of the store.
+  ///   - reducer: A reducer that mutates the state as actions are dispatched to it.
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
 
-  /// Create a proxy of the store for a given type that it adheres to.
+  /// Create a proxy of the store for a given type or protocol.
+  ///
   /// - Parameters:
   ///   - stateType: The type of state for the proxy. This must be a type that the store adheres to.
   ///   - done: A closure called with an async action has completed.
@@ -58,7 +56,7 @@ public final class Store<State> {
   @inlinable public func proxy<T>(for stateType: T.Type, done: (() -> Void)? = nil) -> StoreProxy<T>? {
     guard state is T else { return nil }
     return StoreProxy<T>(
-      getState: { [unowned self] in self.state as! T },
+      getState: { self.state as! T },
       didChange: didChange,
       dispatcher: self,
       done: done
@@ -68,8 +66,9 @@ public final class Store<State> {
 
 extension Store: ActionDispatcher {
 
-  /// Sends an action to the store to mutate its state.
-  /// - Parameter action: The  action to mutate the state.
+  /// Sends an action to mutate the state.
+  ///
+  /// - Parameter action: The  action to perform.
   @inlinable public func send(_ action: Action) {
     if let action = action as? RunnableAction {
       _ = action.run(store: self)

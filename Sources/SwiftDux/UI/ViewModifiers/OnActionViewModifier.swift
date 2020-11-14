@@ -1,6 +1,7 @@
 import Combine
 import SwiftUI
 
+@available(*, deprecated, message: "Use middleware instead.")
 public struct OnActionViewModifier: ViewModifier {
   @Environment(\.actionDispatcher) private var actionDispatcher
   private var perform: ActionModifier? = nil
@@ -18,6 +19,7 @@ public struct OnActionViewModifier: ViewModifier {
   }
 }
 
+@available(*, deprecated)
 extension OnActionViewModifier {
 
   /// A closure that can return a new action from a previous one. If no action is returned,
@@ -41,6 +43,7 @@ extension View {
   ///
   /// - Parameter perform: Calls the closure when an action is dispatched. An optional new action can be returned to change the action.
   /// - Returns: The modified view.
+  @available(*, deprecated, message: "Use middleware instead.")
   @inlinable public func onAction(perform: @escaping OnActionViewModifier.ActionModifier) -> some View {
     modifier(OnActionViewModifier(perform: perform))
   }

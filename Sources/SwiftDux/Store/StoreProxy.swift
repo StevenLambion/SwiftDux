@@ -7,7 +7,7 @@ import Foundation
 /// continue to the next middleware, or subscribe to store changes. With the proxy,
 /// middleware don't have to worry about retaining the store. Instead, the proxy provides
 /// a safe API to access a weak reference to it.
-public struct StoreProxy<State>: ActionDispatcher {
+public struct StoreProxy<State>: StateStorable, ActionDispatcher {
 
   @usableFromInline
   internal var getState: () -> State
@@ -53,22 +53,24 @@ public struct StoreProxy<State>: ActionDispatcher {
     self.doneBlock = done ?? proxy.doneBlock
   }
 
-  /// Send an action to the store.
+  /// Sends an action to mutate the application state.
+  ///
   /// - Parameter action: The action to send
   @inlinable public func send(_ action: Action) {
     dispatcher.send(action)
   }
 
-  /// Use this in middleware to send an action to the next
-  /// step in the pipeline. Outside of middleware, it does nothing.
+  /// Passes an action to the next middleware.
+  ///
+  /// Outside of the middleware pipeline this method does nothing.
   /// - Parameter action: The action to send
   @inlinable public func next(_ action: Action) {
     nextBlock?(action)
   }
 
-  /// Used by action plans to tell the store that a publisher has completed or cancelled its work.
-  /// Only use this if the action plan is not returning a publisher or subscribing via ActionSubscriber.
-  /// This is not needed by action plans that don't return a cancellable.
+  /// Used by runnable action to tell the store that a publisher has completed or cancelled its work.
+  ///
+  /// Only use this if the action returns a cancellable object without using ActionSubscriber.
   @inlinable public func done() {
     doneBlock?()
   }
