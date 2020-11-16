@@ -82,14 +82,15 @@ extension Reducer {
     }
     return reduceNext(state: state, action: action)
   }
+}
 
-  /// Compose two reducers together.
-  ///
-  /// - Parameters:
-  ///   - previousReducer: The first reducer to be called.
-  ///   - nextReducer: The second reducer to be called.
-  /// - Returns: A combined reducer.
-  @inlinable public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
-    CombinedReducer(previousReducer: previousReducer, nextReducer: nextReducer)
-  }
+/// Compose two reducers together.
+///
+/// - Parameters:
+///   - previousReducer: The first reducer to be called.
+///   - nextReducer: The second reducer to be called.
+/// - Returns: A combined reducer.
+@inlinable public func + <R1, R2>(previousReducer: R1, _ nextReducer: R2) -> CompositeReducer<R1.State, R1, R2>
+where R1: Reducer, R2: Reducer, R1.State == R2.State {
+  CompositeReducer(previousReducer: previousReducer, nextReducer: nextReducer)
 }

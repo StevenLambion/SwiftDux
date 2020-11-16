@@ -40,3 +40,21 @@ extension StateStorable where State: Equatable {
     publish { $0 }
   }
 }
+
+extension StateStorable where Self: ActionDispatcher {
+
+  /// Create a proxy of the `StateStorable` for a given type or protocol.
+  ///
+  /// - Parameters:
+  ///   - stateType: The type of state for the proxy. This must be a type that the store adheres to.
+  ///   - dispatcher: An optional dispatcher for the proxy.
+  /// - Returns: A proxy object if the state type matches, otherwise nil.
+  @inlinable public func proxy<T>(for stateType: T.Type, dispatcher: ActionDispatcher? = nil) -> StoreProxy<T>? {
+    guard state is T else { return nil }
+    return StoreProxy<T>(
+      getState: { self.state as! T },
+      didChange: didChange,
+      dispatcher: dispatcher ?? self
+    )
+  }
+}

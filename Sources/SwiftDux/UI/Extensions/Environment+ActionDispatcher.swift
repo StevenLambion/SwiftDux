@@ -7,6 +7,11 @@ internal struct NoopActionDispatcher: ActionDispatcher {
   func send(_ action: Action) {
     print("Tried dispatching an action `\(action)` without providing a store object.")
   }
+
+  func sendAsCancellable(_ action: Action) -> Cancellable {
+    print("Tried dispatching an action `\(action)` without providing a store object.")
+    return AnyCancellable {}
+  }
 }
 
 internal struct ActionDispatcherKey: EnvironmentKey {

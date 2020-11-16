@@ -154,21 +154,12 @@ let plan = ActionPlan<AppState> { store in
   store.send(actionB)
 }
 
-/// Perform async operations:
+/// Subscribe to services and return a publisher that sends actions to the store.
 
 let plan = ActionPlan<AppState> { store in
-  userLocationService.getLocation { location in
-    store.send(LocationAction.updateLocation(location))
-  }
-}
-
-/// Subscribe to services and publish new actions to the store.
-
-let plan = ActionPlan<AppState> { store, completed in
   userLocationService
-    .subscribeToUpdates()
+    .publisher
     .map { LocationAction.updateLocation($0) }
-    .send(to: store, receivedCompletion: completed)
 }
 
 /// In a View, dispatch the plan like any other action:

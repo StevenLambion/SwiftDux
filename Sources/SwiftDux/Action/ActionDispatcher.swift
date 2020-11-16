@@ -11,6 +11,12 @@ public protocol ActionDispatcher {
   ///
   /// - Parameter action: An action to dispatch to the store.
   func send(_ action: Action)
+
+  /// Sends a cancellable action to mutate the application state.
+  ///
+  /// - Parameter action: An action to dispatch to the store.
+  /// - Returns: A cancellable object.
+  func sendAsCancellable(_ action: Action) -> Cancellable
 }
 
 extension ActionDispatcher {
@@ -20,13 +26,5 @@ extension ActionDispatcher {
   /// - Parameter action: An action to dispatch to the store
   @inlinable public func callAsFunction(_ action: Action) {
     send(action)
-  }
-
-  /// Send an action plan that returns a cancellable object.
-  ///
-  /// - Parameter actionPlan: The action
-  /// - Returns: A cancellable to cancel the action.
-  @inlinable public func sendAsCancellable<T>(_ actionPlan: ActionPlan<T>) -> AnyCancellable {
-    actionPlan.sendAsCancellable(self)
   }
 }
