@@ -39,16 +39,16 @@ extension Middleware {
   @inlinable public func compile(store: StoreProxy<State>) -> SendAction {
     { action in self.run(store: store, action: action) }
   }
+}
 
-  /// Compose two middleware together.
-  /// - Parameters:
-  ///   - previousMiddleware: The  middleware to be called first.
-  ///   - nextMiddleware: The next middleware to call.
-  /// - Returns: The combined middleware.
-  public static func + <M>(previousMiddleware: Self, _ nextMiddleware: M) -> CombinedMiddleware<State, Self, M>
-  where M: Middleware, M.State == State {
-    CombinedMiddleware(previousMiddleware: previousMiddleware, nextMiddleware: nextMiddleware)
-  }
+/// Compose two middleware together.
+/// - Parameters:
+///   - previousMiddleware: The  middleware to be called first.
+///   - nextMiddleware: The next middleware to call.
+/// - Returns: The combined middleware.
+@inlinable public func + <M1, M2>(previousMiddleware: M1, _ nextMiddleware: M2) -> CompositeMiddleware<M1.State, M1, M2>
+where M1: Middleware, M2: Middleware, M1.State == M2.State {
+  CompositeMiddleware(previousMiddleware: previousMiddleware, nextMiddleware: nextMiddleware)
 }
 
 internal final class NoopMiddleware<State>: Middleware {

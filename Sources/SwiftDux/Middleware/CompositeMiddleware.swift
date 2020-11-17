@@ -1,11 +1,11 @@
 import Foundation
 
-/// Combines two middleware together.
-public struct CombinedMiddleware<State, A, B>: Middleware where A: Middleware, B: Middleware, A.State == State, B.State == State {
+/// Use the '+' operator to combine two or more middleware together.
+public struct CompositeMiddleware<State, A, B>: Middleware where A: Middleware, B: Middleware, A.State == State, B.State == State {
   private var previousMiddleware: A
   private var nextMiddleware: B
 
-  internal init(previousMiddleware: A, nextMiddleware: B) {
+  @usableFromInline internal init(previousMiddleware: A, nextMiddleware: B) {
     self.previousMiddleware = previousMiddleware
     self.nextMiddleware = nextMiddleware
   }

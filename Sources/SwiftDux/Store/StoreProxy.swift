@@ -23,9 +23,6 @@ public struct StoreProxy<State>: StateStorable, ActionDispatcher {
   @usableFromInline
   internal var nextBlock: SendAction?
 
-  @usableFromInline
-  internal var doneBlock: (() -> Void)?
-
   /// Retrieves the latest state from the store.
   public var state: State {
     getState()
@@ -35,22 +32,19 @@ public struct StoreProxy<State>: StateStorable, ActionDispatcher {
     getState: @escaping () -> State,
     didChange: StorePublisher,
     dispatcher: ActionDispatcher,
-    next: SendAction? = nil,
-    done: (() -> Void)? = nil
+    next: SendAction? = nil
   ) {
     self.getState = getState
     self.didChange = didChange
     self.dispatcher = dispatcher
     self.nextBlock = next
-    self.doneBlock = done
   }
 
-  @inlinable internal init(proxy: StoreProxy<State>, dispatcher: ActionDispatcher? = nil, next: SendAction? = nil, done: (() -> Void)? = nil) {
+  @inlinable internal init(proxy: StoreProxy<State>, dispatcher: ActionDispatcher? = nil, next: SendAction? = nil) {
     self.getState = proxy.getState
     self.didChange = proxy.didChange
     self.dispatcher = dispatcher ?? proxy
     self.nextBlock = next ?? proxy.nextBlock
-    self.doneBlock = done ?? proxy.doneBlock
   }
 
   /// Sends an action to mutate the application state.
@@ -60,18 +54,19 @@ public struct StoreProxy<State>: StateStorable, ActionDispatcher {
     dispatcher.send(action)
   }
 
+  /// Sends an action to mutate the application state.
+  ///
+  /// - Parameter action: The action to send.
+  /// - Returns: A cancellable object.
+  @inlinable public func sendAsCancellable(_ action: Action) -> Cancellable {
+    dispatcher.sendAsCancellable(action)
+  }
+
   /// Passes an action to the next middleware.
   ///
   /// Outside of the middleware pipeline this method does nothing.
   /// - Parameter action: The action to send
   @inlinable public func next(_ action: Action) {
     nextBlock?(action)
-  }
-
-  /// Used by runnable action to tell the store that a publisher has completed or cancelled its work.
-  ///
-  /// Only use this if the action returns a cancellable object without using ActionSubscriber.
-  @inlinable public func done() {
-    doneBlock?()
   }
 }

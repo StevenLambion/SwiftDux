@@ -2,10 +2,12 @@ import XCTest
 import Combine
 @testable import SwiftDux
 
-final class CombinedReducerTests: XCTestCase {
+final class CompositeReducerTests: XCTestCase {
   
   func testCombiningReducers() {
-    let reducer = ReducerA() + ReducerB()
+    let reducerA = ReducerA()
+    let reducerB = ReducerB()
+    let reducer = reducerA + reducerB
     XCTAssertEqual(
       reducer.reduceAny(state: TestState(), action: TestAction.setStateA("123")),
       TestState(stateA: "123")
@@ -21,7 +23,7 @@ final class CombinedReducerTests: XCTestCase {
   ]
 }
 
-extension CombinedReducerTests {
+extension CompositeReducerTests {
   
   struct TestState: Equatable {
     var stateA: String = ""

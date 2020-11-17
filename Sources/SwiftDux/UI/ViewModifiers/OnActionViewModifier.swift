@@ -34,6 +34,10 @@ extension OnActionViewModifier {
       guard let action = actionModifier(action) else { return }
       nextDispatcher.send(action)
     }
+
+    func sendAsCancellable(_ action: Action) -> Cancellable {
+      nextDispatcher.sendAsCancellable(action)
+    }
   }
 }
 

@@ -1,11 +1,7 @@
 import Combine
 import Foundation
 
-/// A dispatchable action that provides information to a reducer to mutate the state of the application.
-///
-/// Typically this is done with enum types, however,  it could be added to protocols or structs if
-/// a more complex solution is needed. Structs are also a could choice if actions need to be codable.
-///
+/// A dispatchable action sent to a `Store<_>` to modify the state.
 /// ```
 ///   enum TodoList : Action {
 ///     case setItems(items: [TodoItem])
@@ -13,36 +9,42 @@ import Foundation
 ///     case removeItems(at: IndexSet)
 ///     case moveItems(at: IndexSet, to: Int)
 ///   }
-///
-///   // You can also create new protocols that represent an entire feature's actions.
-///   // This can allows views to update off of a granular action or any actions
-///   // of a given feature.
-///   protocol FeatureLevelAction : Action {}
-///
-///   enum SubfeatureAction: FeatureLevelAction {
-///     ...
-///   }
 /// ```
 public protocol Action {}
 
-/// A special kind of action that performs internal logic outside of a reducer.
-///
-/// An ActionPlan<_> is a concrete type of RunnbableAction, and is good enough
-/// for most cases.
-public protocol RunnableAction: Action {
+extension Action {
 
-  /// When the action is dispatched to a store, this method will be called to handle
-  /// any logic by the action.
+  /// Chains an array of actions to be dispatched next.
   ///
-  /// - Parameter store: The store that the action has been dispatched to.
-  /// - Returns: An optional cancellable.
-  func run<T>(store: Store<T>) -> AnyCancellable?
+  /// - Parameter actions: An array of actions to chain together.
+  /// - Returns: A composite action.
+  @inlinable public func then(_ actions: [Action]) -> CompositeAction {
+    CompositeAction([self] + actions)
+  }
 
-  /// Send an action that can be cancelled.
+  /// Chains an array of actions to be dispatched next.
   ///
-  /// - Parameter dispatcher: The send function that dispatches an action.
-  /// - Returns: AnyCancellable to cancel the action plan.
-  func sendAsCancellable(_ dispatcher: ActionDispatcher) -> AnyCancellable
+  /// - Parameter actions: One or more actions to chain together.
+  /// - Returns: A composite action.
+  @inlinable public func then(_ actions: Action...) -> CompositeAction {
+    then(actions)
+  }
+
+  /// Call the provided block next.
+  ///
+  /// - Parameter block: A block of code to execute once the previous action has completed.
+  /// - Returns: A composite action.
+  @inlinable public func then(_ block: @escaping () -> Void) -> CompositeAction {
+    then(ActionPlan<Any> { _ in block() })
+  }
+}
+
+@inlinable public func + (lhs: Action, rhs: Action) -> CompositeAction {
+  if var lhs = lhs as? CompositeAction {
+    lhs.actions.append(rhs)
+    return lhs
+  }
+  return CompositeAction([lhs, rhs])
 }
 
 /// A noop action used by reducers that may not have their own actions.
@@ -53,5 +55,5 @@ public struct EmptyAction: Action {
 
 /// A closure that dispatches an action.
 ///
-/// - Parameter action: Dispatches the given action synchronously.
+/// - Parameter action: The action to dispatch.
 public typealias SendAction = (Action) -> Void

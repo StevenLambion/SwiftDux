@@ -33,7 +33,7 @@ public struct OnAppearDispatchActionPlanViewModifier: ViewModifier {
     content
       .onAppear {
         guard cancellable == nil else { return }
-        self.cancellable = action.sendAsCancellable(dispatch)
+        self.cancellable = dispatch.sendAsCancellable(action)
       }
       .onDisappear {
         if cancelOnDisappear {

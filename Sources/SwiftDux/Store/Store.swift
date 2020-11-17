@@ -46,22 +46,6 @@ public final class Store<State>: StateStorable {
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
-
-  /// Create a proxy of the store for a given type or protocol.
-  ///
-  /// - Parameters:
-  ///   - stateType: The type of state for the proxy. This must be a type that the store adheres to.
-  ///   - done: A closure called with an async action has completed.
-  /// - Returns: A proxy object if the state type matches, otherwise nil.
-  @inlinable public func proxy<T>(for stateType: T.Type, done: (() -> Void)? = nil) -> StoreProxy<T>? {
-    guard state is T else { return nil }
-    return StoreProxy<T>(
-      getState: { self.state as! T },
-      didChange: didChange,
-      dispatcher: self,
-      done: done
-    )
-  }
 }
 
 extension Store: ActionDispatcher {
@@ -71,9 +55,31 @@ extension Store: ActionDispatcher {
   /// - Parameter action: The  action to perform.
   @inlinable public func send(_ action: Action) {
     if let action = action as? RunnableAction {
-      _ = action.run(store: self)
-    } else {
-      reduce(action)
+      reduceRunnableAction(action)
+    }
+    reduce(action)
+  }
+
+  /// Sends an action to mutate the state.
+  ///
+  /// - Parameter action: The  action to perform.
+  /// - Returns: A cancellable object.
+  @inlinable public func sendAsCancellable(_ action: Action) -> Cancellable {
+    if let action = action as? RunnableAction {
+      return action.run(store: self).send(to: self)
+    }
+    return Just(action).send(to: self)
+  }
+
+  /// Reduces a runnable action.
+  ///
+  /// - Parameter action: The  action to perform.
+  @usableFromInline internal func reduceRunnableAction(_ action: RunnableAction) {
+    var cancellable: Cancellable? = nil
+    cancellable = action.run(store: self).send(to: self) {
+      cancellable?.cancel()
+      cancellable = nil
     }
   }
+
 }

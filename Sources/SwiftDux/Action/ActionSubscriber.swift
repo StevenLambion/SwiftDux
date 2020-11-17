@@ -2,9 +2,9 @@ import Combine
 import Foundation
 
 /// Subscribes to a publisher of actions, and sends them to an action dispatcher.
-final public class ActionSubscriber: Subscriber {
+final internal class ActionSubscriber: Subscriber {
 
-  public typealias ReceivedCompletion = () -> Void
+  typealias ReceivedCompletion = () -> Void
 
   private let actionDispatcher: ActionDispatcher
   private let receivedCompletion: ReceivedCompletion?
@@ -44,11 +44,12 @@ final public class ActionSubscriber: Subscriber {
 extension Publisher where Output == Action, Failure == Never {
 
   /// Subscribe to a publisher of actions, and send the results to an action dispatcher.
+  ///
   /// - Parameters:
   ///   - actionDispatcher: The ActionDispatcher
   ///   - receivedCompletion: An optional block called when the publisher completes.
   /// - Returns: A cancellable to unsubscribe.
-  public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: ActionSubscriber.ReceivedCompletion? = nil) -> AnyCancellable {
+  public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: (() -> Void)? = nil) -> AnyCancellable {
     let subscriber = ActionSubscriber(
       actionDispatcher: actionDispatcher,
       receivedCompletion: receivedCompletion

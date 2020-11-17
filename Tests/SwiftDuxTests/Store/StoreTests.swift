@@ -23,8 +23,8 @@ final class StoreTests: XCTestCase {
   }
   
   func testActionPlans() {
-    store.send(ActionPlan<TestSendingState> { store, next in
-      Just(TestSendingAction.setText("1234")).send(to: store, receivedCompletion: next)
+    store.send(ActionPlan<TestSendingState> { store in
+      Just(TestSendingAction.setText("1234"))
     })
     XCTAssertEqual(store.state.text, "1234")
   }
