@@ -14,7 +14,7 @@ public struct CompositeAction: RunnableAction {
     self.actions = actions
   }
 
-  public func run<T>(store: Store<T>) -> AnyPublisher<Action, Never> {
+  public func run<T>(store: StoreProxy<T>) -> AnyPublisher<Action, Never> {
     actions
       .publisher
       .flatMap(maxPublishers: .max(1)) { action in
@@ -23,36 +23,25 @@ public struct CompositeAction: RunnableAction {
       .eraseToAnyPublisher()
   }
 
-  private func run<T>(action: Action, forStore store: Store<T>) -> AnyPublisher<Action, Never> {
+  private func run<T>(action: Action, forStore store: StoreProxy<T>) -> AnyPublisher<Action, Never> {
     if let action = action as? RunnableAction {
       return action.run(store: store)
     }
     return Just(action).eraseToAnyPublisher()
   }
+}
 
-  /// Chains an array of actions to be dispatched next.
-  ///
-  /// - Parameter actions: An array of actions to chain together.
-  /// - Returns: A composite action.
-  @inlinable public func then(_ actions: [Action]) -> CompositeAction {
-    var nextAction = self
-    nextAction.actions += actions
-    return nextAction
-  }
 
-  /// Chains an array of actions to be dispatched next.
-  ///
-  /// - Parameter actions: One or more actions to chain together.
-  /// - Returns: A composite action.
-  @inlinable public func then(_ actions: Action...) -> CompositeAction {
-    then(actions)
+/// Chain two actions together as a composite type.
+///
+/// - Parameters:
+///   - lhs: The first action.
+///   - rhs: The next action.
+/// - Returns: A composite action.
+@inlinable public func + (lhs: Action, rhs: Action) -> CompositeAction {
+  if var lhs = lhs as? CompositeAction {
+    lhs.actions.append(rhs)
+    return lhs
   }
-
-  /// Call the provided block next.
-  ///
-  /// - Parameter block: A block of code to execute once the previous action has completed.
-  /// - Returns: A composite action.
-  @inlinable public func then(_ block: @escaping () -> Void) -> CompositeAction {
-    then(ActionPlan<Any> { _ in block() })
-  }
+  return CompositeAction([lhs, rhs])
 }

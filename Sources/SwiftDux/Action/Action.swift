@@ -1,7 +1,7 @@
 import Combine
 import Foundation
 
-/// A dispatchable action sent to a `Store<_>` to modify the state.
+/// A dispatchable action to update the application state.
 /// ```
 ///   enum TodoList : Action {
 ///     case setItems(items: [TodoItem])
@@ -19,7 +19,11 @@ extension Action {
   /// - Parameter actions: An array of actions to chain together.
   /// - Returns: A composite action.
   @inlinable public func then(_ actions: [Action]) -> CompositeAction {
-    CompositeAction([self] + actions)
+    if var action = self as? CompositeAction {
+      action.actions += actions
+      return action
+    }
+    return CompositeAction([self] + actions)
   }
 
   /// Chains an array of actions to be dispatched next.
@@ -34,17 +38,9 @@ extension Action {
   ///
   /// - Parameter block: A block of code to execute once the previous action has completed.
   /// - Returns: A composite action.
-  @inlinable public func then(_ block: @escaping () -> Void) -> CompositeAction {
+  @inlinable public func then(_ block: @escaping ()->Void) -> CompositeAction {
     then(ActionPlan<Any> { _ in block() })
   }
-}
-
-@inlinable public func + (lhs: Action, rhs: Action) -> CompositeAction {
-  if var lhs = lhs as? CompositeAction {
-    lhs.actions.append(rhs)
-    return lhs
-  }
-  return CompositeAction([lhs, rhs])
 }
 
 /// A noop action used by reducers that may not have their own actions.
@@ -56,4 +52,9 @@ public struct EmptyAction: Action {
 /// A closure that dispatches an action.
 ///
 /// - Parameter action: The action to dispatch.
-public typealias SendAction = (Action) -> Void
+public typealias SendAction = (Action)->Void
+
+/// A closure that dispatches a cancellable action.
+///
+/// - Parameter action: The action to dispatch.
+public typealias SendCancellableAction = (Action)->Cancellable

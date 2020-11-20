@@ -13,7 +13,7 @@ final class ActionPlanTests: XCTestCase {
         if let action = action as? TestAction {
           self?.sentActions.append(action)
         }
-        store.next(action)
+        return action
       }
     )
     sentActions = []
