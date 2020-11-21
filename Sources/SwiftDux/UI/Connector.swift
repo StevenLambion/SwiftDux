@@ -30,6 +30,8 @@ public struct Connector<Content, State, Props>: View where Props: Equatable, Con
     store.map { store in
       Group {
         props.map { content($0) }
+        // SwiftUI sometimes crashes without this line in iOS 14+:
+        EmptyView()
       }.onReceive(store.publish(mapState)) { self.props = $0 }
     }
   }
