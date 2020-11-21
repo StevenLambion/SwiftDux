@@ -13,7 +13,7 @@ final class ActionPlanTests: XCTestCase {
         if let action = action as? TestAction {
           self?.sentActions.append(action)
         }
-        store.next(action)
+        return action
       }
     )
     sentActions = []
@@ -67,23 +67,21 @@ final class ActionPlanTests: XCTestCase {
   
   func testCancellableActionPlan() {
     let expectation = XCTestExpectation(description: "Expect one cancellation")
+    expectation.isInverted = true
     
-    let actionPlan = ActionPlan<TestState> { store, completed in
-      let cancellable = Just(TestAction.actionB)
-        .delay(for: .seconds(300), scheduler: RunLoop.main)
-        .send(to: store)
-      
-      return AnyCancellable { [cancellable] in
-        cancellable.cancel()
-        expectation.fulfill()
-      }
+    let actionPlan = ActionPlan<TestState> { store in
+      Just(TestAction.actionB)
+        .delay(for: .seconds(1), scheduler: RunLoop.main)
+        .handleEvents(receiveOutput: { action in
+          expectation.fulfill()
+        })
     }
     
     let cancellable = store.sendAsCancellable(actionPlan)
     
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
         cancellable.cancel()
-        expectation.fulfill()
+        //expectation.fulfill()
     }
     
     wait(for: [expectation], timeout: 5.0)
@@ -99,7 +97,7 @@ final class ActionPlanTests: XCTestCase {
     let actionPlanC = ActionPlan<TestState> { store in
       store.send(TestAction.actionB)
     }
-    let chainedActionPlan = actionPlanA.then(actionPlanB).then(actionPlanC)
+    let chainedActionPlan = actionPlanA + actionPlanB + actionPlanC
     
     _ = store.sendAsCancellable(chainedActionPlan)
     
@@ -117,8 +115,8 @@ final class ActionPlanTests: XCTestCase {
     let actionPlanB = ActionPlan<TestState> { store in
       store.send(TestAction.actionA)
     }
-    let actionPlanC = ActionPlan<TestState> { store, next in
-      Just(TestAction.actionB).send(to: store, receivedCompletion: next)
+    let actionPlanC = ActionPlan<TestState> { store in
+      Just(TestAction.actionB)
     }
     let expectation = XCTestExpectation(description: "Expect one cancellation")
     let chainedActionPlan = actionPlanA.then(actionPlanB).then(actionPlanC).then { 

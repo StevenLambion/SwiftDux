@@ -24,7 +24,7 @@ let persistor = JSONStatePersistor(location: remoteLocation)
 
 ## Use middleware to set up state persistence
 
-A state persistor can be used by itself, but SwiftDuxExtras provides a convenient middleware to do all the work for you.
+SwiftDuxExtras provides a JSON-based implementation for general use cases.
 
 ```swift
 import SwiftDuxExtras
@@ -37,4 +37,4 @@ let store = Store(
 
 ```
 
-With the above code, the application will automatically persist the state when there's changes. The state will automatically be restored on application launch.
+With the above code, the application will automatically persist the state when there's changes. The state will then be restored on application launch.

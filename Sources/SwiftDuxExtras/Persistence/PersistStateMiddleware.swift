@@ -45,9 +45,12 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
     self.shouldRestore = shouldRestore
   }
 
-  public func run(store: StoreProxy<State>, action: Action) {
-    defer { store.next(action) }
-    guard case .prepare = action as? StoreAction<State> else { return }
+  public func run(store: StoreProxy<State>, action: Action) -> Action? {
+    guard case .prepare = action as? StoreAction<State> else { return action }
+
+    if let state = persistor.restore(), shouldRestore(state) {
+      store.send(StoreAction<State>.reset(state: state))
+    }
 
     if saveOnChange {
       subscriptionCancellable = persistor.save(from: store, debounceFor: interval)
@@ -61,8 +64,6 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
       print("Failed to initiate persistence using default notifiation center.")
     }
 
-    if let state = persistor.restore(), shouldRestore(state) {
-      store.send(StoreAction<State>.reset(state: state))
-    }
+    return action
   }
 }

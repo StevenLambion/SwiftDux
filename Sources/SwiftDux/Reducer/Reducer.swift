@@ -3,11 +3,7 @@ import Foundation
 /// Performs an action on a given state and returns a whole new version.
 ///
 /// A store is given a single root `Reducer`. As it's sent actions, it runs the reducer to
-/// update the application's state. The reducer can have subreducers to separate code
-/// out into modular parts.
-///
-/// For a reducer's own state and actions, implement the `reduce(state:action:)`.
-/// For subreducers, implement the `reduceNext(state:action:)` method.
+/// update the application's state.
 public protocol Reducer {
 
   /// The type of state that the `Reducer` is able to mutate.
@@ -24,14 +20,6 @@ public protocol Reducer {
   /// - Returns: A new immutable state.
   func reduce(state: State, action: ReducerAction) -> State
 
-  /// Delegates an action to a subreducer.
-  ///
-  /// - Parameters
-  ///   - state: The state to reduce.
-  ///   - action: An unknown action that a subreducer may support.
-  /// - Returns: A new immutable state.
-  func reduceNext(state: State, action: Action) -> State
-
   /// Send any kind of action to a reducer. The recuder will determine what it can do with
   /// the action.
   ///
@@ -40,7 +28,6 @@ public protocol Reducer {
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
   func reduceAny(state: State, action: Action) -> State
-
 }
 
 extension Reducer {
@@ -59,16 +46,6 @@ extension Reducer {
     state
   }
 
-  /// Default implementation. Returns the state without modifying it.
-  ///
-  /// - Parameters
-  ///   - state: The state to reduce.
-  ///   - action: An unknown action that a subreducer may support.
-  /// - Returns: A new immutable state.
-  @inlinable public func reduceNext(state: State, action: Action) -> State {
-    state
-  }
-
   /// Send any kind of action to a reducer. The recuder will determine what it can do with
   /// the action.
   ///
@@ -77,19 +54,9 @@ extension Reducer {
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
   @inlinable public func reduceAny(state: State, action: Action) -> State {
-    var state = state
-    if let reducerAction = action as? ReducerAction {
-      state = reduce(state: state, action: reducerAction)
+    guard let reducerAction = action as? ReducerAction else {
+      return state
     }
-    return reduceNext(state: state, action: action)
-  }
-
-  /// Compose two reducers together.
-  /// - Parameters:
-  ///   - previousReducer: The first reducer to be called.
-  ///   - nextReducer: The second reducer to be called.
-  /// - Returns: A combined reducer.
-  public static func + <R>(previousReducer: Self, _ nextReducer: R) -> CombinedReducer<State, Self, R> where R: Reducer, R.State == State {
-    CombinedReducer(previousReducer: previousReducer, nextReducer: nextReducer)
+    return reduce(state: state, action: reducerAction)
   }
 }

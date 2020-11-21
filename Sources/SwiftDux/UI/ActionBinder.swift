@@ -102,6 +102,3 @@ public struct ActionBinder {
     actionDispatcher.send(action)
   }
 }
-
-@available(*, deprecated, renamed: "ActionBinder")
-public typealias StateBinder = ActionBinder

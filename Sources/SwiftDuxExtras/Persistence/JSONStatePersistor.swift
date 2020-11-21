@@ -29,6 +29,7 @@ public final class JSONStatePersistor<State>: StatePersistor where State: Codabl
   ///
   /// - Parameter state: The state
   /// - Returns: The encoded state
+  /// - Throws: This function throws an error if the state could not be encoded.
   public func encode(state: State) throws -> Data {
     try encoder.encode(state)
   }
@@ -37,6 +38,7 @@ public final class JSONStatePersistor<State>: StatePersistor where State: Codabl
   ///
   /// - Parameter data: The json data
   /// - Returns: The decoded state
+  /// - Throws: This function throws an error if the state could not be decoded.
   public func decode(data: Data) throws -> State {
     try decoder.decode(State.self, from: data)
   }

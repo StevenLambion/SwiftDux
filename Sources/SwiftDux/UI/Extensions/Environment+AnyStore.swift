@@ -24,6 +24,10 @@ internal final class AnyStoreWrapper<T>: AnyStore {
   func send(_ action: Action) {
     store.send(action)
   }
+
+  func sendAsCancellable(_ action: Action) -> Cancellable {
+    store.sendAsCancellable(action)
+  }
 }
 
 struct NoopAnyStore: AnyStore {
@@ -33,6 +37,10 @@ struct NoopAnyStore: AnyStore {
 
   func send(_ action: Action) {
     // Do nothing
+  }
+
+  func sendAsCancellable(_ action: Action) -> Cancellable {
+    AnyCancellable {}
   }
 }
 

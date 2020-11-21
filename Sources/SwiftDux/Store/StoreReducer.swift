@@ -1,10 +1,10 @@
 import Foundation
 
-/// Actions performed for the store itself.
+/// Actions performed by the store itself.
 public enum StoreAction<State>: Action {
 
   /// Called at the initialization step of the store to allow reducers and middleware an oppertunity
-  /// to set up configurations  Store actions may be dispatched at this stage, but other middleware
+  /// to set up configurations. Store actions may be dispatched at this stage, but other middleware
   /// and reducers might not be ready yet if they require any preparation themselves.
   case prepare
 

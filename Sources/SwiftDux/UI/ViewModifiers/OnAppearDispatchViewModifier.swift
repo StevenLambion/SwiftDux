@@ -1,42 +1,41 @@
 import Combine
+import Dispatch
 import SwiftUI
 
 public struct OnAppearDispatchActionViewModifier: ViewModifier {
-  @MappedDispatch() private var dispatch
-
-  var action: Action
-
+  @Environment(\.actionDispatcher) private var dispatch
   @State private var cancellable: Cancellable? = nil
+  private var action: Action
 
   @usableFromInline internal init(action: Action) {
     self.action = action
   }
 
   public func body(content: Content) -> some View {
-    content.onAppear { [action, dispatch] in dispatch(action) }
+    content.onAppear { dispatch(action) }
   }
 }
 
-public struct OnAppearDispatchActionPlanViewModifier<T>: ViewModifier {
-  @MappedDispatch() private var dispatch
+public struct OnAppearDispatchActionPlanViewModifier: ViewModifier {
+  @Environment(\.actionDispatcher) private var dispatch
 
-  var actionPlan: ActionPlan<T>
-  var cancelOnDisappear: Bool
+  private var action: RunnableAction
+  private var cancelOnDisappear: Bool
 
   @State private var cancellable: Cancellable? = nil
 
-  @usableFromInline internal init(actionPlan: ActionPlan<T>, cancelOnDisappear: Bool) {
-    self.actionPlan = actionPlan
+  @usableFromInline internal init(action: RunnableAction, cancelOnDisappear: Bool) {
+    self.action = action
     self.cancelOnDisappear = cancelOnDisappear
   }
 
   public func body(content: Content) -> some View {
     content
-      .onAppear { [actionPlan, dispatch] in
-        guard self.cancellable == nil else { return }
-        self.cancellable = actionPlan.sendAsCancellable(dispatch)
+      .onAppear {
+        guard cancellable == nil else { return }
+        self.cancellable = dispatch.sendAsCancellable(action)
       }
-      .onDisappear { [cancelOnDisappear] in
+      .onDisappear {
         if cancelOnDisappear {
           self.cancellable?.cancel()
           self.cancellable = nil
@@ -52,7 +51,12 @@ extension View {
   /// - Parameter action: An action to dispatch every time the view appears.
   /// - Returns: The modified view.
   @inlinable public func onAppear(dispatch action: Action) -> some View {
-    modifier(OnAppearDispatchActionViewModifier(action: action))
+    Group {
+      if let action = action as? RunnableAction {
+        modifier(OnAppearDispatchActionPlanViewModifier(action: action, cancelOnDisappear: true))
+      }
+      modifier(OnAppearDispatchActionViewModifier(action: action))
+    }
   }
 
   /// Sends the provided action plan when the view appears.
@@ -99,11 +103,11 @@ extension View {
   /// ```
   ///
   /// - Parameters:
-  ///   - actionPlan: An action to dispatch every time the view appears.
+  ///   - action: An action to dispatch every time the view appears.
   ///   - cancelOnDisappear: It will cancel any subscription from the action when the view disappears. If false, it keeps
   ///     the subscription alive and reppearances of the view will not re-call the action.
   /// - Returns: The modified view.
-  @inlinable public func onAppear<T>(dispatch actionPlan: ActionPlan<T>, cancelOnDisappear: Bool = true) -> some View {
-    modifier(OnAppearDispatchActionPlanViewModifier(actionPlan: actionPlan, cancelOnDisappear: cancelOnDisappear))
+  @inlinable public func onAppear<T>(dispatch action: RunnableAction, cancelOnDisappear: Bool) -> some View {
+    modifier(OnAppearDispatchActionPlanViewModifier(action: action, cancelOnDisappear: cancelOnDisappear))
   }
 }

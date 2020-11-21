@@ -1,80 +1,42 @@
 import Combine
 import SwiftUI
 
-/// Indicates a connectable view should not update when the state changes. The view will not subscribe to the store, and instead update
-/// only when it dispatches an action.
-internal final class NoUpdateAction: Action {
-  var unused: Bool = false
-}
-
-fileprivate let noUpdateAction = NoUpdateAction()
-
-public struct Connector<Content, Superstate, Props>: View where Props: Equatable, Content: View {
+public struct Connector<Content, State, Props>: View where Props: Equatable, Content: View {
   @Environment(\.store) private var anyStore
-  @Environment(\.actionDispatcher) private var actionDispatcher
+  @Environment(\.actionDispatcher) private var dispatch
 
+  private var mapState: (State, ActionBinder) -> Props?
   private var content: (Props) -> Content
-  private var filter: ((Action) -> Bool)?
-  private var mapProps: (Superstate, ActionBinder) -> Props?
+  @SwiftUI.State private var props: Props?
 
-  private var store: StoreProxy<Superstate>? {
+  private var store: StoreProxy<State>? {
     if anyStore is NoopAnyStore {
       return nil
-    } else if let store = anyStore.unwrap(as: Superstate.self) {
+    } else if let store = anyStore.unwrap(as: State.self) {
       return store
     }
-    fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(Superstate.self)'")
+    fatalError("Tried mapping the state to a view, but the Store<_> doesn't conform to '\(State.self)'")
   }
 
   public init(
-    content: @escaping (Props) -> Content,
-    filter: ((Action) -> Bool)?,
-    mapProps: @escaping (Superstate, ActionBinder) -> Props?
+    mapState: @escaping (State, ActionBinder) -> Props?,
+    @ViewBuilder content: @escaping (Props) -> Content
   ) {
     self.content = content
-    self.filter = filter
-    self.mapProps = mapProps
+    self.mapState = mapState
   }
 
   public var body: some View {
-    createPropsPublisher().map { ConnectorInner(content: content, initialProps: getProps(), propsPublisher: $0) }
-  }
-
-  private func createPropsPublisher() -> AnyPublisher<Props, Never>? {
-    createFilteredPublisher()?.compactMap { _ in self.getProps() }
-      .removeDuplicates()
-      .eraseToAnyPublisher()
-  }
-
-  private func createFilteredPublisher() -> AnyPublisher<Action, Never>? {
-    guard let filter = filter, hasUpdateFilter() else {
-      return store?.didChange
+    store.map { store in
+      Group {
+        props.map { content($0) }
+        // SwiftUI sometimes crashes without this line in iOS 14+:
+        EmptyView()
+      }.onReceive(store.publish(mapState)) { self.props = $0 }
     }
-    return store?.didChange.filter(filter).eraseToAnyPublisher()
   }
 
-  private func getProps() -> Props? {
-    store.flatMap { mapProps($0.state, ActionBinder(actionDispatcher: self.actionDispatcher)) }
-  }
-
-  private func hasUpdateFilter() -> Bool {
-    _ = filter?(noUpdateAction)
-    return !noUpdateAction.unused
-  }
-}
-
-internal struct ConnectorInner<Content, Props>: View where Props: Equatable, Content: View {
-  private var content: (Props) -> Content
-  private var propsPublisher: AnyPublisher<Props, Never>
-  @State private var props: Props?
-
-  internal init(content: @escaping (Props) -> Content, initialProps: Props?, propsPublisher: AnyPublisher<Props, Never>) {
-    self.content = content
-    self.propsPublisher = propsPublisher
-    self._props = State(initialValue: initialProps)
-  }
-
-  var body: some View {
-    return props.map { content($0).onReceive(propsPublisher) { self.props = $0 } }
+  private func mapState(state: State) -> Props? {
+    mapState(state, ActionBinder(actionDispatcher: dispatch))
   }
 }

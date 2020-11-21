@@ -23,8 +23,8 @@ final class StoreTests: XCTestCase {
   }
   
   func testActionPlans() {
-    store.send(ActionPlan<TestSendingState> { store, next in
-      Just(TestSendingAction.setText("1234")).send(to: store, receivedCompletion: next)
+    store.send(ActionPlan<TestSendingState> { store in
+      Just(TestSendingAction.setText("1234"))
     })
     XCTAssertEqual(store.state.text, "1234")
   }
@@ -54,47 +54,24 @@ final class StoreTests: XCTestCase {
     XCTAssertEqual(store.state.value, 3)
   }
 
-  func testStoreCleansUpSubscriptions() {
-    let expectation = XCTestExpectation(description: "Expect cancellation")
-    var cancellables = Set<AnyCancellable>()
-    
-    expectation.expectedFulfillmentCount = 6
-    
-    let actionPlan = ActionPlan<TestSendingState> { store, completed in
-      let cancellable = Just(TestSendingAction.setText("test"))
-        .delay(for: .milliseconds(10), scheduler: RunLoop.main)
-        .send(to: store, receivedCompletion: completed)
-      
-      cancellable.store(in: &cancellables)
-      
-      // Make sure there's only one cancellable at a time to validate
-      // the action plans are running synchronously and not leaving
-      // cancellables around.
-      return AnyCancellable {
-        XCTAssertEqual(cancellables.count, 1)
-        cancellables.remove(cancellable)
-        expectation.fulfill()
+  func testFutureAction() {
+    let actionPlan = ActionPlan<TestSendingState> { store in
+      Future<Void, Never> { promise in
+        store.send(TestSendingAction.setText("test"))
+        promise(.success(()))
       }
     }
     
-    let groupedPlans = actionPlan
-      .then(actionPlan)
-      .then(actionPlan)
-      .then(actionPlan)
-      .then(actionPlan)
-      .then(actionPlan)
-    
-    store.send(groupedPlans)
-    
-    wait(for: [expectation], timeout: 1.0)
-    XCTAssertEqual(cancellables.count, 0)
+    let cancellable = actionPlan.run(store: store.proxy()).send(to: store)
+    XCTAssertEqual(store.state.text, "test")
+    cancellable.cancel()
   }
   
   static var allTests = [
     ("testSubscribingToActionPlans", testSubscribingToActionPlans),
     ("testSubscribingToActionPlans", testSubscribingToActionPlans),
     ("testSubscribingToComplexActionPlans", testSubscribingToComplexActionPlans),
-    ("testStoreCleansUpSubscriptions", testStoreCleansUpSubscriptions),
+    ("testStoreCleansUpSubscriptions", testFutureAction),
   ]
 }
 
@@ -103,10 +80,6 @@ extension StoreTests {
   enum TestSendingAction: Action {
     case setText(String)
     case setValue(Int)
-  }
-  
-  enum TestSendingIntruderAction: Action {
-    case setText(String)
   }
   
   struct TestSendingState: Equatable {
@@ -122,14 +95,6 @@ extension StoreTests {
         state.text = text
       case .setValue(let value):
         state.value = value
-      }
-      return state
-    }
-    
-    func reduceNext(state: StoreTests.TestSendingState, action: Action) -> StoreTests.TestSendingState {
-      var state = state
-      if case TestSendingIntruderAction.setText(let text) = action {
-        state.text = text
       }
       return state
     }

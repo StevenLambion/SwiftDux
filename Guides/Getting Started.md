@@ -13,18 +13,20 @@ SwiftDux helps build SwiftUI-based applications around an [elm-like architecture
 
 ## State
 
-The state is a single, immutable structure acting as the single source of truth within the application.
+The state is an immutable structure acting as the single source of truth within the application.
 
-Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoState` objects.
+Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoItem` objects.
 
 ```swift
 import SwiftDux
 
-struct AppState: StateTyoe {
+typealias StateType = Equatable & Codable
+
+struct AppState: StateType {
   todos: OrderedState<TodoItem>
 }
 
-struct TodoItem: IdentifiableState {
+struct TodoItem: StateType, Identifiable {
   var id: String,
   var text: String
 }
@@ -32,7 +34,7 @@ struct TodoItem: IdentifiableState {
 
 ## Actions
 
-An action is a description of how the state will change. They're typically dispatched from events in the application. This could be a user interacting with the application or a service API receiving updates. Swift's enum type is ideal for actions, but structs and classes could be used as well.
+An action is a dispatched event to mutate the application's state. Swift's enum type is ideal for actions, but structs and classes could be used as well.
 
 ```swift
 import SwiftDux
@@ -46,76 +48,95 @@ enum TodoAction: Action {
 
 ## Reducers
 
-A reducer consumes an action to produce a new state. The `Reducer` protocol has two primary methods to override:
-
-- `reduce(state:action:)` - For actions supported by the reducer.
-- `reduceNext(state:action:)` - Dispatches an action to any sub-reducers. This method is optional.
+A reducer consumes an action to produce a new state.
 
 ```swift
 final class TodosReducer: Reducer {
 
-  func reduce(state: OrderedState<TodoItem>, action: TodoAction) -> OrderedState<TodoItem> {
+  func reduce(state: AppState, action: TodoAction) -> AppState {
     var state = state
     switch action {
     case .addTodo(let text):
       let id = UUID().uuidString
-      state.append(TodoItemState(id: id, text: text))
+      state.todos.append(TodoItemState(id: id, text: text))
     case .removeTodos(let indexSet):
-      state.remove(at: indexSet)
+      state.todos.remove(at: indexSet)
     case .moveTodos(let indexSet, let index):
-      state.move(from: indexSet, to: index)
+      state.todos.move(from: indexSet, to: index)
     }
     return state
   }
-
 }
-```
-
-Here's an example of a root reducer dispatching to a subreducer.
-
-```swift
-final class AppReducer: Reducer {
-  let todosReducer = TodosReducer()
-
-  func reduceNext(state: AppState, action: TodoAction) -> AppState {
-    State(
-      todos: todosReducer.reduceAny(state.todos, action)
-    )
-  }
-
-}
-```
-
-Reducers can also be combined together. This is useful when multiple root reducers are needed, such as two reducers from separate modules.
-
-```swift
-let combinedReducer = AppReducer + NavigationReducer
 ```
 
 ## Store
 
-The store acts as the container of the state. It needs to be initialized with a default state and a root reducer. Then inject it into the application using the `provideStore(_:)` view modifier.
+The store manages the state and notifies the views of any updates.
 
 ```swift
 import SwiftDux
 
-let store = Store(AppState(todos: OrderedState()), AppReducer())
+let store = Store(
+  state: AppState(todos: OrderedState()),
+  reducer: AppReducer()
+)
 
 window.rootViewController = UIHostingController(
   rootView: RootView().provideStore(store)
 )
 ```
 
-## Connectable View
+## Middleware
+SwiftDux supports middleware to extend functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
 
-The `ConnectableView` protocol provides a slice of the application state to your views using the functions `map(state:)` and `body(props:)`. The `@MappedDispatch` property wrapper injects an `ActionDispatcher` to send actions to the store.
+- `PersistStateMiddleware` persists and restores the application state between sessions.
+- `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
+
+```swift
+import SwiftDux
+
+let store = Store(
+  state: AppState(todos: OrderedState()),
+  reducer: AppReducer(),
+  middleware: PrintActionMiddleware())
+)
+
+window.rootViewController = UIHostingController(
+  rootView: RootView().provideStore(store)
+)
+```
+
+## Composing Reducers, Middleware, and Actions
+You may compose a set of reducers, actions, or middleware into an ordered chain using the '+' operator.
+
+```swift
+// Break up an application into smaller modules by composing reducers.
+let rootReducer = AppReducer() + NavigationReducer()
+
+// Add multiple middleware together.
+let middleware = 
+  PrintActionMiddleware() +
+  PersistStateMiddleware(JSONStatePersistor()
+
+let store = Store(
+  state: AppState(todos: OrderedState()),
+  reducer: reducer,
+  middleware: middleware
+)
+```
+
+## ConnectableView
+
+The `ConnectableView` protocol provides a slice of the application state to your views using the functions `map(state:)` or  `map(state:binder:)`. It automatically updates the view when the props value has changed.
 
 ```swift
 struct TodosView: ConnectableView {
-  @MappedDispatch() private var dispatch
+  struct Props: Equatable {
+    var todos: [TodoItem]
+  }
 
-  func map(state: AppState) -> OrderedState<Todo>? {
-    state.todos
+  func map(state: AppState) -> Props? {
+    Props(todos: state.todos)
   }
 
   func body(props: OrderedState<Todo>): some View {
@@ -123,76 +144,126 @@ struct TodosView: ConnectableView {
       ForEach(todos) { todo in
         TodoItemRow(item: todo)
       }
-      .onDelete { self.dispatch(TodoAction.removeTodos(at: $0)) }
-      .onMove { self.dispatch(TodoAction.moveTodos(from: $0, to: $1)) }
     }
   }
 }
 ```
 
-The view can later be placed like any other.
-
-```swift
-struct RootView: View {
-
-  var body: some View {
-    TodosView()
-  }
-}
-```
-
-## Passing Data to a Connectable View
-In some cases, a connected view needs external information to map the state to its props, such as an identifier. Simply add any needed variables to your view, and access them in the mapping function.
-
-```swift
-struct TodoDetailsView: ConnectableView {
-  var id: String
-
-  func map(state: TodoList) -> Todo? {
-    state[id]
-  }
-}
-
-// Somewhere else in the view hierarchy:
-
-TodoDetailsView(id: "123")
-```
-
 ## ActionBinding<_>
 
-SwiftUI has a focus on two-way bindings that connect to a single value source. To support updates through actions, SwiftDux provides a convenient API in the `ConnectableView` protocol using an `ActionBinder` object. Use the `map(state:binder:)` method on the protocol as shown below. It provides a value to the text field, and dispatches an action when the text value changes. It also binds a function to a dispatchable action.
+Use the `map(state:binder:)` method on the `ConnectableView` protocol to bind an action to the props object. It can also be used to bind an updatable state value with an action.
 
 ```swift
-struct LoginForm: View {
-
+struct TodosView: ConnectableView {
   struct Props: Equatable {
-    @ActionBinding var email: String
-    @ActionBinding var onSubmit: ()->()
+    var todos: [TodoItem]
+    @ActionBinding var newTodoText: String
+    @ActionBinding var addTodo: () -> ()
   }
 
-  func map(state: AppState, binder: ActionBinder) -> Props? {
+  func map(state: AppState, binder: ActionBinder) -> OrderedState<Todo>? {
     Props(
-      email: binder.bind(state.loginForm.email) { 
-        LoginFormAction.setEmail($0)
-      },
-      onSubmit: binder.bind(LoginFormAction.submit)
+      todos: state.todos,
+      newTodoText: binder.bind(state.newTodoText) { TodoAction.setNewTodoText($0) },
+      addTodo: binder.bind { TodoAction.addTodo() }
     )
   }
 
-  func body(props: Props) -> some View {
-    VStack {
-      TextField("Email", text: $props.email)
-      /* ... */
-      Button(action: props.onSubmit) {
-        Text("Submit")
+  func body(props: OrderedState<Todo>): some View {
+    List {
+      TextField("New Todo", text: props.$newTodoText, onCommit: props.addTodo) 
+      ForEach(todos) { todo in
+        TodoItemRow(item: todo)
       }
     }
   }
 }
 ```
 
+## Action Plans
+An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic outside of a reducer. It's also useful for actions that may require information about the state before it can be dispatched.
+
+```swift
+/// Dispatch multiple actions after checking the current state of the application.
+let plan = ActionPlan<AppState> { store in
+  guard store.state.someValue == nil else { return }
+  store.send(actionA)
+  store.send(actionB)
+  store.send(actionC)
+}
+
+/// Subscribe to services and return a publisher that sends actions to the store.
+let plan = ActionPlan<AppState> { store in
+  userLocationService
+    .publisher
+    .map { LocationAction.updateUserLocation($0) }
+}
+```
+
+## Action Dispatching
+You can access the `ActionDispatcher` of the store through the environment values. This allows you to dispatch actions from any view.
+
+```swift
+struct MyView: View {
+  @Environment(\.actionDispatcher) private var dispatch
+
+  var body: some View {
+    MyForm.onAppear { dispatch(FormAction.prepare) }
+  }
+}
+```
+
+If it's an ActionPlan that's meant to be kept alive through a publisher, then you'll want to send it as a cancellable. The action below subscribes
+to the store, so it can keep a list of albums updated when the user applies different queries.
+
+```swift
+extension AlbumListAction {
+  var updateAlbumList: Action {
+    ActionPlan<AppState> { store in
+      store
+        .publish { $0.albumList.query }
+        .debounce(for: .seconds(1), scheduler: RunLoop.main)
+        .map { AlbumService.all(query: $0) }
+        .switchToLatest()
+        .catch { Just(AlbumListAction.setError($0) }
+        .map { AlbumListAction.setAlbums($0) }
+    }
+  }
+}
+
+struct AlbumListContainer: ConnectableView {
+  @Environment(\.actionDispatcher) private var dispatch
+  @State private var cancellable: Cancellable? = nil
+  
+  func map(state: AppState) -> [Album]? {
+    state.albumList.albums
+  }
+
+  func body(props: [Album]) -> some View {
+    AlbumsList(albums: props).onAppear { 
+      cancellable = dispatch.sendAsCancellable(AlbumListAction.updateAlbumList)
+    }
+  }
+}
+```
+
+The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches regular actions, but it automatically handles cancellable ones. By default, the action will cancel itself when the view is destroyed.
+
+```swift
+struct AlbumListContainer: ConnectableView {
+  
+  func map(state: AppState) -> [Album]? {
+    Props(state.albumList.albums)
+  }
+
+  func body(props: [Album]) -> some View {
+    AlbumsList(albums: props).onAppear(dispatch: AlbumListAction.updateAlbumList)
+  }
+}
+```
+
 ## Previewing Connected Views
-To preview a connected view by itself, you can provide a store that contains the parent state and reducer it maps from. This preview is based on a view in the Todo List Example project. Make sure to add `provideStore(_:)` after the connect method.
+To preview a connected view by itself use the `provideStore(_:)` method inside the preview.
 
 ```swift
 #if DEBUG
@@ -214,90 +285,6 @@ public enum TodoRowContainer_Previews: PreviewProvider {
     TodoRowContainer(id: "1")
       .provideStore(store)
   }
-  
 }
 #endif
-```
-
-## Action Plans
-An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic.
-
-```swift
-/// Dispatch multiple actions together synchronously:
-
-let plan = ActionPlan<AppState> { store in
-  store.send(actionA)
-  store.send(actionB)
-  store.send(actionB)
-}
-
-/// Perform async operations:
-
-let plan = ActionPlan<AppState> { store in
-  userLocationService.getLocation { location
-    store.send(LocationAction.updateLocation(location))
-  }
-}
-
-/// Subscribe to services and publish new actions to the store.
-
-let plan = ActionPlan<AppState> { store, completed in
-  userLocationService
-    .subscribeToUpdates()
-    .map { LocationAction.updateLocation($0) }
-    .send(to: store, receivedCompletion: completed)
-}
-
-/// In a View, dispatch the plan like any other action:
-
-dispatch(plan)
-```
-
-#
-
-## Query External Services
-Action plans can be used in conjunction with the `onAppear(dispatch:)` view modifier to connect to external data sources when a view appears. If the action plan returns a publisher, it will automatically cancel when the view disappears. Optionally, use `onAppear(dispatch:cancelOnDisappear:)` if the publisher should continue.
-
-Action plans can also subscribe to the store. This is useful when the query needs to be refreshed if the application state changes. Rather than imperatively handling this by re-sending the action plan, it can be done more declaratively within it.
-
-Here's an example of an action plan that queries for todos. It updates whenever the filter changes. It also debounces to reduce the amount of queries sent to the external services.
-
-```swift
-enum TodoListAction {
-  ...
-}
-
-extension TodoListAction {
-
-  static func getState(from store: Store<AppState>) -> some Publisher {
-    Just(store.state).merge(with: store.didChange.map { _ in store.state })
-  }
-
-  static func queryTodos() -> ActionPlan<AppState> {
-    ActionPlan<AppState> { store, completed in
-      getState(from: store)
-        .map { $0.filterBy }
-        .removeDuplicates()
-        .debounce(for: .milliseconds(300), scheduler: RunLoop.main)
-        .flatMap { filter in self.services.queryTodos(filter: filter) }
-        .catch { _ in Just<[TodoItem]>([]) }
-        .map { todos -> Action in TodoListAction.setTodos(todos) }
-        .send(to: store, receivedCompletion: completed)
-    }
-  }
-}
-
-struct TodoListView: ConnectableView {
-
-  func map(state: AppState) -> [TodoItem]? {
-    state.todoList.items
-  }
-
-  func body(props: [TodoItem]) -> some View {
-    renderTodos(todos: props)
-      .onAppear(dispatch: TodoListAction.queryTodos())
-  }
-
-  // ...
-}
 ```

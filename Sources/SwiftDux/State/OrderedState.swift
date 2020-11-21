@@ -61,7 +61,6 @@ extension OrderedStateStorage: Equatable where Substate: Equatable {
   @inlinable static func == (lhs: OrderedStateStorage<Substate>, rhs: OrderedStateStorage<Substate>) -> Bool {
     lhs.orderOfIds == rhs.orderOfIds && lhs.values == rhs.values
   }
-
 }
 
 /// A container state that holds an ordered collection of substates.
@@ -122,7 +121,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   }
 
   /// Create a new `OrderedState` with an ordered array of identifiable substates.
-  /// 
+  ///
   /// - Parameter values: An array of substates. The position of each substate will be used as the initial order.
   @inlinable public init(_ values: [Substate]) {
     var valueByIndex = [Id: Substate](minimumCapacity: values.count)
@@ -382,7 +381,9 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
       if k != j {
         swapAt(i, j)
         formIndex(after: &i)
-      } else { k = indexes.integerGreaterThan(k) ?? endIndex }
+      } else {
+        k = indexes.integerGreaterThan(k) ?? endIndex
+      }
       formIndex(after: &j)
     }
     removeSubrange(i...)
@@ -403,6 +404,7 @@ extension OrderedState: Decodable where Substate: Decodable {
   /// This allows the `OrderedState<_>` to be decoded from a simple array.
   ///
   /// - Parameter decoder: The decoder.
+  /// - Throws: This function throws an error if the OrderedState could not be decoded.
   public init(from decoder: Decoder) throws {
     var container = try decoder.unkeyedContainer()
     var values = [Substate]()
@@ -425,6 +427,7 @@ extension OrderedState: Encodable where Substate: Encodable {
   /// This allows the `OrderedState<_>` to be encoded as simple array.
   ///
   /// - Parameter encoder: The encoder.
+  /// - Throws: This function throws an error if the OrderedState could not be encoded.
   @inlinable public func encode(to encoder: Encoder) throws {
     var container = encoder.unkeyedContainer()
     try container.encode(contentsOf: values)

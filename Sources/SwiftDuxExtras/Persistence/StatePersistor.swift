@@ -18,14 +18,16 @@ public protocol StatePersistor {
 
   /// Encodes the state into a raw data object.
   ///
-  ///  - Parameter state: The state to encode
+  /// - Parameter state: The state to encode
   /// - Returns: The encoded state.
+  /// - Throws: This function throws an error if the state could not be encoded.
   func encode(state: State) throws -> Data
 
   /// Decode raw data into a new state object.
   ///
   /// - Parameter data: The data to decode.
   /// - Returns: The decoded state
+  /// - Throws: This function throws an error if the state could not be decoded.
   func decode(data: Data) throws -> State
 
 }
@@ -76,9 +78,8 @@ extension StatePersistor {
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .filter { !($0 is StoreAction<State>) }
       .debounce(for: interval, scheduler: RunLoop.main)
-      .compactMap { [weak store] (action: Action) in store?.state }
+      .compactMap { [weak store] in store?.state }
       .persist(with: self)
   }
 
@@ -93,7 +94,6 @@ extension StatePersistor {
     debounceFor interval: RunLoop.SchedulerTimeType.Stride = .seconds(1)
   ) -> AnyCancellable {
     store.didChange
-      .filter { !($0 is StoreAction<State>) }
       .debounce(for: interval, scheduler: RunLoop.main)
       .compactMap { _ in store.state }
       .persist(with: self)
