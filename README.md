@@ -7,7 +7,7 @@
 [![Github workflow][github-workflow-image]](https://github.com/StevenLambion/SwiftDux/actions)
 [![codecov][codecov-image]](https://codecov.io/gh/StevenLambion/SwiftDux)
 
-SwiftDux is a state container inspired by Redux and built on top of Combine and SwiftUI. It helps you write applications with predictable, consistent, and highly testable business logic using a single source of truth.
+SwiftDux is a state container inspired by Redux and built on top of Combine and SwiftUI. It helps you write applications with predictable, consistent, and highly testable logic using a single source of truth.
 
 # Installation
 
@@ -125,7 +125,7 @@ window.rootViewController = UIHostingController(
 ```
 
 ## Middleware
-SwiftDux supports middleware to expand its functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
+SwiftDux supports middleware to extend functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
 
 - `PersistStateMiddleware` Persists and restores the application state between sessions.
 - `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
@@ -144,7 +144,7 @@ window.rootViewController = UIHostingController(
 )
 ```
 
-## Composing Reducers, Actions, and Middleware
+## Composing Reducers, Middleware, and Actions
 You may compose a set of reducers, actions, or middleware into an ordered chain using the '+' operator.
 
 ```swift
@@ -152,7 +152,9 @@ You may compose a set of reducers, actions, or middleware into an ordered chain 
 let rootReducer = AppReducer() + NavigationReducer()
 
 // Add multiple middleware together.
-let middleware = PrintActionMiddleware() + PersistStateMiddleware(JSONStatePersistor()
+let middleware = 
+  PrintActionMiddleware() +
+  PersistStateMiddleware(JSONStatePersistor()
 
 let store = Store(
   state: AppState(todos: OrderedState()),
@@ -171,7 +173,7 @@ struct TodosView: ConnectableView {
     var todos: [TodoItem]
   }
 
-  func map(state: AppState) -> OrderedState<Todo>? {
+  func map(state: AppState) -> Props? {
     Props(todos: state.todos)
   }
 
@@ -194,7 +196,7 @@ struct TodosView: ConnectableView {
   struct Props: Equatable {
     var todos: [TodoItem]
     @ActionBinding var newTodoText: String
-    @ActionBinding var addTodo: ()->()
+    @ActionBinding var addTodo: () -> ()
   }
 
   func map(state: AppState, binder: ActionBinder) -> OrderedState<Todo>? {
@@ -216,6 +218,26 @@ struct TodosView: ConnectableView {
 }
 ```
 
+## Action Plans
+An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic outside of a reducer. It's also useful for actions that may require information about the state before it can be dispatched.
+
+```swift
+/// Dispatch multiple actions after checking the current state of the application.
+let plan = ActionPlan<AppState> { store in
+  guard store.state.someValue == nil else { return }
+  store.send(actionA)
+  store.send(actionB)
+  store.send(actionC)
+}
+
+/// Subscribe to services and return a publisher that sends actions to the store.
+let plan = ActionPlan<AppState> { store in
+  userLocationService
+    .publisher
+    .map { LocationAction.updateUserLocation($0) }
+}
+```
+
 ## Action Dispatching
 You can access the `ActionDispatcher` of the store through the environment values. This allows you to dispatch actions from any view.
 
@@ -229,7 +251,7 @@ struct MyView: View {
 }
 ```
 
-If the action is meant to be kept alive through a publisher, then you'll want to send it as a cancellable.
+If it's an ActionPlan that's meant to be kept alive through a publisher, then you'll want to send it as a cancellable.
 
 ```swift
 struct MyView: View {
@@ -237,40 +259,20 @@ struct MyView: View {
   @State private var cancellable: Cancellable? = nil
 
   var body: some View {
-    MyForm.onAppear { cancellable = dispatch.sendAsCancellable(FormAction.validateAccessToken) }
+    MyForm.onAppear { 
+      cancellable = dispatch.sendAsCancellable(SecurityAction.whileAccessTokenIsValid)
+    }
   }
 }
 ```
 
-The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches actions, but automatically handles long-running actions that may need to be explicitly cancelled when the view is not present anymore.
+The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches regular actions, but it automatically handles cancellable ones. By default, the action will cancel itself when the view is destroyed.
 
 ```swift
 struct MyView: View {
   var body: some View {
-    MyForm.onAppear(dispatch: FormAction.prepare)
+    MyForm.onAppear(dispatch: SecurityAction.whileAccessTokenIsValid)
   }
-}
-```
-
-## Action Plans
-An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic outside of a reducer. It's also useful for actions that may require information about the state before it can be dispatched.
-
-```swift
-/// Dispatch multiple actions after checking the current state of the application:
-
-let plan = ActionPlan<AppState> { store in
-  guard store.state.someValue == nil else { return }
-  store.send(actionA)
-  store.send(actionB)
-  store.send(actionB)
-}
-
-/// Subscribe to services and return a publisher that sends actions to the store.
-
-let plan = ActionPlan<AppState> { store in
-  userLocationService
-    .publisher
-    .map { LocationAction.updateUserLocation($0) }
 }
 ```
 
@@ -297,7 +299,6 @@ public enum TodoRowContainer_Previews: PreviewProvider {
     TodoRowContainer(id: "1")
       .provideStore(store)
   }
-  
 }
 #endif
 ```

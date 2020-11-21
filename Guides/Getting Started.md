@@ -87,7 +87,7 @@ window.rootViewController = UIHostingController(
 ```
 
 ## Middleware
-SwiftDux supports middleware to expand its functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
+SwiftDux supports middleware to extend functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
 
 - `PersistStateMiddleware` Persists and restores the application state between sessions.
 - `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
@@ -106,7 +106,7 @@ window.rootViewController = UIHostingController(
 )
 ```
 
-## Composing Reducers, Actions, and Middleware
+## Composing Reducers, Middleware, and Actions
 You may compose a set of reducers, actions, or middleware into an ordered chain using the '+' operator.
 
 ```swift
@@ -114,7 +114,9 @@ You may compose a set of reducers, actions, or middleware into an ordered chain 
 let rootReducer = AppReducer() + NavigationReducer()
 
 // Add multiple middleware together.
-let middleware = PrintActionMiddleware() + PersistStateMiddleware(JSONStatePersistor()
+let middleware = 
+  PrintActionMiddleware() +
+  PersistStateMiddleware(JSONStatePersistor()
 
 let store = Store(
   state: AppState(todos: OrderedState()),
@@ -133,7 +135,7 @@ struct TodosView: ConnectableView {
     var todos: [TodoItem]
   }
 
-  func map(state: AppState) -> OrderedState<Todo>? {
+  func map(state: AppState) -> Props? {
     Props(todos: state.todos)
   }
 
@@ -156,7 +158,7 @@ struct TodosView: ConnectableView {
   struct Props: Equatable {
     var todos: [TodoItem]
     @ActionBinding var newTodoText: String
-    @ActionBinding var addTodo: ()->()
+    @ActionBinding var addTodo: () -> ()
   }
 
   func map(state: AppState, binder: ActionBinder) -> OrderedState<Todo>? {
@@ -182,17 +184,15 @@ struct TodosView: ConnectableView {
 An `ActionPlan` is a special kind of action that can be used to group other actions together or perform any kind of async logic outside of a reducer. It's also useful for actions that may require information about the state before it can be dispatched.
 
 ```swift
-/// Dispatch multiple actions after checking the current state of the application:
-
+/// Dispatch multiple actions after checking the current state of the application.
 let plan = ActionPlan<AppState> { store in
   guard store.state.someValue == nil else { return }
   store.send(actionA)
   store.send(actionB)
-  store.send(actionB)
+  store.send(actionC)
 }
 
 /// Subscribe to services and return a publisher that sends actions to the store.
-
 let plan = ActionPlan<AppState> { store in
   userLocationService
     .publisher
@@ -221,12 +221,14 @@ struct MyView: View {
   @State private var cancellable: Cancellable? = nil
 
   var body: some View {
-    MyForm.onAppear { cancellable = dispatch.sendAsCancellable(SecurityAction.whileAccessTokenIsValid) }
+    MyForm.onAppear { 
+      cancellable = dispatch.sendAsCancellable(SecurityAction.whileAccessTokenIsValid)
+    }
   }
 }
 ```
 
-The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches regular actions, but it automatically handles cancellable ones as well.
+The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches regular actions, but it automatically handles cancellable ones. By default, the action will cancel itself when the view is destroyed.
 
 ```swift
 struct MyView: View {
@@ -259,7 +261,6 @@ public enum TodoRowContainer_Previews: PreviewProvider {
     TodoRowContainer(id: "1")
       .provideStore(store)
   }
-  
 }
 #endif
 ```
