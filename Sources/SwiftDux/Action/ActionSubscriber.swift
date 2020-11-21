@@ -7,7 +7,6 @@ final internal class ActionSubscriber: Subscriber {
   typealias ReceivedCompletion = () -> Void
 
   private let actionDispatcher: ActionDispatcher
-  private let receivedCompletion: ReceivedCompletion?
   private var subscription: Subscription? = nil {
     willSet {
       guard let subscription = subscription else { return }
@@ -15,9 +14,8 @@ final internal class ActionSubscriber: Subscriber {
     }
   }
 
-  internal init(actionDispatcher: ActionDispatcher, receivedCompletion: ReceivedCompletion?) {
+  internal init(actionDispatcher: ActionDispatcher) {
     self.actionDispatcher = actionDispatcher
-    self.receivedCompletion = receivedCompletion
   }
 
   public func receive(subscription: Subscription) {
@@ -31,7 +29,6 @@ final internal class ActionSubscriber: Subscriber {
   }
 
   public func receive(completion: Subscribers.Completion<Never>) {
-    receivedCompletion?()
     subscription = nil
   }
 
@@ -45,18 +42,11 @@ extension Publisher where Output == Action, Failure == Never {
 
   /// Subscribe to a publisher of actions, and send the results to an action dispatcher.
   ///
-  /// - Parameters:
-  ///   - actionDispatcher: The ActionDispatcher
-  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Parameter actionDispatcher: The ActionDispatcher
   /// - Returns: A cancellable to unsubscribe.
-  public func send(to actionDispatcher: ActionDispatcher, receivedCompletion: (() -> Void)? = nil) -> AnyCancellable {
-    let subscriber = ActionSubscriber(
-      actionDispatcher: actionDispatcher,
-      receivedCompletion: receivedCompletion
-    )
+  public func send(to actionDispatcher: ActionDispatcher) -> AnyCancellable {
+    let subscriber = ActionSubscriber(actionDispatcher: actionDispatcher)
     self.subscribe(subscriber)
-    return AnyCancellable { [subscriber] in
-      subscriber.cancel()
-    }
+    return AnyCancellable { subscriber.cancel() }
   }
 }

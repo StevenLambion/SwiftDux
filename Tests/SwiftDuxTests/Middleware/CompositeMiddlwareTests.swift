@@ -50,22 +50,20 @@ extension CompositeMiddlewareTests {
   }
   
   final class MiddlewareA: Middleware {
-    func run(store: StoreProxy<TestState>, action: Action) {
+    func run(store: StoreProxy<TestState>, action: Action) -> Action? {
       if case .setText(let text) = action as? TestAction {
-        store.next(TestAction.setText(text + "A"))
-      } else {
-        store.next(action)
+        return TestAction.setText(text + "A")
       }
+      return action
     }
   }
   
   final class MiddlewareB: Middleware {
-    func run(store: StoreProxy<TestState>, action: Action) {
+    func run(store: StoreProxy<TestState>, action: Action) -> Action? {
       if case .setText(let text) = action as? TestAction {
-        store.next(TestAction.setText(text + "B"))
-      } else {
-        store.next(action)
+        return TestAction.setText(text + "B")
       }
+      return action
     }
   }
 }

@@ -22,19 +22,8 @@ public final class Store<State>: StateStorable {
   ///   - reducer: A reducer that mutates the state as actions are dispatched to it.
   ///   - middleware: A middleware plugin.
   public init<R, M>(state: State, reducer: R, middleware: M) where R: Reducer, R.State == State, M: Middleware, M.State == State {
-    let storeReducer = StoreReducer(rootReducer: reducer)
     self.state = state
-    self.reduce = middleware(
-      store: StoreProxy(
-        getState: { [unowned self] in self.state },
-        didChange: didChange,
-        dispatcher: self,
-        next: { [weak self] action in
-          guard let self = self else { return }
-          self.state = storeReducer(state: self.state, action: action)
-        }
-      )
-    )
+    self.reduce = compile(middleware: middleware + ReducerMiddleware(reducer: reducer) { [weak self] in self?.state = $0 })
     send(StoreAction<State>.prepare)
   }
 
@@ -45,6 +34,19 @@ public final class Store<State>: StateStorable {
   ///   - reducer: A reducer that mutates the state as actions are dispatched to it.
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
+  }
+
+  private func compile<M>(middleware: M) -> SendAction where M: Middleware, M.State == State {
+    middleware(
+      store: StoreProxy(
+        getState: { [unowned self] in self.state },
+        didChange: didChange,
+        dispatcher: ActionDispatcherProxy(
+          send: { [unowned self] in self.send($0) },
+          sendAsCancellable: { [unowned self] in self.sendAsCancellable($0) }
+        )
+      )
+    )
   }
 }
 
@@ -66,7 +68,7 @@ extension Store: ActionDispatcher {
   /// - Returns: A cancellable object.
   @inlinable public func sendAsCancellable(_ action: Action) -> Cancellable {
     if let action = action as? RunnableAction {
-      return action.run(store: self).send(to: self)
+      return action.run(store: self.proxy()).send(to: self)
     }
     return Just(action).send(to: self)
   }
@@ -75,11 +77,12 @@ extension Store: ActionDispatcher {
   ///
   /// - Parameter action: The  action to perform.
   @usableFromInline internal func reduceRunnableAction(_ action: RunnableAction) {
-    var cancellable: Cancellable? = nil
-    cancellable = action.run(store: self).send(to: self) {
-      cancellable?.cancel()
-      cancellable = nil
-    }
+    var cancellable: AnyCancellable? = nil
+    cancellable = action.run(store: self.proxy())
+      .handleEvents(receiveCompletion: { _ in
+        cancellable?.cancel()
+        cancellable = nil
+      })
+      .send(to: self)
   }
-
 }

@@ -21,9 +21,10 @@ public final class PrintActionMiddleware<State>: Middleware {
     self.filter = filter
   }
 
-  public func run<State>(store: StoreProxy<State>, action: Action) {
-    defer { store.next(action) }
-    guard filter(action) else { return }
-    printer(String(describing: action))
+  public func run<State>(store: StoreProxy<State>, action: Action) -> Action? {
+    if filter(action) {
+      printer(String(describing: action))
+    }
+    return action
   }
 }

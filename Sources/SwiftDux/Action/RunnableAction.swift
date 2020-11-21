@@ -9,5 +9,5 @@ public protocol RunnableAction: Action {
   ///
   /// - Parameter store: The store that the action has been dispatched to.
   /// - Returns: A cancellable object.
-  func run<T>(store: Store<T>) -> AnyPublisher<Action, Never>
+  func run<T>(store: StoreProxy<T>) -> AnyPublisher<Action, Never>
 }
