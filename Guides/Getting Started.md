@@ -15,7 +15,7 @@ SwiftDux helps build SwiftUI-based applications around an [elm-like architecture
 
 The state is an immutable structure acting as the single source of truth within the application.
 
-Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoState` objects.
+Below is an example of a todo app's state. It has a root `AppState` as well as an ordered list of `TodoItem` objects.
 
 ```swift
 import SwiftDux
@@ -89,7 +89,7 @@ window.rootViewController = UIHostingController(
 ## Middleware
 SwiftDux supports middleware to extend functionality. The SwiftDuxExtras module provides two built-in middleware to get started:
 
-- `PersistStateMiddleware` Persists and restores the application state between sessions.
+- `PersistStateMiddleware` persists and restores the application state between sessions.
 - `PrintActionMiddleware` prints out each dispatched action for debugging purposes.
 
 ```swift
@@ -213,16 +213,35 @@ struct MyView: View {
 }
 ```
 
-If it's an ActionPlan that's meant to be kept alive through a publisher, then you'll want to send it as a cancellable.
+If it's an ActionPlan that's meant to be kept alive through a publisher, then you'll want to send it as a cancellable. The action below subscribes
+to the store, so it can keep a list of albums updated when the user applies different queries.
 
 ```swift
-struct MyView: View {
+extension AlbumListAction {
+  var updateAlbumList: Action {
+    ActionPlan<AppState> { store in
+      store
+        .publish { $0.albumList.query }
+        .debounce(for: .seconds(1), scheduler: RunLoop.main)
+        .map { AlbumService.all(query: $0) }
+        .switchToLatest()
+        .catch { Just(AlbumListAction.setError($0) }
+        .map { AlbumListAction.setAlbums($0) }
+    }
+  }
+}
+
+struct AlbumListContainer: ConnectableView {
   @Environment(\.actionDispatcher) private var dispatch
   @State private var cancellable: Cancellable? = nil
+  
+  func map(state: AppState) -> [Album]? {
+    state.albumList.albums
+  }
 
-  var body: some View {
-    MyForm.onAppear { 
-      cancellable = dispatch.sendAsCancellable(SecurityAction.whileAccessTokenIsValid)
+  func body(props: [Album]) -> some View {
+    AlbumsList(albums: props).onAppear { 
+      cancellable = dispatch.sendAsCancellable(AlbumListAction.updateAlbumList)
     }
   }
 }
@@ -231,9 +250,14 @@ struct MyView: View {
 The above can be further simplified by using the built-in `onAppear(dispatch:)` method instead. This method not only dispatches regular actions, but it automatically handles cancellable ones. By default, the action will cancel itself when the view is destroyed.
 
 ```swift
-struct MyView: View {
-  var body: some View {
-    MyForm.onAppear(dispatch: SecurityAction.whileAccessTokenIsValid)
+struct AlbumListContainer: ConnectableView {
+  
+  func map(state: AppState) -> [Album]? {
+    Props(state.albumList.albums)
+  }
+
+  func body(props: [Album]) -> some View {
+    AlbumsList(albums: props).onAppear(dispatch: AlbumListAction.updateAlbumList)
   }
 }
 ```
