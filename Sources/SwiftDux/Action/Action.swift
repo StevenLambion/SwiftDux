@@ -38,7 +38,7 @@ extension Action {
   ///
   /// - Parameter block: A block of code to execute once the previous action has completed.
   /// - Returns: A composite action.
-  @inlinable public func then(_ block: @escaping ()->Void) -> CompositeAction {
+  @inlinable public func then(_ block: @escaping () -> Void) -> CompositeAction {
     then(ActionPlan<Any> { _ in block() })
   }
 }
@@ -52,9 +52,9 @@ public struct EmptyAction: Action {
 /// A closure that dispatches an action.
 ///
 /// - Parameter action: The action to dispatch.
-public typealias SendAction = (Action)->Void
+public typealias SendAction = (Action) -> Void
 
 /// A closure that dispatches a cancellable action.
 ///
 /// - Parameter action: The action to dispatch.
-public typealias SendCancellableAction = (Action)->Cancellable
+public typealias SendCancellableAction = (Action) -> Cancellable

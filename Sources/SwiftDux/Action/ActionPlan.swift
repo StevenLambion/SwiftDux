@@ -40,20 +40,20 @@ public struct ActionPlan<State>: RunnableAction {
   /// Initiate an action plan that returns a publisher of actions.
   ///
   /// - Parameter body: The body of the action plan.
-  @inlinable public init<P>(_ body: @escaping (StoreProxy<State>)->P) where P: Publisher, P.Output == Action, P.Failure == Never {
+  @inlinable public init<P>(_ body: @escaping (StoreProxy<State>) -> P) where P: Publisher, P.Output == Action, P.Failure == Never {
     self.body = { store in body(store).eraseToAnyPublisher() }
   }
-  
+
   /// Initiate an asynchronous action plan that completes after the first emitted void value from its publisher.
   ///
   /// Use this method to wrap asynchronous code in a publisher like `Future<Void, Never>`.
   /// - Parameter body: The body of the action plan.
-  @inlinable public init<P>(_ body: @escaping (StoreProxy<State>)->P) where P: Publisher, P.Output == Void, P.Failure == Never {
+  @inlinable public init<P>(_ body: @escaping (StoreProxy<State>) -> P) where P: Publisher, P.Output == Void, P.Failure == Never {
     self.body = { store in
-        body(store)
-          .first()
-          .compactMap { _ -> Action? in nil }
-          .eraseToAnyPublisher()
+      body(store)
+        .first()
+        .compactMap { _ -> Action? in nil }
+        .eraseToAnyPublisher()
     }
   }
 

@@ -28,4 +28,3 @@ extension ActionDispatcher {
     send(action)
   }
 }
-

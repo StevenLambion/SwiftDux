@@ -31,7 +31,6 @@ public struct CompositeAction: RunnableAction {
   }
 }
 
-
 /// Chain two actions together as a composite type.
 ///
 /// - Parameters:

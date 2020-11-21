@@ -42,9 +42,7 @@ extension Publisher where Output == Action, Failure == Never {
 
   /// Subscribe to a publisher of actions, and send the results to an action dispatcher.
   ///
-  /// - Parameters:
-  ///   - actionDispatcher: The ActionDispatcher
-  ///   - receivedCompletion: An optional block called when the publisher completes.
+  /// - Parameter actionDispatcher: The ActionDispatcher
   /// - Returns: A cancellable to unsubscribe.
   public func send(to actionDispatcher: ActionDispatcher) -> AnyCancellable {
     let subscriber = ActionSubscriber(actionDispatcher: actionDispatcher)

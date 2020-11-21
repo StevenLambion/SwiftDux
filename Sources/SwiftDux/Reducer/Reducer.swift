@@ -54,7 +54,7 @@ extension Reducer {
   ///   - action: Any kind of action.
   /// - Returns: A new immutable state
   @inlinable public func reduceAny(state: State, action: Action) -> State {
-    guard let reducerAction = action as? ReducerAction  else {
+    guard let reducerAction = action as? ReducerAction else {
       return state
     }
     return reduce(state: state, action: reducerAction)

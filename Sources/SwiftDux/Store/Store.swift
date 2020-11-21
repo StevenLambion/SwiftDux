@@ -35,16 +35,18 @@ public final class Store<State>: StateStorable {
   public convenience init<R>(state: State, reducer: R) where R: Reducer, R.State == State {
     self.init(state: state, reducer: reducer, middleware: NoopMiddleware())
   }
-  
+
   private func compile<M>(middleware: M) -> SendAction where M: Middleware, M.State == State {
-    middleware(store: StoreProxy(
-      getState: { [unowned self] in self.state },
-      didChange: didChange,
-      dispatcher: ActionDispatcherProxy(
-        send: { [unowned self] in self.send($0) },
-        sendAsCancellable: { [unowned self] in self.sendAsCancellable($0) }
+    middleware(
+      store: StoreProxy(
+        getState: { [unowned self] in self.state },
+        didChange: didChange,
+        dispatcher: ActionDispatcherProxy(
+          send: { [unowned self] in self.send($0) },
+          sendAsCancellable: { [unowned self] in self.sendAsCancellable($0) }
+        )
       )
-    ))
+    )
   }
 }
 

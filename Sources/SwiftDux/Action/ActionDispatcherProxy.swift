@@ -5,8 +5,7 @@ import Foundation
 public struct ActionDispatcherProxy: ActionDispatcher {
   @usableFromInline internal var sendBlock: SendAction
   @usableFromInline internal var sendAsCancellableBlock: SendCancellableAction
-  
-  
+
   /// Initiate a new BlockActionDispatcher.
   ///
   /// - Parameters:
@@ -16,11 +15,11 @@ public struct ActionDispatcherProxy: ActionDispatcher {
     self.sendBlock = send
     self.sendAsCancellableBlock = sendAsCancellable
   }
-  
-  @inlinable  public func send(_ action: Action) {
+
+  @inlinable public func send(_ action: Action) {
     sendBlock(action)
   }
-  
+
   @inlinable public func sendAsCancellable(_ action: Action) -> Cancellable {
     sendAsCancellableBlock(action)
   }

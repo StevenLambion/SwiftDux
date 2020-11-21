@@ -16,6 +16,7 @@ public protocol Middleware {
   /// - Parameters:
   ///   - store: The store object. Use `store.next` when the middleware is complete.
   ///   - action: The latest dispatched action to process.
+  /// - Returns: An optional action to pass to the next middleware.
   func run(store: StoreProxy<State>, action: Action) -> Action?
 
   /// Compiles the middleware into a SendAction closure.

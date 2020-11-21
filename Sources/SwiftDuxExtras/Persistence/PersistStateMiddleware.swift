@@ -63,7 +63,7 @@ public final class PersistStateMiddleware<State, SP>: Middleware where SP: State
     } else {
       print("Failed to initiate persistence using default notifiation center.")
     }
-    
+
     return action
   }
 }
