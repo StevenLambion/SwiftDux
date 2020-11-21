@@ -27,7 +27,7 @@ jobs:
           mint install apple/swift-format@0.50300.0
       - name: Check code formatting
         run: |
-          swift-format -r -m lint Sources
+          ./scripts/lint.sh
       - name: Run tests
         run: |
           swift package generate-xcodeproj --enable-code-coverage
