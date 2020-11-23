@@ -2,64 +2,36 @@
   "warnings": [
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Action/Action.swift",
-      "line": 45,
+      "line": 49,
       "symbol": "EmptyAction.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Action/ActionSubscriber.swift",
-      "line": 7,
-      "symbol": "ActionSubscriber.ReceivedCompletion",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Action/ActionSubscriber.swift",
-      "line": 38,
-      "symbol": "ActionSubscriber.cancel()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Middleware/Middleware.swift",
-      "line": 15,
+      "line": 12,
       "symbol": "Middleware.State",
       "symbol_kind": "source.lang.swift.decl.associatedtype",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Reducer/CombinedReducer.swift",
-      "line": 11,
-      "symbol": "CombinedReducer.init(previousReducer:nextReducer:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/Reducer/Reducer.swift",
-      "line": 48,
+      "line": 35,
       "symbol": "Reducer.callAsFunction(state:action:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/State/OrderedState.swift",
-      "line": 96,
+      "line": 95,
       "symbol": "OrderedState.Id",
-      "symbol_kind": "source.lang.swift.decl.typealias",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ActionBinder.swift",
-      "line": 107,
-      "symbol": "StateBinder",
       "symbol_kind": "source.lang.swift.decl.typealias",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Connectable.swift",
       "line": 9,
-      "symbol": "Connectable.Superstate",
+      "symbol": "Connectable.State",
       "symbol_kind": "source.lang.swift.decl.associatedtype",
       "warning": "undocumented"
     },
@@ -85,92 +57,106 @@
       "warning": "undocumented"
     },
     {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ConnectableView.swift",
+      "line": 16,
+      "symbol": "ConnectableView.body",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ConnectableViewModifier.swift",
+      "line": 5,
+      "symbol": "ConnectableViewModifier.InnerBody",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ConnectableViewModifier.swift",
+      "line": 6,
+      "symbol": "ConnectableViewModifier.Body",
+      "symbol_kind": "source.lang.swift.decl.associatedtype",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 12,
+      "line": 4,
       "symbol": "Connector",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Connector.swift",
-      "line": 24,
-      "symbol": "Connector.init(content:filter:mapProps:)",
+      "line": 21,
+      "symbol": "Connector.init(mapState:content:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Extensions/Environment+AnyStore.swift",
-      "line": 39,
+      "line": 47,
       "symbol": "StoreWrapperEnvironmentKey",
       "symbol_kind": "source.lang.swift.decl.class",
       "warning": "undocumented"
     },
     {
-      "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/Extensions/Environment+AnyStore.swift",
-      "line": 40,
-      "symbol": "StoreWrapperEnvironmentKey.defaultValue",
-      "symbol_kind": "source.lang.swift.decl.var.static",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
-      "line": 21,
+      "line": 22,
       "symbol": "MappedDispatch.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedDispatch.swift",
-      "line": 25,
+      "line": 26,
       "symbol": "MappedDispatch.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 19,
+      "line": 17,
       "symbol": "MappedState.wrappedValue",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/MappedState.swift",
-      "line": 31,
+      "line": 28,
       "symbol": "MappedState.init()",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnActionViewModifier.swift",
-      "line": 4,
+      "line": 5,
       "symbol": "OnActionViewModifier",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnActionViewModifier.swift",
-      "line": 21,
+      "line": 23,
       "symbol": "OnActionViewModifier",
       "symbol_kind": "source.lang.swift.decl.extension",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnAppearDispatchViewModifier.swift",
-      "line": 4,
+      "line": 5,
       "symbol": "OnAppearDispatchActionViewModifier",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/OnAppearDispatchViewModifier.swift",
-      "line": 20,
+      "line": 19,
       "symbol": "OnAppearDispatchActionPlanViewModifier",
       "symbol_kind": "source.lang.swift.decl.struct",
       "warning": "undocumented"
     },
     {
       "file": "/Users/stevenlambion/Developer/Projects/SwiftDux/Sources/SwiftDux/UI/ViewModifiers/StoreProviderViewModifier.swift",
-      "line": 40,
+      "line": 44,
       "symbol": "View.provideStore(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
