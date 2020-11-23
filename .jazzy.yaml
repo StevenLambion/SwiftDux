@@ -6,8 +6,6 @@ custom_categories:
     children:
       - "Installation"
       - "Getting Started"
-      - "Composing Reducers"
-      - "SwiftUI List Support"
       - "Persisting State"
   - name: State
     children:
@@ -19,17 +17,23 @@ custom_categories:
       - Action
       - ActionPlan
       - ActionDispatcher
-      - ActionSubscriber
       - RunnableAction
       - EmptyAction
       - SendAction
   - name: Store
     children:
       - Store
-      - Reducer
       - StoreProxy
-      - CombinedReducer
       - StoreAction
+  - name: Reducer
+    children:
+      - Reducer
+      - CompositeReducer
+  - name: Middleware
+    children:
+      - Middleware
+      - CompositeMiddleware
+      - HandleActionMiddleware
   - name: SwiftUI
     children:
       - View
@@ -38,8 +42,3 @@ custom_categories:
       - ConnectableView
       - ActionBinder
       - ActionBinding
-  - name: Middleware
-    children:
-      - Middleware
-      - CombinedMiddleware
-      - HandleActionMiddleware

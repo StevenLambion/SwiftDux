@@ -10,7 +10,7 @@ git worktree add docs gh-pages
 rm -rf docs/*
 
 # Generate documentation
-jazzy -x USE_SWIFT_RESPONSE_FILE=NO
+jazzy -x USE_SWIFT_RESPONSE_FILE=NO --module SwiftDux
 mkdir -p ./docs/Guides/Images
 cp ./Guides/Images/* ./docs/Guides/Images/
 
