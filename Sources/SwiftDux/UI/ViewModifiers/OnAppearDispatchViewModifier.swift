@@ -54,8 +54,9 @@ extension View {
     Group {
       if let action = action as? RunnableAction {
         modifier(OnAppearDispatchActionPlanViewModifier(action: action, cancelOnDisappear: true))
+      } else {
+        modifier(OnAppearDispatchActionViewModifier(action: action))
       }
-      modifier(OnAppearDispatchActionViewModifier(action: action))
     }
   }
 
