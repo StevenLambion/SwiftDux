@@ -12,9 +12,11 @@ public struct OnActionViewModifier: ViewModifier {
 
   public func body(content: Content) -> some View {
     var nextActionDispatcher = actionDispatcher
+
     if let perform = perform {
       nextActionDispatcher = OnActionDispatcher(actionModifier: perform, nextDispatcher: actionDispatcher)
     }
+
     return content.environment(\.actionDispatcher, nextActionDispatcher)
   }
 }

@@ -58,8 +58,9 @@ extension Store: ActionDispatcher {
   @inlinable public func send(_ action: Action) {
     if let action = action as? RunnableAction {
       reduceRunnableAction(action)
+    } else {
+      reduce(action)
     }
-    reduce(action)
   }
 
   /// Sends an action to mutate the state.
@@ -78,6 +79,7 @@ extension Store: ActionDispatcher {
   /// - Parameter action: The  action to perform.
   @usableFromInline internal func reduceRunnableAction(_ action: RunnableAction) {
     var cancellable: AnyCancellable? = nil
+
     cancellable = action.run(store: self.proxy())
       .handleEvents(receiveCompletion: { _ in
         cancellable?.cancel()

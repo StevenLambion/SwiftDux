@@ -129,6 +129,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
       valueByIndex[$0.id] = $0
       return $0.id
     }
+
     self.init(orderOfIds: orderOfIds, values: valueByIndex)
   }
 
@@ -148,6 +149,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
     guard isKnownUniquelyReferenced(&storage) else {
       return OrderedStateStorage(orderOfIds: storage.orderOfIds, values: storage.values)
     }
+
     storage.invalidateCache()
     return storage
   }
@@ -167,7 +169,9 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   /// - Parameter value: A new substate to append to the end of the list.
   @inlinable public mutating func append(_ value: Substate) {
     self.remove(forId: value.id)  // Remove if it already exists.
+
     let copy = copyStorageIfNeeded()
+
     copy.orderOfIds.append(value.id)
     copy.values[value.id] = value
     self.storage = copy
@@ -210,6 +214,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
       copy.values[value.id] = value
       return value.id
     }
+
     copy.orderOfIds.insert(contentsOf: ids, at: index)
     self.storage = copy
   }
@@ -220,9 +225,11 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   @inlinable public mutating func remove(forId id: Id) {
     guard storage.values[id] != nil else { return }
     let copy = copyStorageIfNeeded()
+
     if copy.values.removeValue(forKey: id) != nil {
       copy.orderOfIds.removeAll { $0 == id }
     }
+
     self.storage = copy
   }
 
@@ -231,6 +238,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   /// - Parameter index: The index of the substate to remove. This will adjust the order of items.
   @inlinable public mutating func remove(at index: Int) {
     let copy = copyStorageIfNeeded()
+
     copy.values.removeValue(forKey: copy.orderOfIds[index])
     copy.orderOfIds.remove(at: index)
     self.storage = copy
@@ -241,6 +249,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   /// - Parameter indexSet: Removes all items in the provided indexSet. This will adjust the order of items.
   @inlinable public mutating func remove(at indexSet: IndexSet) {
     let copy = copyStorageIfNeeded()
+
     indexSet.forEach { copy.values.removeValue(forKey: copy.orderOfIds[$0]) }
     copy.orderOfIds.remove(at: indexSet)
     self.storage = copy
@@ -252,12 +261,12 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   ///   - indexSet: A set of indexes to move to a new location. The order of indexes will be used as part of the new order of the moved items.
   ///   - index: The new position for the moved items.
   @inlinable public mutating func move(from indexSet: IndexSet, to index: Int) {
-    /// don't allow moving if the moved index is inside the index set.
     guard !indexSet.contains(where: { $0 == index }) else { return }
     let copy = copyStorageIfNeeded()
     let index = Swift.max(Swift.min(index, copy.orderOfIds.count), 0)
     let ids = Array(indexSet.map { copy.orderOfIds[$0] })
     let offset = Swift.max(indexSet.reduce(0) { (result, i) in i < index ? result + 1 : result }, 0)
+
     copy.orderOfIds.remove(at: indexSet)
     copy.orderOfIds.insert(contentsOf: ids, at: index - offset)
     self.storage = copy
@@ -268,6 +277,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   /// - Parameter areInIncreasingOrder: Orders the items by indicating whether not the second item is bigger than the first item.
   @inlinable public mutating func sort(by areInIncreasingOrder: (Substate, Substate) -> Bool) {
     let copy = copyStorageIfNeeded()
+
     copy.orderOfIds.sort { areInIncreasingOrder(copy.values[$0]!, copy.values[$1]!) }
     self.storage = copy
   }
@@ -277,8 +287,10 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   /// - Parameter areInIncreasingOrder: Orders the items by indicating whether not the second item is bigger than the first item.
   /// - Returns: A new `OrderedState` with the provided sort operation.
   @inlinable public func sorted(by areInIncreasingOrder: (Substate, Substate) -> Bool) -> Self {
-    let orderOfIds = storage.orderOfIds.sorted { areInIncreasingOrder(storage.values[$0]!, storage.values[$1]!) }
-    return OrderedState(orderOfIds: orderOfIds, values: storage.values)
+    OrderedState(
+      orderOfIds: storage.orderOfIds.sorted { areInIncreasingOrder(storage.values[$0]!, storage.values[$1]!) },
+      values: storage.values
+    )
   }
 
   /// Filters the substates using a predicate.
@@ -288,7 +300,7 @@ public struct OrderedState<Substate> where Substate: Identifiable {
   @inlinable public func filter(_ isIncluded: (Substate) -> Bool) -> [Substate] {
     storage.orderOfIds.compactMap { id -> Substate? in
       let value = storage.values[id]!
-      return isIncluded(value) ? value : nil
+      return isIncluded(storage.values[id]!) ? value : nil
     }
   }
 }
@@ -328,8 +340,10 @@ extension OrderedState: MutableCollection {
     }
     set(newValue) {
       guard let newValue = newValue else { return }
+
       if storage.values[position] != nil {
         let copy = copyStorageIfNeeded()
+
         copy.values[position] = newValue
         self.storage = copy
       } else {
@@ -377,6 +391,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
     guard var i = indexes.first, i < count else { return }
     var j = index(after: i)
     var k = indexes.integerGreaterThan(i) ?? endIndex
+
     while j != endIndex {
       if k != j {
         swapAt(i, j)
@@ -386,6 +401,7 @@ extension RangeReplaceableCollection where Self: MutableCollection, Index == Int
       }
       formIndex(after: &j)
     }
+
     removeSubrange(i...)
   }
 }
@@ -408,6 +424,7 @@ extension OrderedState: Decodable where Substate: Decodable {
   public init(from decoder: Decoder) throws {
     var container = try decoder.unkeyedContainer()
     var values = [Substate]()
+
     while !container.isAtEnd {
       do {
         values.append(try container.decode(Substate.self))
@@ -415,6 +432,7 @@ extension OrderedState: Decodable where Substate: Decodable {
         _ = try container.decode(IgnoredDecodedState.self)
       }
     }
+
     self.init(values)
   }
 

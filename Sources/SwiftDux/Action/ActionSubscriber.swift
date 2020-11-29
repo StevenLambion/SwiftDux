@@ -46,6 +46,7 @@ extension Publisher where Output == Action, Failure == Never {
   /// - Returns: A cancellable to unsubscribe.
   public func send(to actionDispatcher: ActionDispatcher) -> AnyCancellable {
     let subscriber = ActionSubscriber(actionDispatcher: actionDispatcher)
+
     self.subscribe(subscriber)
     return AnyCancellable { subscriber.cancel() }
   }

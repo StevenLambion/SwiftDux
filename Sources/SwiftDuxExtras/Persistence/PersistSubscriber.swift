@@ -48,6 +48,7 @@ extension Publisher where Output: Codable, Failure == Never {
   /// - Returns: A cancellable to unsubscribe.
   public func persist<P>(with persistor: P) -> AnyCancellable where P: StatePersistor, P.State == Output {
     let subscriber = PersistSubscriber(persistor: persistor)
+
     self.subscribe(subscriber)
     return AnyCancellable { [subscriber] in subscriber.cancel() }
   }

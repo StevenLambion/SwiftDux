@@ -1,3 +1,5 @@
+import Foundation
+
 // Reduces the state of a store with the provided action to produce a new state.
 internal final class ReducerMiddleware<State, RootReducer>: Middleware where RootReducer: Reducer, RootReducer.State == State {
   let reducer: CompositeReducer<State, StoreReducer<State>, RootReducer>

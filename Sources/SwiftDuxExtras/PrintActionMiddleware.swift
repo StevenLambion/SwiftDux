@@ -25,6 +25,7 @@ public final class PrintActionMiddleware<State>: Middleware {
     if filter(action) {
       printer(String(describing: action))
     }
+
     return action
   }
 }
