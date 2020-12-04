@@ -21,32 +21,8 @@ final class PerformanceTests: XCTestCase {
       XCTAssertEqual(firstUndeletedItem?.id, store.state.todoLists["123"]?.todos.values[100].id)
     }
   }
-  
-  func testStoreUpdatePerformance() {
-    let subsriberCount = 1000
-    let sendCount = 1000
-    var updateCounts = 0
-    var sinks = [Cancellable]()
-    let store = configureStore()
-    
-    for _ in 1...subsriberCount {
-      sinks.append(store.didChange.sink { _ in updateCounts += 1 })
-    }
-    
-    measure {
-      updateCounts = 0
-      for _ in 1...sendCount {
-        store.send(TodosAction.doNothing)
-      }
-      XCTAssertEqual(updateCounts, subsriberCount * sendCount)
-    }
-    
-    // Needed so it doesn't get optimized away.
-    XCTAssertEqual(sinks.count, subsriberCount)
-  }
 
   static var allTests = [
-    ("testOrderedStatePerformance", testOrderedStatePerformance),
-    ("testStoreUpdatePerformance", testStoreUpdatePerformance),
+    ("testOrderedStatePerformance", testOrderedStatePerformance)
   ]
 }

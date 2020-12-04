@@ -10,7 +10,7 @@ public final class Store<State>: StateStorable {
   }
 
   /// Publishes when the state has changed.
-  public let didChange = StorePublisher()
+  public let didChange: StorePublisher
 
   @usableFromInline
   internal var reduce: SendAction = { _ in }
@@ -21,7 +21,14 @@ public final class Store<State>: StateStorable {
   ///   - state: The initial state of the store.
   ///   - reducer: A reducer that mutates the state as actions are dispatched to it.
   ///   - middleware: A middleware plugin.
-  public init<R, M>(state: State, reducer: R, middleware: M) where R: Reducer, R.State == State, M: Middleware, M.State == State {
+  ///   - publisher: The publisher of the store's updates.
+  public init<R, M>(
+    state: State,
+    reducer: R,
+    middleware: M,
+    publisher: StorePublisher = StorePublisher(throttleFor: .milliseconds(8), scheduler: RunLoop.main)
+  ) where R: Reducer, R.State == State, M: Middleware, M.State == State {
+    self.didChange = publisher
     self.state = state
     self.reduce = compile(middleware: middleware + ReducerMiddleware(reducer: reducer) { [weak self] in self?.state = $0 })
     send(StoreAction<State>.prepare)
