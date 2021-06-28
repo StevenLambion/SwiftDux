@@ -2,7 +2,12 @@ import Combine
 import Foundation
 import SwiftDux
 
-#if canImport(UIKit)
+#if canImport(WatchKit)
+
+  import WatchKit
+  fileprivate let notification: NSNotification.Name? = WKExtension.applicationDidEnterBackgroundNotification
+
+#elseif canImport(UIKit)
 
   import UIKit
   fileprivate let notification: NSNotification.Name? = UIApplication.didEnterBackgroundNotification
