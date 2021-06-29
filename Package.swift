@@ -25,8 +25,6 @@ let package = Package(
       name: "SwiftDuxTests",
       dependencies: [
         "SwiftDux",
-        "SwiftDuxExtras",
-        "SnapshotTesting"],
-      exclude: ["UI/__Snapshots__"]),
+        "SwiftDuxExtras"]),
   ]
 )
