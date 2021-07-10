@@ -9,12 +9,11 @@ name: build
 jobs:
   validate:
     name: Validate
-    runs-on: macos-11.0
+    runs-on: macos-10.15
     strategy:
       matrix:
         destination: 
           - "platform=iOS Simulator,OS=14.2,name=iPhone 12"
-          - "platform=OS X"
     steps:
       - name: Checkout
         uses: actions/checkout@master

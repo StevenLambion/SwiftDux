@@ -14,9 +14,6 @@ let package = Package(
       name: "SwiftDux",
       targets: ["SwiftDux", "SwiftDuxExtras"]),
   ],
-  dependencies: [
-    .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.2")
-  ],
   targets: [
     .target(
       name: "SwiftDux",
@@ -28,8 +25,6 @@ let package = Package(
       name: "SwiftDuxTests",
       dependencies: [
         "SwiftDux",
-        "SwiftDuxExtras",
-        "SnapshotTesting"],
-      exclude: ["UI/__Snapshots__"]),
+        "SwiftDuxExtras"]),
   ]
 )
